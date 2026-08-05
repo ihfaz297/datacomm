@@ -1,0 +1,763 @@
+=== printed p.31 (idx 69) ===
+31
+CHAPTER 2
+Network Models
+he second chapter is a preparation for the rest of the book. The next five parts of the
+book is devoted to one of the layers in the TCP/IP protocol suite. In this chapter,
+we first discuss the idea of network models in general and the TCP/IP protocol suite in
+particular.   
+ Two models have been devised to define computer network operations: the TCP/IP
+protocol suite and the OSI model. In this chapter, we first discuss a general subject, protocol
+layering, which is used in both models. We then concentrate on the TCP/IP protocol suite,
+on which the book is based. The OSI model is briefly discuss for comparison with the
+TCP/IP protocol suite.
+❑ The first section introduces the concept of protocol layering using two scenarios.
+The section also discusses the two principles upon which the protocol layering is
+based. The first principle dictates that each layer needs to have two opposite tasks.
+The second principle dictates that the corresponding layers should be identical.
+The section ends with a brief discussion of logical connection between two identi-
+cal layers in protocol layering. Throughout the book, we need to distinguish
+between logical and physical connections. 
+❑ The second section discusses the five layers of the TCP/IP protocol suite. We show
+how packets in each of the five layers (p hysical, data-link, network, transport, and
+application) are named. We also menti on the addressing mechanism used in each
+layer. Each layer of the TCP/IP protocol su ite is a subject of a part of the book. In
+other words, each layer is discussed in several chapters; this section is just an intro-
+duction and preparation. 
+❑ The third section gives a brief discussion of the OSI model. This model was never
+implemented in practice, but a brief disc ussion of the model and its comparison
+with the TCP/IP protocol suite may be useful to better understand the TCP/IP pro-
+tocol suite. In this section we also give  a brief reason for the OSI model’s lack of
+success. 
+T
+=== printed p.32 (idx 70) ===
+32 PART I OVERVIEW
+2.1 PROTOCOL LAYERING
+We defined the term protocol in Chapter 1. In data communication and networking, a
+protocol defines the rules that both the sender and receiver and all intermediate devices
+need to follow to be able to communicate ef fectively. When communication is simple,
+we may need only one simple protocol; when the communication is complex, we may
+need to divide the task between different la yers, in which case we need a protocol at
+each layer, or protocol layering.
+2.1.1 Scenarios
+Let us develop two simple scenarios to better understand the need for protocol layering.
+First Scenario 
+In the first scenario, communication is so simple that it can occur in only one layer.
+Assume Maria and Ann are neighbors with a lot of common ideas. Communication
+between Maria and Ann takes place in one layer, face to face, in the same language, as
+shown in Figure 2.1. 
+Even in this simple scenario , we can see that a set of rules needs to be followed.
+First, Maria and Ann know that they should greet each other when they meet. Second,
+they know that they should confine their vocabulary to the level of their friendship.
+Third, each party knows that she should re frain from speaking when the other party
+is speaking. Fourth, each party knows that the conversation should be a dialog, not a
+monolog: both should have the opportunity to talk about the issue. Fifth, they should
+exchange some nice words when they leave. 
+We can see that the protocol used by Maria and Ann is different from the commu-
+nication between a professor and the students  in a lecture hall. The communication in
+the second case is mostly monolog; the professor talks most of the time unless a student
+has a question, a situation in which the protoc ol dictates that she should raise her hand
+and wait for permission to speak. In this case, the communication is normally very for-
+mal and limited to the subject being taught. 
+Second Scenario
+In the second scenario, we assume that Ann is offered a higher-level position in her
+company, but needs to move to another branch located in a city very far from Maria.
+The two friends still want to continue their communication and exchange ideas because
+Figure 2.1 A single-layer protocol
+Maria Ann 
+Layer 1 Listen/Talk Listen/Talk
+Air
+Layer 1
+=== printed p.33 (idx 71) ===
+CHAPTER 2 NETWORK MODELS 33
+they have come up with an innovative project to start a new business when they both
+retire. They decide to continue their conversation using regular mail through the post
+office. However, they do not want their ideas to be revealed by other people if the let-
+ters are intercepted. They agree on an encryption/decryption technique. The sender of
+the letter encrypts it to make it unreadable by an intruder; the receiver of the letter
+decrypts it to get the original letter. We discuss the encryption/decryption methods in
+Chapter 31, but for the moment we assume that Maria and Ann use one technique that
+makes it hard to decrypt the letter if one does not have the key for doing so. Now we
+can say that the communica tion between Maria and Ann takes place in three layers, as
+shown in Figure 2.2. We assume that An n and Maria each have three machines (or
+robots) that can perform the task at each layer. 
+Let us assume that Maria sends the first letter to Ann. Maria talks to the machine at
+the third layer as though the machine is Ann and is listening to her. The third layer
+machine listens to what Maria says and creates the plaintext (a letter in English), which
+is passed to the second layer machine. The second layer machine takes the plaintext,
+encrypts it, and creates the ciphertext, which is passed to the first layer machine. The
+first layer machine, presumably a robot, takes the ciphertext, puts it in an envelope,
+adds the sender and receiver addresses, and mails it. 
+At Ann’s side, the first layer machine picks up the letter from Ann’s mail box, rec-
+ognizing the letter from Maria by the sender address. The machine takes out the cipher-
+text from the envelope and delivers it to the second layer machine. The second layer
+machine decrypts the message, creates the pl aintext, and passes the plaintext to the
+third-layer machine. The third layer machine takes the plaintext and reads it as though
+Maria is speaking. 
+Figure 2.2 A three-layer protocol
+Maria 
+Listen/Talk Layer 3 Layer 3
+Ann
+Listen/Talk 
+Plaintext Plaintext
+Ciphertext Ciphertext
+Mail Mail 
+Encrypt/Decrypt 
+Send mail/
+receive mail 
+Layer 2
+Layer 1
+Encrypt/Decrypt 
+Send mail/
+receive mail 
+Layer 2
+Layer 1
+Identical objects
+Identical objects
+Identical objects
+Postal carrier facility
+US Post US Post 
+=== printed p.34 (idx 72) ===
+34 PART I OVERVIEW
+Protocol layering enables us to divide a complex task into several smaller and sim-
+pler tasks. For example, in Figure 2.2, we could have used only one machine to do the
+job of all three machines. However, if Maria and Ann decide that the encryption/
+decryption done by the machine is not enough to protect their secrecy, they would have
+to change the whole machine. In the present situation, they need to change only the sec-
+ond layer machine; the other two can remain the same. This is referred to as modularity.
+Modularity in this case means independent layers. A layer (module) can be defined as a
+black box with inputs and outputs, without  concern about how inputs are changed to
+outputs. If two machines provide the same outputs when given the same inputs, they
+can replace each other. For example, Ann and Maria can buy the second layer machine
+from two different manufacturers. As long as the two machines create the same cipher-
+text from the same plaintext and vice versa, they do the job. 
+One of the advantages of protocol layering  is that it allows us to separate the
+services from the implementation. A layer ne eds to be able to receive a set of ser-
+vices from the lower layer and to give the services to the upper layer; we don’t care
+about how the layer is implemented. For example, Maria may decide not to buy the
+machine (robot) for the first layer; she can do  the job herself. As long as Maria can
+do the tasks provided by the first layer, in both directions, the communication
+system works. 
+Another advantage of protocol layering, which cannot be seen in our simple exam-
+ples but reveals itself when we discuss protocol layering in the Internet, is that commu-
+nication does not always use only two end systems; there are intermediate systems that
+need only some layers, but not all layers. If we did not use protocol layering, we would
+have to make each intermediate system as  complex as the end systems, which makes
+the whole system more expensive. 
+Is there any disadvantage to protocol layering? One can argue that having a single
+layer makes the job easier. There is no need for each layer to provide a service to the
+upper layer and give service to the lower layer. For example, Ann and Maria could find
+or build one machine that could do all three tasks. However,  as mentioned above, if one
+day they found that their code was broken, each would have to replace the whole
+machine with a new one instead of just changing the machine in the second layer. 
+2.1.2 Principles of Protocol Layering
+Let us discuss two principles of protocol layering. 
+First Principle
+The first principle dictates that if we wa nt bidirectional communication, we need to
+make each layer so that it is able to perf orm two opposite tasks, one in each direction.
+For example, the third layer task is to listen (in one direction) and talk (in the other
+direction). The second layer needs to be able to encrypt and decrypt. The first layer
+needs to send and receive mail.
+Second Principle
+The second principle that we need to follow in protocol layering is that the two
+objects under each layer at both sites sh ould be identical. For example, the object
+under layer 3 at both sites should be a plaintext letter. The object under layer 2 at
+=== printed p.35 (idx 73) ===
+CHAPTER 2 NETWORK MODELS 35
+both sites should be a ciphertext letter. The object under layer 1 at both sites should
+be a piece of mail. 
+2.1.3 Logical Connections
+After following the above two principles, we can think about logical connection
+between each layer as shown in Figure 2.3. This means that we have layer-to-layer
+communication. Maria and Ann can think that there is a logical (imaginary) connection
+at each layer through which they can send the object created from that layer. We will
+see that the concept of logical connection will help us better understand the task of lay-
+ering we encounter in data communication and networking.    
+2.2 TCP/IP PROTOCOL SUITE
+Now that we know about the concept of protocol layering and the logical communica-
+tion between layers in our second scenario, we can introduce the TCP/IP (Transmission
+Control Protocol/Internet Protocol). TCP/IP is a protocol suite (a set of protocols orga-
+nized in different layers) used in the Internet today. It is a hierarchical protocol made up
+of interactive modules, each of which provides a specifi c functionality. The term hier-
+archical means that each upper level protocol is  supported by the services provided by
+one or more lower level protocols. The original TCP/IP protocol suite was defined as
+four software layers built upon the hardware. Today, however, TCP/IP is thought of as a
+five-layer model. Figure 2.4 shows both configurations.
+2.2.1 Layered Architecture
+To show how the layers in the TCP/IP protocol suite are involved in communication
+between two hosts, we assume that we want to use the suite in a small internet made up
+of three LANs (links), each with a link-layer switch. We also assume that the links are
+connected by one router, as shown in Figure 2.5.  
+Figure 2.3 Logical connection between peer layers
+Plaintext
+Maria Ann
+Logical connection
+Logical connection
+Logical connection
+Mail 
+Send mail/
+receive mail 
+Encrypt/Decrypt Layer 2
+Layer 1
+Encrypt/Decrypt Layer 2
+Talk/Listen Layer 3 Layer 3Listen/Talk 
+Plaintext
+Ciphertext Ciphertext
+Mail 
+Send mail/
+receive mail Layer 1
+=== printed p.36 (idx 74) ===
+36 PART I OVERVIEW
+Let us assume that computer A communicates with computer B. As the figure
+shows, we have five communicating devices in this communication: source host
+(computer A), the link-layer switch in link 1, the router, the link-layer switch in link 2,
+and the destination host (computer B). Each device is involved with a set of layers
+depending on the role of the device in the internet. The two hosts are involved in all five
+layers; the source hos t needs to create a message in the application layer and send it
+down the layers so that it is physically sent to the destination host. The destination host
+needs to receive the communication at the physical layer and then deliver it through the
+other layers to the application layer. 
+Figure 2.4 Layers in the TCP/IP protocol suite
+Figure 2.5 Communication through an internet
+Application
+Internet
+Network Interface
+Hardware Devices Layer 1
+a. Original layers b. Layers used in this book
+Layer 2
+Layer 3
+Layer 4
+Layer 5
+Transport
+Application
+Network
+Data link
+Physical
+Transport
+Link 1
+Switch
+ A
+ Source (A)
+ B
+ C
+ Destination (B)
+Communication from A to B
+Router
+Router
+Link 2
+Link 3
+Physical
+Data link
+Network
+Transport
+Application
+PhysicalPhysicalPhysicalPhysical Physical
+Data linkData linkData linkData link Data link
+NetworkNetwork
+Transport
+Application
+Switch
+=== printed p.37 (idx 75) ===
+CHAPTER 2 NETWORK MODELS 37
+The router is involved in only three layers; there is no transport or application layer
+in a router as long as the router is used only for routing. Although a router is always
+involved in one network layer, it is involved in n combinations of link and physical lay-
+ers in which n is the number of links the router is connected to. The reason is that each
+link may use its own data-link or physical protocol. For example, in the above figure, the
+router is involved in three links, but the message sent from source A to destination B is
+involved in two links. Each link may be using different link-layer and physical-layer
+protocols; the router needs to receive a p acket from link 1 based on one pair of proto-
+cols and deliver it to link 2 based on another pair of protocols. 
+A link-layer switch in a link, however, is involved only in two layers, data-link and
+physical. Although each switch in the above figure has two different connections, the
+connections are in the same link, which uses only one set of protocols. This means that,
+unlike a router, a link-layer switch is involved only in one data-link and one physical
+layer.
+2.2.2 Layers in the TCP/IP Protocol Suite
+After the above introduction, we briefly discuss the functions and duties of layers in
+the TCP/IP protocol suite. Each layer is discussed in detail in the next five parts of
+the book. To better understand  the duties of each layer, we need to think about the
+logical connections between la yers. Figure 2.6 shows logical connections in our sim-
+ple internet. 
+Using logical connections makes it easier for us to think about the duty of each
+layer. As the figure shows, the duty of the application, transport, and network layers is
+end-to-end. However, the duty of the data-link and physical layers is hop-to-hop, in
+which a hop is a host or router. In other word s, the domain of duty of the top three
+layers is the internet, and the domain of duty of the two lower layers is the link. 
+Another way of thinking of the logical connections is to think about the data unit
+created from each layer. In the top three layers, the data unit (packets) should not be
+Figure 2.6 Logical connections between layers of the TCP/IP protocol suite
+Link 1
+LAN
+Switch
+Logical connections
+Source
+host
+Destination
+host
+Source
+host
+Destination
+host
+Router
+Link 2
+LAN
+Physical
+Data link
+Network
+Transport
+Application
+Physical
+Data link
+Network
+Transport
+Application
+Switch
+Router
+To link 3
+=== printed p.38 (idx 76) ===
+38 PART I OVERVIEW
+changed by any router or link-layer switch. In the bottom two layers, the packet created
+by the host is changed only by the routers, not by the link-layer switches. 
+Figure 2.7 shows the second principle discussed previously for protocol layering.
+We show the identical objects below each layer related to each device. 
+Note that, although the logical connection at the network layer is between the two
+hosts, we can only say that identical objects exist between two hops in this case because
+a router may fragment the packet at the network layer and send more packets than
+received (see fragmentation in Chapter 19). Note that the link between two hops does
+not change the object. 
+2.2.3 Description of Each Layer
+After understanding the concept of logical communication, we are ready to briefly dis-
+cuss the duty of each layer. Our discussion in this chapter will be very brief, but we
+come back to the duty of each layer in next five parts of the book. 
+Physical Layer
+We can say that the physical layer is responsible for carrying individual bits in a frame
+across the link. Although the physical layer is the lowest level in the TCP/IP protocol
+suite, the communication between two devices at the physical layer is still a logical
+communication because there is another, hidden layer, the transmission media, under
+the physical layer. Two devices are connected by a transmission medium (cable or air).
+We need to know that the transmission medium does not carry bits; it carries electrical
+or optical signals. So the bits received in a frame from the data-link layer are trans-
+formed and sent through the transmission media, but we can think that the logical unit
+between two physical layers in two devices is a bit. There are several protocols that
+transform a bit to a signal. We discuss them in Part II when we discuss the physical
+layer and the transmission media. 
+Figure 2.7 Identical objects in the TCP/IP protocol suite
+Physical
+Data link
+Network
+Transport
+Application
+Physical
+Data link
+Identical objects (messages)
+Notes: We have not shown switches because they don’t change objects.
+Identical objects (segments or user datagrams)
+Identical objects (datagrams) Identical objects (datagrams)
+Identical objects (frames)
+Identical objects (bits) Identical objects (bits)
+Identical objects (frames)
+Network
+Transport
+Application
+=== printed p.39 (idx 77) ===
+CHAPTER 2 NETWORK MODELS 39
+Data-link Layer
+We have seen that an internet is made up of several links (LANs and WANs) connected
+by routers. There may be several overlapping sets of links that a datagram can travel
+from the host to the destination. The routers are responsible for choosing the best links.
+However, when the next link to travel is determined by the router, the data-link layer is
+responsible for taking the datagram and mo ving it across the link. The link can be a
+wired LAN with a link-layer switch, a wi reless LAN, a wired W AN, or a wireless
+W AN. We can also have different protocols used with any link type. In each case, the
+data-link layer is responsible for moving the packet through the link. 
+TCP/IP does not define any specific protocol for the data-link layer. It supports all
+the standard and proprietary protocols. Any protocol that can take the datagram and
+carry it through the link suffices for the network layer. The data-link layer takes a data-
+gram and encapsulates it in a packet called a frame. 
+Each link-layer protocol may provide a di fferent service. Some link-layer proto-
+cols provide complete error detection and correction, some provide only error correc-
+tion. We discuss wired links in Chapters 13 and 14 and wireless links in Chapters 15
+and 16. 
+Network Layer
+The network layer is responsible for creating a connection between the source computer
+and the destination computer. The communication at the network layer is host-to-host.
+However, since there can be several routers from the source to the destination, the routers
+in the path are responsible for choosing the best route for each packet. We can say that the
+network layer is responsible for host-to-host communication and routing the packet
+through possible routes. Again, we may ask ourselves why we need the network layer. We
+could have added the routing duty to the transport layer and dropped this layer. One reason,
+as we said before, is the separation of different tasks between different layers. The second
+reason is that the routers do not need the application and transport layers. Separating the
+tasks allows us to use fewer protocols on the routers.
+ The network layer in the Internet includ es the main protocol, Internet Protocol
+(IP), that defines the format of the packet , called a datagram at the network layer. IP
+also defines the format and th e structure of addresses used in this layer. IP is also
+responsible for routing a packet from its s ource to its destination, which is achieved by
+each router forwarding the datagram to the next router in its path. 
+IP is a connectionless protocol that provid es no flow control, no error control, and
+no congestion control services. This means that  if any of theses services is required for
+an application, the application should rely only on the transport-layer protocol. The net-
+work layer also includes unicast (one-to-one) and multicast (one-to-many) routing pro-
+tocols. A routing protocol does not take part in routing (it is the responsibility of IP),
+but it creates forwarding tables for routers to help them in the routing process.
+The network layer also has some auxiliary protocols that help IP in its delivery and
+routing tasks. The Internet Control Message Protocol (ICMP) helps IP to report some
+problems when routing a packet. The Intern et Group Management Protocol (IGMP) is
+another protocol that helps IP in multitasking. The Dynamic Host Configuration Proto-
+col (DHCP) helps IP to get the network-la yer address for a host. The Address Resolu-
+tion Protocol (ARP) is a protocol that helps IP to find the link-layer address of a host or
+=== printed p.40 (idx 78) ===
+40 PART I OVERVIEW
+a router when its network-layer address is given. ARP is discussed in Chapter 9, ICMP
+in Chapter 19, and IGMP in Chapter 21.
+Transport Layer
+The logical connection at the transport layer is also end-to-end. The transport layer at the
+source host gets the message from the applica tion layer, encapsulates it in a transport-
+layer packet (called a segment or a user datagram in different protocols) and sends it,
+through the logical (imaginary) connection, to the transport layer at the destination host.
+In other words, the transport layer is respons ible for giving services to the application
+layer: to get a message from an applicat ion program running on  the source host and
+deliver it to the corresponding application program on the destination host. We may ask
+why we need an end-to-end transport layer when we already have an end-to-end applica-
+tion layer. The reason is the separation of tasks and duties, which we discussed earlier.
+The transport layer should be independent of the application layer. In addition, we will
+see that we have more than one protocol in  the transport layer, which means that each
+application program can use the protocol that best matches its requirement.
+As we said, there are a few transport-layer protocols in the Internet, each designed
+for some specific task. The main protocol, Transmission Control Protocol (TCP), is a
+connection-oriented protocol that first es tablishes a logical co nnection between trans-
+port layers at two hosts before transferring data. It creates a logical pipe between two
+TCPs for transferring a stream of bytes. TCP provides flow control (matching the send-
+ing data rate of the source host with the re ceiving data rate of the destination host to
+prevent overwhelming the destination), erro r control (to guarante e that the segments
+arrive at the destination without error and resending the corrupted ones), and conges-
+tion control to reduce the loss of segments due to congestion in the network. The other
+common protocol, User Datagram Protocol (UDP), is a connectionless protocol that
+transmits user datagrams without first crea ting a logical connection. In UDP, each user
+datagram is an independent entity without being related to the previous or the next one
+(the meaning of the term connectionless). UDP is a simple protocol that does not pro-
+vide flow, error, or congestion control. It s simplicity, which means small overhead, is
+attractive to an applicatio n program that needs to send short messages and cannot
+afford the retransmission of the packets involved in TCP, when a packet is corrupted or
+lost. A new protocol, Stream Control Transmission Protocol (SCTP) is designed to
+respond to new applications that are emerging in the multimedia. We will discuss UDP,
+TCP, and SCTP in Chapter 24. 
+Application Layer
+As Figure 2.6 shows, the logical connection between the two application layers is end-
+to-end. The two application layers exchange messages between each other as though
+there were a bridge between the two layers. However, we should know that the commu-
+nication is done through all the layers. 
+Communication at the application layer is between two processes (two programs
+running at this layer). To communicate, a process sends a request to the other process
+and receives a response. Process-to-process communication is the duty of the applica-
+tion layer. The application layer in the Internet includes many predefined protocols, but
+=== printed p.41 (idx 79) ===
+CHAPTER 2 NETWORK MODELS 41
+a user can also create a pair of processes to  be run at the two hosts. In Chapter 25, we
+explore this situation. 
+ The Hypertext Transfer Protocol (HTTP)  is a vehicle for accessing the World
+Wide Web (WWW). The Simple Mail Transfer Protocol (SMTP) is the main protocol
+used in electronic mail (e-ma il) service. The File Transfer Protocol (FTP) is used for
+transferring files from one host to anot her. The Terminal Network (TELNET) and
+Secure Shell (SSH) are used  for accessing a site remotely . The Simple Network Man-
+agement Protocol (SNMP) is used by an admi nistrator to manage the Internet at global
+and local levels. The Domain Name System (DNS) is used by other protocols to find
+the network-layer address of a computer. The Internet Group Management Protocol
+(IGMP) is used to collect membership in a group. We discuss most of these protocols in
+Chapter 26 and some in other chapters. 
+2.2.4 Encapsulation and Decapsulation
+One of the important concepts  in protocol layering in the Internet is encapsulation/
+decapsulation. Figure 2.8 shows this concept for the small internet in Figure 2.5. 
+We have not shown the layers for the link-layer switches because no encapsulation/
+decapsulation occurs in this device. In Figure 2.8, we show the encapsulation in the
+source host, decapsulation in the destination host, and encapsulation and decapsulation
+in the router. 
+Encapsulation at the Source Host 
+At the source, we have only encapsulation. 
+1. At the application layer, the data to be exchanged is referred to as a message. A
+message normally does not contain any header or trailer, but if it does, we refer to
+the whole as the message. The message is passed to the transport layer.
+2. The transport layer takes the message as th e payload, the load that the transport
+layer should take care of. It adds the transport layer header to the payload, which
+contains the identifiers of the source an d destination applic ation programs that
+Figure 2.8 Encapsulation/Decapsulation 
+Source host Destination host
+Router
+Message
+Encapsulate
+Decapsulate
+Legend
+Header at data-link layer2
+432
+Message43
+Message432
+Message43
+Message432
+Message43
+Message4
+Message
+Message432
+Message43
+Message4
+Message
+Header at network layer3
+Header at transport layer4
+PhysicalPhysical
+Application
+Transport
+Network
+Data link
+Application
+Transport
+Network
+Data link
+=== printed p.42 (idx 80) ===
+42 PART I OVERVIEW
+want to communicate plus some more information that is needed for the end-to-
+end delivery of the message, such as information needed for flow, error control, or
+congestion control. The result is the transport-layer packet, which is called the seg-
+ment (in TCP) and the user datagram (in UDP). The transport layer then passes the
+packet to the network layer.
+3. The network layer takes the transport-layer packet as data or payload and adds its
+own header to the payload. The header co ntains the addresses of the source and
+destination hosts and some more information used for error checking of the header,
+fragmentation information, and so on. Th e result is the network-layer packet,
+called a datagram. The network layer then passes the packet to the data-link layer.
+4. The data-link layer takes the network-layer packet as data or payload and adds its
+own header, which contains the link-layer addresses of the host or the next hop (the
+router). The result is the link-layer packet, which is called a frame. The frame is
+passed to the physical layer for transmission.
+Decapsulation and Encapsulation at the Router
+At the router, we have both decapsulation an d encapsulation because the router is con-
+nected to two or more links.
+1. After the set of bits are delivered to the data-link layer, this layer decapsulates the
+datagram from the frame and passes it to the network layer.
+2. The network layer only inspects the source and destination addresses in the datagram
+header and consults its forwarding table to find the next hop to which the datagram is to
+be delivered. The contents of the datagram should not be changed by the network layer
+in the router unless there is a need to fragment the datagram if it is too big to be passed
+through the next link. The datagram is then passed to the data-link layer of the next link. 
+3. The data-link layer of the next link en capsulates the datagram in a frame and
+passes it to the physical layer for transmission.
+Decapsulation at the Destination Host
+At the destination host, each layer only decap sulates the packet received, removes the
+payload, and delivers the payload to the next-higher layer protocol until the message
+reaches the application layer. It is necessary to say that decapsulation in the host
+involves error checking. 
+2.2.5 Addressing
+It is worth mentioning another concept rela ted to protocol layering in the Internet,
+addressing. As we discussed before, we have logical communication between pairs of
+layers in this model. Any communication that involves two parties needs two addresses:
+source address and destination ad dress. Although it looks as if we need five pairs of
+addresses, one pair per layer, we normally have only four because the physical layer does
+not need addresses; the unit of data exchange at the physical layer is a bit, which defi-
+nitely cannot have an address. Figure 2.9 shows the addressing at each layer.  
+As the figure shows, there is a relationship between the layer, the address used in
+that layer, and the packet name at that laye r. At the application layer, we normally use
+names to define the site that provides services, such as someorg.com, or the e-mail
+=== printed p.43 (idx 81) ===
+CHAPTER 2 NETWORK MODELS 43
+address, such as somebody@coldmail.com.  At the transport layer, addresses are called
+port numbers, and these define the appli cation-layer programs at the source and
+destination. Port numbers are local addresses that distinguish between several programs
+running at the same time. At the network-layer, the addresses are global, with the whole
+Internet as the scope. A network-layer address uniquely defines the connection of a
+device to the Internet. The link-layer addr esses, sometimes called MAC addresses, are
+locally defined addresses, each of which defines a specific host or router in a network
+(LAN or W AN). We will come back to these addresses in future chapters. 
+2.2.6 Multiplexing and Demultiplexing
+Since the TCP/IP protocol suite uses several protocols at some layers, we can say that we
+have multiplexing at the source and demultiplexing at the destination. Multiplexing in this
+case means that a protocol at a layer can en capsulate a packet from several next-higher
+layer protocols (one at a time); demultiplexing means that a protocol can decapsulate and
+deliver a packet to several next-higher layer protocols (one at a time). Figure 2.10 shows
+the concept of multiplexing and demultiplexing at the three upper layers. 
+To be able to multiplex and demultiplex, a protocol needs to have a field in its
+header to identify to which protocol the en capsulated packets belong. At the transport
+Figure 2.9 Addressing in the TCP/IP protocol suite
+Figure 2.10 Multiplexing and demultiplexing
+Message
+Segment / User datagram
+Datagram
+Frame
+Bits
+Link-layer addressesData-link layer
+Physical layer
+AddressesLayersPacket names
+Port numbersTransport layer
+NamesApplication layer
+Network layer Logical addresses
+a. Multiplexing at source b. Demultiplexing at destination
+SNMPDNS
+TCP UDP
+HTTPFTP
+IP
+SNMPDNS
+TCP UDP
+IP
+HTTPFTP
+=== printed p.44 (idx 82) ===
+44 PART I OVERVIEW
+layer, either UDP or TCP can accept a message from several application-layer
+protocols. At the network layer, IP can accept a segment from TCP or a user datagram
+from UDP. IP can also accept a packet from  other protocols such as ICMP, IGMP, and
+so on. At the data-link layer, a frame may carry the payload coming from IP or other
+protocols such as ARP (see Chapter 9). 
+2.3 THE OSI MODEL
+Although, when speaking of the Internet, everyone talks about the TCP/IP protocol
+suite, this suite is not the only suite of protocols defined. Esta blished in 1947, the
+International Organization for Standardization (ISO)  is a multinational body
+dedicated to worldwide agreem ent on international standards. Almost three-fourths of
+the countries in the world are represented in the ISO. An ISO standard that covers all
+aspects of network communications is the Open Systems Interconnection (OSI)
+model. It was first introduced in the late 1970s. 
+An open system is a set of protocols that allows any two different systems to com-
+municate regardless of their underlying architecture. The purpose of the OSI model is
+to show how to facilitate communication between different systems without requiring
+changes to the logic of the underlying hardware and software. The OSI model is not a
+protocol; it is a model for understanding and designing a network architecture that is
+flexible, robust, and interoperable. The OSI model was intended to be the basis for the
+creation of the protocols in the OSI stack. 
+The OSI model is a layered framework for the design of network systems that
+allows communication between all types of computer systems. It consists of seven sep-
+arate but related layers, each of which defines a part of the process of moving information
+across a network (see Figure 2.11). 
+ISO is the organization; OSI is the model.
+Figure 2.11 The OSI model
+Transport
+Application
+Presentation
+Session
+Network
+Data link
+PhysicalLayer 1
+Layer 2
+Layer 3
+Layer 4
+Layer 5
+Layer 6
+Layer 7
+=== printed p.45 (idx 83) ===
+CHAPTER 2 NETWORK MODELS 45
+2.3.1 OSI versus TCP/IP
+When we compare the two models, we find that two layers, session and presentation,
+are missing from the TCP/IP protocol suite. These two layers were not added to the
+TCP/IP protocol suite after the publication of the OSI model. The application layer in
+the suite is usually considered to be the combination of three layers in the OSI model,
+as shown in Figure 2.12. 
+Two reasons were mentioned for this deci sion. First, TCP/IP has more than one
+transport-layer protocol. Some of the func tionalities of the session layer are available
+in some of the transport-layer protocols. Second, the application layer is not only
+one piece of software. Many a pplications can be developed at this layer. If some of
+the functionalities mentioned in the sessi on and presentation layers are needed for
+a particular application, they can be included in the development of that piece of
+software. 
+2.3.2 Lack of OSI Model’s Success
+The OSI model appeared after the TCP/IP pr otocol suite. Most experts were at first
+excited and thought that the TCP/IP protocol would be fully replaced by the OSI
+model. This did not happen for several reasons , but we describe only three, which are
+agreed upon by all experts in the field. First, OSI was completed when TCP/IP was
+fully in place and a lot of time and money had been spent on the suite; changing it
+would cost a lot. Second, some layers in the OSI model were never fully defined. For
+example, although the services provided by the presentation and the session layers
+were listed in the document, actual prot ocols for these two layers were not fully
+defined, nor were they fully described, and the corresponding software was not fully
+Figure 2.12 TCP/IP and OSI model
+OSI Model TCP/IP Protocol Suite
+Underlying
+LAN and W AN
+technology
+Internet Protocol
+and some helping
+protocols
+Several transport 
+protocols 
+Several application
+protocols 
+Session
+Presentation
+Application
+Application
+Data link Data link
+Network Network
+Transport Transport
+Physical Physical
+=== printed p.46 (idx 84) ===
+46 PART I OVERVIEW
+developed. Third, when OSI was implemented by an organization in a different
+application, it did not show a high enough level of performance to entice the Internet
+authority to switch from the TCP/IP protocol suite to the OSI model. 
+2.4 END-CHAPTER MATERIALS
+2.4.1 Recommended Reading
+For more details about subjects discussed in this chapter, we recommend the following
+books, and RFCs. The items enclosed in brackets refer to the reference list at the end of
+the book. 
+Books and Papers
+Several books and papers give a thorough coverage about the materials discussed in this
+chapter: [Seg 98], [Lei et al. 98], [Kle 04], [Cer 89], and [Jen et al. 86]. 
+RFCs
+Two RFCs in particular discuss the TCP/IP suite: RFC 791 (IP) and RFC 817 (TCP). In
+future chapters we list different RFCs related to each protocol in each layer.
+2.4.2 Key Terms
+International Organization for Standardization (ISO)
+Open Systems Interconnection (OSI) model
+protocol layering
+2.4.3 Summary
+A protocol is a set of rules that governs communication. In protocol layering, we need
+to follow two principles to provide bidirectional communication. First, each layer needs
+to perform two opposite tasks. Second, tw o objects under each layer at both sides
+should be identical. In a protocol layering , we need to distingui sh between a logical
+connection and a physical connection. Two protocols at the same layer can have a logi-
+cal connection; a physical connection is only possible through the physical layers.
+TCP/IP is a hierarchical protocol suite made of five layers: physical, data link, net-
+work, transport, and application. The physi cal layer coordinates the functions required
+to transmit a bit stream over a physical me dium. The data-link layer is responsible for
+delivering data units from one station to the next without errors. The network layer is
+responsible for the source-to-destination deli very of a packet acr oss multiple network
+links. The transport layer is responsible for the process-to-process delivery of the entire
+message. The application layer enables the users to access the network. 
+Four levels of addresses are used in an internet following the TCP/IP protocols: phys-
+ical (link) addresses, logical (IP) addresses, port addresses, and specific addresses. The
+physical address, also known as the link address, is the address of a node as defined by
+its LAN or WAN. The IP address uniquely defines a host on the Internet. The port
+address identifies a process on a host. A specific address is a user-friendly address.
+=== printed p.47 (idx 85) ===
+CHAPTER 2 NETWORK MODELS 47
+Another model that defines protocol layering is the Open Systems Interconnection
+(OSI) model. Two layers in the OSI model,  session and presentation, are missing from
+the TCP/IP protocol suite. These two layers were not added to the TCP/IP protocol
+suite after the publication of the OSI model. The application layer in the suite is usually
+considered to be the combination of three layers in the OSI model. The OSI model did
+not replace the TCP/IP protocol suite because it was completed when TCP/IP was fully
+in place and because some layers in the OSI model were never fully defined. 
+2.5 PRACTICE SET
+2.5.1 Quizzes
+A set of interactive quizzes for this chapter can be found on the book website. It is
+strongly recommended that the student take the quizzes to check his/her understanding
+of the materials before continuing with the practice set. 
+2.5.2 Questions
+Q2-1. What is the first principle we discussed in this chapter for protocol layering
+that needs to be followed to make the communication bidirectional?
+Q2-2. Which layers of the TCP/IP protocol suite are involved in a link-layer switch?
+Q2-3. A router connects three lin ks (networks). How many of each of the following
+layers can the router be involved with?
+Q2-4. In the TCP/IP protocol suite, what ar e the identical objects at the sender and
+the receiver sites when we think about the logical connection at the application
+layer?
+Q2-5. A host communicates with another host using the TCP/IP protocol suite. What
+is the unit of data sent or received at each of the following layers?
+Q2-6. Which of the following data units is encapsulated in a frame?
+Q2-7. Which of the following data units is decapsulated from a user datagram?
+Q2-8. Which of the following data units has an application-layer message plus the
+header from layer 4?
+Q2-9. List some application-layer protocols mentioned in this chapter.
+Q2-10. If a port number is 16 bits (2 bytes), what is the minimum header size at the
+transport layer of the TCP/IP protocol suite?
+Q2-11. What are the types of addresses (identifiers) used in each of the following layers?
+a. physical layer b. data-link layer c. network layer
+a. application layer b. network layer c. data-link layer 
+a. a user datagram b. a datagram c. a segment 
+a. a datagram b. a segment c. a message
+a. a frame b. a user datagram c. a bit
+a. application layer b. network layer c. data-link layer 

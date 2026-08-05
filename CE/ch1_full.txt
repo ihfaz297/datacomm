@@ -1,0 +1,1071 @@
+=== printed p.3 (idx 41) ===
+3
+CHAPTER 1
+Introduction
+ata communications and networking have changed the way we do business and the
+way we live. Business decisions have to be made ever more quickly, and the deci-
+sion makers require immediate access to accurate information. Why wait a week for
+that report from Europe to arrive by mail when it could appear almost instantaneously
+through computer networks? Businesses today rely on computer networks and internet-
+works. 
+Data communication and networking have found their way not only through busi-
+ness and personal communication, they have found many applications in political and
+social issues. People have found how to communicate with other people in the world to
+express their social and political opinions and problems. Communities in the world are
+not isolated anymore. 
+But before we ask how quickly we can get hooked up, we need to know how net-
+works operate, what types of technologies are available, and which design best fills
+which set of needs.
+This chapter paves the way for the rest of the  book. It is divided into five sections. 
+❑ The first section introduces data communications and defines their components
+and the types of data exchanged. It also shows how different types of data are rep-
+resented and how data is flowed through the network. 
+❑ The second section introduces networks and defines their criteria and structures. It
+introduces four different network topolog ies that are encountered throughout the
+book.
+❑ The third section discusses different types of networks: LANs, W ANs, and inter-
+networks (internets). It also introduces the Internet, the largest internet in the
+world. The concept of switching is also introduced in this section to show how
+small networks can be combined to create larger ones.
+❑ The fourth section covers a brief history of the Internet. The section is divided into
+three eras: early history, the birth of the Internet, and the issues related to the Inter-
+net today. This section can be skipped if the reader is familiar with this history.
+❑ The fifth section covers standards and st andards organizations. The section covers
+Internet standards and Internet administ ration. We refer to these standards and
+organizations throughout the book. 
+D
+=== printed p.4 (idx 42) ===
+4 PART I OVERVIEW
+1.1 DATA COMMUNICATIONS
+When we communicate, we are sharing info rmation. This sharing can be local or
+remote. Between individuals, local communica tion usually occurs face to face, while
+remote communication takes place over distance. The term telecommunication, which
+includes telephony, telegraphy, and television, means communication at a distance (tele
+is Greek for “far”). The word data refers to information pres ented in whatever form is
+agreed upon by the parties creating and using the data. 
+Data communications  are the exchange of data between two devices via some
+form of transmission medium such as a wi re cable. For data communications to occur,
+the communicating devices must be part of a communication system made up of a com-
+bination of hardware (physical equipment) and software (programs). The effectiveness
+of a data communications system depends on four fundamental characteristics: deliv-
+ery, accuracy, timeliness, and jitter.
+1. Delivery. The system must deliver data to th e correct destination. Data must be
+received by the intended device or user and only by that device or user.
+2. Accuracy. The system must deliver the data  accurately. Data that have been
+altered in transmission and left uncorrected are unusable.
+3. Timeliness. The system must deliver data in a timely manner. Data delivered late are
+useless. In the case of video and audio,  timely delivery means delivering data as
+they are produced, in the same order that  they are produced, and without signifi-
+cant delay. This kind of delivery is called real-time transmission.
+4. Jitter. Jitter refers to the variation in the packet arrival time. It is the uneven delay in
+the delivery of audio or video packets. For example, let us assume that video packets
+are sent every 30 ms. If some of the packets arrive with 30-ms delay and others with
+40-ms delay, an uneven quality in the video is the result. 
+1.1.1 Components
+A data communications system has five components (see Figure 1.1).
+1. Message. The message is the information (data) to be communicated. Popular
+forms of information include text, numbers, pictures, audio, and video. 
+2. Sender. The sender is the device that sends the data message. It can be a com-
+puter, workstation, telephone handset, video camera, and so on.
+Figure 1.1 Five components of data communication
+Transmission medium
+Message
+Protocol Protocol
+Rule 1:
+Rule 2:
+...
+Rule n:
+Rule 1:
+Rule 2:
+...
+Rule n:
+Sender Receiver
+=== printed p.5 (idx 43) ===
+CHAPTER 1 INTRODUCTION 5
+3. Receiver. The receiver is the device that receives the message. It can be a com-
+puter, workstation, telephone handset, television, and so on.
+4. Transmission medium. The transmission medium is the physical path by which
+a message travels from sender to receive r. Some examples of  transmission media
+include twisted-pair wire, coaxial cable, fiber-optic cable, and radio waves.
+5. Protocol. A protocol is a set of rules that govern data communications. It repre-
+sents an agreement between the communi cating devices. Without a protocol, two
+devices may be connected but not communicating, just as a person speaking French
+cannot be understood by a person who speaks only Japanese.
+1.1.2 Data Representation
+Information today comes in di fferent forms such as text, numbers, images, audio, and
+video. 
+Text
+In data communications, text is represented as a bit pattern, a sequence of bits (0s or
+1s). Different sets of bit patterns have been designed to represent text symbols. Each set
+is called a code, and the process of representing symbols is called coding. Today, the
+prevalent coding system is called Unicode, which uses 32 bits to represent a symbol or
+character used in any language in the world. The American Standard Code for Infor-
+mation Interchange (ASCII), developed some decades ago in the United States, now
+constitutes the first 127 characters in Unicode and is also referred to as Basic Latin.
+Appendix A includes part of the Unicode. 
+Numbers
+Numbers are also represented by bit patterns. However, a code such as ASCII is not used
+to represent numbers; the number is directly  converted to a binary number to simplify
+mathematical operations. Appendix B discusses several different numbering systems. 
+Images
+Images are also represented by bit patterns. In its simplest form, an image is composed
+of a matrix of pixels (picture elements), where each pixel is a small dot. The size of the
+pixel depends on the resolution. For example, an image can be divided into 1000 pixels
+or 10,000 pixels. In the second case, there is a better representation of the image (better
+resolution), but more memory is needed to store the image.
+After an image is divided into pixels, each  pixel is assigned a bit pattern. The size
+and the value of the pattern depend on the image. For an image made of only black-
+and-white dots (e.g., a chessboard), a 1-bit pattern is enough to represent a pixel. 
+If an image is not made of pure white and pure black pixels, we can increase the
+size of the bit pattern to include gray scale. For example, to show four levels of gray
+scale, we can use 2-bit patterns. A black pixel can be represented by 00, a dark gray
+pixel by 01, a light gray pixel by 10, and a white pixel by 11.
+There are several methods to represent color images. One method is called RGB,
+so called because each color is made of  a combination of three primary colors: red,
+green, and blue. The intensity of each color is measured, and a bit pattern is assigned to
+=== printed p.6 (idx 44) ===
+6 PART I OVERVIEW
+it. Another method is called YCM, in which a color is made of a combination of three
+other primary colors: yellow, cyan, and magenta.
+Audio
+Audio refers to the recording or broadcasting of sound or music. Audio is by nature
+different from text, numbers, or images. It is continuous, not discrete. Even when we
+use a microphone to change voice or music to an electric signal, we create a continuous
+signal. We will learn more about audio in Chapter 26. 
+Video
+Video refers to the recording or broadcasting of a picture or movie. Video can either be
+produced as a continuous entity (e.g., by a TV camera), or it can be a combination of
+images, each a discrete entity, arranged to convey the idea of motion. We will learn
+more about video in Chapter 26. 
+1.1.3 Data Flow
+Communication between two devices can be simplex, half-duplex, or full-duplex as
+shown in Figure 1.2. 
+Simplex
+In simplex mode, the communication is unidirectional, as on a one-way street. Only one
+of the two devices on a link can transmit; the other can only receive (see Figure 1.2a).
+Keyboards and traditional monitors are examples of simplex devices. The key-
+board can only introduce input; the monitor can only accept output. The simplex mode
+can use the entire capacity of the channel to send data in one direction. 
+Figure 1.2 Data flow (simplex, half-duplex, and full-duplex)
+Direction of data
+MonitorMainframe a. Simplex
+b. Half-duplex
+c. Full-duplex
+Direction of data at time 1
+Direction of data at time 2
+Direction of data all the time
+=== printed p.7 (idx 45) ===
+CHAPTER 1 INTRODUCTION 7
+Half-Duplex
+In half-duplex mode, each station can both transmit and receive, but not at the same time.
+When one device is sending, the other can only receive, and vice versa (see Figure 1.2b).
+The half-duplex mode is like a one-lane road with traffic allowed in both direc-
+tions. When cars are traveling in one direction, cars going the other way must wait. In a
+half-duplex transmission, the entire capacity of a channel is taken over by whichever of
+the two devices is transmitting at the time. Walkie-talkies and CB (citizens band) radios
+are both half-duplex systems. 
+The half-duplex mode is used in cases where there is no need for communication
+in both directions at the same time; the entire capacity of the channel can be utilized for
+each direction. 
+Full-Duplex
+In full-duplex mode (also called duplex), both stations can transmit and receive simul-
+taneously (see Figure 1.2c).
+The full-duplex mode is like a two-way street with traffic flowing in both direc-
+tions at the same time. In full-duplex mode, signals going in one direction share the
+capacity of the link with signals going in the other direction. This sharing can occur in
+two ways: Either the link must contain two physically separate transmission paths, one
+for sending and the other for receiving; or the capacity of the channel is divided
+between signals traveling in both directions.
+One common example of full-duplex co mmunication is the telephone network.
+When two people are communicating by a telephone line, both can talk and listen at the
+same time. 
+The full-duplex mode is used when communication in both directions is required
+all the time. The capacity of the channel, however, must be divided between the two
+directions. 
+1.2 NETWORKS
+A network is the interconnection of a set of devices capable of communication. In this
+definition, a device can be a host (or an end system as it is sometimes called) such as a
+large computer, desktop, laptop, workstation, cellular phone, or security system. A
+device in this definition can also be a connecting device such as a router, which con-
+nects the network to other networks, a switch, which connects devices together, a
+modem (modulator-demodulator), which changes the form of data, and so on. These
+devices in a network are connected using wired or wireless transmission media such as
+cable or air. When we connect two computers at home using a plug-and-play router, we
+have created a network, although very small. 
+1.2.1 Network Criteria
+A network must be able to meet a certain number of criteria. The most important of
+these are performance, reliability, and security.
+=== printed p.8 (idx 46) ===
+8 PART I OVERVIEW
+Performance
+Performance can be measured in many ways, including transit time and response time.
+Transit time is the amount of time required  for a message to travel from one device to
+another. Response time is the elapsed time between an inquiry and a response. The per-
+formance of a network depends on a number of factors, including the number of users,
+the type of transmission medium, the capabilities of the connected hardware, and the
+efficiency of the software.
+Performance is often evaluated by two networking metrics: throughput and delay.
+We often need more throughput and less dela y. However, these two criteria are often
+contradictory. If we try to send more data to the network, we may increase throughput
+but we increase the delay because of traffic congestion in the network. 
+Reliability
+In addition to accuracy of delivery, network reliability is measured by the frequency of
+failure, the time it takes a link to recover from a failure, and the network’s robustness in
+a catastrophe.
+Security
+Network security issues include protecting data from unauthorized access, protecting
+data from damage and development, and implementing policies and procedures for
+recovery from breaches and data losses.
+1.2.2 Physical Structures
+Before discussing networks, we need to define some network attributes.
+Type of Connection 
+A network is two or more devices connected through links. A link is a communications
+pathway that transfers data from one device to another. For visualization purposes, it is
+simplest to imagine any link as a line drawn between two points. For communication to
+occur, two devices must be connected in some way to the same link at the same time.
+There are two possible types of connections: point-to-point and multipoint.
+Point-to-Point
+A point-to-point connection  provides a dedicated link between two devices. The
+entire capacity of the link is reserved for transmission between those two devices. Most
+point-to-point connections use an actual length of wire or cable to connect the two
+ends, but other options, such as microwave or satellite links, are also possible (see
+Figure 1.3a). When we change television ch annels by infrared re mote control, we are
+establishing a point-to-point connection between the remote control and the television’s
+control system.
+Multipoint
+A multipoint (also called multidrop) connection is one in which more than two spe-
+cific devices share a single link (see Figure 1.3b). 
+=== printed p.9 (idx 47) ===
+CHAPTER 1 INTRODUCTION 9
+In a multipoint environment, the capacity of the channel is  shared, either spatially
+or temporally. If several devices can use the link simultaneously, it is a spatially shared
+connection. If users must take turns, it is a timeshared connection.
+Physical Topology
+The term physical topology refers to the way in which a network is laid out physically.
+Two or more devices connect to a link; two or more links form a topology. The topology
+of a network is the geometric representation of the relationship of all the links and
+linking devices (usually called nodes) to one another. There are four basic topologies
+possible: mesh, star, bus, and ring.
+Mesh Topology
+In a mesh topology, every device has a dedicated point-to-point link to every other
+device. The term dedicated means that the link carries traffic only between the two
+devices it connects. To find the number of physical links in a fully connected mesh net-
+work with n nodes, we first consider that each nod e must be connected to every other
+node. Node 1 must be connected to n – 1 nodes, node 2 must be connected to n – 1
+nodes, and finally node n must be connected to n – 1 nodes. We need n (n – 1) physical
+links. However, if each physical link allows communication in both directions (duplex
+mode), we can divide the number of links by 2. In other words, we can say that in a mesh
+topology, we need  
+n (n – 1) / 2  duplex-mode links.  To accommodate that many links,
+every device on the network must have n – 1 input/output (I/O) ports (see Figure 1.4) to
+be connected to the other n – 1 stations. 
+A mesh offers several advantages over ot her network topologies. First, the use of
+dedicated links guarantees that each connection can carry its own data load, thus elimi-
+nating the traffic problems that can occur when links must be shared by multiple
+devices. Second, a mesh topology is robust. If one link becomes unusable, it does not
+incapacitate the entire system. Third, there is the advantage of privacy or security. When
+every message travels along a dedicated line, only the intended recipient sees it. Physical
+boundaries prevent other users from gaining access to messages. Finally, point-to-point
+links make fault identification and fault isolation easy. Traffic can be routed to avoid
+links with suspected problems. This facility enables the network manager to discover the
+precise location of the fault and aids in finding its cause and solution.
+Figure 1.3 Types of connections: point-to-point and multipoint
+a. Point-to-point
+b. Multipoint
+Link
+Link
+Mainframe
+=== printed p.10 (idx 48) ===
+10 PART I OVERVIEW
+The main disadvantages of a mesh are related to the amount of cabling and the
+number of I/O po rts required. First, because every device must be c onnected to every
+other device, installation and reconnection are difficult. Second, the sheer bulk of the
+wiring can be greater than the available space (in walls, cei lings, or floors) can accom-
+modate. Finally, the hardware required to connect each link (I/O ports and cable) can be
+prohibitively expensive. For these reasons a mesh topology is usually implemented in a
+limited fashion, for example, as a backbone connecting the main computers of a hybrid
+network that can include several other topologies. 
+One practical example of a mesh topology is the connection of telephone regional
+offices in which each regional office needs to be connected to every other regional
+office. 
+Star Topology
+In a star topology, each device has a dedicated point-to-point link only to a central con-
+troller, usually called a hub. The devices are not directly linked to one another. Unlike a
+mesh topology, a star topology does not allow direct traffic between devices. The con-
+troller acts as an exchange: If one device wants to send data to another, it sends the
+data to the controller, which then relays the data to the other connected device (see
+Figure 1.5) .
+A star topology is less expensive than a mesh topology. In a star, each device needs
+only one link and one I/O port to connect it to any number of others. This factor also
+makes it easy to install and reconfigure.  Far less cabling needs to be housed, and
+Figure 1.4 A fully connected mesh topology (five devices)
+Figure 1.5 A star topology connecting four stations
+n = 5
+10 links.
+Hub
+=== printed p.11 (idx 49) ===
+CHAPTER 1 INTRODUCTION 11
+additions, moves, and deletions involve only one connection: between that device and
+the hub.
+Other advantages include robustness. If one link fails, only that link is affected. All
+other links remain active. This factor also lends itself to easy fault identification and
+fault isolation. As long as the hub is working, it can be used to monitor link problems
+and bypass defective links.
+One big disadvantage of a star topology is the dependency of the whole topology
+on one single point, the hub. If the hub goes down, the whole system is dead. 
+Although a star requires far less cable than  a mesh, each node must be linked to a
+central hub. For this reason, often more cabling is required in a star than in some other
+topologies (such as ring or bus). 
+The star topology is used in local-area networks (LANs), as we will see in Chapter 13.
+High-speed LANs often use a star topology with a central hub. 
+Bus Topology
+The preceding examples all describe point-to-point connections. A bus topology, on the
+other hand, is multipoint. One long cable acts as a backbone to link all the devices in a
+network (see Figure 1.6).
+Nodes are connected to the bus cable by drop lines and taps. A drop line is a con-
+nection running between the device and the main cable. A tap is a connector that either
+splices into the main cable or punctures the sheathing of a cable to create a contact with
+the metallic core. As a signal travels along the backbone, some of its energy is trans-
+formed into heat. Therefore, it becomes weaker and weaker as it travels farther and far-
+ther. For this reason there is a limit on the number of taps a bus can support and on the
+distance between those taps.
+Advantages of a bus topology include ease of installation. Backbone cable can be
+laid along the most efficient path, then co nnected to the nodes by drop lines of various
+lengths. In this way, a bus uses less cabling than mesh or star topologies. In a star, for
+example, four network devices in the same room require four lengths of cable reaching
+all the way to the hub. In a bus, this redundancy is eliminated. Only the backbone cable
+stretches through the entire facility. Each drop line has to reach only as far as the near-
+est point on the backbone.
+Disadvantages include difficult reconnection  and fault isolation. A bus is usually
+designed to be optimally efficient at installation. It can therefore be difficult to add new
+devices. Signal reflection at the taps can cause degradation in quality. This degradation
+can be controlled by limiting the number and spacing of de vices connected to a given
+Figure 1.6 A bus topology connecting three stations
+Drop line Drop line Drop line
+Cable end Cable end
+Tap Tap Tap
+=== printed p.12 (idx 50) ===
+12 PART I OVERVIEW
+length of cable. Adding new devices may therefore require modification or replacement
+of the backbone.
+In addition, a fault or break in the bus cable stops all transmission, even between
+devices on the same side of the problem. The damaged area reflects signals back in the
+direction of origin, creating noise in both directions.
+Bus topology was the one of the first topologies used in the design of early local-
+area networks. Traditional Ethernet LANs can use a bus topology, but they are less pop-
+ular now for reasons we will discuss in Chapter 13. 
+Ring Topology
+In a ring topology, each device has a dedicated point-to-point connection with only the
+two devices on either side of it. A signal is passed along the ring in one direction, from
+device to device, until it reaches  its destination. Each devi ce in the ring incorporates a
+repeater. When a device receives a signal intended for another device, its repeater
+regenerates the bits and passes them along (see Figure 1.7).
+A ring is relatively easy to install and reconfigure. Each device is linked to only its
+immediate neighbors (either physically or logically). To add or delete a device requires
+changing only two connections. The only co nstraints are media and traffic consider-
+ations (maximum ring length and number of devices). In addition, fault isolation is sim-
+plified. Generally, in a ring a signal is ci rculating at all times. If one device does not
+receive a signal within a specified period, it can issue an alarm. The alarm alerts the
+network operator to the problem and its location.
+However, unidirectional traffic can be a disadvantage. In a simple ring, a break in
+the ring (such as a disabled station) can di sable the entire network. This weakness can
+be solved by using a dual ring or a switch capable of closing off the break.
+Ring topology was prevalent when IBM introduced its local-area network, Token
+Ring. Today, the need for higher-speed LANs has made this topology less popular. 
+Figure 1.7 A ring topology connecting six stations
+Repeater Repeater
+RepeaterRepeater
+Repeater Repeater
+=== printed p.13 (idx 51) ===
+CHAPTER 1 INTRODUCTION 13
+1.3 NETWORK TYPES
+After defining networks in the previous section and discussing their physical structures,
+we need to discuss different types of networks we encounter in the world today. The crite-
+ria of distinguishing one type of network from another is difficult and sometimes confus-
+ing. We use a few criteria such as size, geographical coverage, and ownership to make this
+distinction. After discussing two types of networks, LANs and W ANs, we define switch-
+ing, which is used to connect networks to form an  internetwork (a network of networks). 
+1.3.1 Local Area Network
+A local area network (LAN) is usually privately owned and connects some hosts in a
+single office, building, or campus. Depending on the needs of an organization, a LAN
+can be as simple as two PCs and a printe r in someone’s home office, or it can extend
+throughout a company and include audio and video devices. Each host in a LAN has an
+identifier, an address, that uniquely defines the host in the LAN. A packet sent by a host
+to another host carries both the source host’s and the destination host’s addresses.
+In the past, all hosts in a network were  connected through a common cable, which
+meant that a packet sent from one host to another was received by all hosts. The intended
+recipient kept the packet; the others dropped the packet. Today, most LANs use a smart
+connecting switch, which is able to recognize the destination addre ss of the packet and
+guide the packet to its destination without sending it to all other hosts. The switch allevi-
+ates the traffic in the LAN and allows more than one pair to communicate with each
+other at the same time if there is no co mmon source and destination among them. Note
+that the above definition of a LAN does not define the minimum or maximum number of
+hosts in a LAN. Figure 1.8 shows a LAN using either a common cable or a switch.        
+Figure 1.8 An isolated LAN in the past and today 
+Switch
+Host 2 Host 3 Host 4
+Host 5 Host 6 Host 7 Host 8
+A host (of any type)
+A switch
+A cable tap
+A cable end
+A connection
+The common cable
+Host 1 Host 2 Host 3 Host 4 Host 5 Host 6 Host 7 Host 8
+a. LAN with a common cable (past)
+b. LAN with a switch (today)
+Legend
+Host 1
+=== printed p.14 (idx 52) ===
+14 PART I OVERVIEW
+When LANs were used in isolation (which is rare today), they were designed to allow
+resources to be shared between the hosts. As we will see shortly, LANs today are connected
+to each other and to W ANs (discussed next) to create communication at a wider level. 
+1.3.2 Wide Area Network
+A wide area network (WAN) is also an interconnection of devices capable of communica-
+tion. However, there are some differences between a LAN and a WAN. A LAN is normally
+limited in size, spanning an office, a building, or a campus; a WAN has a wider geographi-
+cal span, spanning a town, a state, a country, or even the world. A LAN interconnects hosts;
+a W AN interconnects connecting devices such as switches, routers, or modems. A LAN is
+normally privately owned by the organization that uses it; a WAN is normally created and
+run by communication companies and leased by an organization that uses it. We see two
+distinct examples of WANs today: point-to-point W ANs and switched WANs.
+Point-to-Point WAN
+A point-to-point W AN is a network that connects two communicating devices through a trans-
+mission media (cable or air). We will see examples of these W ANs when we discuss how to
+connect the networks to one another. Figure 1.9 shows an example of a point-to-point W AN. 
+Switched WAN
+A switched W AN is a network with more than two ends. A switched W AN, as we will
+see shortly, is used in the backbone of globa l communication today. We can say that a
+switched W AN is a combination of several point-to-point W ANs that are connected by
+switches. Figure 1.10 shows an example of a switched W AN.  
+LANs are discussed in more detail in Part III of the book.
+Figure 1.9 A point-to-point WAN
+Figure 1.10 A switched WAN
+To another
+network
+To another
+network
+Legend A connecting device
+Connecting medium
+To another
+network
+To another
+network
+To another
+network
+To another
+network
+To another
+network
+To another
+network
+To another
+network
+To another
+network
+A switch
+Connecting medium
+Legend
+=== printed p.15 (idx 53) ===
+CHAPTER 1 INTRODUCTION 15
+Internetwork
+Today, it is very rare to see a LAN or a W AN in isolation; they are connected to one
+another. When two or more networks are connected, they make an internetwork, or
+internet. As an example, assume that an organization has two offices, one on the east
+coast and the other on the west coast. Each office has a LAN that allows all employees in
+the office to communicate with each other. To make the communication between employ-
+ees at different offices possible, the management leases a point-to-point dedicated W AN
+from a service provider, such as a telephone company, and connects the two LANs. Now
+the company has an internetwork, or a private internet (with lowercase i). Communication
+between offices is now possible. Figure 1.11 shows this internet. 
+When a host in the west coast office se nds a message to another host in the same
+office, the router blocks the message, but the switch directs the message to the destination.
+On the other hand, when a host on the west coast sends a message to a host on the east
+coast, router R1 routes the packet to router R2, and the packet reaches the destination. 
+Figure 1.12 (see next page) shows another internet with several LANs and WANs
+connected. One of the WANs is a switched W AN with four switches. 
+1.3.3 Switching
+An internet is a switched network  in which a switch conn ects at least two links
+together. A switch needs to forward data from a network to another network when
+required. The two most common types of sw itched networks are circuit-switched and
+packet-switched networks. We discuss both next. 
+Circuit-Switched Network
+In a circuit-switched network,  a dedicated connection, cal led a circuit, is always
+available between the two end systems; the switch can only make it active or inactive.
+Figure 1.13 shows a very simple switched network that connects four telephones to
+each end. We have used telephone sets in stead of computers as an end system because
+circuit switching was very common in telephone networks in the past, although part of
+the telephone network today is a packet-switched network.
+In Figure 1.13, the four telephones at each side are connected to a switch. The
+switch connects a telephone set at one side to a telephone set at the other side. The thick
+W ANs are discussed in more detail in Part II of the book. 
+Figure 1.11 An internetwork made of two LANs and one point-to-point WAN
+Point-to-point 
+WA N
+Router
+R1
+East coast officeWest coast office
+LAN LANRouter
+R2
+=== printed p.16 (idx 54) ===
+16 PART I OVERVIEW
+line connecting two switches is a high-capac ity communication line that can handle
+four voice communications at the same time ; the capacity can be shared between all
+pairs of telephone sets. The switches used in this example have forwarding tasks but no
+storing capability. 
+Let us look at two cases. In the first case, all telephone sets are busy; four people at
+one site are talking with four people at th e other site; the capacity of the thick line is
+fully used. In the second case, only one telephone set at one side is connected to a tele-
+phone set at the other side; only one-fourth of the capacity of the thick line is used. This
+means that a circuit-switched network is efficient only when it is working at its full
+capacity; most of the time, it is inefficient because it is working at partial capacity. The
+reason that we need to make the capacity of the thick line four times the capacity of
+each voice line is that we do not want communication to fail when all telephone sets at
+one side want to be connected with all telephone sets at the other side. 
+Figure 1.12 A heterogeneous network made of four WANs and three LANs
+Figure 1.13 A circuit-switched network
+LAN
+Switched W AN
+Point-to-point 
+WA N
+Point-to-point 
+WA N
+Point-to-point 
+WA N
+LAN
+Router
+Router Router
+Router
+Modem Modem
+Resident
+Switch Switch
+Low-capacity line
+High-capacity line
+=== printed p.17 (idx 55) ===
+CHAPTER 1 INTRODUCTION 17
+Packet-Switched Network
+In a computer network, the communication between the two ends is done in blocks of
+data called packets. In other words, instead of the continuous communication we see
+between two telephone sets when they are being used, we see the exchange of individ-
+ual data packets between the two computers. This allows us to make the switches func-
+tion for both storing and forwarding because a packet is an independent entity that can
+be stored and sent later. Figure 1.14 sh ows a small packet-switched network that con-
+nects four computers at one site to four computers at the other site.
+A router in a packet-switched network ha s a queue that can store and forward the
+packet. Now assume that the capacity of the th ick line is only twice the capacity of the
+data line connecting the comp uters to the routers. If on ly two computers (one at each
+site) need to communicate with each other, there is no waiting fo r the packets.
+However, if packets arrive at one router when the thick line is already working at its full
+capacity, the packets should be stored and forwarded in the order they arrived. The two
+simple examples show that a packet-switche d network is more efficient than a circuit-
+switched network, but the packets may encounter some delays.
+In this book, we mostly discuss packet-switched networks. In Chapter 18, we discuss
+packet-switched networks in more detail and discuss the performance of these networks. 
+1.3.4 The Internet
+As we discussed before, an internet (note the lowercase i) is two or more networks that
+can communicate with each other. The most notable internet is called the Internet
+(uppercase I ), and is composed of thousands of interconnected networks. Figure 1.15
+shows a conceptual (not geographical) view of the Internet.
+The figure shows the Internet as severa l backbones, provider networks, and cus-
+tomer networks. At the top level, the backbones  are large networks owned by some
+communication companies such as Sprint, Verizon (MCI), AT&T, and NTT. The back-
+bone networks are connected through some complex switching systems, called peering
+points. At the second level, there are smaller networks, called provider networks, that
+use the services of the backbones for a f ee. The provider networks are connected to
+backbones and sometimes to other provider networks. The customer networks are
+Figure 1.14 A packet-switched network
+Router
+Queue Queue
+Low-capacity line
+High-capacity line
+Router
+=== printed p.18 (idx 56) ===
+18 PART I OVERVIEW
+networks at the edge of the Internet that actually use the services provided by the Inter-
+net. They pay fees to provider networks for receiving services. 
+Backbones and provider networks are also called Internet Service Providers
+(ISPs). The backbones are often referred to as international ISPs;  the provider net-
+works are often referred to as national or regional ISPs. 
+1.3.5 Accessing the Internet
+The Internet today is an internetwork that allows any user to become part of it. The
+user, however, needs to be physically conn ected to an ISP. The physical connection is
+normally done through a point-to-point WAN. In this section, we briefly describe
+how this can happen, but we postpone the technical details of the connection until
+Chapters 14 and 16.
+Using Telephone Networks
+Today most residences and small businesses have telephone service, which means
+they are connected to a telephone networ k. Since most telephone networks have
+already connected themselves to the Inte rnet, one option for residences and small
+businesses to connect to the Internet is to  change the voice line between the residence
+or business and the telephone center to a point-to-point WAN. This can be done in
+two ways. 
+❑ Dial-up service.  The first solution is to add to the telephone line a modem that
+converts data to voice. The software installed on the computer dials the ISP and
+imitates making a telephone connection. Un fortunately, the dial-up service is
+Figure 1.15 The Internet today
+Customer 
+network
+Customer 
+network
+Customer 
+network
+Customer 
+network
+Peering
+point
+Peering
+point
+Provider
+network
+Provider
+network
+Provider
+network
+Backbones
+Provider
+network
+Customer 
+network
+Customer 
+network
+Provider
+network
+Customer 
+network
+Customer 
+network
+Customer 
+network
+Customer 
+network
+=== printed p.19 (idx 57) ===
+CHAPTER 1 INTRODUCTION 19
+very slow, and when the line is used for Internet connection, it cannot be used for
+telephone (voice) connection. It is only useful for small residences. We discuss
+dial-up service in Chapter 14. 
+❑ DSL Service.  Since the advent of the Intern et, some telephone companies have
+upgraded their telephone lines to provide hi gher speed Internet services to resi-
+dences or small businesses. The DSL service also allows the line to be used simul-
+taneously for voice and data communication. We discuss DSL in Chapter 14. 
+Using Cable Networks
+More and more residents over the last two decades have begun using cable TV services
+instead of antennas to receive TV broadcasting. The cable companies have been
+upgrading their cable networks and connecting to the Internet. A residence or a small
+business can be connected to the Internet by using this service. It provides a higher
+speed connection, but the speed varies depend ing on the number of neighbors that use
+the same cable. We discuss the cable networks in Chapter 14. 
+Using Wireless Networks
+Wireless connectivity has recently become increasingly popular. A household or a
+small business can use a combination of wi reless and wired connections to access the
+Internet. With the growing wireless W AN access, a household or a small business can
+be connected to the Internet through a wireless W AN. We discuss wireless access in
+Chapter 16.
+Direct Connection to the Internet
+A large organization or a large corporation can itself become a local ISP and be con-
+nected to the Internet. This can be done if  the organization or the corporation leases a
+high-speed W AN from a carrier provider and connects itself to a regional ISP. For
+example, a large university with several cam puses can create an internetwork and then
+connect the internetwork to the Internet. 
+1.4 INTERNET HISTORY
+Now that we have given an overview of the Internet, let us give a brief history of the
+Internet. This brief history makes it clear how the Internet has evolved from a private
+network to a global one in less than 40 years. 
+1.4.1 Early History
+There were some communication networks, such as telegraph and telephone networks,
+before 1960. These networks were suitable for constant-rate communication at that time,
+which means that after a connection was made between two users, the encoded message
+(telegraphy) or voice (telephony) could be exchanged. A computer network, on the other
+hand, should be able to handle bursty data, which means data received at variable rates at
+different times. The world needed to wait for the packet-switched network to be invented. 
+=== printed p.20 (idx 58) ===
+20 PART I OVERVIEW
+Birth of Packet-Switched Networks
+The theory of packet switching for bursty traffic was first presented by Leonard
+Kleinrock in 1961 at MIT. At the same time, two other researchers, Paul Baran at Rand
+Institute and Donald Davies at National Physical Laboratory in England, published
+some papers about packet-switched networks. 
+ARPANET
+In the mid-1960s, mainframe computers in research organizations were stand-alone
+devices. Computers from different manufacturers were unable to communicate with
+one another. The Advanced Research Projects Agency (ARPA) in the Department of
+Defense (DOD) was interested in finding a way to connect computers so that the
+researchers they funded could share their findings, thereby reducing costs and eliminat-
+ing duplication of effort. 
+In 1967, at an Association for Computing Machinery (ACM) meeting, ARPA pre-
+sented its ideas for the Advanced Research Projects Agency Network (ARPANET),
+a small network of connected computers. The idea was that each host computer (not
+necessarily from the same manufacturer) would be attached to a specialized computer,
+called an interface message processor (IMP). The IMPs, in turn, would be connected to
+each other. Each IMP had to be able to communicate with other IMPs as well as with its
+own attached host.
+By 1969, ARPANET was a reality. Four nodes, at the University of California at
+Los Angeles (UCLA), the University of California at Santa Barbara (UCSB), Stanford
+Research Institute (SRI), and the University  of Utah, were conn ected via the IMPs to
+form a network. Software called the Network Control Protocol (NCP) provided com-
+munication between the hosts. 
+1.4.2 Birth of the Internet 
+In 1972, Vint Cerf and Bob Kahn, both of whom were part of the core ARPANET
+group, collaborated on what they called the Internetting Project. They wanted to link
+dissimilar networks so that a host on one network could communicate with a host on
+another. There were many problems to over come: diverse packet sizes, diverse inter-
+faces, and diverse transmission rates, as well as differing reliability requirements. Cerf
+and Kahn devised the idea of a device called a gateway to serve as the intermediary
+hardware to transfer data from one network to another.
+TCP/IP 
+Cerf and Kahn’s landmark 1973 paper outlined the protocols to achieve end-to-end
+delivery of data. This was a new version of NCP. This paper on transmission control
+protocol (TCP) included concepts such as encapsulation, the datagram, and the func-
+tions of a gateway. A radical idea was the transfer of responsibility for error correction
+from the IMP to the host machine. This AR PA Internet now became the focus of the
+communication effort. Around this time, responsibility for the ARPANET was handed
+over to the Defense Communication Agency (DCA).
+In October 1977, an internet consisting of three different networks (ARPANET,
+packet radio, and packet satellite) was successfully demonstrated. Communication
+between networks was now possible. 
+=== printed p.21 (idx 59) ===
+CHAPTER 1 INTRODUCTION 21
+Shortly thereafter, authorities made a decision to split TCP into two protocols: Trans-
+mission Control Protocol (TCP) and Internet Protocol (IP). IP would handle datagram
+routing while TCP would be responsible for higher level functions such as segmentation,
+reassembly, and error detection. The new combination became known as TCP/IP.
+In 1981, under a Defence Department contract, UC Berkeley modified the UNIX
+operating system to include TCP/IP. This inclusion of network software along with a
+popular operating system did much for the popularity of internetworking. The open
+(non-manufacturer-specific) implementation of the Berkeley UNIX gave every manu-
+facturer a working code base on which they could build their products.
+In 1983, authorities abolished the original ARPANET protocols, and TCP/IP
+became the official protocol for the ARPANE T. Those who wanted to use the Internet
+to access a computer on a different network had to be running TCP/IP.
+MILNET
+In 1983, ARPANET split into two networks: Military Network (MILNET) for military
+users and ARPANET for nonmilitary users. 
+CSNET
+Another milestone in Internet history was the creation of CSNET in 1981.  Computer
+Science Network (CSNET) was a network sponsored by the National Science Founda-
+tion (NSF). The network was conceived by uni versities that were ineligible to join
+ARPANET due to an absence of ties to th e Department of Defense. CSNET was a less
+expensive network; there were no redundant links and the transmission rate was slower.
+By the mid-1980s, most U.S. universities with computer science departments were
+part of CSNET. Other institutions and companies were also forming their own net-
+works and using TCP/IP to interconnect. The term Internet, originally associated with
+government-funded connected networks, now referred to the connected networks using
+TCP/IP protocols. 
+NSFNET
+With the success of CSNET, the NSF in 1986 sponsored the National Science Founda-
+tion Network  (NSFNET),  a backbone that connected five supercomputer centers
+located throughout the United States. Community networks were allowed access to this
+backbone, a T-1 line (see Chapter 6) with a 1.544-Mbps data rate, thus providing connec-
+tivity throughout the United States. In 1990, ARPANET was officially retired and
+replaced by NSFNET. In 1995, NSFNET revert ed back to its original concept of a
+research network. 
+ANSNET
+In 1991, the U.S. government decided that NSFNET was not capable of supporting the
+rapidly increasing Internet traffic. Three companies, IBM, Merit, and Verizon, filled the
+void by forming a nonprofit organization called Advanced Network & Services (ANS)
+to build a new, high-speed Internet backbone called Advanced Network Services
+Network (ANSNET). 
+=== printed p.22 (idx 60) ===
+22 PART I OVERVIEW
+1.4.3 Internet Today
+Today, we witness a rapid growth both in the infrastructure and new applications. The
+Internet today is a set of pier networks th at provide services to the whole world. What
+has made the Internet so popular is the invention of new applications. 
+World Wide Web
+The 1990s saw the explosion of Internet applications due to the emergence of the World
+Wide Web (WWW). The Web was invented at CERN by Tim Berners-Lee. This inven-
+tion has added the commercial applications to the Internet. 
+Multimedia
+Recent developments in the multimedia applications such as voice over IP (telephony),
+video over IP (Skype), view sharing (YouTu be), and television over IP (PPLive) has
+increased the number of users and the amount of time each user spends on the network.
+We discuss multimedia in Chapter 28. 
+Peer-to-Peer Applications 
+Peer-to-peer networking is also a new area  of communication with a lot of potential.
+We introduce some peer-to-peer applications in Chapter 29. 
+1.5 STANDARDS AND ADMINISTRATION
+In the discussion of the Internet and its pr otocol, we often see a reference to a standard
+or an administration entity. In this secti on, we introduce these standards and adminis-
+tration entities for those readers that are not familiar with them; the section can be
+skipped if the reader is familiar with them.
+1.5.1 Internet Standards
+An Internet standard is a thoroughly tested specification that is useful to and adhered to
+by those who work with the Internet. It is a formalized regulation that must be followed.
+There is a strict procedure by which a specification attains Internet standard status. A spec-
+ification begins as an Internet draft. An Internet draft is a working document (a work in
+progress) with no official status and a six-month lifetime. Upon recommendation from the
+Internet authorities, a draft may be published as a Request for Comment (RFC). Each
+RFC is edited, assigned a number, and made available to all interested parties. RFCs go
+through maturity levels and are categorized according to their requirement level.
+Maturity Levels
+An RFC, during its lifetime, falls into one of six maturity levels: proposed standard, draft
+standard, Internet standard, historic, experimental, and informational (see  Figure 1.16).
+❑ Proposed Standard . A proposed standard is a specification that is stable, well
+understood, and of sufficient interest to the Internet community. At this level, the
+specification is usually tested and implemented by several different groups.
+=== printed p.23 (idx 61) ===
+CHAPTER 1 INTRODUCTION 23
+❑ Draft Standard. A proposed standard is elevated to draft standard status after at
+least two successful independent and interoperable implementations. Barring diffi-
+culties, a draft standard, with modifications if speci fic problems are encountered,
+normally becomes an Internet standard.
+❑ Internet Standard. A draft standard reaches Internet standard status after demon-
+strations of successful implementation. 
+❑ Historic. The historic RFCs are significant fr om a historical perspective. They
+either have been superseded by later specifications or have never passed the neces-
+sary maturity levels to become an Internet standard.
+❑ Experimental. An RFC classified as experimental describes work related to an
+experimental situation that does not affect the operation of the Internet. Such an
+RFC should not be implemented in any functional Internet service.
+❑ Informational. An RFC classified as informationa l contains general, historical, or
+tutorial information related to the Internet. It is usually written by someone in a
+non-Internet organization, such as a vendor.
+Requirement Levels
+RFCs are classified into five requirement levels: required, recommended, elective, lim-
+ited use, and not recommended.
+❑ Required. An RFC is labeled required if it must be implemented by all Internet
+systems to achieve minimum conformance. For example, IP and ICMP (Chapter 19)
+are required protocols. 
+❑ Recommended. An RFC labeled recommended is not required for minimum
+conformance; it is recommended because of its usefulness. For example, FTP
+(Chapter 26) and TELNET (Chapter  26) are recommended protocols.
+❑ Elective. An RFC labeled elective is not required and not recommended. However,
+a system can use it for its own benefit.
+Figure 1.16 Maturity levels of an RFC
+Proposed standardExperimental Informational
+Draft standard
+Six months and two tries 
+Four months and two tries 
+Internet standard
+Historic
+Internet draft
+=== printed p.24 (idx 62) ===
+24 PART I OVERVIEW
+❑ Limited Use. An RFC labeled limited use should be used only in limited situations.
+Most of the experimental RFCs fall under this category.
+❑ Not Recommended. An RFC labeled not recommended is inappropriate for gen-
+eral use. Normally a historic (deprecated) RFC may fall under this category. 
+1.5.2 Internet Administration
+The Internet, with its roots primarily in the research domain, has evolved and gained
+a broader user base with significant commercial activity. Various groups that coordinate
+Internet issues have guided this growth and development. Appendix G gives the addresses,
+e-mail addresses, and tele phone numbers for some of these groups. Figure 1.17
+shows the general organization of Internet administration.
+ISOC
+The Internet Society (ISOC)  is an international, nonprofit organization formed in
+1992 to provide support for the Internet standards process. ISOC accomplishes this
+through maintaining and supporting other Internet administrative bodies such as IAB,
+IETF, IRTF, and IANA (see the following sections). ISOC also prom otes research and
+other scholarly activities relating to the Internet. 
+IAB
+The Internet Architecture Board (IAB)  is the technical advisor to the ISOC. The
+main purposes of the IAB are to oversee the continuing development of the TCP/IP
+Protocol Suite and to serve in a technical advisory capacity to research members of the
+Internet community. IAB accom plishes this through its two primary components, the
+Internet Engineering Task Force (IETF) and the Internet Re search Task Force (IRTF).
+Another responsibility of the IAB is the ed itorial management of the RFCs, described
+RFCs can be found at http://www.rfc-editor.org.
+Figure 1.17 Internet administration
+IETFIRTF
+RGRG RGRG
+IESGIRSG
+Area Area
+WGWG WGWG
+ISOC
+IAB
+=== printed p.25 (idx 63) ===
+CHAPTER 1 INTRODUCTION 25
+earlier. IAB is also the external liaison between the Internet and other standards organi-
+zations and forums. 
+IETF
+The Internet Engineering Task Force (IETF) is a forum of working groups managed
+by the Internet Engineering Steering Group (IESG). IETF is responsible for identifying
+operational problems and proposing solutions to these problems. IETF also develops
+and reviews specifications intended as Internet standards. The working groups are col-
+lected into areas, and each area concentr ates on a specific topic. Currently nine areas
+have been defined. The areas include applications, protocols, routing, network manage-
+ment next generation (IPng), and security. 
+IRTF
+The Internet Research Task Force (IRTF) is a forum of working groups managed by
+the Internet Research Steering Group (IRSG). IRTF focuses on long-term research top-
+ics related to Internet protocols, applications, architecture, and technology.
+1.6 END-CHAPTER MATERIALS
+1.6.1 Recommended Reading
+For more details about subjects discussed in  this chapter, we recommend the following
+books. The items enclosed in brackets [. . .] refer to the reference list at the end of the book.
+Books
+The introductory materials covered in this chapter can be found in [Sta04] and [PD03].
+[Tan03] also discusses standardization.
+1.6.2 Key Terms
+Advanced Network Services Network 
+(ANSNET)
+Advanced Research Projects Agency (ARPA) 
+Advanced Research Projects Agency Network
+(ARPANET)
+American Standard Code for Information 
+Interchange (ASCII)
+audio
+backbone
+Basic Latin
+bus topology
+circuit-switched network
+code
+Computer Science Network (CSNET)
+data
+data communications
+delay
+full-duplex mode
+half-duplex mode
+hub
+image
+internet
+Internet
+Internet Architecture Board (IAB)
+Internet draft
+Internet Engineering Task Force (IETF)
+Internet Research Task Force (IRTF)
+Internet Service Provider (ISP)
+Internet Society (ISOC)
+Internet standard
+internetwork
+local area network (LAN)
+mesh topology
+message
+=== printed p.26 (idx 64) ===
+26 PART I OVERVIEW
+1.6.3 Summary
+Data communications are the transfer of data from one device to another via some form
+of transmission medium. A data communications system must transmit data to the correct
+destination in an accurate and timely manner. The five components that make up a data
+communications system are the message, sender, receiver, medium, and protocol. Text,
+numbers, images, audio, and video are different forms of information. Data flow between
+two devices can occur in one of three ways: simplex, half-duplex, or full-duplex. 
+A network is a set of communication devices connected by media links. In a point-
+to-point connection, two and only two devices are connected by a dedicated link. In a
+multipoint connection, three or more devices share a link. Topology refers to the physical
+or logical arrangement of a network. Devices may be arranged in a mesh, star, bus, or
+ring topology. 
+A network can be categorized as a local area network or a wide area network. A
+LAN is a data communication system within a building, plant, or campus, or between
+nearby buildings. A W AN is a data communication system spanning states, countries,
+or the whole world. An internet is a network of networks. The Internet is a collection of
+many separate networks.  
+The Internet history started with the theory  of packet switching for bursty traffic.
+The history continued when The ARPA was interested in finding a way to connect
+computers so that the researchers they funded could share their findings, resulting in
+the creation of ARPANET. The Internet was born when Cerf and Kahn devised the idea
+of a device called a gateway to serve as the intermediary hardware to transfer data from
+one network to another. The TCP/IP protocol suite paved the way for creation of
+today’s Internet. The invention of WWW, the use of multimedia, and peer-to-peer com-
+munication helps the growth of the Internet. 
+An Internet standard is a th oroughly tested specification. An Internet draft is a
+working document with no official status and a six-month lifetime. A draft may be
+published as a Request for Comment (RFC). RFCs go through maturity levels and are
+categorized according to their requirement level. The Internet administration has
+Military Network (MILNET)
+multipoint or multidrop connection
+National Science Foundation Network 
+(NSFNET)
+network
+node
+packet
+packet-switched network
+performance
+physical topology
+point-to-point connection
+protocol
+Request for Comment (RFC)
+RGB
+ring topology
+simplex mode
+star topology
+switched network
+TCP/IP protocol suite
+telecommunication
+throughput
+Transmission Control Protocol/ Internet 
+Protocol (TCP/IP)
+transmission medium
+Unicode
+video
+wide area network (WAN)
+YCM
+=== printed p.27 (idx 65) ===
+CHAPTER 1 INTRODUCTION 27
+evolved with the Internet. ISOC promotes re search and activities. IAB is the technical
+advisor to the ISOC. IETF is a forum of working groups responsible for operational
+problems. IRTF is a forum of working groups focusing on long-term research topics.
+1.7 PRACTICE SET
+1.7.1 Quizzes
+A set of interactive quizzes for this chapter can be found on the book website. It is
+strongly recommended that the student take the quizzes to check his/her understanding
+of the materials before continuing with the practice set.
+1.7.2 Questions
+Q1-1. Identify the five components of a data communications system.
+Q1-2. What are the three criteria necessary for an effective and efficient network?
+Q1-3. What are the advantages of a multipoint connection over a point-to-point one?
+Q1-4. What are the two types of line configuration?
+Q1-5. Categorize the four basic topologies in terms of line configuration.
+Q1-6. What is the difference between half-duplex and full-duplex transmission modes?
+Q1-7. Name the four basic network topologies, and cite an advantage of each type.
+Q1-8. For n devices in a network, what is the number of cable links required for a
+mesh, ring, bus, and star topology?
+Q1-9. What are some of the factors that determine whether a communication system
+is a LAN or W AN?
+Q1-10. What is an internet? What is the Internet?
+Q1-11. Why are protocols needed?
+Q1-12. In a LAN with a link-layer switch (Figure 1.8b), Host 1 wants to send a mes-
+sage to Host 3. Since communication is through the link-layer switch, does the
+switch need to have an address? Explain.
+Q1-13. How many point-to-point WANs are needed to connect n LANs if each LAN
+should be able to directly communicate with any other LAN?
+Q1-14. When we use local telephones to talk to a friend, are we using a circuit-
+switched network or a packet-switched network? 
+Q1-15. When a resident uses a dial-up or DLS service to connect to the Internet, what
+is the role of the telephone company?
+Q1-16. What is the first principle we discussed in this chapter for protocol layering
+that needs to be followed to make the communication bidirectional?
+Q1-17. Explain the difference between an Internet draft and a proposed standard.
+Q1-18. Explain the difference between a required RFC and a recommended RFC.
+Q1-19. Explain the difference between the duties of the IETF and IRTF.
+=== printed p.28 (idx 66) ===
+28 PART I OVERVIEW
+1.7.3 Problems
+P1-1. What is the maximum number of charact ers or symbols that can be repre-
+sented by Unicode?
+P1-2. A color image uses 16 bits to represent a pixel. What is the maximum number
+of different colors that can be represented?
+P1-3. Assume six devices are arranged in a mesh topology. How many cables are
+needed? How many ports are needed for each device?
+P1-4. For each of the following four networks , discuss the consequences if a con-
+nection fails.
+a. Five devices arranged in a mesh topology
+b. Five devices arranged in a star topology (not counting the hub)
+c. Five devices arranged in a bus topology 
+d. Five devices arranged in a ring topology
+P1-5. We have two computers connected by an Ethernet hub at home. Is this a LAN
+or a W AN? Explain the reason. 
+P1-6. In the ring topology in Figure 1.7, what happens if one of the stations is
+unplugged? 
+P1-7. In the bus topology in Figure 1.6, what happens if one of the stations is
+unplugged?
+P1-8. Performance is inversely related to delay. When we use the Internet, which of
+the following applications are more sensitive to delay?
+a. Sending an e-mail
+b. Copying a file
+c. Surfing the Internet
+P1-9. When a party makes a local telephone call to another party, is this a point-to-
+point or multipoint connection? Explain the answer.
+P1-10. Compare the telephone network and the Internet. What are the similarities?
+What are the differences? 
+1.8 SIMULATION EXPERIMENTS
+1.8.1 Applets
+One of the ways to show the network protocols in action or visually see the solution to
+some examples is through the use of interactive animation. We have created some Java
+applets to show some of the main concepts discussed in this chapter. It is strongly rec-
+ommended that the students activate thes e applets on the book website and carefully
+examine the protocols in action. However, note that applets have been created only for
+some chapters, not all (see the book website).
+1.8.2 Lab Assignments
+Experiments with networks and network e quipment can be done using at least two
+methods. In the first method, we can create an isolated networking laboratory and use

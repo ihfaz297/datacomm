@@ -1,0 +1,80 @@
+--- PAGE 1 ---
+1. 
+2. 
+3. 
+4. 
+5. 
+a. 
+b. 
+CSE630, SUST, 7 Aug 2025
+Name: Duration: 1 hour
+Reg: Marks: 20
+Write your answers directly on the question paper.
+Packet can take multiple paths from sender to receiver. Which layer in the OSI model is responsible 
+for determining the best path? (.5) Network
+If a PDU is lost in the network, which layer in the OSI model is responsible for recovering it? (.5)
+Transport
+When a sender transmits data at an excessive rate, the receiver can become overwhelmed and 
+unable to handle other communications. Which layer in the OSI model prevents this situation? (.5)
+Transport
+Data needs to be encrypted so that any man in the middle cannot understand the conversation. 
+Which layer in OSI model is responsible for the encryption? (.5)
+Presentation
+Provide the correspondence between the layers of the OSI model and the TCP/IP model. (.5)
+OSI TCP/IP
+Application
+ApplicationPresentation
+Session
+Transport Transport
+Network Internet / Network
+Data Link
+Network Access / Network Interface
+Physical
+6. There is a layer in the OSI model that divides the data to be sent into chunks.
+Which layer is it? (.5) Transport
+When the receiver receives the data, it assembles the chunks into the complete data. What does 
+the layer do to ensure the receiver knows the correct order of the chunks? (.5) 
+Sequence Number
+7. A composite sine wave has three sine waves: one with frequency 3 Hz with amplitude 5 V, one with 
+frequency 4 Hz with amplitude 3 V and last one with frequency 6 Hz with amplitude 51V. Draw the signal 
+in frequency domain.  (1)
+--- PAGE 2 ---
+8. Sender can send at 1 Mbps and the delay of the link is 5s.
+a. What is the maximum number of bits that can ﬁll the link. (1.5)
+delay X rate = 5 Mb
+b. The link is full-duplex. The sender sends a burst of data of bits and waits for receiver 
+acknowledgment for part of the burst before sending another burst. Determine the maximum burst 
+size. (1.5)
+2 X delay X rate = 10 Mb
+8.  If digital data is already in digital format, why does it still need to be converted into a digital signal for 
+transmission? Write points only. (1)
+Baseline Wandering 
+DC Components
+Self-synchronization
+Built-in Error Detection
+Immunity to Noise and Interference
+Complexity
+9. The attenuation of a signal is −10 dB. What is the ﬁnal signal power if it was originally 5 W? (1)
+--- PAGE 3 ---
+10. A signal has passed through three cascaded ampliﬁers, each with a 4 dB gain. What is the total gain? 
+How much is the signal ampliﬁed? (1)
+4 dB + 4 dB + 4 dB = 12 dB
+11. We have a channel with a 1-MHz bandwidth. The SNR for this channel is 63. What are the appropriate 
+bit rate and signal level? (1.5)
+--- PAGE 4 ---
+12. A periodic composite signal with a bandwidth of 2000 Hz is composed of two sine waves. The ﬁrst one 
+has a frequency of 100 Hz with a maximum amplitude of 20 V; the second one has a maximum amplitude 
+--- PAGE 5 ---
+of 5 V. Draw the bandwidth. (1.5)
+13. Find the 8-bit data stream for differential Manchester. Assume the signal level is low immediately 
+before the start of the signal.  (1.5)
+11000100
+--- PAGE 6 ---
+14. Find the 8-bit data stream for NRZ-I. Assume the signal level is low immediately before the 
+start of the signal.  (1.5)
+10011001
+15. Write down all the layers of OSI model, their tasks, and addressing if available. (2)
+16. In a digital transmission, the sender clock is 0.2 percent faster than the receiver clock. How 
+many extra bits per second does the sender send if the data rate is 1 Mbps? (1.5)
+--- PAGE 7 ---
+

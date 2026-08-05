@@ -1,0 +1,541 @@
+=== printed p.115 (idx 153) ===
+CHAPTER 4 DIGITAL TRANSMISSION 115
+4.2 ANALOG-TO-DIGITAL CONVERSION
+The techniques described in Section  4.1 convert digital data to digital signals. Some-
+times, however, we have an analog signal such as one created by a microphone or cam-
+era. We have seen in Chapter 3 that a digital signal is superior to an analog signal. The
+tendency today is to change an analog signal to digital data. In this section we describe
+two techniques, pulse code modulation and delta modulation. After the digital data are
+created (digitization), we can use one of the techniques described in Section 4.1 to con-
+vert the digital data to a digital signal. 
+4.2.1 Pulse Code Modulation (PCM)
+The most common technique to change an analog signal to digital data (digitization) is
+called pulse code modulation (PCM). A PCM encoder has three processes, as shown in
+Figure 4.21.
+1. The analog signal is sampled.
+2. The sampled signal is quantized.
+3. The quantized values are encoded as streams of bits. 
+Sampling
+The first step in PCM is sampling. The analog signal is sampled every Ts s, where Ts is
+the sample interval or period. The invers e of the sampling interval is called the sam-
+pling rate or sampling frequency  and denoted by fs, where fs = 1/Ts. There are three
+sampling methods—ideal, natural, and flat-top—as shown in Figure 4.22. 
+In ideal sampling, pulses from the analog signal are sampled. This is an ideal sam-
+pling method and cannot be easily implemented. In natural sampling, a high-speed
+switch is turned on for only the small period of time when the sampling occurs. The
+result is a sequence of samples that retain s the shape of the analog signal. The most
+Figure 4.21 Components of PCM encoder
+PCM encoder
+Digital data
+Analog signal
+1 1 … 1 1 0 0
+Quantized signal
+PAM signal
+QuantizingEncodingSampling
+=== printed p.116 (idx 154) ===
+116 PART II PHYSICAL LAYER
+common sampling method, called sample and hold, however, creates flat-top samples
+by using a circuit. 
+The sampling process is sometimes referred to as pulse amplitude modulation
+(PAM). We need to remember, however, that the result is still an analog signal with
+nonintegral values. 
+Sampling Rate
+One important consideration is the sampling rate or frequency. What are the restrictions
+on Ts? This question was elegantly answered by Nyquist. According to the Nyquist the-
+orem, to reproduce the original  analog signal, one necessary condition is that the sam-
+pling rate be at least twice the highest frequency in the original signal. 
+We need to elaborate on the theorem at this point. First, we can sample a signal
+only if the signal is band-limited. In other words, a signal with an infinite bandwidth
+cannot be sampled. Second, the sampling rate must be at least 2 times the highest fre-
+quency, not the bandwidth. If the analog signal is low-pass, the bandwidth and the
+highest frequency are the same value. If the analog signal is bandpass, the bandwidth
+value is lower than the value of the maximum frequency. Figure 4.23 shows the value
+of the sampling rate for two types of signals.   
+Example 4.6
+For an intuitive example of the Nyquist theorem, let us sample a simple sine wave at three sam-
+pling rates: fs = 4f (2 times the Nyquist rate), fs = 2f (Nyquist rate), and fs = f (one-half the
+Nyquist rate). Figure 4.24 shows the sampling and the subsequent recovery of the signal.  
+It can be seen that sampling at the Nyquist rate can create a good approximation of the orig-
+inal sine wave (part a). Oversampling in part b can also create the same approximation, but it is
+redundant and unnecessary. Sampling below the Ny quist rate (part c) does not produce a signal
+that looks like the original sine wave. 
+Example 4.7
+As an interesting example, let us see what happens if we sample a periodic event such as the rev-
+olution of a hand of a clock. Th e second hand of a clock has a period of 60 s. According to the
+Figure 4.22 Three different sampling methods for PCM
+According to the Nyquist theorem, the sampling rate must be
+at least 2 times the highest frequency contained in the signal. 
+Amplitude
+Analog signal
+c. Flat-top sampling
+Time
+Amplitude
+Analog signal
+b. Natural sampling
+Amplitude
+Ts
+Analog signal
+Time Time
+a. Ideal sampling
+=== printed p.117 (idx 155) ===
+CHAPTER 4 DIGITAL TRANSMISSION 117
+Nyquist theorem, we need to sample the hand (take and send a picture) every 30 s (Ts = T or fs =
+2f ). In Figure 4.25a, the sample point s, in order, are 12, 6, 12, 6, 12, and 6. The receiver of the
+samples cannot tell if the clock is moving forward or backward. In part b, we sample at double
+the Nyquist rate (every 15 s). The sample points, in order, are 12,  3, 6, 9, and 12. The clock is
+moving forward. In part c, we sample below the Nyquist rate ( Ts = T or fs = f ). The sample
+Figure 4.23 Nyquist sampling rate for low-pass and bandpass signals
+Figure 4.24 Recovery of a sampled sine wave for different sampling rates
+Nyquist rate = 2 ×  fmax
+Amplitude
+Frequencyfmin fmax
+ Low-pass signal
+Nyquist rate = 2  ×  fmax
+Amplitude
+0 Frequencyfmin fmax
+Bandpass signal
+a. Nyquist rate sampling: fs = 2 f
+b. Oversampling: fs = 4 f
+c. Undersampling: fs =  f
+1
+2---
+3
+4--- 4
+3---
+=== printed p.118 (idx 156) ===
+118 PART II PHYSICAL LAYER
+points, in order, are 12, 9, 6, 3, and 12. Although the clock is moving forward, the receiver thinks
+that the clock is moving backward.
+Example 4.8
+An example related to Example 4.7 is the seemingly backward rotation of the wheels of a forward-
+moving car in a movie. This can be explained by undersampling. A movie is filmed at 24 frames
+per second. If a wheel is rotati ng more than 12 times per seco nd, the undersampling creates the
+impression of a backward rotation. 
+Example 4.9
+Telephone companies digitize voice by assuming a maximum frequency of 4000 Hz. The sam-
+pling rate therefore is 8000 samples per second.
+Example 4.10
+A complex low-pass signal has a bandwidth of 200 kHz. What is the minimum sampling rate for
+this signal?
+Solution
+The bandwidth of a low-pass signal is between 0 and f, where f is the maximum frequency in the
+signal. Therefore, we can sample this signal at 2 times the highest frequency (200 kHz). The sam-
+pling rate is therefore 400,000 samples per second.
+Figure 4.25 Sampling of a clock with only one hand 
+Samples can mean that
+the clock is moving
+either forward or
+backward.
+(12-6-12-6-12)
+Samples show clock 
+is moving forward.
+(12-3-6-9-12)
+Samples show clock 
+is moving backward.
+(12-9-6-3-12)
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+3
+12
+9
+6
+a. Sampling at Nyquist rate: Ts = T
+b. Oversampling (above Nyquist rate): Ts =   T
+1
+2
+1
+4
+c. Undersampling (below Nyquist rate): Ts = T 3
+4
+=== printed p.119 (idx 157) ===
+CHAPTER 4 DIGITAL TRANSMISSION 119
+Example 4.11
+A complex bandpass signal has a bandwidth of 200 kHz. What is the minimum sampling rate for
+this signal?
+Solution
+We cannot find the minimum sampling rate in this case because we do not know where the band-
+width starts or ends. We do not know the maximum frequency in the signal. 
+Quantization
+The result of sampling is a series of puls es with amplitude values between the maxi-
+mum and minimum amplitudes of the signal. The set of amplitudes can be infinite with
+nonintegral values between the two limits. These values cannot be used in the encoding
+process. The following are the steps in quantization:
+1. We assume that the original analog signal has instantaneous amplitudes between
+V
+min and Vmax. 
+2. We divide the range into L zones, each of height Δ (delta).
+D  5  
+3. We assign quantized values of 0 to L − 1 to the midpoint of each zone.
+4. We approximate the value of the sample amplitude to the quantized values. 
+As a simple example, assume that we have a sampled signal and the sample amplitudes
+are between −20 and +20 V . We decide to have eight levels ( L = 8). This means that
+Δ= 5 V . Figure 4.26 shows this example. 
+We have shown only nine samples using ideal sampling (for simplicity). The
+value at the top of each sample in the graph shows the actual amplitude. In the chart,
+the first row is the normalized value for each sample (actual amplitude/ Δ). The quanti-
+zation process selects the quantization value from the middle of each zone. This
+means that the normalized quantized values  (second row) are different from the nor-
+malized amplitudes. The difference is called the normalized error  (third row). The
+fourth row is the quantization code for each sample based on the quantization levels
+at the left of the graph. The encoded words (fifth row) are the final products of the
+conversion. 
+Quantization Levels
+In the previous example, we showed eight quantization levels. The choice of L, the
+number of levels, depends on the range of th e amplitudes of the analog signal and how
+accurately we need to recover the signal. If the amplitude of a signal fluctuates between
+two values only, we need only two levels; if the signal, like voice, has many amplitude
+values, we need more quantization levels. In audio digitizing, L  is normally chosen to
+be 256; in video it is normally thou sands. Choosing lower values of L  increases the
+quantization error if there is a lot of fluctuation in the signal. 
+Quantization Error
+One important issue is the error created in the quantization process. (Later, we will see
+how this affects high-speed modems.) Quan tization is an approx imation process. The
+Vmax2Vmin
+L------------------------------
+=== printed p.120 (idx 158) ===
+120 PART II PHYSICAL LAYER
+input values to the quantizer are the real values; the output values are the approximated
+values. The output values are chosen to be the middle value in the zone. If the input
+value is also at the middle of the zone, there is no quantization error; otherwise, there is
+an error. In the previous example, the normalized amplitude of the third sample is 3.24,
+but the normalized qu antized value is 3.50. This means that there is an error of +0.26.
+The value of the error for any sample is less than  Δ/2. In other words, we have  −Δ/2 ≤
+error ≤ Δ/2. 
+The quantization error changes the signal-to-noise ratio of the signal, which in turn
+reduces the upper limit capacity according to Shannon.
+It can be proven that the contribution of the quantization error to the SNR dB of
+the signal depends on the number of quantization levels L, or the bits per sample nb, as
+shown in the following formula:
+Example 4.12
+What is the SNRdB in the example of Figure 4.26? 
+Solution
+We can use the formula to find the quantization. We have eight levels and 3 bits per sample, so
+SNRdB = 6.02(3) + 1.76 = 19.82 dB. Increasing the number of levels increases the SNR. 
+Figure 4.26 Quantization and encoding of a sampled signal
+SNRdB 5 6.02nb 1 1.76   dB
+Quantization
+codes
+Normalized 
+amplitude
+7
+6
+5
+4
+3
+2
+1
+0
+D
+2D
+3D
+4D
+–4D
+0
+–3D
+–2D
+–D
+Normalized
+PAM values
+Normalized
+quantized values
+Normalized
+error
+Quantization code
+Encoded words
+19.7
+16.2
+7.5
+–6.1
+11.0
+–5.5
+–11.3 –9.4
+–6.0
+3.94
+3.50
+–0.44
+7
+111
+3.24
+3.50
++0.26
+7
+111
+1.50
+1.50
+0
+5
+101
+–1.22
+–1.50
+–0.38
+2
+010
+2.20
+2.50
++0.30
+6
+110
+–1.10
+–1.50
+–0.40
+2
+010
+–2.26
+–2.50
+–0.24
+1
+001
+–1.88
+–1.50
++0.38
+2
+010
+–1.20
+–1.50
+–0.30
+2
+010
+Time
+=== printed p.121 (idx 159) ===
+CHAPTER 4 DIGITAL TRANSMISSION 121
+Example 4.13
+A telephone subscriber line must have an SNRdB above 40. What is the minimum number of bits
+per sample? 
+Solution
+We can calculate the number of bits as
+Telephone companies usually assign 7 or 8 bits per sample. 
+Uniform Versus Nonuniform Quantization
+For many applications, the distribution of the instantaneous amplitudes in the analog
+signal is not uniform. Changes in amplitude often occur more frequently in the lower
+amplitudes than in the higher ones. For these types of ap plications it is better to use
+nonuniform zones. In other words, the height of Δ is not fixed; it is greater near the
+lower amplitudes and less near the higher amplitudes. Nonuniform quantization can
+also be achieved by using a process called companding and expanding. The signal is
+companded at the sender before conversion; it is expanded at the receiver after conver-
+sion. Companding means reducing the instantaneous voltage amplitude for large val-
+ues; expanding is the opposite process. Companding gives greater weight to strong
+signals and less weight to weak ones. It has been proved that nonuniform quantization
+effectively reduces the SNR
+dB of quantization. 
+Encoding
+The last step in PCM is encoding. After each sample is quantized and the number of
+bits per sample is decided, each sample can be changed to an nb-bit code word. In Fig-
+ure 4.26 the encoded words are shown in the last row. A quantization code of 2 is
+encoded as 010; 5 is encoded as 101; and so  on. Note that the nu mber of bits for each
+sample is determined from the number of quantization levels. If the number of quanti-
+zation levels is L , the number of bits is n
+b = log2 L. In our example L  is 8 and nb is
+therefore 3. The bit rate can be found from the formula
+Example 4.14
+We want to digitize the human voice. What is the bit rate, assuming 8 bits per sample?
+Solution
+The human voice normally contains frequencies from 0 to 4000 Hz. So the sampling rate and bit
+rate are calculated as follows:
+Original Signal Recovery
+The recovery of the original signal requires the PCM decoder. The decoder first uses
+circuitry to convert the code words into a pulse that holds the amplitude until the next
+SNRdB 5 6.02nb 1 1.76 5 40   →   n 5 6.35
+Bit rate 5 sampling rate 3 number of bits per sample 5 fs 3 nb
+Sampling rate 5 4000 3 2 5 8000 samples/s
+Bit rate 5 8000 3 8 5 64,000 bps 5 64 kbps
+=== printed p.122 (idx 160) ===
+122 PART II PHYSICAL LAYER
+pulse. After the staircase signal is completed, it is passed through a low-pass filter to
+smooth the staircase signal into an analog signal. The filter has the same cutoff fre-
+quency as the original signal at the sende r. If the signal has been sampled at (or
+greater than) the Nyquist sampling rate and if there are enough quantization levels,
+the original signal will be recreated. Note that the maximum and minimum values of
+the original signal can be achieved by using amplification. Figure 4.27 shows the
+simplified process.  
+PCM Bandwidth
+Suppose we are given the bandwidth of a low-pass analog signal. If we then digitize the
+signal, what is the new minimum bandwidth of  the channel that can pass this digitized
+signal? We have said that the minimum bandwidth of a line-encoded signal is B
+min = c ×
+N × (1/r). We substitute the value of N in this formula: 
+Bmin 5 c 3 N 3  5 c 3 nb 3 fs 3  5 c 3 nb 3 2 3 Banalog 3  
+When 1/r = 1 (for a NRZ or bipolar signal) and c = (1/2) (the average situation), the
+minimum bandwidth is
+Bmin 5 nb 3 Banalog
+This means the minimum bandwidth of the digital signal is nb times greater than the
+bandwidth of the analog signal. This is the price we pay for digitization. 
+Example 4.15
+We have a low-pass analog signal of 4 kHz. If we send the analog signal, we need a channel with
+a minimum bandwidth of 4 kHz. If we digitize th e signal and send 8 bits per sample, we need a
+channel with a minimum bandwidth of 8 × 4 kHz = 32 kHz. 
+Figure 4.27 Components of a PCM decoder
+PCM decoder
+Analog signalAmplitude
+Time
+Amplitude
+Time
+Low-pass
+filter
+Digital data
+1 1 … 1 1 0 0
+Make and 
+connect
+samples
+1
+r--- 1
+r--- 1
+r---
+=== printed p.123 (idx 161) ===
+CHAPTER 4 DIGITAL TRANSMISSION 123
+Maximum Data Rate of a Channel
+In Chapter 3, we discussed the Nyquist theorem, which gives the data rate of a channel
+as Nmax = 2 × B × log2 L. We can deduce this rate from the Nyquist sampling theorem
+by using the following arguments.
+1. We assume that the available channel is low-pass with bandwidth B.
+2. We assume that the digital signal we want to send has L levels, where each level is
+a signal element. This means r = 1/log2 L. 
+3. We first pass the digital signal through a low-pass filter to cut off the frequencies
+above B Hz.
+4. We treat the resulting signal as an analog signal and sample it at 2 ×
+ B samples per
+second and quantize it using L levels. Additional quantization levels are useless
+because the signal originally had L levels. 
+5. The resulting bit rate is N = fs × nb = 2 ×  B × log 2 L. This is the maximum
+bandwidth.
+Nmax 5 2 3 B 3 log2 L   bps
+Minimum Required Bandwidth
+The previous argument can give us the minimum bandwidth if the data rate and the
+number of signal levels are fixed. We can say
+Bmin 5 Hz
+4.2.2 Delta Modulation (DM)
+PCM is a very complex technique. Other techniques have been developed to reduce the
+complexity of PCM. The simplest is delta modulation. PCM finds the value of the sig-
+nal amplitude for each sample; DM finds the change from the previous sample. Fig-
+ure 4.28 shows the process. Note that there are no code words here; bits are sent one
+after another.  
+Figure 4.28  The process of delta modulation
+N
+2l o g 2×() L
+-------------------------------
+3
+Amplitude
+Generated
+binary data 10 11111 11000 0 0 0
+Time
+d
+T
+=== printed p.124 (idx 162) ===
+124 PART II PHYSICAL LAYER
+Modulator
+The modulator is used at the sender site to create a stream of bits from an analog signal.
+The process records the small positive or negative changes, called delta δ. If the delta is
+positive, the process records a 1; if it is ne gative, the process records a 0. However, the
+process needs a base against which the an alog signal is comp ared. The modulator
+builds a second signal that resembles a staircase. Finding the change is then reduced to
+comparing the input signal with the gradually made staircase signal. Figure 4.29 shows
+a diagram of the process.  
+The modulator, at each sampling interval , compares the value of the analog signal
+with the last value of the staircase signal. If the amplitude of the analog signal is
+larger, the next bit in the digital data is 1; otherwise, it is 0. The output of the compar-
+ator, however, also makes the staircase itself. If the next bit is 1, the staircase maker
+moves the last point of the staircase signal δ up; if the next bit is 0, it moves it δ down.
+Note that we need a delay unit to hold th e staircase function fo r a period between two
+comparisons. 
+Demodulator
+The demodulator takes the digital data and, using the staircase maker and the
+delay unit, creates the analog signal. The created analog signal, however, needs to
+pass through a low-pass filter for smooth ing. Figure 4.30 shows the schematic
+diagram. 
+Adaptive DM
+A better performance can be achieved if the value of δ is not fixed. In adaptive
+delta modulation,  the value of δ changes according to th e amplitude of the analog
+signal. 
+Quantization Error
+It is obvious that DM is not perfect. Quantization error is always introduced in the pro-
+cess. The quantization error of DM, however, is much less than that for PCM.
+Figure 4.29 Delta modulation components
+Staircase makerDelay unit
+DM modulator
+Analog signal Digital data
+1 1 … 1 1 0 0
+Comparator
+=== printed p.125 (idx 163) ===
+CHAPTER 4 DIGITAL TRANSMISSION 125
+4.3 TRANSMISSION MODES
+Of primary concern when we are considering the transmission of data from one device
+to another is the wiring, and of primary co ncern when we are considering the wiring is
+the data stream. Do we send 1 bit at a time; or do we group bits into larger groups and,
+if so, how? The transmission of binary data across a link can be accomplished in either
+parallel or serial mode. In parallel mode, mu ltiple bits are sent with each clock tick.
+In serial mode, 1 bit is sent with each cloc k tick. While there is only one way to send
+parallel data, there are three subclasses of serial transmission: asynchronous, synchro-
+nous, and isochronous (see Figure 4.31).
+4.3.1 Parallel Transmission
+Binary data, consisting of 1s and 0s, may be organized into groups of n  bits each.
+Computers produce and consume data in groups of bits much as we conceive of and use
+spoken language in the form of words rather than letters. By grouping, we can send
+data n bits at a time instead of 1. This is called parallel transmission.
+The mechanism for parallel transmission is a conceptually simple one: Use n wires
+to send n bits at one time. That way each bit has its own wire, and all n bits of one
+Figure 4.30 Delta demodulation components
+Figure 4.31 Data transmission and modes
+DM demodulator
+Delay unit
+Digital data
+1 1 … 1 1 0 0
+Staircase
+maker
+Low-pass
+filter Analog signal
+Data transmission
+Asynchronous IsochronousSynchronous
+SerialParallel

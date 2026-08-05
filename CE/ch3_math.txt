@@ -1,0 +1,567 @@
+=== printed p.76 (idx 114) ===
+76 PART II PHYSICAL LAYER
+Example 3.24
+An example of broadband transmission using modulation is the sending of computer data through
+a telephone subscriber line, the line connecting a resident to the centra l telephone office. These
+lines, installed many years ago, are designed to  carry voice (analog signa l) with a limited band-
+width (frequencies between 0 and 4 kHz). Although this channel can be used as a low-pass chan-
+nel, it is normally considered a bandpass channel. One reason is that the bandwidth is so narrow
+(4 kHz) that if we treat the channel as low-pass and use it for baseband transmission, the maximum
+bit rate can be only 8 kbps. The solution is to consider the channel a bandpass channel, convert the
+digital signal from the computer to an analog signal, and send the analog signal. We can install two
+converters to change the digital signal to analog and vice versa at the receiving end. The converter,
+in this case, is called a modem (modulator/demodulator), which we discuss in detail in Chapter 5.
+Example 3.25
+A second example is the digital cellular telephone. For better reception, digital cellular phones
+convert the analog voice signal to a digital signal (see Chapter 16). Although the bandwidth allo-
+cated to a company providing digital cellular phone service is very wide, we still cannot send the
+digital signal without conversion. The reason is that we only  have a bandpass channel available
+between caller and callee. For example, if the available bandwidth is W and we allow 1000 cou-
+ples to talk simultaneously, this means the avai lable channel is W/1000, just part of the entire
+bandwidth. We need to convert the digitized voice to a compos ite analog signal before sending.
+The digital cellular phones convert the analog audio signal to digital and then convert it again to
+analog for transmission over a bandpass channel. 
+3.4 TRANSMISSION IMPAIRMENT
+Signals travel through transmission media, which are not perfect. The imperfection causes
+signal impairment. This means that the signal at the beginning of the medium is not the
+Figure 3.25 Modulation of a digital signal for transmission on a bandpass channel
+Bandpass channel
+Digital/analog
+converter
+Analog/digital
+converter
+Input digital signal Output digital signal
+Input analog signal
+Input analog signal bandwidth
+f1
+tt
+tt
+f2
+Input analog signal
+Output analog signal bandwidth
+f1 f2
+Available bandwidth
+f1 f2
+=== printed p.77 (idx 115) ===
+CHAPTER 3 INTRODUCTION TO PHYSICAL LAYER 77
+same as the signal at the end of the medium. What is sent is not what is received. Three
+causes of impairment are attenuation, distortion, and noise (see Figure 3.26).
+3.4.1 Attenuation
+Attenuation  means a loss of energy. When a signal, simple or composite, travels
+through a medium, it loses some of its en ergy in overcoming the resistance of the
+medium. That is why a wire carrying electric signals gets warm, if not hot, after a
+while. Some of the electrical energy in the signal is converted to heat. To compensate
+for this loss, amplifiers are used to amplify the signal. Figure 3.27 shows the effect of
+attenuation and amplification.
+Decibel
+To show that a signal has lost or gained strength, engineers use the unit of the decibel.
+The decibel (dB) measures the relative strengths of two signals or one signal at two dif-
+ferent points. Note that the decibel is negative if a signal is attenuated and positive if a
+signal is amplified. 
+Variables P
+1 and P2 are the powers of a signal at points 1 and 2, respectively. Note that
+some engineering books define the decibel in terms of voltage instead of power. In this
+case, because power is proportional to the sq uare of the voltage, the formula is dB =
+20 log10 (V2/V1). In this text, we express dB in terms of power. 
+Figure 3.26 Causes of impairment
+Figure 3.27 Attenuation
+dB 5 10 log10  
+Distortion NoiseAttenuation
+Impairment
+causes
+Point 1 Point 2 Point 3
+Original Attenuated Amplified
+Transmission medium Amplifier
+P2
+P1
+------
+=== printed p.78 (idx 116) ===
+78 PART II PHYSICAL LAYER
+Example 3.26
+Suppose a signal travels through a transmission medium and its power is  reduced to one-half.
+This means that P2 = P1. In this case, the attenuation (loss of power) can be calculated as
+A loss of 3 dB (−3 dB) is equivalent to losing one-half the power. 
+Example 3.27
+A signal travels through an amplifier, and its power is increased 10 times. This means that P2 =
+10P1. In this case, the amplification (gain of power) can be calculated as 
+Example 3.28
+One reason that engineers use the decibel to measure the changes in the strength of a signal is that
+decibel numbers can be added (or subtracted) when we are measuring several points (cascading)
+instead of just two. In Figure 3.28 a signal travels from point 1 to point 4. The signal is attenuated
+by the time it reaches point 2. Between points 2 and 3, the signal is amplified. Again, between
+points 3 and 4, the signal is attenuated. We can find the resultant decibel value for the signal just
+by adding the decibel measurements between each set of points. 
+In this case, the decibel value can be calculated as
+The signal has gained in power.
+Example 3.29
+Sometimes the decibel is used to measure signal power in milliwatts. In this case, it is referred to
+as dBm and is calculated as dB m = 10 log10 Pm, where Pm is the power in milliwatts. Calculate
+the power of a signal if its dBm = −30.
+Solution
+We can calculate the power in the signal as
+ 10 log10  5 10 log10  5 10 log100.5 5 10(–0.3) 5  –3 dB
+ 10 log10  5 10 log10  5 10 log1010 5 10(1) 5 10 dB 
+Figure 3.28 Decibels for Example 3.28
+dB 5 23 1 7 23 5 11  
+dBm 5 10 log10        dBm 5 230          log 10Pm 5 23       Pm 5 1023 mW 
+1
+2---
+P2
+P1
+------ 0.5P1
+P1
+--------------
+P2
+P1
+------ 10P1
+P1
+------------
+Point 1 Point 2 Point 3 Point 4
+–3 dB 7 dB
+1 dB
+–3 dB
+Transmission
+medium
+Transmission
+medium
+Amplifier
+=== printed p.79 (idx 117) ===
+CHAPTER 3 INTRODUCTION TO PHYSICAL LAYER 79
+Example 3.30
+The loss in a cable is usually defined in decibe ls per kilometer (dB/km). If the signal at the
+beginning of a cable with −0.3 dB/km has a power of 2 mW, what is the power of the signal
+at 5 km?
+Solution
+The loss in the cable in decibels is 5 × (−0.3) = −1.5 dB. We can calculate the power as   
+3.4.2 Distortion
+Distortion means that the signal changes its form or shape. Distortion can occur in a
+composite signal made of different freque ncies. Each signal component has its own
+propagation speed (see the next section) through a medium and, therefore, its own
+delay in arriving at the final destination. Differences in delay may create a difference in
+phase if the delay is not exactly the same as the period duration. In other words, signal
+components at the receiver have phases different from what they had at the sender. The
+shape of the composite signal is therefore not the same. Figure 3.29 shows the effect of
+distortion on a composite signal.
+3.4.3 Noise
+Noise is another cause of impairment. Severa l types of noise, such as thermal noise,
+induced noise, crosstalk, and impulse nois e, may corrupt the signal. Thermal noise is
+the random motion of electrons in a wire, which creates an extra signal not originally
+sent by the transmitter. Induced noise comes from sources such as motors and applianc-
+ses. These devices act as a sending antenna, and the transmission medium acts as the
+receiving antenna. Crosstalk is the effect of one wire on the other. One wire acts as a
+sending antenna and the other as the receiving  antenna. Impulse noise is a spike (a sig-
+nal with high energy in a very short time) that comes from power lines, lightning, and so
+on. Figure 3.30 shows the effect of noise on a signal. We discuss error in Chapter 10. 
+dB 5 10 log10 (P2 / P1) 5 21.5              ( P2 / P1)  5 10 20.15 5 0.71
+P2 5 0.71P1 5 0.7 3 2 mW 5 1.4 mW
+Figure 3.29 Distortion
+Composite signal
+sent
+Components,
+in phase
+At the sender
+Composite signal
+received
+Components,
+out of phase
+At the receiver
+=== printed p.80 (idx 118) ===
+80 PART II PHYSICAL LAYER
+Signal-to-Noise Ratio (SNR)
+As we will see later, to find the theoretical bit rate limit, we need to know the ratio of
+the signal power to the noise power. The signal-to-noise ratio is defined as
+We need to consider the average signal power and the average noise power because
+these may change with time. Figure 3.31 shows the idea of SNR.
+SNR is actually the ratio of what is wanted (signal) to what is not wanted (noise).
+A high SNR means the signal is less corrupted by noise; a low SNR means the signal is
+more corrupted by noise.
+Because SNR is the ratio of two powers, it is often described in decibel units,
+SNRdB, defined   as  
+Figure 3.30 Noise
+SNR 5 
+Figure 3.31 Two cases of SNR: a high SNR and a low SNR
+SNRdB 5 10 log10 SNR
+Point 1 Point 2
+Transmitted Received Noise
+Transmission medium
+average signal power
+average noise power------------------------------------------------------
+Signal
+Signal
+Noise
+Noise
+a. High SNR
+b. Low SNR
+Signal + noise
+Signal + noise
+=== printed p.81 (idx 119) ===
+CHAPTER 3 INTRODUCTION TO PHYSICAL LAYER 81
+Example 3.31
+The power of a signal is 10 mW and the power of the noise is 1 μW; what are the values of SNR
+and SNRdB? 
+Solution
+The values of SNR and SNRdB can be calculated as follows:
+Example 3.32
+The values of SNR and SNRdB for a noiseless channel are
+We can never achieve this ratio in real life; it is an ideal.
+3.5 DATA RATE LIMITS
+A very important consideration in data communications is how fast we can send data, in
+bits per second, over a channel. Data rate depends on three factors:
+1. The bandwidth available
+2. The level of the signals we use
+3. The quality of the channel (the level of noise)
+Two theoretical formulas were developed to calculate the data rate: one by Nyquist for
+a noiseless channel, another by Shannon for a noisy channel. 
+3.5.1 Noiseless Channel: Nyquist Bit Rate
+For a noiseless channel, the Nyquist bit rate formula defines the theoretical maximum
+bit rate
+In this formula, bandwidth is the bandwidth of the channel, L is the number of signal
+levels used to represent data, and BitRate is the bit rate in bits per second. 
+According to the formula, we might think that, given a specific bandwidth, we can
+have any bit rate we want by increasing the number of signal levels. Although the idea
+is theoretically correct, practically there is a limit. When we increase the number of sig-
+nal levels, we impose a burden on the receiver. If the number of levels in a signal is just 2,
+the receiver can easily distinguish between a 0 and a 1. If the level of a signal is 64, the
+receiver must be very sophisticated to dis tinguish between 64 different levels. In other
+words, increasing the levels of a signal reduces the reliability of the system. 
+SNR 5 (10,000 mw) / (1 mw) 5 10,000     SNRdB 5 10 log10 10,000 5 10 log10 104 5 40   
+SNR 5 (signal power) / 0 5 ∞         SNRdB 5 10 log10 ∞ 5 ∞   
+BitRate 5 2 3 bandwidth 3 log2L 
+Increasing the levels of a signal may reduce the reliability of the system.   
+=== printed p.82 (idx 120) ===
+82 PART II PHYSICAL LAYER
+Example 3.33
+Does the Nyquist theorem bit rate agree with the intuitive bit rate described in baseband
+transmission?
+Solution
+They match when we have only two levels. We said, in baseband transmission, the bit rate is 2
+times the bandwidth if we use only the first harm onic in the worst case. However, the Nyquist
+formula is more general than what we derived intuitively; it can be applied to baseband transmis-
+sion and modulation. Also, it can be applied when we have two or more levels of signals. 
+Example 3.34
+Consider a noiseless channel with a bandwidth of  3000 Hz transmitting a signal with two signal
+levels. The maximum bit rate can be calculated as 
+Example 3.35
+Consider the same noiseless channel transmitting a signal with four signal levels (for each level,
+we send 2 bits). The maximum bit rate can be calculated as
+Example 3.36
+We need to send 265 kbps over a noiseless channel with a bandwidth of 20 kHz. How many sig-
+nal levels do we need?
+Solution
+We can use the Nyquist formula as shown:
+Since this result is not a power of 2, we need to either increase the number of levels or reduce
+the bit rate. If we have 128 levels, the bit rate is 280 kbps. If we have 64  levels, the bit rate is
+240 kbps.
+3.5.2 Noisy Channel: Shannon Capacity
+In reality, we cannot have a noiseless chan nel; the channel is always noisy. In 1944,
+Claude Shannon introduced a formula, called the Shannon capacity, to determine the
+theoretical highest data rate for a noisy channel:
+In this formula, bandwidth is the bandwidth of the channel, SNR is the signal-to-
+noise ratio, and capacity is the capacity of the channel in bits per second. Note that in the
+Shannon formula there is no indication of the signal level, which means that no matter
+how many levels we have, we cannot achieve a data rate higher than the capacity of the
+channel. In other words, the formula defines a characteristic of the channel, not the method
+of transmission. 
+BitRate 5 2 3 3000 3 log22 5 6000 bps
+BitRate 5 2 3 3000 3 log24 5 12,000 bps
+265,000 5 2 3 20,000 3 log2L        log2L 5 6.625       L 5 26.625 5  98.7 levels
+Capacity 5 bandwidth 3 log2(1 1 SNR)
+=== printed p.83 (idx 121) ===
+CHAPTER 3 INTRODUCTION TO PHYSICAL LAYER 83
+Example 3.37
+Consider an extremely noisy channel in which th e value of the signal-to-noise ratio is almost
+zero. In other words, the noise is so strong that the signal is faint. For this channel the capacity C
+is calculated as
+This means that the capacity of this channel is zero regardless of the bandwidth. In other
+words, we cannot receive any data through this channel.
+Example 3.38
+We can calculate the theoretical highest bit rate of a regular telephone line. A telephone line nor-
+mally has a bandwidth of 3000 Hz (300 to 3300 Hz) assigned for data communications. The
+signal-to-noise ratio is usually 3162. For this channel the capacity is calculated as
+This means that the highest bit rate for a telephone line is 34.860 kbps. If we want to send data
+faster than this, we can either increase the bandwidth of the line or improve the signal-to-noise ratio.
+Example 3.39
+The signal-to-noise ratio is often gi ven in decibels. Assume that SNR dB 5 36 and the channel
+bandwidth is 2 MHz. The theoretical channel capacity can be calculated as
+Example 3.40
+When the SNR is very high, we can assume that SNR + 1 is almost the same as SNR. In these
+cases, the theoretical channel capacity can be simplified to  C 5 B 3 SNRdB. For example, we
+can calculate the theoretical capacity of the previous example as 
+3.5.3 Using Both Limits
+In practice, we need to use both methods to find the limits and signal levels. Let us show
+this with an example. 
+Example 3.41
+We have a channel with a 1-MHz bandwidth. The SNR for this channel is 63. What are the appro-
+priate bit rate and signal level? 
+Solution
+First, we use the Shannon formula to find the upper limit.
+The Shannon formula gives us 6 Mbps, the upper limit. For better performance we choose
+something lower, 4 Mbps, for example. Then we  use the Nyquist formul a to find the number of
+signal levels.  
+C 5 B log2 (1 1 SNR) 5 B log2(1 1 0) 5 B log21 5 B 3 0 5 0
+C 5 B log2 (1 1 SNR) 5 3000 log2(1 1 3162) 5 3000 3 11.62 5 34,860 bps 
+SNRdB 5 10 log10SNR SNR 5 10SNRdB/10 SNR 5 10 3.6  5 3981
+C 5 B log2(1 1 SNR) 5 2  3  106 3  log23982 5 24 Mbps 
+C 5 2 MHz 3 (36 / 3)  5 24 Mbps
+C 5 B log2(1 1 SNR) 5 106 log2(1 1 63) 5 106 log264 5 6 Mbps
+=== printed p.84 (idx 122) ===
+84 PART II PHYSICAL LAYER
+3.6 PERFORMANCE
+Up to now, we have discussed the tools of  transmitting data (signals) over a network
+and how the data behave. One important issue in networking is the performance of the
+network—how good is it? We discuss quality of service, an overall measurement of
+network performance, in greater detail in Chapter 30. In this section, we introduce
+terms that we need for future chapters.
+3.6.1 Bandwidth
+One characteristic that measures network performance is bandwidth. However, the term
+can be used in two different contexts with two different measuring values: bandwidth in
+hertz and bandwidth in bits per second.
+Bandwidth in Hertz
+We have discussed this concept. Bandwidth in hertz is the range of frequencies con-
+tained in a composite signal or the range of frequencies a channel can pass. For exam-
+ple, we can say the bandwidth of a subscriber telephone line is 4 kHz. 
+Bandwidth in Bits per Seconds
+The term bandwidth can also refer to the number of bits per second that a channel, a
+link, or even a network can transmit. For example, one can say the bandwidth of a Fast
+Ethernet network (or the links in this network) is a maximum of 100 Mbps. This means
+that this network can send 100 Mbps. 
+Relationship
+There is an explicit relationship between the bandwidth in hertz and bandwidth in bits
+per second. Basically, an increase in bandwidth in hertz means an increase in bandwidth
+in bits per second. The relationship depends on whether we have baseband transmission
+or transmission with modulation. We discuss this relationship in Chapters 4 and 5. 
+4 Mbps 5 2 3 1 MHz 3 log2LL  5 4
+The Shannon capacity gives us the upper limit;
+the Nyquist formula tells us how many signal levels we need.   
+In networking, we use the term bandwidth in two contexts. 
+❑ The first, bandwidth in hertz,  refers to the range of frequencies in a composite sig-
+nal or the range of frequencies that a channel can pass.
+❑ The second, bandwidth in bits per second, refers to the speed of bit transmission in a
+channel or link.   
+=== printed p.85 (idx 123) ===
+CHAPTER 3 INTRODUCTION TO PHYSICAL LAYER 85
+Example 3.42
+The bandwidth of a subscriber line is 4 kHz for voice or data. The bandwidth of this line for data trans-
+mission can be up to 56,000 bps using a sophisticated modem to change the digital signal to analog.
+Example 3.43
+If the telephone company improves the quality of the line and increases the bandwidth to 8 kHz,
+we can send 112,000 bps by using the same technology as mentioned in Example 3.42. 
+3.6.2 Throughput
+The throughput is a measure of how fast we can actually send data through a network.
+Although, at first glance, bandwidth in bits per second and throughput seem the same,
+they are different. A link may have a bandwidth of B bps, but we can only send T bps
+through this link with T always less than B. In other words, the bandwidth is a potential
+measurement of a link; the throughput is an actual measurement of how fast we can
+send data. For example, we may have a link with a bandwidth of 1 Mbps, but the
+devices connected to the end of the link may handle only 200 kbps. This means that we
+cannot send more than 200 kbps through this link. 
+Imagine a highway designed to transmit 1000 cars per minute from one point
+to another. However, if there is congestion on the road, this figure may be reduced to
+100 cars per minute. The bandwidth is 1000 cars per minute; the throughput is 100 cars
+per minute. 
+Example 3.44
+A network with bandwidth of 10 Mbps can pass only an average of 12,000 frames per minute
+with each frame carrying an average of 10,000 bits. What is the throughput of this network?
+Solution
+We can calculate the throughput as 
+The throughput is almost one-fifth of the bandwidth in this case.
+3.6.3 Latency (Delay)
+The latency or delay defines how long it takes for an entire message to completely
+arrive at the destination from the time the first bit is sent out from the source. We can
+say that latency is made of four compone nts: propagation time, transmission time,
+queuing time and processing delay.
+Propagation Time
+Propagation time measures the time required for a bi t to travel from the source to the
+destination. The propagation time is calculated by dividing the distance by the propaga-
+tion speed.
+Propagation time 5 Distance / (Propagation Speed)
+Throughput 5 (12,000 3 10,000) / 60  5 2 Mbps 
+Latency 5 propagation time 1 transmission time 1 queuing time 1 processing delay
+=== printed p.86 (idx 124) ===
+86 PART II PHYSICAL LAYER
+The propagation speed of electromagnetic signals depends on the medium and on
+the frequency of the signal. For example, in a vacuum, light is propagated with a speed
+of 3 × 108 m/s. It is lower in air; it is much lower in cable. 
+Example 3.45
+What is the propagation time if the distance  between the two points is 12,000 km? Assume the
+propagation speed to be 2.4 × 108 m/s in cable.
+Solution
+We can calculate the propagation time as
+The example shows that a bit can go over the Atla ntic Ocean in only 50 ms if there is a direct
+cable between the source and the destination. 
+Transmission Time
+In data communications we don’t send just 1 bit, we send a message. The first bit may
+take a time equal to the propagation time to reach its destination; the last bit also may
+take the same amount of time. However, there is a time between the first bit leaving the
+sender and the last bit arriving at the receiver. The first bit leaves earlier and arrives ear-
+lier; the last bit leaves la ter and arrives later. The transmission time  of a message
+depends on the size of the message and the bandwidth of the channel.
+Transmission time 5 (Message size) / Bandwidth
+Example 3.46
+What are the propagation time and the transmissi on time for a 2.5-KB (kilobyte) message (an e-
+mail) if the bandwidth of the network is 1 G bps? Assume that the distance between the sender
+and the receiver is 12,000 km and that light travels at 2.4 × 108 m/s.
+Solution
+We can calculate the propagation and transmission time as
+Note that in this case, because the messag e is short and the bandwidth is high, the
+dominant factor is the propagation time, not the transmission time. The transmission
+time can be ignored.
+Example 3.47
+What are the propagation time and the transmi ssion time for a 5-MB (megabyte) message (an
+image) if the bandwidth of the network is 1 M bps? Assume that the distance between the sender
+and the receiver is 12,000 km and that light travels at 2.4 × 108 m/s.
+Solution
+We can calculate the propagation and transmission times as
+Propagation time 5 (12,000 3 10,000) / (2.4 3 28) 5 50 ms 
+Propagation time 5 (12,000 3 1000) / (2.4 3 108) 5 50 ms
+Transmission time 5 (2500 3 8) / 109 5 0.020 ms 
+Propagation time 5 (12,000 3 1000) / (2.4 3 108) 5 50 ms
+Transmission time 5 (5,000,000 3 8) /106  5 40 s 
+=== printed p.87 (idx 125) ===
+CHAPTER 3 INTRODUCTION TO PHYSICAL LAYER 87
+Note that in this case, because the message is very long and the bandwidth is not very
+high, the dominant factor is the transmission time, not the propagation time. The propa-
+gation time can be ignored.
+Queuing Time
+The third component in latency is the queuing time, the time needed for each interme-
+diate or end device to hold the message before it can be processed. The queuing time is
+not a fixed factor; it changes with the lo ad imposed on the network. When there is
+heavy traffic on the network, the queuing time increases. An intermediate device, such
+as a router, queues the arrived messages a nd processes them one by one. If there are
+many messages, each message will have to wait. 
+3.6.4 Bandwidth-Delay Product
+Bandwidth and delay are two performance metrics of a link. However, as we will see in
+this chapter and future chapters, what is very important in data communications is the
+product of the two, the bandwidth-delay product. Let us elaborate on this issue, using
+two hypothetical cases as examples.
+❑ Case 1. Figure 3.32 shows case 1. 
+Let us assume that we have a link with a bandwidth of 1 bps (unrealistic, but good
+for demonstration purposes). We also assume that the delay of the link is 5 s (also
+unrealistic). We want to see what the ba ndwidth-delay product means in this case.
+Looking at the figure, we can say that this product 1
+ × 5 is the maximum number of
+bits that can fill the link. There can be no more than 5 bits at any time on the link. 
+❑ Case 2. Now assume we have a bandwidth of 5 bps. Figure 3.33 shows that there
+can be maximum 5  × 5 = 25 bits on the line. The reason is that, at each second,
+there are 5 bits on the line; the duration of each bit is 0.20 s. 
+The above two cases show that the product of bandwidth and delay is the number of
+bits that can fill the link. This measurement is important if we need to send data in bursts
+and wait for the acknowledgment of each burst before sending the next one. To use the
+maximum capability of the link, we need to make the size of our burst 2 times the product
+Figure 3.32 Filling the link with bits for case 1
+After 1 s 1st bit
+1st bit2nd bit
+1st bit2nd bit3rd bit
+1st bit2nd bit3rd bit4th bit
+1st bit2nd bit3rd bit4th bit5th bit
+Delay: 5 sBandwidth: 1 bps
+Bandwidth × delay = 5 bits
+Sender Receiver
+After 2 s
+After 3 s
+After 4 s
+After 5 s
+1 s 1 s 1 s 1 s 1 s
+=== printed p.88 (idx 126) ===
+88 PART II PHYSICAL LAYER
+of bandwidth and delay; we need to fill up the full-duplex channel (two directions). The
+sender should send a burst of data of (2 × bandwidth × delay) bits. The sender then waits
+for receiver acknowledgment for part of th e burst before sending another burst. The
+amount 2 × bandwidth × delay is the number of bits that can be in transition at any time.   
+Example 3.48
+We can think about the link between two points as a pipe. The cross section of the pipe represents
+the bandwidth, and the length of the pipe represents the delay. We can say the volume of the pipe
+defines the bandwidth-delay product, as shown in Figure 3.34.  
+3.6.5 Jitter
+Another performance issue that is related to delay is jitter. We can roughly say that jit-
+ter is a problem if different packets of data  encounter different delays and the applica-
+tion using the data at the receiver site is time-sensitive (audio and video data, for
+example). If the delay for the first packet is  20 ms, for the second is 45 ms, and for the
+third is 40 ms, then the real-time application that uses the packets endures jitter. We dis-
+cuss jitter in greater detail in Chapter 28. 
+Figure 3.33 Filling the link with bits in case 2
+The bandwidth-delay product defines the number of bits that can fill the link.   
+Figure 3.34 Concept of bandwidth-delay product
+After 1 s
+First 5 bits
+First 5 bits
+First 5 bits
+First 5 bits
+First 5 bits
+1 s
+Delay: 5 sBandwidth: 5 bps
+Bandwidth × delay = 25 bits
+After 2 s
+After 3 s
+After 4 s
+After 5 s
+1 s 1 s 1 s 1 s
+Sender Receiver
+Cross section: bandwidth
+Length: delay
+V olume: bandwidth × delay
+=== printed p.89 (idx 127) ===
+CHAPTER 3 INTRODUCTION TO PHYSICAL LAYER 89
+3.7 END-CHAPTER MATERIALS
+3.7.1 Recommended Reading
+For more details about subjects discussed in this chapter, we recommend the following
+books. The items in brackets [. . .] refer to the reference list at the end of the text.
+Books
+Data and signals are discussed in [Pea92]. [Cou01] gives excellent coverage of signals.
+More advanced materials can be found in [Ber96]. [Hsu03] gives a good mathematical
+approach to signaling. Complete coverage of Fourier Analysis can be found in [Spi74].
+Data and signals are discussed in [Sta04] and [Tan03]. 
+3.7.2 Key Terms
+3.7.3 Summary
+Data must be transformed to electromagnetic signals to be transmitted. Data can be
+analog or digital. Analog data are continuous and take continuous values. Digital data
+have discrete states and take discrete valu es. Signals can be anal og or digital. Analog
+signals can have an infinite number of values in a range; digital signals can have only a
+limited number of values.
+analog
+analog data
+analog signal
+attenuation
+bandpass channel
+bandwidth
+baseband transmission
+bit length
+bit rate
+bits per second (bps)
+broadband transmission
+composite signal
+cycle
+data
+decibel (dB)
+digital
+digital data
+digital signal
+distortion
+Fourier analysis
+frequency
+frequency-domain
+fundamental frequency
+harmonic
+Hertz (Hz)
+jitter
+latency
+low-pass channel
+noise
+nonperiodic signal
+Nyquist bit rate
+peak amplitude
+period
+periodic signal
+phase
+processing delay
+propagation speed
+propagation time
+queuing time
+Shannon capacity
+signal
+signal-to-noise ratio (SNR)
+sine wave
+throughput
+time-domain
+transmission time
+wavelength
