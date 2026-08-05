@@ -27,11 +27,17 @@ here properly.
 3. Walk slot by slot asking ONE question per scheme (below), writing each bit as you go.
 4. Sanity check: 8 slots → exactly 8 bits.
 
-### NRZ-I decode rule (book Fig 4.6, `figs/b102_NRZ_LI.png`)
+### NRZ-I decode rule (book Fig 4.6)
 
 > **Transition at the start of the slot → 1. No transition → 0.**
 
-Walk of the actual Q14 waveform (starts low): slot 1 jumps high → **1**; slots 2–3
+![Book Fig 4.6 — NRZ-L and NRZ-I with transition markers](figs/crops/fig4_6_nrz.png)
+
+The actual Q14 (decode this — answer in red below it):
+
+![Past paper Q14 — NRZ-I decode](figs/crops/pp_q14_wave.png)
+
+Walk of that waveform (starts low): slot 1 jumps high → **1**; slots 2–3
 stay high → **0,0**; slot 4 drops low → **1**; slot 5 jumps high → **1**; slots 6–7
 stay high → **0,0**; slot 8 drops → **1**. Read-off: **10011001** ✓ (matches the key).
 
@@ -39,10 +45,16 @@ Notice the shape ↔ bits intuition: **long flat stretches = runs of 0s; every e
 a boundary = a 1.** That's also *why* NRZ-I fails at self-sync for long 0s — flat line,
 no clock info (nice tie-in if the question asks for a comment).
 
-### Differential Manchester decode rule (book Fig 4.8, `figs/b104_manchester.png`)
+### Differential Manchester decode rule (book Fig 4.8)
 
 > **There is ALWAYS a transition mid-slot (that's just the clock — ignore it).
 > The bit lives at the START boundary: transition there → 0, no transition → 1.**
+
+![Book Fig 4.8 — Manchester and Differential Manchester](figs/crops/fig4_8_manchester.png)
+
+The actual Q13 (decode this — answer in red below it):
+
+![Past paper Q13 — Differential Manchester decode](figs/crops/pp_q13_wave.png)
 
 So the whole decode is: *look only at the slot boundaries, ignore every mid-slot flip.*
 At each boundary, compare the level just before vs just after: changed → 0, same → 1.
@@ -84,6 +96,8 @@ then decode your own drawings back. Round-trip agreement = you're done.
 
 Exam signals are almost always "composed of sine waves" → periodic → **spikes**.
 
+![Book Fig 3.13 — the periodic/nonperiodic drawing rule](figs/crops/fig3_13_bandwidth.png)
+
 ### Q7 recipe (three sines: 3 Hz @ 5 V, 4 Hz @ 3 V, 6 Hz @ 51 V*)
 1. Horizontal axis: frequency (Hz). Vertical axis: amplitude (V). LABEL BOTH.
 2. One vertical spike at each frequency, height proportional to amplitude, value
@@ -91,12 +105,16 @@ Exam signals are almost always "composed of sine waves" → periodic → **spike
 3. Nothing else. No sine squiggles, no curve connecting the spikes.
 (*51 V is almost certainly a typo for 5 V; draw whatever the paper says and move on.)
 
+![Book Fig 3.14 — model spike spectrum with span-arrow](figs/crops/fig3_14_spectrum.png)
+
 ### Q12 recipe (bandwidth 2000 Hz, first sine 100 Hz @ 20 V, second @ 5 V)
 1. **Solve first**: B = f_high − f_low → f_high = 100 + 2000 = **2100 Hz**.
 2. Spike at 100 Hz, height 20 V. Spike at 2100 Hz, height 5 V.
 3. **Draw the bandwidth as a labeled horizontal span-arrow between the two spikes:
-   "B = 2100 − 100 = 2000 Hz."** The model solution (`figs/pastpaper_p5.png`, top)
-   does exactly this — the span annotation is what "draw the bandwidth" *means*.
+   "B = 2100 − 100 = 2000 Hz."** The model solution does exactly this — the span
+   annotation is what "draw the bandwidth" *means* (photographed sideways):
+
+![Past paper Q12 handwritten model solution](figs/crops/pp_q12_soln.png)
 
 ### The nonperiodic variant (book Example 3.12 — she could swap this in)
 "Nonperiodic, B = 200 kHz, middle frequency 140 kHz at 20 V, extreme frequencies at
@@ -117,7 +135,9 @@ amplitude" → f_low = 40 Hz; draw a comb of equal-height spikes at 40, 41, ...,
 Application+Presentation+Session merge into one TCP/IP "Application" cell, Data Link +
 Physical merge into "Network Access / Network Interface", Transport↔Transport,
 Network↔"Internet / Network". Practice drawing the *merged-cell* shape — the merging
-IS the answer.
+IS the answer:
+
+![Past paper Q5 model answer](figs/crops/pp_q5_table.png)
 
 ### Q15: the model answer (worth stealing wholesale) includes **address bit-widths**:
 - Port address: **16 bit** (Transport)
@@ -133,6 +153,8 @@ multiplexing · Network = providing communication channel, routing · Data link 
 access control · Physical = transmission on the line. **Add the bit-widths to your Q15
 answer — it's the cheapest way to look like the model solution.**
 
+![Past paper Q15 model answer — the full marking-scheme table](figs/crops/pp_q15_table.png)
+
 ---
 
 ## D4. Ch4 figure-reading you should recognize (lower probability, high cheapness)
@@ -141,9 +163,14 @@ answer — it's the cheapest way to look like the model solution.**
   version of the PCM question is a half-filled chart — samples drawn as bars, you fill
   normalized value / quantized value / error / code / encoded word rows. Same pipeline,
   presented as a figure. If you did file 03's worked skeleton, you can fill any cell.
+
+![Book Fig 4.26 — the chart they'd hand you half-empty](figs/crops/fig4_26_quant.png)
+
 - **PCM block diagram:** analog signal → [Sampling] → PAM → [Quantizing] → quantized
   levels → [Encoding] → digital data. Three boxes, drawable in 15 seconds, sometimes
   asked as "draw the components of a PCM encoder."
+
+![Book Fig 4.21 — PCM encoder components](figs/crops/fig4_21_pcm.png)
 - **Bandwidth-density curves next to each line-coding scheme** (the little P vs f/N
   plots in Figs 4.6/4.8): don't memorize the shapes — memorize the one fact each shape
   encodes: NRZ family concentrates energy near f=0 (**DC problem**), biphase

@@ -70,12 +70,16 @@ Links needed = n(n−1)/2  (duplex links)      Ports per device = n−1
 - ❌ Cabling bulk + I/O port cost — installation/reconnection hard, expensive.
 - Real use: backbone connections, telephone regional offices.
 
+![Mesh — 5 devices, 10 links (book Fig 1.4)](figs/crops/fig1_4_mesh.png)
+
 ### Star — every device linked only to a central hub
 - ✅ Cheap(er): 1 link + 1 port per device; easy install/reconfigure; robust (one link
   fails → only that device affected); easy fault isolation via the hub.
 - ❌ **Single point of failure: hub dies → whole network dead.** More cabling than
   bus/ring (everything runs to the hub).
 - Real use: modern LANs.
+
+![Star — everything through the hub (book Fig 1.5)](figs/crops/fig1_5_star.png)
 
 ### Bus — one backbone cable, devices attach via drop lines + taps
 - Multipoint (the other three are point-to-point based).
@@ -85,6 +89,8 @@ Links needed = n(n−1)/2  (duplex links)      Ports per device = n−1
   between devices on the same side** (the break reflects noise both ways).
 - Real use: early Ethernet (legacy now).
 
+![Bus — backbone + drop lines + taps (book Fig 1.6)](figs/crops/fig1_6_bus.png)
+
 ### Ring — each device linked to exactly its two neighbors; signal circulates one way
 - Each device contains a **repeater** that regenerates bits and passes them on.
 - ✅ Easy install/reconfig (add/delete touches only 2 connections); fault isolation
@@ -92,6 +98,8 @@ Links needed = n(n−1)/2  (duplex links)      Ports per device = n−1
 - ❌ Unidirectional traffic: **one break (or one dead station) can disable the whole
   ring** — mitigated by a dual ring or a bypass-capable switch.
 - Real use: IBM Token Ring (legacy).
+
+![Ring — each device is a repeater (book Fig 1.7)](figs/crops/fig1_7_ring.png)
 
 **Failure-consequence drill (book P1-4, 5 devices):** mesh → only that link's pair
 loses their direct path, network fine; star → one device drops (unless it's the hub!);
@@ -169,7 +177,7 @@ now vs research later.*
 | P1-1: max symbols in Unicode | 2³² |
 | P1-2: 16-bit pixels → colors | 2¹⁶ = 65,536 |
 | P1-3: 6-device mesh | 15 cables, 5 ports each |
-| Q1-12: does a link-layer switch need an address to relay Host1→Host3? | No — the switch forwards based on the *destination* address in the frame; it isn't the endpoint (it needs no address for this forwarding job) |
+| Q1-12: does a link-layer switch need an address to relay Host1→Host3? | **No.** The frame is addressed *to Host 3*, never to the switch — the switch just reads that destination field and forwards out the right port (mail-sorter analogy: sorters route envelopes, envelopes aren't addressed to sorters). Contrast: a **router** DOES have addresses — off-network frames are sent *to the router itself* |
 | P1-8: most delay-sensitive of email / file copy / web surfing | web surfing (interactive) |
 | P1-9: local phone call — point-to-point or multipoint? | point-to-point (dedicated circuit for the call's duration) |
 
@@ -207,9 +215,13 @@ layer "thinks" it talks directly to its peer.
 
 Memory device: **A**ll **P**eople **S**eem **T**o **N**eed **D**ata **P**rocessing (7→1).
 
+![The OSI model (book Fig 2.11)](figs/crops/fig2_11_osi.png)
+
 The past paper's Q15 model answer includes the **address bit-widths** (16/32/48) —
-write them; it's the cheapest way to match the marking scheme. Full model-answer
-keywords per layer: `04-diagram-drills.md` §D3, rendered in `figs/pastpaper_p6.png`.
+write them; it's the cheapest way to match the marking scheme. Here is that model
+answer itself (this is what full marks looks like):
+
+![Past paper Q15 model answer — OSI layers, tasks, addressing](figs/crops/pp_q15_table.png)
 
 ## 2.3 Instant answers to the "which layer does X" family (past paper Q1–Q6)
 
@@ -240,6 +252,12 @@ Data Link     ───────────────  Data link      ┐ 
 Physical      ───────────────  Physical       ┘  into "Network Interface")
 ```
 
+![Book Fig 2.12 — the merged-cell mapping](figs/crops/fig2_12_osi_vs_tcpip.png)
+
+The past paper's Q5 model answer draws it as the same merged-cell table:
+
+![Past paper Q5 model answer](figs/crops/pp_q5_table.png)
+
 **Why session/presentation vanished in TCP/IP** (know the *why*, not just *that*):
 (1) TCP/IP has several transport protocols; some session functionality lives there.
 (2) The application layer isn't one piece of software — any app that needs
@@ -256,6 +274,8 @@ session/presentation features builds them in itself.
 
 Source host: **Message** (App) → +transport header → **Segment/User datagram** →
 +network header → **Datagram** → +data-link header → **Frame** → **bits** on the wire.
+
+![Encapsulation/decapsulation across host–router–host (book Fig 2.8)](figs/crops/fig2_8_encapsulation.png)
 
 - At the **router**: decapsulate up to Network (inspect addresses, consult forwarding
   table), then re-encapsulate into a *possibly different* link-layer frame. The

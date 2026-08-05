@@ -39,9 +39,13 @@ Book Example 4.4: NRZ-I at... careful, the book's own numbers: N = 1 Mbps → S 
 
 ⚠ **Heads up (verified from the actual past-paper images): Q13/Q14 give you a
 WAVEFORM and ask you to read the bits OFF it — the reverse of drawing.** Learn the
-encode direction here, then run the decode drills in `04-diagram-drills.md` §D1 (the
-past paper's exact waveforms are rendered in `figs/pastpaper_p5.png` and `p6.png`).
-Same rules, opposite direction; decode is faster once encoding is solid.
+encode direction here, then run the decode drills in `04-diagram-drills.md` §D1.
+Same rules, opposite direction; decode is faster once encoding is solid. Here are the
+actual past-paper questions (answers in red — cover them and decode yourself):
+
+![Past paper Q13 — decode the Differential Manchester waveform](figs/crops/pp_q13_wave.png)
+
+![Past paper Q14 — decode the NRZ-I waveform](figs/crops/pp_q14_wave.png)
 
 Drill order — do each on paper for the byte **11000100**, then for **10011001**:
 
@@ -54,6 +58,8 @@ no transition if 0.** The level itself means nothing — *change* means 1.
 - Past paper Q14: 10011001, starting LOW.
   Walk it: 1→flip(H), 0→stay(H), 0→stay(H), 1→flip(L), 1→flip(H), 0→stay(H),
   0→stay(H), 1→flip(L). Draw those 8 slots.
+
+![NRZ-L vs NRZ-I for 01001110 — note the ○/● transition markers (book Fig 4.6)](figs/crops/fig4_6_nrz.png)
 
 **RZ:** signal goes to zero in the MIDDLE of every bit (3 levels: +, 0, −). Costly
 bandwidth, obsolete — one sentence of theory is enough; drawing risk is low.
@@ -68,6 +74,8 @@ transition at start = 0, no transition at start = 1.**
 - Past paper Q13: 11000100, starting LOW. Walk each bit: ask "start-transition?"
   (yes if bit is 0), then ALWAYS flip mid-bit.
 
+![Manchester vs Differential Manchester for 010011 (book Fig 4.8)](figs/crops/fig4_8_manchester.png)
+
 **The drawing discipline (same spirit as DSP's "mark n=0 with an arrow"):**
 1. Draw 8 bit-slot boundaries FIRST, light vertical lines.
 2. Write the bit above each slot.
@@ -79,6 +87,8 @@ transition at start = 0, no transition at start = 1.**
 **Bipolar AMI:** 0 = zero voltage; 1s alternate +V, −V, +V... (no DC by construction).
 Pseudoternary = the same with roles swapped (0s alternate). Half a mark of theory risk;
 know the rule, don't over-drill.
+
+![AMI and pseudoternary for 010010 (book Fig 4.9)](figs/crops/fig4_9_ami.png)
 
 ### 1.4 Summary table (condensed from book Table 4.1 — reproduce from memory once)
 
@@ -110,6 +120,8 @@ The math is literally `rate × skew%`. Don't overthink; do state the direction c
 
 Analog → digital data in 3 steps: **Sample → Quantize → Encode.** Every sub-question
 the examiner can ask lives in one of these steps.
+
+![The PCM encoder pipeline (book Fig 4.21)](figs/crops/fig4_21_pcm.png)
 
 ### 2.1 Sampling — Nyquist theorem (again, but the OTHER Nyquist statement)
 
@@ -154,6 +166,12 @@ code **2** → encoded **010**.
 
 **Do 3–4 of these by hand until the pipeline (normalize → zone → midpoint → error →
 code → binary) runs without looking.** This is THE thing you said you need to "apply."
+
+The book's own worked chart — the exam version of this question is handing you this
+figure half-empty and asking you to fill rows (check your hand-worked samples against
+its columns):
+
+![Quantization and encoding worked chart (book Fig 4.26)](figs/crops/fig4_26_quant.png)
 
 ### 2.3 The two formulas that ride on quantization
 

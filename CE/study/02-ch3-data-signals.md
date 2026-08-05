@@ -159,6 +159,8 @@ Mental picture (book's own): the link is a **pipe** — cross-section = bandwidt
 length = delay, volume = BDP. The ×2 in part (b) is because a full-duplex round trip
 fills the pipe in both directions before the first ack can possibly return.
 
+![Filling the link with bits — bandwidth 1 bps × delay 5 s = 5 bits in flight (book Fig 3.32)](figs/crops/fig3_32_bdp.png)
+
 **Trap: units.** KB and MB in messages are ×8 to get bits; km must become m. Two of
 the three "wrong answers" in this problem family are unit slips, not concept errors.
 
@@ -176,15 +178,23 @@ delay between packets (matters for real-time audio/video). One line each, cheap 
 ### Past paper Q7 pattern: three sines — 3 Hz @ 5 V, 4 Hz @ 3 V, 6 Hz @ 51 V(?)
 "Draw in frequency domain" = draw a **vertical spike at each frequency, height = peak
 amplitude**. Three spikes. Label both axes (freq in Hz, amplitude in V). Done. Do NOT
-draw sine waves — frequency domain means spikes.
+draw sine waves — frequency domain means spikes. This is what your answer should look
+like (book Fig 3.14 — one spike per component, span-arrow underneath):
+
+![Spike spectrum with bandwidth span (book Fig 3.14)](figs/crops/fig3_14_spectrum.png)
 
 ### Past paper Q12 pattern (= book-style): periodic composite, bandwidth 2000 Hz, two
 sines, first at 100 Hz @ 20 V, second @ 5 V — find/draw the bandwidth
 B = f_high − f_low → 2000 = f_high − 100 → **f_high = 2100 Hz.**
 Draw: spike at 100 Hz (20 V), spike at 2100 Hz (5 V), mark the span "B = 2000 Hz."
-The "solve" step is one subtraction; the marks are in the labeled drawing.
+The "solve" step is one subtraction; the marks are in the labeled drawing. The
+handwritten model solution does exactly this (photographed sideways — tilt your head):
+
+![Past paper Q12 model solution — two spikes + labeled span](figs/crops/pp_q12_soln.png)
 
 ### Theory bites that ride along with these
+![Periodic = discrete spikes, nonperiodic = continuous curve (book Fig 3.13)](figs/crops/fig3_13_bandwidth.png)
+
 - Periodic composite signal → **discrete** frequency spectrum (spikes).
   Nonperiodic signal → **continuous** spectrum.
 - A digital signal is a composite analog signal with **infinite bandwidth**
