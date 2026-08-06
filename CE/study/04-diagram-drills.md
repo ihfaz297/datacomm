@@ -60,6 +60,26 @@ So the whole decode is: *look only at the slot boundaries, ignore every mid-slot
 At each boundary, compare the level just before vs just after: changed → 0, same → 1.
 Q13's waveform (starts low) reads off as **11000100** ✓.
 
+**The full decode, as a 3-step storyboard (this is the pen procedure, drawn out):**
+
+![Differential Manchester decode storyboard — Q13 walked in 3 steps](figs/crops/diffman_decode_storyboard.png)
+
+Step 1 is not optional ceremony — physically X-ing out the mid-flips first is what
+stops your eye from reading them as data. 8 slots = exactly 8 X marks; if you have
+7 or 9, you've misplaced a boundary.
+
+**Now you, fresh waveform, no annotations (starts LOW):**
+
+![Practice differential Manchester decode](figs/crops/diffman_practice.png)
+
+<details><summary>Answer (click after decoding)</summary>
+
+**01101001** — boundary walk: CHG(0), same(1), same(1), CHG(0), same(1), CHG(0),
+CHG(0), same(1). If you got the exact bit-flip (10010110), you read the mid-slot
+transitions as data — go back to Step 1 and X them out first.
+
+</details>
+
 **The trap:** under pressure people read the mid-bit transitions as data. Physically
 cover the middle of each slot with your pen tip and only look at the boundaries.
 

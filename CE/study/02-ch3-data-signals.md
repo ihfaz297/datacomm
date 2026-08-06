@@ -217,6 +217,34 @@ but power fine — which impairment?" (distortion).
 
 ---
 
+## 3.10 GAP PATCH — sine-wave basics the file skipped (10 min, added morning-of)
+
+The past paper didn't touch §3.2, so this file skipped it. New supervisor = small risk
+of a half-mark one-liner from here. Patch, in firing order:
+
+- **A sine wave is fully described by 3 things: peak amplitude A, frequency f, phase φ**
+  — s(t) = A·sin(2πft + φ). If asked "what defines a sine wave," that's the answer.
+- **Period ↔ frequency: T = 1/f.** 60 Hz mains → T = 1/60 ≈ 16.7 ms. Watch units
+  (ms ↔ kHz, μs ↔ MHz — inverse pairs).
+- **Phase = where in the cycle the wave starts, measured against t = 0.** A shift of
+  one full cycle = 360°. Classic book example: a sine starting **1/6 cycle** late →
+  φ = (1/6)·360° = **60°** (= π/3 rad). The recipe: fraction of cycle × 360.
+- **Wavelength λ = propagation speed / frequency = c/f.** It's "how far the signal
+  travels during one period." E.g., 4 kHz signal in cable at 2×10⁸ m/s →
+  λ = 2×10⁸/4000 = 50 km.
+- **Bit length = propagation speed × bit duration** — the digital cousin of
+  wavelength: how much cable one bit occupies.
+- Frequency intuition lines the book loves: *"frequency is the rate of change";*
+  instantaneous change = infinite frequency; no change at all = frequency zero (DC).
+- **Time domain vs frequency domain:** a single sine = ONE spike in the frequency
+  domain (at f, height A). The frequency domain is just the compact inventory of
+  components — which is why composite-signal questions are drawn there.
+- **Baseband vs broadband:** baseband = send the digital signal as-is, needs a
+  **low-pass** channel (bandwidth starting at 0). Broadband = **modulate** onto a
+  carrier, uses a **bandpass** channel. Rough baseband rule: using only the first
+  harmonic, minimum bandwidth B = N/2 (bit rate N) — which is why a 4 kHz phone
+  channel maxes at ~8 kbps without a modem.
+
 ## Self-test (do this closed-book at the end of the block, ~15 min)
 
 1. Attenuation −6 dB, input 8 W. Output? *(−6 dB ≈ two halvings → 2 W)*
