@@ -112,21 +112,13 @@ The MCP neuron reframed the brain cell as a **logic gate with binary output**; R
 Gradient descent steps opposite the gradient: w := w − η∇J(w); **η scales the step size**.
 - **Too large:** overshoots the minimum — cost oscillates or diverges (grows every epoch).
 - **Too small:** converges reliably but needs far too many epochs.
-```
-J(w)  η too large: bounces           η too small: crawls
-  \      /\    /\                       \_
-   \    /  \  /  \                        \_
-    \__/    \/    \__ w                     \__→ min (eventually)
-```
-Well-chosen η (often with standardized features, e.g. 0.01) → few, direct steps to the minimum.
+![learning rate](figures/learning_rate.png)
+Well-chosen η (often with standardized features, e.g. 0.01) → few, direct steps to the minimum. In the exam, draw the U-shaped cost bowl with arrows: zigzag exploding outward (too large) vs many tiny hops (too small).
 
 ### B4. Define linearly separable and not linearly separable + figure `[19TT1, 20TT1]`
 **Linearly separable:** a single straight line (hyperplane in higher-d) can split the two classes perfectly → the perceptron **converges**.
 **Not linearly separable:** no such line exists (classic: XOR) → at least one point stays misclassified every epoch, so perceptron weights **update forever** — cap max epochs, or use models that still converge (Adaline/logistic minimize a continuous cost; kernel SVM bends the boundary).
-```
-Separable:   - - │ + +        Not separable:   + -        - + +
-             - - │ + +                         - +        + - -   (mixed)
-```
+![separable vs not](figures/separable.png)
 
 ### B5. Importance of feature scaling + example technique `[19TT1, 20TT1]`
 Unscaled features let the largest-range feature **dominate** the cost surface (gradient descent takes skewed, zigzag steps) and distance metrics (KNN/SVM). Scaling makes the cost contours **round and symmetric** → fewer, more direct steps to the minimum; Adaline converges in ~15 epochs at η=0.01 after standardization. **Exception: decision trees / random forests are scale-invariant.**
@@ -156,10 +148,7 @@ Nominal features must not be integer-coded (fakes an order: blue>green>red). Cre
 
 ### B10. How does L1 regularization perform feature selection? (vs L2) `[Ch4]`
 Regularization adds a weight penalty to the cost to tame complexity. **L2:** λΣw² — circular budget → weights shrink smoothly, rarely to exactly zero ("weight decay"). **L1:** λΣ|w| — **diamond** budget whose **corners sit on the axes**; the cost contours typically first touch a corner, so several weights land at **exactly 0** → sparse solution → irrelevant features automatically eliminated. Stronger λ (smaller C = 1/λ) → more zeros.
-```
-L2: contours ⟶ ◯ tangent point off-axis (small w's)
-L1: contours ⟶ ◇ corner ON axis (some wⱼ = 0)
-```
+![L1 vs L2](figures/l1_l2.png)
 
 ### B11. Why dimensionality reduction + one technique `[Ch4]`
 High-dimensional data → sparsity (curse of dimensionality), overfitting, compute cost. Techniques: **feature selection** — L1 regularization; **Sequential Backward Selection**: start with all d features, repeatedly remove the feature whose removal costs least performance until k remain; or **random-forest feature importance** (avg impurity decrease per feature). Feature extraction: PCA — project onto directions of maximum variance.
@@ -179,9 +168,7 @@ A tree of yes/no questions: **root node** (all data) → **internal nodes** test
 ### B16. Overfitting vs underfitting (+ remedies) `[Ch3/Ch4]`
 **Underfitting (high bias):** model too simple — poor even on training data (straight line through curved pattern). **Overfitting (high variance):** model too complex — great on training, poor on unseen data (wiggly boundary hugging noise). Both = low performance on unseen data.
 **Remedies for overfitting:** collect more data · **regularization** · simpler model/fewer parameters · dimensionality reduction/feature selection.
-```
-underfit: ── straight thru mixed    good: ⌒ smooth curve    overfit: ʍ hugs every point
-```
+![underfit good overfit](figures/fit_quality.png)
 
 ### B17. Regularization parameter C `[Ch3]`
 scikit-learn exposes **C = 1/λ**. **Small C** = strong regularization → weights crushed → wider margin / simpler model → underfit risk. **Large C** = weak regularization → fits training data hard → overfit risk. Same role in logistic regression and soft-margin SVM (penalty C·Σξᵢ).
@@ -211,25 +198,17 @@ Full 4-person, 4-epoch worked example with update table, final boundary x₂ = 1
 φ(z) = 1/(1+e⁻ᶻ) squashes z into (0,1) = P(y=1|x). From maximum likelihood (product of per-sample probabilities → take log → negate to minimize):
 **J(w) = Σ [ −y log φ(z) − (1−y) log(1−φ(z)) ]**
 Single instance: y=1 → cost = −log φ(z): ~0 when φ(z)→1, →∞ when φ(z)→0; y=0 is the mirror (−log(1−φ(z))).
-```
-cost │\                       /│
-     │ \  y=1        y=0    /  │
-     │  \___            ___/   │
-     └──────────────────────── φ(z)
-     0                        1
-```
+![sigmoid](figures/sigmoid.png)
+![logistic cost](figures/logistic_cost.png)
 Confidently-wrong predictions cost →∞ → strong gradient signal. Log form: product→sum (easy derivative, no underflow).
 
 ### C5. Explain the accuracy-vs-C validation curve `[19T2 plot — Ch3 concept]`
 x-axis: C = 1/λ. **Left (small C):** strong regularization → both training & validation accuracy low = **underfitting**. Both rise as C grows. **Right (large C):** training accuracy keeps climbing but validation accuracy peaks then **drops**, gap widens = **overfitting**. Best C = validation peak (~10⁻¹–10⁰ in the shown plot).
+![validation curve](figures/validation_curve.png)
 
 ### C6. Learning curves: accuracy vs number of training samples `[19-era figure Q]`
 Two curves: training accuracy starts near 1.0 and falls slightly; validation accuracy starts low and rises. **Large persistent gap = overfitting/high variance** → more data, regularization, simpler model. **Both plateauing low & close = underfitting** → more complex model / better features. **Ideal:** both converge high with a tiny gap, approaching the desired-accuracy line.
-```
-acc │ train ─────────────        ideal: both ⟶ ───≈───
-    │        ˰˰˰˰ val (gap!)
-    └───────────────── #samples
-```
+![learning curves](figures/learning_curves.png)
 
 ---
 
