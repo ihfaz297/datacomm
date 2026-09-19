@@ -16,21 +16,54 @@ bits = "10110010"
 
 # ---- paste your encoders here (steps 1-4) ----
 def nrz_l(bits):
+    signal=[]
+    for b in bits:
+        if b=='1':
+            signal.append(-1)
+        else : signal.append(1)
     pass
+    return signal
 
 def nrz_i(bits):
-    pass
+    signal=[]
+    level=1
+    for b in bits:
+        if b=='1':
+            level=-level
+        signal.append(level)
+        pass
+    return signal
 
 def manchester(bits):
-    pass
+    signal=[]
+    for b in bits:
+        if b=='1':
+            signal.extend([-1,1])
+        else:
+            signal.extend([1,-1])
+        pass
+    return signal
 
 def diff_manchester(bits):
-    pass
+    signal=[]
+    level=1
+    for b in bits:
+        if b=='1':
+            level=-level
+        signal.extend([-level, level])
+        pass
+    return signal
 
 
 # ---- paste steps() here (step 5) ----
 def steps(signal, k):
-    pass
+    t = []
+    y = []
+    for i, v in enumerate(signal):
+        t.extend([i / k, (i + 1) / k])
+        y.extend([v, v])
+        pass
+    return t, y
 
 
 def plot_signal(ax, bits, signal, title):
@@ -38,9 +71,11 @@ def plot_signal(ax, bits, signal, title):
 
     t, y = steps(signal, k)
     # TODO: ax.plot(t, y, drawstyle='steps-post', linewidth=2)
+    ax.plot(t, y, drawstyle='steps-post', linewidth=2)
 
     # TODO: bit boundaries: for i in range(len(bits) + 1): ax.axvline(i, color='red', linestyle='--', alpha=0.5)
-
+    for i in range (len(bits)+1):
+        ax.axvline(i, color='red', linestyle='--', alpha=0.5)
     # mid-bit lines only make sense when there are 2 halves per bit
     if k == 2:
         for i in range(len(bits)):
@@ -54,7 +89,11 @@ def plot_signal(ax, bits, signal, title):
     ax.set_xlim(0, len(bits))
     ax.set_ylim(-1.5, 1.5)
     # TODO: ax.set_yticks([-1, 1])  and  ax.set_yticklabels(["Low", "High"])
+    ax.set_yticks([-1,1])
+    ax.set_yticklabels(["Low","High"])
     # TODO: ax.set_xlabel("Bit Time")  and  ax.set_ylabel("Level")
+    ax.set_xlabel("Bit time")
+    ax.set_ylabel("level")
     ax.grid(axis='y', alpha=0.3)
 
 
@@ -65,6 +104,8 @@ plot_signal(axes[1], bits, nrz_i(bits),           "NRZ-I")
 plot_signal(axes[2], bits, manchester(bits),      "Manchester (0 = High-to-Low, 1 = Low-to-High)")
 plot_signal(axes[3], bits, diff_manchester(bits), "Differential Manchester")
 plt.tight_layout()
-plt.savefig("practice/step6.png", dpi=80)
-print("saved practice/step6.png  ->  tell Claude 'step 6 done' and it will look at the picture")
+import os
+out_png = os.path.join(os.path.dirname(os.path.abspath(__file__)), "step6.png")
+plt.savefig(out_png, dpi=80)
+print("saved", out_png, "  ->  tell Claude 'step 6 done' and it will look at the picture")
 plt.show()

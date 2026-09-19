@@ -18,7 +18,9 @@ def steps(signal, k):
     y = []
     for i, v in enumerate(signal):
         # TODO: t.extend([ start, end ])   with start = i / k  and end = (i + 1) / k
+        t.extend([i / k, (i + 1) / k])
         # TODO: y.extend([ v, v ])
+        y.extend([ v, v ])
         pass
     return t, y
 
