@@ -12,17 +12,25 @@
 bits = "10110010"
 
 
+# def diff_manchester(bits):
+#     signal = []
+#     level = 1                 # start High
+#     for b in bits:
+#         # TODO: if b is '0', flip level          (beginning-of-bit transition)
+#         # TODO: append level                     (first half)
+#         # TODO: flip level                       (middle transition, ALWAYS)
+#         # TODO: append level                     (second half)
+#         pass
+#     return signal
 def diff_manchester(bits):
     signal = []
-    level = 1                 # start High
+    level = 1
     for b in bits:
-        # TODO: if b is '0', flip level          (beginning-of-bit transition)
-        # TODO: append level                     (first half)
-        # TODO: flip level                       (middle transition, ALWAYS)
-        # TODO: append level                     (second half)
+        if b=='1':
+            level = -level
+        signal.extend([-level, level])
         pass
     return signal
-
 
 # ---------------- checker: don't edit below ----------------
 out = diff_manchester(bits)

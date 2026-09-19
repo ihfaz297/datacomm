@@ -16,7 +16,10 @@ def nrz_i(bits):
     level = 1                 # start High
     for b in bits:
         # TODO: if b is '1', flip level
+        if b =='1':
+            level = -level
         # TODO: append level to signal (for BOTH cases)
+        signal.append(level)
         pass
     return signal
 

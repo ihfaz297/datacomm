@@ -15,6 +15,10 @@ def manchester(bits):
     signal = []
     for b in bits:
         # TODO: if b is '0' extend with [1, -1], otherwise extend with [-1, 1]
+        if b == '0':
+            signal.extend([1, -1])
+        else :
+            signal.extend([-1, 1])
         pass
     return signal
 

@@ -14,6 +14,10 @@ def nrz_l(bits):
     signal = []
     for b in bits:
         # TODO: if b is '0' append 1 to signal, otherwise append -1
+        if b=='0':
+            signal.append(1)
+        else :
+            signal.append(-1)
         pass
     return signal
 
