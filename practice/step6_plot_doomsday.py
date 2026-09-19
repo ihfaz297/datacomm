@@ -31,14 +31,18 @@ def diff_manchester(bits):
         signal.extend([-level, level])
     return signal
 
+def plot_sig(signal, k):
+    m = []
+    for i in range(len(signal)+1):
+        m.append(i / k)
+    return m
 
 def show(signal, title):
     k = len(signal) // len(bits)                                         # levels per bit
     plt.figure(figsize=(10, 2.5))
-    plt.stairs(signal, [i / k for i in range(len(signal) + 1)], baseline=None, linewidth=2)
+    plt.stairs(signal, plot_sig(signal, k), baseline=None, linewidth=2)
     plt.xticks(range(len(bits) + 1))
     plt.grid(axis='x')                # bit boundaries
-    if k == 2: [plt.axvline(i + 0.5, linestyle=':') for i in range(len(bits))]   # mid-bit
     plt.yticks([min(signal), max(signal)], ["Low", "High"])
     plt.ylim(min(signal) - .5, max(signal) + .5)
     plt.title(title); plt.xlabel("Bit Time")
@@ -52,7 +56,6 @@ show([int(b) for b in bits], "Original bit stream " + bits)
 for name, fn in [("NRZ-L", nrz_l), ("NRZ-I", nrz_i),
                  ("Manchester", manchester), ("Differential Manchester", diff_manchester)]:
     signal = fn(bits)
-    #print(f"{name:24s}: {signal}")
     show(signal, name)
 
 plt.show()
