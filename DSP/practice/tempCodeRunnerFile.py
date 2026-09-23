@@ -1,0 +1,1 @@
+ax.stem(n_t, x_s, linefmt="C1-", markerfmt="C1o", basefmt=" ", label=f"{len(n_t)} samples")
