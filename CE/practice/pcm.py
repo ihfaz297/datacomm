@@ -1,5 +1,5 @@
 # PCM in three stages: SAMPLE -> QUANTIZE -> ENCODE   (Forouzan 4.2.1)
-# Run:  python practice/pcm.py
+# Run:  python CE/practice/pcm.py
 
 import numpy as np
 import matplotlib.pyplot as plt

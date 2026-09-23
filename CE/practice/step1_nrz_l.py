@@ -5,7 +5,7 @@
 #     bit '1'  ->  -1  (Low)
 #
 # A signal is just a Python list of levels, ONE number per bit.
-# Fill in the TODO, then run:   python practice/step1_nrz_l.py
+# Fill in the TODO, then run:   python CE/practice/step1_nrz_l.py
 
 bits = "10110010"
 
