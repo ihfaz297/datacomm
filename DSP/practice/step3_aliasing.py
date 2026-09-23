@@ -11,19 +11,21 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-
 # ---- Part A: Assignment 3 Task 1 ----
 Fs, duration = 100, 0.2
 n_t = np.arange(0, duration, 1 / Fs)
 # TODO: samples of the 10 Hz and 110 Hz sinusoids at these instants
-x10  = None
-x110 = None
+x10  = np.sin(2 * np.pi * 10 * n_t)
+x110 = np.sin(2 * np.pi * 110 * n_t)
 
 # ---- Part B: the alias formula ----
 def apparent_freq(F, Fs):
     """Frequency (Hz) that a sinusoid of F Hz appears to have after sampling at Fs Hz."""
     # TODO: fd, wrap it, return abs(...) * Fs
-    return None
+    fd = F / Fs
+    f_wrapped = fd - round(fd)
+    F_apparent = abs(f_wrapped) * Fs
+    return F_apparent
 
 # ---------------- checker: don't edit below ----------------
 okA = x10 is not None and x110 is not None and np.allclose(x10, x110)
@@ -45,9 +47,10 @@ print("PASS  ->  open step4_quantization_image.py" if ok else "FAIL")
 
 if ok:
     t = np.linspace(0, duration, 2000)
-    plt.figure(figsize=(10, 4))
-    plt.plot(t, np.sin(2 * np.pi * 10 * t), label="10 Hz")
-    plt.plot(t, np.sin(2 * np.pi * 110 * t), alpha=.4, label="110 Hz")
-    plt.stem(n_t, x10, linefmt="k-", markerfmt="ko", basefmt=" ", label="samples at Fs = 100 Hz (both!)")
-    plt.title("Aliasing: 110 Hz sampled at 100 Hz looks exactly like 10 Hz"); plt.xlabel("time (s)"); plt.legend(); plt.grid(alpha=.3)
-    plt.tight_layout(); plt.show()
+    plt.plot(t, np.sin(2 * np.pi * 10 * t), label = "10Hz signal")
+    plt.plot(t, np.sin(2 * np.pi * 110 * t), alpha = 0.3, label = "110Hz signal")
+    plt.stem(n_t, x10, linefmt="k-", markerfmt="ko", basefmt=" ", label="10 Hz sampled signal")
+    plt.legend(loc="upper right")
+    plt.title("Aliasing: a 10 Hz signal sampled at 100 Hz being\n the same as that for 110 Hz")
+    plt.tight_layout()
+    plt.show()
