@@ -14,17 +14,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
 
-path = cbook.get_sample_data("grace_hopper.jpg", asfileobj=False)   # in the exam: path = "whatever_she_gives.jpg"
+# path = cbook.get_sample_data("grace_hopper.jpg", asfileobj=False)   # in the exam: path = "whatever_she_gives.jpg"
+path = "C:/Users/ADIB/Downloads/PXL_20240622_154106458.MP.jpg"
 img  = plt.imread(path).astype(float)      # (600, 512, 3), values 0..255
 
-# TODO: grayscale image (H, W): average over the colour axis
-gray = None
+# # TODO: grayscale image (H, W): average over the colour axis
+gray = img.mean(axis=2)
 
 
 def quantize(image, L):
     """Snap every pixel of `image` (values 0..255) to one of L levels. Returns float array, same shape."""
     # TODO: step, zone, return zone * step
-    return None
+    step = 256 / L
+    zone = np.floor(image / step)
+    q_img = zone * step
+    return q_img
 
 
 # ---------------- checker: don't edit below ----------------
