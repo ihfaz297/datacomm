@@ -22,12 +22,20 @@ def impulse(n, k=0):
     """delta[n - k] on index axis n."""
     impulse = (n == k) * 1
     # TODO
+<<<<<<< HEAD
     return impulse
+=======
+    imp = (n == k) * 1
+    return imp
+>>>>>>> ef1da11e463049280418d6d91a236737edf5d842
 
 def step(n, k=0):
     """u[n - k] on index axis n."""
     step = (n >= k) * 1
+<<<<<<< HEAD
     # TODO
+=======
+>>>>>>> ef1da11e463049280418d6d91a236737edf5d842
     return step
 
 
