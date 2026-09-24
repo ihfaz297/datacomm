@@ -23,30 +23,38 @@ nx = np.arange(-3, 5)                    # -3 .. 4, so x[0] = 1 (the 4th entry)
 def shift(n, x, k):
     """y[n] = x[n - k].  Returns (n_new, y)."""
     # TODO
-    return None, None
+    return (n+k), x
 
 def fold(n, x):
     """y[n] = x[-n].  Returns (n_new, y)."""
     # TODO
-    return None, None
+    return -n[::-1], x[::-1]
 
 def on_axis(n, x, n_common):
     """Place (n, x) onto the axis n_common, zeros where x is not defined."""
     # TODO: y = np.zeros(len(n_common)); for each i, v in zip(n, x): y[np.where(n_common == i)] = v
-    return None
+    y = np.zeros(len(n_common))
+    for i, v in zip(n, x):
+        y[np.where(n_common == i)] = v
+    return y
 
 def add(n1, x1, n2, x2):
     """Sum of two sequences on a common axis. Returns (n_common, y)."""
     # TODO: n_common = np.arange(min(n1[0], n2[0]), max(n1[-1], n2[-1]) + 1); then on_axis both and add
-    return None, None
+    n_common = np.arange(min(n1[0], n2[0]), max(n1[-1], n2[-1]) + 1)
+    y1 = on_axis(n1, x1, n_common)
+    y2 = on_axis(n2, x2, n_common)
+    return n_common, (y1+y2)
 
 def upsample(x, L):
     # TODO
-    return None
+    y = np.zeros(L*len(x))
+    y[::L]=x
+    return y
 
 def downsample(x, M):
     # TODO
-    return None
+    return x[::M]
 
 
 # ---------------- checker: don't edit below ----------------

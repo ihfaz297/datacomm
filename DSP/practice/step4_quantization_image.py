@@ -14,17 +14,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
 
-path = cbook.get_sample_data("grace_hopper.jpg", asfileobj=False)   # in the exam: path = "whatever_she_gives.jpg"
+
+path = "C:/Users/adib/Pictures/Saved Pictures/Kalapahar_29_Nov.jpg"   # in the exam: path = "whatever_she_gives.jpg"
 img  = plt.imread(path).astype(float)      # (600, 512, 3), values 0..255
 
 # TODO: grayscale image (H, W): average over the colour axis
-gray = None
+gray = img.mean(axis=2)
 
 
 def quantize(image, L):
     """Snap every pixel of `image` (values 0..255) to one of L levels. Returns float array, same shape."""
+    step = 256 / L
+    zone = np.floor(image / step)
+    q_img = zone * step
     # TODO: step, zone, return zone * step
-    return None
+    return q_img
 
 
 # ---------------- checker: don't edit below ----------------
@@ -40,9 +44,33 @@ if ok:
 print("PASS  ->  open step5_dt_sequences.py" if ok else "FAIL  (gray must be (H, W); quantize must return <= L distinct values)")
 
 if ok:
-    fig, axes = plt.subplots(1, len(levels) + 1, figsize=(16, 4))
-    axes[0].imshow(gray, cmap="gray", vmin=0, vmax=255); axes[0].set_title("original (256)")
+    fig, axes = plt.subplots(1, len(levels) + 1, figsize=(10, 4))
+    axes[0].imshow(gray, cmap="gray", vmin = 0, vmax = 255)
+    axes[0].set_title("Original (256 levels)")
     for ax, L in zip(axes[1:], levels):
-        ax.imshow(quantize(gray, L), cmap="gray", vmin=0, vmax=255); ax.set_title(f"L = {L} ({int(np.log2(L))} bits)")
+        ax.imshow(quantize(gray, L), cmap="gray", vmin=0,vmax=255)
+        ax.set_title(f"L = {L} ({(int)(np.log2(L))} bits)")
     for ax in axes: ax.axis("off")
-    plt.tight_layout(); plt.show()
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+    # fig, axes = plt.subplots(1, len(levels) + 1, figsize=(16, 4))
+    # axes[0].imshow(gray, cmap="gray", vmin=0, vmax=255)
+    # axes[0].set_title("original (256)")
+    # for ax, L in zip(axes[1:], levels):
+    #     ax.imshow(quantize(gray, L), cmap="gray", vmin=0, vmax=255)
+    #     ax.set_title(f"L = {L} ({int(np.log2(L))} bits)")
+    # for ax in axes: ax.axis("off")
+    # plt.tight_layout()
+    # plt.show()

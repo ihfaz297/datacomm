@@ -20,26 +20,28 @@ n = np.arange(-5, 6)          # -5 .. 5
 
 def impulse(n, k=0):
     """delta[n - k] on index axis n."""
+    impulse = (n == k) * 1
     # TODO
-    return None
+    return impulse
 
 def step(n, k=0):
     """u[n - k] on index axis n."""
+    step = (n >= k) * 1
     # TODO
-    return None
+    return step
 
 
 # a rectangular pulse from n = -2 to n = 2 is  u[n + 2] - u[n - 3]
 # TODO: build it from your step() function
-rect = None
+rect = step(n, -2) - step(n, 3)
 
 # a triangle-ish combo:  2*delta[n + 1] + delta[n - 1] + u[n - 3]
 # TODO
-combo = None
+combo = 2 * impulse(n, -1) + impulse(n, 1) + step(n, 3)
 
 # fold rect -> rect[-n]  (should equal rect here because rect is symmetric)
 # TODO
-rect_folded = None
+rect_folded = rect[::-1]
 
 # ---------------- checker: don't edit below ----------------
 def arr(x): return None if x is None else list(map(int, x))
@@ -62,7 +64,17 @@ print("PASS  ->  open step5b_dt_operations.py" if ok else "FAIL")
 
 if ok:
     fig, axes = plt.subplots(2, 3, figsize=(13, 6))
-    for ax, (name, x) in zip(axes.flat, [("delta[n]", impulse(n)), ("delta[n-2] (delay)", impulse(n, 2)), ("delta[n+3] (advance)", impulse(n, -3)),
-                                         ("u[n]", step(n)), ("u[n+2] - u[n-3]", rect), ("2d[n+1] + d[n-1] + u[n-3]", combo)]):
-        ax.stem(n, x, basefmt=" "); ax.set_title(name); ax.set_xticks(n); ax.axvline(0, color="gray", alpha=.3); ax.set_xlabel("n")
-    plt.tight_layout(); plt.show()
+    dt_sig = [("delta[n]", impulse(n)), 
+              ("delta[n-2] (delay)", impulse(n, 2)), 
+              ("delta[n+3] (advance)", impulse(n, -3)),
+              ("u[n]", step(n)), 
+              ("u[n+2] - u[n-3]", rect), 
+              ("2d[n+1] + d[n-1] + u[n-3]", combo)]
+    for ax, (name, x) in zip(axes.flat, dt_sig):
+        ax.stem(n, x, basefmt=" ")
+        ax.set_title(name)
+        ax.set_xticks(n)
+        ax.axvline(0, color="gray", alpha=.3)
+        ax.set_xlabel("n")
+    plt.tight_layout()
+    plt.show()
