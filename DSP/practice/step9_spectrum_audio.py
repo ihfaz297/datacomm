@@ -25,17 +25,20 @@ def triangle(f): return (2 / np.pi) * np.arcsin(np.sin(2 * np.pi * f * t))
 def spectrum(x, Fs):
     """Return (freqs, magnitude) of x sampled at Fs."""
     # TODO: rfft and rfftfreq, magnitude = np.abs(X)
-    return None, None
+    X = np.fft.rfft(x)
+    fs = np.fft.rfftfreq(len(x), 1/Fs)
+    return fs, np.abs(X)
 
 def peak_freq(x, Fs):
     """Frequency (Hz) of the largest spectral peak, ignoring DC."""
-    # TODO: f, mag = spectrum(x, Fs); return f[np.argmax(mag[1:]) + 1]
-    return None
+    # TODO: 
+    f, mag = spectrum(x, Fs); return f[np.argmax(mag[1:]) + 1]
 
 # Assignment 2 Q1b: add DC by editing bin 0 and inverse transforming
 tri440 = triangle(440)
-# TODO: X = np.fft.rfft(tri440); X[0] = 100 * len(t); tri_shifted = np.fft.irfft(X, n=len(t))
-tri_shifted = None
+# TODO: 
+X = np.fft.rfft(tri440); X[0] = 100 * len(t); tri_shifted = np.fft.irfft(X, n=len(t))
+# tri_shifted = None
 
 # ---------------- checker: don't edit below ----------------
 ok = True

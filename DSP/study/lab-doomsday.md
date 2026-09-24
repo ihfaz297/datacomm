@@ -8,6 +8,26 @@ Every block below was run and checked on 24 Sep 2026. Type it, change the number
 
 ---
 
+## Routing: question words -> drill
+
+Every question is a drill with the numbers changed. Find the noun, open that file, swap the numbers, keep the plot lines.
+
+| Words in the question | Drill | What changes |
+|---|---|---|
+| generate a sine / square / triangle, continuous time, plot N periods | step1 | f, duration |
+| sample at Fs, count the samples, discrete form, stem | step2 | F, Fs, duration |
+| aliasing, sounds like what frequency, f_d, explain the difference between plots | step3 | F, Fs, then the wrap formula |
+| quantization levels, image, bits | step4 | L |
+| impulse, step, delay, advance, combination of | step5 | the k values, the combo line |
+| shift, fold, x[n-2] + x[n], upsample, downsample | step5b | k, L, M |
+| spectrum, harmonics, hs[0] | step9 | f, Fs |
+| convolution step by step, correlation, moving average | sections 1 to 3 below | the arrays |
+
+Two nouns means two drills chained (e.g. "downsample the image by 2, then 4 levels" = `img[::2, ::2]` then step4 with L = 4).
+Delay is positive k, advance is negative k. Anything above Fs/2 wraps: apparent = `abs(F/Fs - round(F/Fs)) * Fs`.
+
+---
+
 ## 0. The two lines everything starts with
 
 ```python

@@ -1,24 +1,24 @@
+import wave
 import numpy as np
 import matplotlib.pyplot as plt
 
-f = 200
-periods = 3
-N = 2000
+path = "DSP/practice/test_tone.wav" 
 
-t=np.linspace(0, periods / f, N)
-x=np.sin(2*np.pi*f*t)
+with wave.open(path, "rb") as w:
+    Fs = w.getframerate()
+    N= w.getnframes()
+    raw = w.readframes(N)
+x = np.frombuffer(raw, dtype=np.int16)
+duration = N / Fs
+t = np.arange(N) / Fs
 
-square = np.sign(x)
-triangle=(2/np.pi)*(np.arcsin(x))
+x_down = x[::4]
+fs = Fs/4
 
-fig, ax = plt.subplots(3, 1, figsize=(10, 7), sharex=True)
-signal = (x, square, triangle)
-names = ("sine", "square", "triangle")
-for a, sig, name in zip(ax, signal, names):
-    a.plot(t, sig)
-    a.grid(alpha=0.3)
-    a.set_title(f"{name} signal")
-    a.set_ylabel("Amplitude")
-ax[-1].set_xlabel("Time(s)")
-plt.tight_layout()
+L = 16
+step = 65536 / L
+q_new = step * np.floor(x / step)
+
+plt.plot(t[:200], x_down[:200])
+plt.step(t, q_new)
 plt.show()
