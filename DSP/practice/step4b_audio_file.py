@@ -33,22 +33,29 @@ with wave.open("DSP/practice/test_tone.wav", "wb") as w:
 path = "DSP/practice/test_tone.wav"        # in the exam: whatever he gives you
 
 # TODO: open with wave, read Fs, channels, width, N, raw
-Fs = channels = width = N = None
-raw = None
+with wave.open(path, "rb") as w:
+    Fs = w.getframerate()
+    channels= w.getnchannels()
+    width = w.getsampwidth()
+    N = w.getnframes()
+    raw = w.readframes(N)
+    
+# Fs = channels = width = N = None
+
 # TODO: x from raw (int16), duration, t
-x = None
-duration = None
-t = None
+x = np.frombuffer(raw, dtype=np.int16)
+duration = N / Fs
+t = np.arange(N) / Fs 
 
 # TODO: downsample by 4 (keep every 4th sample) -> x_ds at Fs_ds
 M = 4
-x_ds  = None
-Fs_ds = None
+x_ds  = x[::M]
+Fs_ds = Fs / M
 
 # TODO: quantize x to L = 16 levels (4 bits) using step = 65536 / L
 L = 16
-step = None
-x_q  = None
+step = 65536 / L
+x_q  = step * np.floor(x / step)
 
 # ---------------- checker: don't edit below ----------------
 ok = Fs == 8000 and channels == 1 and width == 2 and N == 8000

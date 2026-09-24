@@ -23,16 +23,10 @@ def apparent_freq(F, Fs):
     """Frequency (Hz) that a sinusoid of F Hz appears to have after sampling at Fs Hz."""
     # TODO: fd, wrap it, return abs(...) * Fs
     fd = F / Fs
-<<<<<<< HEAD
     f_w = fd - round(fd)
     F_real = abs(f_w) * Fs
 
     return F_real
-=======
-    f_wrapped = fd - round(fd)
-    F_apparent = abs(f_wrapped) * Fs
-    return F_apparent
->>>>>>> ef1da11e463049280418d6d91a236737edf5d842
 
 # ---------------- checker: don't edit below ----------------
 okA = x10 is not None and x110 is not None and np.allclose(x10, x110)
@@ -54,7 +48,6 @@ print("PASS  ->  open step4_quantization_image.py" if ok else "FAIL")
 
 if ok:
     t = np.linspace(0, duration, 2000)
-<<<<<<< HEAD
     plt.subplots(1, 1, figsize=(10, 4))
     plt.plot(t, np.sin(2 * np.pi * 10 * t), label="10 Hz")
     plt.plot(t, np.sin(2 * np.pi * 110 * t), alpha=.4, label="110 Hz")
@@ -62,12 +55,3 @@ if ok:
     plt.title("Aliasing: 110 Hz sampled at 100 Hz looks exactly like 10 Hz")
     plt.xlabel("time (s)"); plt.legend(); plt.grid(alpha=.3)
     plt.tight_layout(); plt.show()
-=======
-    plt.plot(t, np.sin(2 * np.pi * 10 * t), label = "10Hz signal")
-    plt.plot(t, np.sin(2 * np.pi * 110 * t), alpha = 0.3, label = "110Hz signal")
-    plt.stem(n_t, x10, linefmt="k-", markerfmt="ko", basefmt=" ", label="10 Hz sampled signal")
-    plt.legend(loc="upper right")
-    plt.title("Aliasing: a 10 Hz signal sampled at 100 Hz being\n the same as that for 110 Hz")
-    plt.tight_layout()
-    plt.show()
->>>>>>> ef1da11e463049280418d6d91a236737edf5d842

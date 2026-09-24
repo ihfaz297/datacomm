@@ -14,19 +14,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
 
-<<<<<<< HEAD
-
-path = "C:/Users/adib/Pictures/Saved Pictures/Kalapahar_29_Nov.jpg"   # in the exam: path = "whatever_she_gives.jpg"
-img  = plt.imread(path).astype(float)      # (600, 512, 3), values 0..255
-
-# TODO: grayscale image (H, W): average over the colour axis
-=======
 # path = cbook.get_sample_data("grace_hopper.jpg", asfileobj=False)   # in the exam: path = "whatever_she_gives.jpg"
-path = "C:/Users/ADIB/Downloads/PXL_20240622_154106458.MP.jpg"
+path = "C:/Users/adib/Pictures/Saved Pictures/niche_stuff.jpg"
 img  = plt.imread(path).astype(float)      # (600, 512, 3), values 0..255
 
 # # TODO: grayscale image (H, W): average over the colour axis
->>>>>>> ef1da11e463049280418d6d91a236737edf5d842
 gray = img.mean(axis=2)
 
 
@@ -36,12 +28,6 @@ def quantize(image, L):
     zone = np.floor(image / step)
     q_img = zone * step
     # TODO: step, zone, return zone * step
-<<<<<<< HEAD
-=======
-    step = 256 / L
-    zone = np.floor(image / step)
-    q_img = zone * step
->>>>>>> ef1da11e463049280418d6d91a236737edf5d842
     return q_img
 
 
@@ -58,17 +44,16 @@ if ok:
 print("PASS  ->  open step5_dt_sequences.py" if ok else "FAIL  (gray must be (H, W); quantize must return <= L distinct values)")
 
 if ok:
-    fig, axes = plt.subplots(1, len(levels) + 1, figsize=(10, 4))
-    axes[0].imshow(gray, cmap="gray", vmin = 0, vmax = 255)
-    axes[0].set_title("Original (256 levels)")
+    fig, axes = plt.subplots(1, len(levels)+1, figsize=(16, 4))
+    axes[0].imshow(gray, cmap="gray", vmin=0, vmax=255)
+    axes[0].set_title("Original(256)")
+
     for ax, L in zip(axes[1:], levels):
-        ax.imshow(quantize(gray, L), cmap="gray", vmin=0,vmax=255)
-        ax.set_title(f"L = {L} ({(int)(np.log2(L))} bits)")
+        ax.imshow(quantize(gray, L), cmap = "gray", vmin=0,vmax=255)
+        ax.set_title(f"L = {L} ({(int)(np.log2(L))} bit)")
     for ax in axes: ax.axis("off")
-<<<<<<< HEAD
     plt.tight_layout()
     plt.show()
-
 
 
 
@@ -89,6 +74,3 @@ if ok:
     # for ax in axes: ax.axis("off")
     # plt.tight_layout()
     # plt.show()
-=======
-    plt.tight_layout(); plt.show()
->>>>>>> ef1da11e463049280418d6d91a236737edf5d842

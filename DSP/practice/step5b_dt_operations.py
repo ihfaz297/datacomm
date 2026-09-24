@@ -32,16 +32,15 @@ def fold(n, x):
 
 def on_axis(n, x, n_common):
     """Place (n, x) onto the axis n_common, zeros where x is not defined."""
-    # TODO: y = np.zeros(len(n_common)); for each i, v in zip(n, x): y[np.where(n_common == i)] = v
     y = np.zeros(len(n_common))
-    for i, v in zip(n, x):
+    for i, v in zip(n,x):
         y[np.where(n_common == i)] = v
     return y
 
 def add(n1, x1, n2, x2):
     """Sum of two sequences on a common axis. Returns (n_common, y)."""
     # TODO: n_common = np.arange(min(n1[0], n2[0]), max(n1[-1], n2[-1]) + 1); then on_axis both and add
-    n_common = np.arange(min(n1[0], n2[0]), max(n1[-1], n2[-1]) + 1)
+    n_common = np.arange(min(n1[0], n2[0]), max(n1[-1], n2[-1])+1)
     y1 = on_axis(n1, x1, n_common)
     y2 = on_axis(n2, x2, n_common)
     return n_common, (y1+y2)
@@ -49,7 +48,7 @@ def add(n1, x1, n2, x2):
 def upsample(x, L):
     # TODO
     y = np.zeros(L*len(x))
-    y[::L]=x
+    y[::L] = x
     return y
 
 def downsample(x, M):

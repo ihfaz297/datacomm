@@ -22,20 +22,11 @@ def impulse(n, k=0):
     """delta[n - k] on index axis n."""
     impulse = (n == k) * 1
     # TODO
-<<<<<<< HEAD
     return impulse
-=======
-    imp = (n == k) * 1
-    return imp
->>>>>>> ef1da11e463049280418d6d91a236737edf5d842
 
 def step(n, k=0):
     """u[n - k] on index axis n."""
     step = (n >= k) * 1
-<<<<<<< HEAD
-    # TODO
-=======
->>>>>>> ef1da11e463049280418d6d91a236737edf5d842
     return step
 
 
@@ -71,18 +62,32 @@ for name, got, want in checks:
 print("PASS  ->  open step5b_dt_operations.py" if ok else "FAIL")
 
 if ok:
-    fig, axes = plt.subplots(2, 3, figsize=(13, 6))
+    fig, axes = plt.subplots(3,2,figsize=(12,6))
     dt_sig = [("delta[n]", impulse(n)), 
-              ("delta[n-2] (delay)", impulse(n, 2)), 
-              ("delta[n+3] (advance)", impulse(n, -3)),
-              ("u[n]", step(n)), 
-              ("u[n+2] - u[n-3]", rect), 
-              ("2d[n+1] + d[n-1] + u[n-3]", combo)]
+                  ("delta[n-2] (delay)", impulse(n, 2)), 
+                  ("delta[n+3] (advance)", impulse(n, -3)),
+                  ("u[n]", step(n)), 
+                  ("u[n+2] - u[n-3]", rect), 
+                  ("2d[n+1] + d[n-1] + u[n-3]", combo)]
     for ax, (name, x) in zip(axes.flat, dt_sig):
-        ax.stem(n, x, basefmt=" ")
-        ax.set_title(name)
+        ax.stem(n, x, basefmt= " ")
+        ax.set_title(f"{name}")
         ax.set_xticks(n)
-        ax.axvline(0, color="gray", alpha=.3)
-        ax.set_xlabel("n")
+        ax.axvline(0, color="gray", alpha=0.3)
     plt.tight_layout()
     plt.show()
+
+
+
+
+
+    # fig, axes = plt.subplots(2, 3, figsize=(13, 6))
+    
+    # for ax, (name, x) in zip(axes.flat, dt_sig):
+    #     ax.stem(n, x, basefmt=" ")
+    #     ax.set_title(name)
+    #     ax.set_xticks(n)
+    #     ax.axvline(0, color="gray", alpha=.3)
+    #     ax.set_xlabel("n")
+    # plt.tight_layout()
+    # plt.show()
