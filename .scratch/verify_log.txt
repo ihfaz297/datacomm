@@ -1,0 +1,65 @@
+﻿PASS  step1_ct_signals.py
+PASS  ->  open step2_sampling.py
+
+SKIP  step4_quantization_image.py   (needs a local input file)
+PASS  step6_convolution.py
+PASS  step7_correlation.py
+PASS  step8_moving_average.py
+PASS  step10_dtft.py
+DTFT vs closed form (max err)      0.0   ok
+|X| vs 1/sqrt(1-2a cos w + a^2)    0.0   ok
+H(e^jw) vs DTFT of h[n]            0.0   ok
+|H(0)|  (must be 1)                1.0   ok
+first null of |H|  (2 pi / M)      1.256637   ok
+phase slope -> delay (M-1)/2       2.0   ok
+PASS  ->  open step11_ztransform.py
+
+PASS  step11_ztransform.py
+SymPy sum, |a/z|<1 branch      1.714286   ok
+SymPy finite geometric sum     1.712728   ok
+two-sided X(z) at z = 1.2      3.214286   ok
+ROC: point 1.2 inside (0.5,2)  1.0   ok
+ROC: point 0.3 rejected        0.0   ok
+ROC: point 3.0 rejected        0.0   ok
+ROC empty when |b| <= |a|      0.0   ok
+zeros = a e^(j2pi k/M), k=1..M-1 ok
+poles = M-1 at z = 0           ok
+PASS  ->  open step12_dft_fft.py
+
+SymPy says:
+  sum (a/z)^n, 0..oo   : Piecewise((1/(-a/z + 1), Abs(a/z) < 1), (Sum((a/z)**n, (n, 0, oo)), True))
+  sum (a/z)^n, 0..M-1  : Piecewise((M, Eq(a/z, 1)), ((1 - (a/z)**M)/(-a/z + 1), True))
+  two-sided X(z) at z = 1.2: numeric 3.2142857143   closed form 3.2142857142857144
+  zeros of a^n, 0<=n<=M-1: [-0.5   +0.j     -0.3536+0.3536j -0.3536-0.3536j  0.    +0.5j
+  0.    -0.5j     0.3536+0.3536j  0.3536-0.3536j]
+
+PASS  step12_dft_fft.py
+DFT of {1,1,2,1}                  [5.0, -1.0, 1.0, -1.0]   ok
+DFT vs np.fft (max error)         8.067509445640416e-16   ok
+DFT of {1,2,1} (exact values)     9.485749680535094e-16   ok
+IDFT(DFT(x)) = x (max error)      2.4492935982947064e-16   ok
+TT2 Q3 {1,2,2,1} (*4) {1,2,3}     [9.0, 7.0, 9.0, 11.0]   ok
+   the same via a DFT product     [9.0, 7.0, 9.0, 11.0]   ok
+N=6 circular == linear            [1.0, 4.0, 9.0, 11.0, 8.0, 3.0]   ok
+Q3c {1,1,2,1} (*4) {1,2,1,1}      [6.0, 6.0, 6.0, 7.0]   ok
+
+   N          direct DFT N^2      radix-2 FFT (N/2)log2 N      speed-up
+     8                     64                     12             5.3 x   ok
+    64                   4096                    192            21.3 x   ok
+  1024                1048576                   5120           204.8 x   ok
+  4096               16777216                  24576           682.7 x   ok
+PASS  ->  open step13_fir_window.py
+
+PASS  step13_fir_window.py
+window      taps   stopband attenuation      transition    window mainlobe      in-band ripple   linear phase
+rect         31    21.22 dB  (21 dB)   0.0598pi   0.1290pi (0.1290pi)   0.6297 dB    2.7e-15  ok
+hann         31    43.95 dB  (44 dB)   0.1295pi   0.2665pi (0.2667pi)   0.0243 dB    2.3e-15  ok
+hamming      31    53.56 dB  (53 dB)   0.1217pi   0.2795pi (0.2667pi)   0.0329 dB    2.3e-15  ok
+blackman     31    75.21 dB  (74 dB)   0.1585pi   0.4000pi (0.4000pi)   0.0031 dB    2.1e-15  ok
+
+1/M law   hamming M=30: transition 0.1217pi   M=60: 0.0610pi (halved),  attenuation 53.56 -> 53.72 dB (did not move)   ok
+in-band ripple: rect 0.6297 dB (Gibbs)   hann 0.0243   hamming 0.0329   blackman 0.0031 dB (smoothest)   ok
+PASS  ->  transforms drills done: TT2 topics 1-2 + lab exam 2 topic 4.
+
+
+ALL CHECKERS OK
