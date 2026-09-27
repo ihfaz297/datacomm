@@ -1,0 +1,44 @@
+files: 200
+
+Copy of SolnCSE630 SUST_TT1.pdf	pages=7	chars=3543	images=8	-> Copy_of_SolnCSE630_SUST_TT1.txt
+   head: 1. 2. 3. 4. 5. a. b. CSE630, SUST, 7 Aug 2025 Name: Duration: 1 hour Reg: Marks: 20 Write your answers directly on the question paper. Packet can take multiple paths from sender to receiver. Which lay
+Data-Communications-and-Network by BEHROUZ A. FOROUZAN-5e.pdf	pages=1269	chars=2730513	images=92	-> Data-Communications-and-Network_by_BEHROUZ_A._FOROUZAN-5e.txt
+   head: FIFTH EDITION BEHROUZ A. FOROUZAN Data Communications AND Networking === PAGE BREAK === Data Communications and Networking === PAGE BREAK === McGraw-Hill Forouzan Networking Series Titles by Behrouz A
+Data-Communications-and-Networking by BEHROUZ A. FOROUZAN-4e.pdf	pages=1171	chars=2264248	images=1643	-> Data-Communications-and-Networking_by_BEHROUZ_A._FOROUZAN-4e.txt
+   head: === PAGE BREAK === Don't forget to check out the Online Learning Center, www.mhhe.com/forouzan for additional resources! Instructors and students using Data Communications and Networking, Fourth Editi
+Chapter 2.pdf	pages=123	chars=58843	images=1409	-> Chapter_2.txt
+   head: Discrete-Time Signals: Time-Domain Representation (1/10) • Signals represented as sequences of numbers, called samples • Sample value of a typical signal or sequence denoted as x[n] with n being an in
+Chapter 3_z_Transform.pdf	pages=46	chars=973	images=44	-> Chapter_3_z_Transform.txt
+   head: The Z-Transform and Its Properties === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREA
+Chapter 4 Problems.pdf	pages=9	chars=158	images=9	-> Chapter_4_Problems.txt
+   head: === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK ===
+Chapter 4.8.6_4.8.7.pdf	pages=5	chars=2064	images=5	-> Chapter_4.8.6_4.8.7.txt
+   head: -~ - ~ ~~ 4 t J J ~ J r-3 xc~ J ~ µ VJ-lG -- wvik v....Q<) e I f I , 4 4 {., t I(\' ( \ ' ' S01· ~ 1,' I h TSi) (" I , , L.J' "' 1/J l~ e, , l • f b \ u ,. r V - === PAGE BREAK === 1/ <L .. - - - o, -
+CSE 0714 3276- Assignment 1.pdf	pages=1	chars=1466	images=0	-> CSE_0714_3276-_Assignment_1.txt
+   head: Department of Computer Science and Engineering Course: CSE 0714 3276 Title: Digital Signal Processing Lab Assignment 1 (14/07/2026) 1. Make a triangle signal at 200 Hz and make a wave (duration: 0.5 s
+CSE 0714 3276- Assignment 2.pdf	pages=1	chars=532	images=0	-> CSE_0714_3276-_Assignment_2.txt
+   head: Department of Computer Science and Engineering Course: CSE 0714 3276 Title: Digital Signal Processing Lab Assignment 2 (20/07/2026) 1. Make a triangle signal with frequency 440 and make a Wave with du
+CSE 0714 3276- Assignment 3.pdf	pages=2	chars=2738	images=0	-> CSE_0714_3276-_Assignment_3.txt
+   head: Department of Computer Science and Engineering Course: CSE 0714 3276 Title: Digital Signal Processing Lab Assignment 3 (20/07/2026) Title: Effects of Sampling in Discrete Time Signals Objectives: 1. S
+CSE 0714 3276- Assignment 4.pdf	pages=1	chars=1125	images=0	-> CSE_0714_3276-_Assignment_4.txt
+   head: Department of Computer Science and Engineering Course: CSE 0714 3276 Title: Digital Signal Processing Lab Assignment 4 1. Write a program to generate the following sequences and plot the graph- a. Uni
+DSP_Chapter4_Frequency_Analysis_CTFT.pdf	pages=64	chars=1609	images=67	-> DSP_Chapter4_Frequency_Analysis_CTFT.txt
+   head: The Continuous-Time Fourier Transform (CTFT) === PAGE BREAK === CTFT === PAGE BREAK === CTFT === PAGE BREAK === CTFT: Dirichlet Conditions === PAGE BREAK === CTFT Example === PAGE BREAK === CTFT Intui
+Sanjit K Mitra Digital Signal Processing A Computer-Based Approach, 2e with DSP Laboratory using MATLAB.pdf	pages=879	chars=17558	images=1221	-> Sanjit_K_Mitra_Digital_Signal_Processing_A_Computer-Based_Approach,_2e_with_DSP_Laboratory_using_MATLAB.txt
+   head: === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE BREAK === === PAGE B
+Whole-syllabus-course.pdf	pages=3	chars=2769	images=0	-> Whole-syllabus-course.txt
+   head: Topics Covered (DSP Course) Chapter 1: • Signals and systems • Examples of digital signals • Classification of Signals o Scalar and vector o Continuous and discrete o Analog and digital o Deterministi
+19_tt1.pdf	pages=1	chars=0	images=1	-> 19_tt1.txt
+   head: 
+19_tt2.pdf	pages=1	chars=0	images=1	-> 19_tt2.txt
+   head: 
+machine learning .pdf	pages=2	chars=41	images=4	-> machine_learning_.txt
+   head: CamScanner === PAGE BREAK === CamScanner
+Ch1 Intro to ML.pdf	pages=20	chars=6591	images=10	-> Ch1_Intro_to_ML.txt
+   head: Giving Computers the Ability to Learn from Data Dr. Md. Shahidur Rahman Professor, DoCSE, SUST rahmanms@sust.edu === PAGE BREAK === What is Machine Learning? • Machine learning is the application and 
+Ch2 - Simple ML Algorithms.pdf	pages=20	chars=9824	images=15	-> Ch2_-_Simple_ML_Algorithms.txt
+   head: T R A I N I N G S I M P L E M A C H I N E L E A R N I N G A L G O R I T H M S Perceptron, Adaline & Gradient Descent From rule-based updates to continuous optimization of a cost function Dr. Md. Shahi
+Ch3 ML Classifiers.pdf	pages=51	chars=21281	images=91	-> Ch3_ML_Classifiers.txt
+   head: S U P E R V I S E D L E A R N I N G A L G O R I T H M Logistic Regression, Support Vector Machines, Decision Trees, and KNN A tour of classifiers with scikit-learn: probabilistic models, maximum-margi
+Ch4 Data Preprocessing.pdf	pages=24	chars=10445	images=10	-> Ch4_Data_Preprocessing.txt
+   head: C H A P T E R 4 Building Good Training Datasets Data Preprocessing How the quality of a dataset shapes what a machine learning algorithm can learn Md. Shahidur Rahman | Department of CSE, SUST === PAG

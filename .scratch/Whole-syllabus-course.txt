@@ -1,0 +1,99 @@
+Topics Covered (DSP Course) 
+ 
+Chapter 1: 
+• Signals and systems 
+• Examples of digital signals 
+• Classification of Signals 
+o Scalar and vector 
+o Continuous and discrete 
+o Analog and digital 
+o Deterministic and random 
+• Typical signal processing operations 
+o Scaling, delay, addition, integration, differentiation 
+• Filtering 
+o Lowpass, high pass, bandpass, notch filter 
+• Modulation 
+o Amplitude modulation 
+• Why DSP? 
+o Advantages of DSP 
+o Limitations of DSP 
+o Application examples of DSP 
+• Digital image signal 
+ 
+ 
+
+=== PAGE BREAK ===
+Chapter 2: Discrete-Time Signals in the Time Domain 
+• Discrete-Time Signals- Time domain representation 
+o Types of discrete-time signals 
+o Size of a signal (Lp-Norm) 
+• Elementary operations on Sequence 
+o Addition, multiplication, time-shifting, time-reversal (folding), branching, 
+ensemble averaging,  
+o Combination of basic operations 
+• Sampling rate alterations 
+o Up-sampling, down-sampling 
+• Classification of sequences based on 
+o Symmetry 
+o Periodicity 
+o Energy and Power 
+o Bounded and unbounded 
+o Absolutely summable 
+• Basic sequence 
+o Unit impulse 
+o Unit step 
+o Real sinusoidal 
+o Exponential 
+o Two properties of sequences 
+• Sampling process 
+o Ambiguity in sampling 
+o Aliasing 
+o Sampling theorem 
+• Correlation of Signals 
+• Properties of Autocorrelation and Cross-correlation Sequences 
+• Computation of Correlations 
+• Normalized Forms of Correlation 
+• Correlation computation for Power and Periodic Signals 
+ 
+ 
+
+=== PAGE BREAK ===
+Chapter 4: Discrete-Time Systems 
+• Discrete-Time systems Examples 
+o Accumulator 
+o M-point moving average system 
+o Exponentially weighted running average filter 
+• Linear interpolator 
+o Factor of 2 interpolator 
+o Factor of 3 interpolator 
+o Median filter 
+• Classification of discrete-time systems 
+o Linear and non-linear system 
+o Shift-invariant and shift-variant system 
+o Causal and non-causal system 
+o Stable and unstable system 
+o Passive and lossless system 
+• System Response 
+o Impulse response 
+o Step response 
+• Time-Domain characterization of LTI Discrete-time system 
+• Convolution sum 
+o Linear method 
+o Tabular method 
+• Stability Condition of an LTI Discrete-Time System 
+• Causality Condition of an LTI Discrete-Time System 
+• Simple interconnection scheme 
+o Cascade connection 
+o Parallel connection 
+• Finite-Dimensional LTI Discrete-Time Systems 
+o Total solution calculation 
+o Zero input response and zero state response 
+o Impulse response calculation 
+• Classification of LTI Discrete-Time Systems 
+o Based on Impulse response length 
+o FIR, IIR 
+• Based on the Output Calculation Process 
+o Non-recursive and Recursive System 
+• Based on the Coefficients 
+o Real Discrete-Time System 
+o Complex Discrete-Time System 

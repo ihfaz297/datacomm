@@ -1,0 +1,13 @@
+Department of Computer Science and Engineering 
+Course: CSE 0714 3276 Title: Digital Signal Processing Lab 
+ 
+Assignment 2 (20/07/2026) 
+ 
+1. Make a triangle signal with frequency 440 and make a Wave with duration 0.01 seconds.  
+a. Plot the waveform and the spectrum. What is the amplitude and phase of this 
+component? 
+b. Set spectrum.hs[0] = 100. Make a Wave from the modified Spectrum and plot it. What 
+effect does this operation have on the waveform? [hs is the frequency component] 
+ 
+ 
+Assignment Submission Due: 25/07/2026 

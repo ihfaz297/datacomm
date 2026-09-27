@@ -1,0 +1,775 @@
+S U P E R V I S E D  L E A R N I N G  A L G O R I T H M
+Logistic Regression, Support Vector 
+Machines, Decision Trees, and KNN
+A tour of classifiers with scikit-learn: probabilistic models, maximum-margin
+classification, kernel methods, and instance-based learning.
+Dr. Md. Shahidur Rahman
+Professor, DoCSE, SUST
+rahmanms@sust.edu
+
+=== PAGE BREAK ===
+ROADMAP
+What We'll Cover
+01 Choosing a Classifier
+The supervised-learning workflow and the 
+no-free-lunch theorem
+02 Logistic Regression
+Modeling class probabilities with the 
+sigmoid and log-likelihood
+03
+Overfitting & 
+Regularization
+Bias-variance trade-off and L2 shrinkage
+04 Support Vector Machines
+Maximum-margin classification and soft 
+margins
+05 Decision Trees & Random 
+Forests
+Splitting on the most informative features, 
+combining trees into a robust ensemble
+06 K-Nearest Neighbors
+Instance-based, non-parametric 
+classification
+
+=== PAGE BREAK ===
+3 / 35
+FOUNDATIONS
+Choosing a Classification Algorithm
+No single classifier wins in every scenario — the "no free lunch" theorem. The right 
+model always depends on the specifics of the problem.
+1
+Select Features
+Choose the input 
+variables that carry 
+signal
+→
+2
+Choose a 
+Metric
+Accuracy, 
+precision/recall, 
+F1, AUC...
+→
+3
+Pick Classifier 
+& Optimizer
+Match model 
+family to the 
+problem
+→
+4
+Evaluate 
+Performance
+Test on unseen, 
+held-out data
+→
+5
+Tune the 
+Classifier
+Search 
+hyperparameters 
+for best fit
+
+=== PAGE BREAK ===
+SECTION 02
+Logistic Regression
+A probabilistic classifier that models the likelihood of class 
+membership
+4 / 35
+
+=== PAGE BREAK ===
+5 / 35
+MOTIVATION
+From the Perceptron to a Probabilistic Model
+▪When classes are not linearly separable, 
+perceptron weights never stop updating — at 
+least one-point stays misclassified every 
+epoch.
+▪Logistic regression is a far better default: it 
+converges even on non- linearly separable 
+data.
+▪Despite the name, logistic regression is a 
+classification model, not a regression model.
+Perceptron
+Hard step function → only converges if 
+classes are perfectly linearly separable.
+Logistic Regression
+Smooth sigmoid activation → always 
+converges, and outputs a class 
+probability.
+
+=== PAGE BREAK ===
+6 / 35
+THE LOGISTIC MODEL
+Odds Ratio & the Logit Function
+▪Logistic regression is the 'go to' model for 
+binary classification, and extends 
+naturally to multiclass problems.
+▪The odds ratio compares the probability 
+of the positive class to the probability of 
+the negative class.
+▪The logit function is the log of the odds 
+ratio — it maps probabilities (0,1) onto 
+the full real line.
+odds ratio
+logit function
+p = probability of the positive class (y = 1) — e.g. 
+the probability a patient has a given disease.
+The logit is the inverse of the logistic (sigmoid) function: reversing f(x) = y means g(y) = x.
+
+=== PAGE BREAK ===
+Logistic Regression
+7 / 35
+THE LOGISTIC MODEL
+Modeling the Logit Function
+We model the logit as a linear 
+combination of features — the dot 
+product of feature values and weights.
+p(y=1|x) is the conditional probability 
+that a sample with features x belongs to 
+class 1.
+Solving for p gives the logistic (sigmoid) 
+form used to make predictions.
+linear combination of weights and features
+equivalent probability form
+
+=== PAGE BREAK ===
+8 / 35
+THE LOGISTIC MODEL
+The Logistic Sigmoid Function
+▪Also known simply as the sigmoid 
+function.
+▪Produces the characteristic S-shaped 
+curve.
+▪Squashes any real-valued input z into 
+the range (0, 1) — ideal for 
+representing a probability.
+▪Weather prediction with probability
+
+=== PAGE BREAK ===
+9 / 35
+THE LOGISTIC MODEL
+Relationship with Adaline
+Adaline uses the identity function 
+as its activation — the net input 
+passes straight through.
+Logistic regression swaps in the 
+sigmoid function as the activation, 
+converting the net input into a 
+probability before the final class 
+decision.
+Σ
+
+=== PAGE BREAK ===
+10 / 35
+THE LOGISTIC MODEL
+From Probability to a Binary Decision
+▪The sigmoid's output is directly interpreted as a class probability —
+e.g. P(y=1|x;w) = 0.8.
+▪A quantizer converts that probability into a binary outcome using a 0.5 threshold.
+▪Equivalently, the decision only depends on the sign of the net input z.
+▪Many real applications — such as weather forecasting — care about the probability 
+itself, not just the hard label.
+
+=== PAGE BREAK ===
+11 / 35
+LEARNING THE WEIGHTS
+Defining the Likelihood
+▪Previously (Adaline), we minimized the sum-squared-error cost function.
+▪For logistic regression we instead derive a cost function from the likelihood of 
+observing the labels we actually saw.
+▪The likelihood L(w) is the probability of the full label vector y given the data x and 
+weights w.
+Product over all n samples of each sample's probability of its observed label.
+
+=== PAGE BREAK ===
+12 / 35
+LEARNING THE WEIGHTS
+The Log-Likelihood Function
+In practice, it's much easier to work with the natural log of the likelihood.
+The log turns a product of many small numbers into a sum — easier to differentiate 
+and far less prone to numerical underflow.
+Easier derivative
+Fewer underflow issues
+
+=== PAGE BREAK ===
+13 / 35
+L E A R N I N G  T H E  W E I G H T S
+The Cost Function
+▪Flipping the sign of the log-likelihood turns maximization into a minimization problem 
+— the standard convention for a cost function.
+▪This cost function can now be minimized with gradient descent, exactly as in the 
+Adaline chapter.
+
+=== PAGE BREAK ===
+14 / 35
+L E A R N I N G  T H E  W E I G H T S
+Deriving the Gradient
+Taking the partial derivative of the log-likelihood with respect to weight wⱼ:
+This requires the derivative of the sigmoid, which can be expressed in terms of φ(z).
+Substituting this back in and simplifying collapses the whole expression to 
+
+=== PAGE BREAK ===
+14 / 35
+L E A R N I N G  T H E  W E I G H T S
+Deriving the Gradient
+▪To find the weights that maximize the log-likelihood we perform the update for each 
+weight as follows:
+▪Maximizing the log-likelihood is equal to minimizing the cost function J, we can write 
+the gradient descent update rule as below, which is similar to gradient descent rule 
+for Adaline
+
+=== PAGE BREAK ===
+SECTION 03
+Overfitting & Regularization
+Balancing model complexity against generalization to unseen data
+15 / 35
+
+=== PAGE BREAK ===
+16 / 35
+GENERALIZATION
+Overfitting & Underfitting
+High variance
+Overfitting
+Model fits training data well but fails to 
+generalize to unseen (test) data. Usually 
+caused by a model that is too complex.
+High bias
+Underfitting
+Model isn't complex enough to capture the 
+underlying pattern — it performs poorly 
+even on training data.
+Both symptoms share the same consequence: low performance on unseen data.
+
+=== PAGE BREAK ===
+17 / 35
+REGULARIZATION
+Regularization: Taming Model Complexity
+Regularization: adding information to solve an ill-posed problem or prevent 
+overfitting. An ill-posed problem is one where the solution doesn't exist or isn't 
+unique.
+▪Regularization tunes the complexity of the model.
+▪It filters out noise in the training data.
+▪As a result, it prevents overfitting while preserving genuine signal.
+Underfitting
+(high bias)
+Too simple to
+capture the pattern
+Good compromise
+Complexity matched
+to the signal
+Overfitting
+(high variance)
+Fits noise as if
+it were signal
+
+=== PAGE BREAK ===
+18 / 35
+REGULARIZATION
+L2 Regularization & Weight Decay
+▪The most common form is L2 regularization (L2 shrinkage or weight decay).
+▪λ is the regularization parameter; increasing it strengthens regularization.
+▪We add the L2 term to the cost function, which shrinks the weights — equivalent to 
+placing a zero-mean Gaussian prior over them.
+▪Since the derivative of w² is 2w, gradient descent naturally decays each weight in 
+proportion to its size.
+
+=== PAGE BREAK ===
+19 / 35
+REGULARIZATION
+The Regularization Parameter C
+▪We control the fit-vs-simplicity trade-off through λ; scikit-learn (borrowing SVM 
+terminology) instead exposes the inverse, C = 1/λ.
+▪Decreasing C increases regularization strength — weights shrink toward zero.
+▪The regularized cost function below is the SVM-style rewrite used throughout scikit-
+learn's LogisticRegression and LinearSVC.
+Large C
+weak regularization, large 
+error penalty — risk of 
+overfitting
+Small C
+strong regularization, 
+tolerant of misclassification 
+— risk of underfitting
+
+=== PAGE BREAK ===
+SECTION 04
+Support Vector Machines
+Maximizing the margin between classes for better generalization
+20 / 35
+
+=== PAGE BREAK ===
+21 / 35
+MAXIMUM MARGIN
+Maximum-Margin Classification
+▪SVM's optimization objective is to maximize the margin.
+▪The margin is the distance between the separating hyperplane and the closest 
+training samples — the support vectors.
+▪Intuitively, a larger margin means lower generalization error.
+▪Models trained with a small margin are prone to overfitting.
+
+=== PAGE BREAK ===
+22 / 35
+M A X I M U M  M A R G I N
+The Mathematics of the Margin
+▪The positive and negative hyperplanes run parallel to the decision boundary, offset 
+by ±1 in the net-input scale.
+▪The distance between these two planes — the margin — works out to 2 / ‖w‖.
+▪‖w‖ is the Euclidean length (norm) of the weight vector.
+w₀ + wᵀxpos = 1        w₀ + wᵀxneg = −1
+
+=== PAGE BREAK ===
+23 / 35
+M A X I M U M  M A R G I N
+The Constrained Optimization Problem
+▪Objective function of SVM becomes maximization of:
+▪Maximizing the margin (2/‖w‖) is equivalent to minimizing ½‖w‖² — a much friendlier quadratic 
+objective,
+▪with the constraint that every training sample must fall on the correct side of its class's hyperplane.
+▪Both constraints can be written compactly as a single inequality that must hold for every sample i.
+
+=== PAGE BREAK ===
+24 / 35
+MAXIMUM MARGIN
+The SVM Solution
+Solving the constrained optimization problem (via its Lagrangian dual) yields the 
+classifier and its weight vector below.
+The weight vector is a weighted sum over training points — but the Lagrange 
+multipliers αᵢ are zero for every point that isn't a support vector.
+In practice, the decision boundary is defined only by the support vectors, not the 
+whole training set.
+classifier
+weights, from support vectors only (nonzero αᵢ)
+
+=== PAGE BREAK ===
+25 / 35
+N O N - S E P A R A B L E  D A T A
+Slack Variables: the Soft-Margin SVM
+▪Real data is rarely perfectly separable 
+— the hard-margin constraints need 
+relaxing.
+▪A slack variable ξᵢ is introduced per 
+sample, allowing it to fall inside (or 
+across) the margin.
+▪Each violation is penalized, but 
+convergence is now guaranteed even 
+with misclassifications.
+
+=== PAGE BREAK ===
+26 / 35
+NON-SEPARABLE DATA
+Regularization in SVMs: the Role of C
+Minimizing ½‖w‖² + C·Σξᵢ balances margin width against total slack.
+Large C: large penalties for misclassification — narrower margin, closer fit.
+Small C: more tolerant of misclassification — wider margin, more 
+regularization.
+C therefore plays exactly the same role here as it does in regularized 
+logistic regression.
+Large C
+narrow margin
+Small C
+wide margin
+
+=== PAGE BREAK ===
+SECTION 05
+Kernel Methods
+Solving problems that no straight line can separate
+27 / 35
+
+=== PAGE BREAK ===
+28 / 35
+THE NON-LINEAR PROBLEM
+When a Straight Line Isn't Enough
+▪The classic Exclusive-OR (XOR) 
+problem is not linearly separable: no 
+single straight line divides the two 
+classes.
+X1
+X2
+Y
+0
+0
+0
+0
+1
+1
+1
+0
+1
+1
+1
+0
+
+=== PAGE BREAK ===
+28 / 35
+THE NON-LINEAR PROBLEM
+Kernel methods for linearly inseparable data
+▪Kernel methods build non-linear 
+combinations of the original features.
+▪By projecting onto a higher-
+dimensional space, classes that 
+overlap in 2D become linearly 
+separable.
+X1
+X2
+Y
+
+=== PAGE BREAK ===
+29 / 35
+THE KERNEL TRICK
+The Kernel Trick: General Blueprint
+1
+Transform training data into a higher-dimensional space via a mapping 
+function φ(·).
+2
+Train a linear SVM to classify the data in that new feature space.
+3
+Apply the same mapping φ(·) to transform new, unseen data.
+4
+Classify unseen data using the linear SVM model.
+Problem: constructing φ explicitly is computationally expensive for high dimensions.
+
+=== PAGE BREAK ===
+30 / 35
+THE KERNEL TRICK
+Avoiding the Explicit Mapping
+▪The decision boundary only ever needs the dot product of two feature vectors —
+never the vectors' individual coordinates in the new space.
+▪So, we define a kernel function that computes φ(x)ᵀφ(z) directly, without ever 
+materializing φ.
+▪Worked example: squaring the dot product ⟨x·z⟩implicitly computes the dot product 
+of a 3-D feature mapping — with none of the expansion cost.
+kernel function — replaces the dot product
+worked example (polynomial kernel)
+
+=== PAGE BREAK ===
+31 / 35
+THE KERNEL TRICK
+The RBF (Gaussian) Kernel
+The Radial Basis Function kernel is the most widely used kernel in practice.
+γ = 1/2σ² is a free parameter, tuned like any other hyperparameter.
+A kernel can be read as a similarity function between two samples — the minus sign 
+inverts distance into similarity (0 = dissimilar, 1 = identical).
+Varying γ on the XOR data traces out very different decision boundaries
+
+=== PAGE BREAK ===
+
+=== PAGE BREAK ===
+Decision Trees & Random Forests
+Splitting on the most informative features, measuring impurity,
+and combining trees into a robust ensemble
+
+=== PAGE BREAK ===
+THE IDEA
+Breaking a decision into questions
+• Decision trees are attractive when interpretability matters: the model asks a series 
+of yes/no questions and arrives at a decision.
+Work to do?
+Outlook?
+Once fit to real-valued features (like the Iris dataset), the same idea applies: instead of 
+“Outlook?”, the tree asks a threshold question, e.g. “Is sepal width ≥ 2.8 cm?”
+3
+
+=== PAGE BREAK ===
+THE ALGORITHM
+Growing a tree, step by step
+1
+Start at the root
+Begin with the full 
+training set at the root 
+node.
+2
+Split on best 
+feature
+Choose the feature 
+(and threshold) that 
+gives the largest 
+information gain (IG).
+3
+Repeat at each 
+child
+Recurse on each child 
+node, splitting again 
+until leaves are pure —
+every example belongs 
+to one class.
+4
+Prune
+Deep, pure trees 
+overfit. Limit the 
+maximum depth (or 
+other stopping rules) to 
+keep the tree general.
+A very deep tree with fully pure leaves can easily overfit — that's why pruning (e.g. 
+capping max_depth) matters in practice.
+4
+
+=== PAGE BREAK ===
+THE OBJECTIVE
+Maximizing information gain
+To decide where to split, we define an objective function: maximize the information 
+gain (IG) at each split.
+IG(Dₚ, f)  =  I(Dₚ)  – ∑ⱼ₌₁ᵐ (Nⱼ⁄ Nₚ) I(Dⱼ)
+f
+the feature used to perform the split
+Dₚ, Dⱼthe dataset of the parent node, and of 
+the j-th child node
+I
+the impurity measure (entropy, Gini, or 
+classification error)
+Nₚ, Nⱼthe number of training examples at the 
+parent node, and at child j
+For simplicity — and to shrink the search space — most libraries (including scikit-learn) grow strictly 
+binary trees: every parent node splits into exactly two children, Dₗₑₓₜ and Dᵣᵢᵧₕₜ.
+5
+
+=== PAGE BREAK ===
+SPLITTING CRITERIA
+Three ways to measure impurity
+Entropy
+IH(t) = –∑ p(i|t) log₂ 
+p(i|t)
+0 when a node is pure; 
+maximal (1, for 2 classes) 
+when classes are perfectly 
+mixed. Aims to maximize 
+mutual information.
+Gini impurity
+IG(t) = 1 – ∑ p(i|t)²
+Minimizes the probability 
+of misclassifying a 
+randomly picked example. 
+Also maximal for a perfectly 
+mixed node.
+Classification error
+IE(t) = 1 – max{ p(i|t) }
+Useful for pruning, but not 
+recommended for growing 
+— it's less sensitive to 
+changes in class 
+probabilities.
+6
+
+=== PAGE BREAK ===
+SPLITTING CRITERIA
+Comparing the three criteria visually
+p(i=1)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Reading the curves
+All three measures peak when classes 
+are perfectly mixed (p = 0.5) and hit 0 
+at the pure extremes.
+Gini sits between entropy and 
+misclassification error — an 
+intermediate measure.
+In practice, Gini and entropy usually 
+produce very similar trees.
+Misclassification error is far less 
+sensitive mid-range, which is why it's a 
+poor choice for growing a tree.
+7
+
+=== PAGE BREAK ===
+A WORKED COMPARISON
+Same IG, different quality of split
+Parent node Dₚ: 40 examples of class 1 and 40 of class 2. Two possible splits:
+(40, 40)
+Both children are still fairly mixed.
+(40, 40)
+The right child is already pure —
+clearly the better split.
+Classification error gives both scenarios the same IG (0.25) — it can't 
+tell that B is the better split. Gini impurity and entropy, however, 
+correctly favor scenario B, because they're more sensitive to how 
+pure each child actually is.
+information gain using the 
+classification error
+
+=== PAGE BREAK ===
+I N  P R A C T I C E
+Building a decision tree with scikit-learn
+What to notice
+9
+Entropy criterion would also favor scenario B (𝐼𝐻= 
+0.31 ) over scenario A (𝐼𝐻= 0.19 ):
+Gini impurity would favor the split in scenario B (𝐼𝐺= 
+0.16̿) over scenario A (𝐼𝐺= 0.125 ), which is indeed purer
+
+=== PAGE BREAK ===
+I N  P R A C T I C E
+Visualize the decision tree model after training
+•
+scikit-learn (and Graphviz, for nicer output) 
+can render the trained tree's structure 
+directly — every node shows its splitting rule, 
+impurity, sample count, and class distribution.
+petal width ≤ 0.75
+gini = 0.667
+samples = 105
+peal length ≤ 4.75
+gini = 0.5
+samples = 70
+gini = 0.219
+samples = 40
+class: Virginica
+The root splits on petal width first; the left child is 
+already pure (all Setosa). Deeper splits on petal 
+length continue separating Versicolor from Virginica.
+10
+
+=== PAGE BREAK ===
+ENSEMBLES
+Random forests: many trees, one vote
+A random forest averages many (deep) decision trees, each of which individually suffers from high 
+variance, to build a more robust, better-generalizing model.
+1
+Bootstrap 
+sample
+Draw a random sample of 
+size n from the training 
+data, with replacement.
+2
+Grow a tree
+At each node, randomly 
+select d features (without 
+replacement) and split on 
+the best of those.
+3
+Repeat k 
+times
+Build k trees this way, 
+each from its own 
+bootstrap sample and 
+random feature subsets.
+4
+Majority vote
+Aggregate all trees' 
+predictions; the class with 
+the most votes wins.
+11
+
+=== PAGE BREAK ===
+Sampling with replacement:
+In random sampling with replacement, we 
+always return the selected number to the 
+urn so that the probability of drawing a 
+particular number at each turn does not 
+change; we can draw the same number 
+more than once. In other words, in 
+sampling with replacement, the samples 
+(numbers) are independent and have a 
+covariance of zero.
+Sampling without replacement:
+In sampling without replacement, we do 
+not put the number back into the urn 
+after each turn. Consequently, the 
+probability of drawing a particular 
+number from the set of remaining 
+numbers in the next round depends on 
+the previous round.
+
+=== PAGE BREAK ===
+WRAPPING UP
+Hyperparameters and key takeaways
+Parameters that matter
+k — number of trees
+More trees generally improve performance, at 
+higher computational cost.
+n — bootstrap sample size
+Usually set equal to the training set size; smaller n 
+increases tree diversity (and variance).
+d — features per split
+A common default is √m, where m is the total 
+number of features.
+Takeaways
+Single decision trees are interpretable but 
+prone to overfitting without pruning.
+Gini and entropy work well for growing 
+trees; classification error is better reserved 
+for pruning.
+Random forests trade interpretability for 
+robustness — and rarely need pruning 
+themselves.
+scikit-learn's RandomForestClassifier 
+already implements the full algorithm —
+no need to build it from scratch.
+12
+
+=== PAGE BREAK ===
+S E C T I O N  0 6
+K-Nearest Neighbors
+A simple, non-parametric, instance-based classifier
+32 / 35
+
+=== PAGE BREAK ===
+33 / 35
+INSTANCE-BASED LEARNING
+K-Nearest Neighbors: the Algorithm
+▪KNN is a non-parametric model — it 
+learns no fixed set of parameters from 
+the training data.
+▪Unlike parametric models, KNN needs 
+the entire training set at prediction 
+time — it's an instance-based learner.
+1
+Choose k and a distance metric
+2
+Find the k nearest neighbors of the query 
+point
+3
+Assign the class label by majority vote
+
+=== PAGE BREAK ===
+The curse of dimensionality
+The curse of dimensionality describes the phenomenon 
+where the feature space becomes increasingly sparse for 
+an increasing number of dimensions of a fixed-size 
+training dataset. KNN is very susceptible to overfitting due 
+to the curse of dimensionality. We can think of even the 
+closest neighbors as being too far away in a high
+dimensional space to give a good estimate.
+
+=== PAGE BREAK ===
+34 / 35
+INSTANCE-BASED LEARNING
+Trade-offs & Distance Metrics
+▪Advantage: the classifier immediately adapts as new training examples arrive — no 
+retraining step.
+▪Cost: computational complexity grows linearly with the number of samples (curse of 
+dimensionality); efficient structures like KD-trees help at scale.
+p = 2
+Euclidean distance
+p = 1
+Manhattan distance
+
+=== PAGE BREAK ===
+SUMMARY
+Choosing the Right Classifier
+Logistic 
+Regression
+Probability estimates, fast, 
+interpretable
+Assumes a fairly linear decision 
+boundary
+SVM (linear)
+Robust margins, works well in high 
+dimensions
+Less naturally probabilistic
+SVM (kernel / 
+RBF)
+Handles non-linear boundaries well
+Slower on very large datasets, needs 
+tuning
+K-Nearest 
+Neighbors
+Simple, no training phase, adapts 
+instantly
+Slow at prediction time, sensitive to 
+scale
+Remember: no free lunch — always match the model to the problem.
+35 / 35

@@ -1,0 +1,19 @@
+
+rel                                Length
+---                                ------
+.scratch\img_20_TT_1.png          5840583
+.scratch\img_IMG_6120.png         5602519
+.scratch\img_IMG_6121.png         3605985
+.scratch\img_TT2.png              1901192
+.scratch\small_TT1.jpg             508993
+.scratch\small_TT2.jpg             140167
+.scratch\tt2_frame0.png          11467350
+DSP\Final Question\IMG_6120.HEIC  1799177
+DSP\Final Question\IMG_6121.HEIC  1454257
+DSP\LAB_TEST_SYLLABUS.png           44299
+DSP\TT\Tt1.jpg                    1299891
+DSP\TT\TT2.HEIC                   1243544
+ML\Questions\20_TT_1.HEIC         2416254
+
+
+

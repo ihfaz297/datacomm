@@ -1,0 +1,152 @@
+Department of Computer Science and Engineering 
+Course: CSE 0714 3276 Title: Digital Signal Processing Lab 
+ 
+Assignment 3 (20/07/2026) 
+ 
+Title: Effects of Sampling in Discrete Time Signals 
+ 
+Objectives: 
+1. Simulate and plot two CT signals of 10 Hz and 110 Hz for 0<t<0.2 secs. 
+2. Sample at Fs= 100 Hz and plot them in discrete form. 
+3. Observe and note the aliasing effects. 
+4. Explore and learn. 
+ 
+Pre- Lab 
+ 
+Self Study: Signal, CT signals, DT signals, sampling of analog signals, sampling theorem, Nyquist rate 
+ 
+In Lab Tasks: 
+Task 1: Sampling and aliasing in Sinusoids 
+1. Simulate and plot two CT signals of 10 Hz and 110 Hz for 0<t<0.2 secs. 
+a. Check for the correctness of the time periods of both sinusoids 
+2. Sample both sinusoids at Fs= 100 samples/sec and plot them in discrete form. 
+a. Observe the plots and explain (write) in your own words the cause and effects of what 
+you just saw 
+Task 2: Sampling and aliasing in Audio Signals 
+You have to generate a tone in python and listen to it with command. The frequency of the tone 
+should be 1 kHz at a sampling rate of 8 kHz and the duration should be 3 sec. 
+ 
+Post Lab Tasks: 
+Task 1:  
+Change the value of F which is 1 kHz initially, listen to the tones (make sure your headphones or 
+speakers are on). You can also change the Fs to observe the effects. 
+Sl. 
+F 
+(kHz) 
+Fs 
+(kHz) 
+Sounds 
+like 
+what 
+frequency? 
+Reason. Specify whether aliasing is happening or 
+not. 
+1 
+1 
+8 
+ 
+ 
+2 
+2 
+8 
+ 
+ 
+3 
+3 
+8 
+ 
+ 
+4 
+4 
+8 
+ 
+ 
+5 
+5 
+8 
+ 
+ 
+6 
+6 
+8 
+ 
+ 
+7 
+7 
+8 
+ 
+ 
+8 
+8 
+8 
+ 
+ 
+9 
+9 
+8 
+ 
+ 
+
+=== PAGE BREAK ===
+10 
+-1 
+8 
+ 
+ 
+11 
+-2 
+8 
+ 
+ 
+12 
+-3 
+8 
+ 
+ 
+13 
+-4 
+8 
+ 
+ 
+14 
+9 
+8 
+ 
+ 
+15 
+25 
+8 
+ 
+ 
+ 
+Task 2: 
+Consider the continuous time sinusoidal signal: x(t)=sin(2πF0t). The sampled version will be x(n)= 
+sin(2π(F0/Fs)n), where n is a set of integers and Ts is the sampling interval (Ts=1/Fs).  
+Plot the signal x(n) for Fs= 5 kHz and take i) F0= 0.5 kHz 
+ii) F0= 2 kHz iii) F0= 3 kHz and iv) F0= 4.5 
+kHz. 
+Explain the similarities and differences among various plots. Also mention whether aliasing occurs 
+or not. 
+ 
+Task 3: 
+a) Generate an analog signal of F=5 Hz. Plot ot for t= 1 sec. Take Fs= 10 Hz. Count no. of 
+samples using python and print it. 
+b) Repeat above exercise for t= 2 sec. 
+c) Repeat above exercise for Fs= 20 Hz. 
+d) Repeat above exercise for F= 10 Hz. 
+e) Repeat above exercise for Fs= 40 Hz. 
+ 
+Observe the differences in above and explain. 
+ 
+Task 4: 
+A cosine signal of 40 Hz is sampled at 30 samples per second. What will be the fd of the 
+corresponding discrete signal? 
+ 
+ 
+Deliverables: 
+ 
+1. Printed Report addressing the in lab tasks and post lab tasks 
+2. Python code for each task. 
+ 
+ 
+Assignment Submission Due: 25/07/2026 

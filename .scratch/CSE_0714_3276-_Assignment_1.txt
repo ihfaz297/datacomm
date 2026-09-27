@@ -1,0 +1,25 @@
+Department of Computer Science and Engineering 
+Course: CSE 0714 3276 Title: Digital Signal Processing Lab 
+ 
+Assignment 1 (14/07/2026) 
+ 
+1. Make a triangle signal at 200 Hz and make a wave (duration: 0.5 sec) that samples it at 10000 
+frames per second. Plot the signal for 3 periods and show the spectrum along with the 
+harmonics. Listen to the wave. 
+2. Make a square signal at 100 Hz and make a wave (duration: 0.5 sec)  that samples it at 10000 
+frames per second. Plot the signal for 3 periods and show the spectrum along with the 
+harmonics. Listen to the wave. 
+3. Make a triangle signal at 1100 Hz and make a wave that samples it at 10000 frames per 
+second. Plot the signal for 3 periods and show the spectrum along with the harmonics. If you 
+plot the spectrum, you can see that most of the harmonics are aliased. When you listen to 
+the wave, can you hear the aliased harmonics? 
+4. Make a square signal at 1100 Hz and make a wave that samples it at 10000 frames per 
+second. Plot the signal for 3 periods and show the spectrum along with the harmonics. If you 
+plot the spectrum, you can see that most of the harmonics are aliased. When you listen to 
+the wave, can you hear the aliased harmonics? 
+5. Make a cosine signal at 4500 Hz and 5500 Hz that samples it at 10000 frames per second. 
+Plot the signal for 5 periods and show the spectrum. What do you see in these two 
+spectrums? Do you see any problem? 
+ 
+ 
+Assignment Submission Due: 18/07/2026 

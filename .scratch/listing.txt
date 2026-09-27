@@ -1,0 +1,200 @@
+.scratch\19_tt1.txt	0
+.scratch\19_tt2.txt	0
+.scratch\Chapter_2.txt	63506
+.scratch\Chapter_3_z_Transform.txt	1247
+.scratch\Chapter_4.8.6_4.8.7.txt	2450
+.scratch\Chapter_4_Problems.txt	208
+.scratch\Copy_of_SolnCSE630_SUST_TT1.txt	3667
+.scratch\crop_tt1_q1.png	87766
+.scratch\crop_tt1_q4.png	85143
+.scratch\CSE_0714_3276-_Assignment_1.txt	1493
+.scratch\CSE_0714_3276-_Assignment_2.txt	547
+.scratch\CSE_0714_3276-_Assignment_3.txt	2898
+.scratch\CSE_0714_3276-_Assignment_4.txt	1167
+.scratch\dirs.txt	9318
+.scratch\DSP_Chapter4_Frequency_Analysis_CTFT.txt	2015
+.scratch\dsp_extract.py	1695
+.scratch\dsp_files.txt	5262
+.scratch\dsp_full.txt	4037
+.scratch\dsp_tree.txt	1415
+.scratch\dsp_tree2.txt	1408
+.scratch\exam_imgs.txt	653
+.scratch\extract.py	1323
+.scratch\extract_stdout.txt	0
+.scratch\f6120_bot.png	1319179
+.scratch\f6120_top.png	1350606
+.scratch\f6121_bot.png	969489
+.scratch\f6121_top.png	797422
+.scratch\img_20_TT_1.png	5840583
+.scratch\img_IMG_6120.png	5602519
+.scratch\img_IMG_6121.png	3605985
+.scratch\img_TT2.png	1901192
+.scratch\list_dsp.txt	1415
+.scratch\list_dsp2.txt	2808
+.scratch\list_files.py	649
+.scratch\list_scratch.txt	1871
+.scratch\listing2.txt	7495
+.scratch\machine_learning_.txt	50
+.scratch\mods.txt	132
+.scratch\probe_out.txt	11731
+.scratch\probe_pdfs.py	2232
+.scratch\probe_run.log	73
+.scratch\scratch_files.txt	1946
+.scratch\scratch_tree.txt	1795
+.scratch\small_6120.jpg	430012
+.scratch\small_6121.jpg	279378
+.scratch\small_TT1.jpg	508993
+.scratch\small_Tt1_dsp.jpg	46482
+.scratch\small_TT2.jpg	140167
+.scratch\study_list.txt	113
+.scratch\tree.txt	12205
+.scratch\tt2_frame0.png	11467350
+.scratch\Whole-syllabus-course.txt	2942
+CE\ch1_full.txt	61637
+CE\ch2_osi.txt	42963
+CE\ch3_math.txt	28734
+CE\ch4_linecoding.txt	38055
+CE\ch4_pcm.txt	21158
+CE\Copy of SolnCSE630 SUST_TT1.pdf	5201799
+CE\Data-Communications-and-Network by BEHROUZ A. FOROUZAN-5e.pdf	66943546
+CE\Data-Communications-and-Networking by BEHROUZ A. FOROUZAN-4e.pdf	11363830
+CE\Lab 1.ipynb	13047
+CE\Lab 2.ipynb	153981
+CE\practice\dd1.png	6676
+CE\practice\dd4.png	7733
+CE\practice\doomsday_manchester.png	6381
+CE\practice\doomsday_nrz_i.png	5252
+CE\practice\fa1.png	6507
+CE\practice\fa5.png	6329
+CE\practice\fee-amanillah.py	1303
+CE\practice\lab1_q1_mp3.py	433
+CE\practice\lab1_step1_delays.py	1904
+CE\practice\lab1_step2_bitstuff.py	1389
+CE\practice\pcm.png	31321
+CE\practice\pcm.py	3389
+CE\practice\pcm_drill.py	3648
+CE\practice\step1_nrz_l.py	862
+CE\practice\step2_nrz_i.py	943
+CE\practice\step3_manchester.py	989
+CE\practice\step4_diff_manchester.py	1491
+CE\practice\step5_steps.py	1415
+CE\practice\step6.png	38677
+CE\practice\step6_plot.py	3414
+CE\practice\step6_plot_doomsday.py	1708
+CE\practice\step6_plot_short.py	1840
+CE\practice\step6_short.png	34660
+CE\saint.mp3	397376
+CE\soln_extracted.txt	3622
+CE\sos.txt	1467
+CE\study\00-battle-plan.md	5120
+CE\study\01-ch1-2-cuesheet.md	20005
+CE\study\02-ch3-data-signals.md	12884
+CE\study\03-ch4-digital-transmission.md	12585
+CE\study\04-diagram-drills.md	10985
+CE\study\05-lab2-linecoding-python.md	12942
+CE\study\06-lab1-delays-encapsulation-python.md	8769
+CE\study\figs\b061_timefreq.png	209995
+CE\study\figs\b062_freqdomain.png	192954
+CE\study\figs\b063_composite.png	261131
+CE\study\figs\b064_composite_decomp.png	162817
+CE\study\figs\b065_nonperiodic_bw.png	203698
+CE\study\figs\b066_bandwidth_ex.png	123790
+CE\study\figs\b067_bandwidth_ex2.png	186631
+CE\study\figs\b068_digital.png	165395
+CE\study\figs\b100_sync.png	144851
+CE\study\figs\b101_unipolarNRZ.png	174249
+CE\study\figs\b102_NRZ_LI.png	215610
+CE\study\figs\b103_RZ.png	224788
+CE\study\figs\b104_manchester.png	175858
+CE\study\figs\b105_AMI.png	245108
+CE\study\figs\b120_quantization.png	157738
+CE\study\figs\crops\diffman_decode_storyboard.png	121151
+CE\study\figs\crops\diffman_practice.png	31490
+CE\study\figs\crops\fig1_4_mesh.png	46314
+CE\study\figs\crops\fig1_5_star.png	41433
+CE\study\figs\crops\fig1_6_bus.png	41443
+CE\study\figs\crops\fig1_7_ring.png	51499
+CE\study\figs\crops\fig2_11_osi.png	22060
+CE\study\figs\crops\fig2_12_osi_vs_tcpip.png	58714
+CE\study\figs\crops\fig2_4_tcpip_layers.png	37145
+CE\study\figs\crops\fig2_8_encapsulation.png	81087
+CE\study\figs\crops\fig3_13_bandwidth.png	37939
+CE\study\figs\crops\fig3_14_spectrum.png	16909
+CE\study\figs\crops\fig3_32_bdp.png	77348
+CE\study\figs\crops\fig4_21_pcm.png	23725
+CE\study\figs\crops\fig4_26_quant.png	83306
+CE\study\figs\crops\fig4_6_nrz.png	28148
+CE\study\figs\crops\fig4_8_manchester.png	35661
+CE\study\figs\crops\fig4_9_ami.png	27234
+CE\study\figs\crops\pp_q12_soln.png	661344
+CE\study\figs\crops\pp_q13_wave.png	74819
+CE\study\figs\crops\pp_q14_wave.png	43388
+CE\study\figs\crops\pp_q15_table.png	319624
+CE\study\figs\crops\pp_q5_table.png	44697
+CE\study\figs\pastpaper_p1.png	202432
+CE\study\figs\pastpaper_p2.png	920411
+CE\study\figs\pastpaper_p3.png	501886
+CE\study\figs\pastpaper_p4.png	1318137
+CE\study\figs\pastpaper_p5.png	866548
+CE\study\figs\pastpaper_p6.png	401927
+CE\study\figs\pastpaper_p7.png	1329372
+CE\study\SHOWTIME.md	11455
+CLAUDE.md	4341
+DSP\Chapter 2.pdf	3689587
+DSP\Chapter 3_z_Transform.pdf	1758570
+DSP\Chapter 4 Problems.pdf	4018484
+DSP\Chapter 4.8.6_4.8.7.pdf	4422867
+DSP\CSE 0714 3276- Assignment 1.pdf	49474
+DSP\CSE 0714 3276- Assignment 2.pdf	46894
+DSP\CSE 0714 3276- Assignment 3.pdf	70912
+DSP\CSE 0714 3276- Assignment 4.pdf	51204
+DSP\DSP.md	966
+DSP\DSP_Chapter4_Frequency_Analysis_CTFT.pdf	2214905
+DSP\Final Question\IMG_6120.HEIC	1799177
+DSP\Final Question\IMG_6121.HEIC	1454257
+DSP\LAB_TEST_SYLLABUS.png	44299
+DSP\midterm-2.txt.txt	1945
+DSP\practice\_verify_solutions.py	4772
+DSP\practice\santiago.py	336
+DSP\practice\step1_ct_signals.py	2645
+DSP\practice\step2_sampling.py	2897
+DSP\practice\step3_aliasing.py	2685
+DSP\practice\step4_quantization_image.py	3046
+DSP\practice\step4b_audio_file.py	3825
+DSP\practice\step5_dt_sequences.py	3428
+DSP\practice\step5b_dt_operations.py	3552
+DSP\practice\step6_convolution.py	2148
+DSP\practice\step7_correlation.py	1892
+DSP\practice\step8_moving_average.py	2296
+DSP\practice\step9_spectrum_audio.py	3493
+DSP\practice\tempCodeRunnerFile.py	111
+DSP\practice\test_tone.wav	16044
+DSP\Sanjit K Mitra Digital Signal Processing A Computer-Based Approach, 2e with DSP Laboratory using MATLAB.pdf	34413660
+DSP\Screenshot 2026-09-27 200004.png	131550
+DSP\study\lab-doomsday.md	7352
+DSP\TT\Tt1.jpg	1299891
+DSP\TT\TT2.HEIC	1243544
+DSP\Whole-syllabus-course.pdf	93152
+ML\exam_prep.md	24619
+ML\figures\fit_quality.png	115411
+ML\figures\l1_l2.png	123068
+ML\figures\learning_curves.png	79585
+ML\figures\learning_rate.png	81399
+ML\figures\logistic_cost.png	75361
+ML\figures\separable.png	72858
+ML\figures\sigmoid.png	54487
+ML\figures\validation_curve.png	89564
+ML\FULL_SOLUTIONS.md	21533
+ML\gini_by_hand.md	3917
+ML\naive_bayes_by_hand.md	3554
+ML\perceptron_by_hand.md	3018
+ML\Questions\19_tt1.pdf	313787
+ML\Questions\19_tt2.pdf	318334
+ML\Questions\2018-2019-1.jpg	168765
+ML\Questions\2018-2019-2.jpg	142933
+ML\Questions\20_TT_1.HEIC	2416254
+ML\Questions\machine learning .pdf	1603891
+ML\slides\Ch1 Intro to ML.pdf	579663
+ML\slides\Ch2 - Simple ML Algorithms.pdf	923355
+ML\slides\Ch3 ML Classifiers.pdf	2014401
+ML\slides\Ch4 Data Preprocessing.pdf	1397923

@@ -1,0 +1,35 @@
+﻿3689587	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 2.pdf
+1758570	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 3_z_Transform.pdf
+4018484	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 4 Problems.pdf
+4422867	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 4.8.6_4.8.7.pdf
+49474	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 1.pdf
+46894	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 2.pdf
+70912	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 3.pdf
+51204	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 4.pdf
+966	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\DSP.md
+2214905	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\DSP_Chapter4_Frequency_Analysis_CTFT.pdf
+44299	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\LAB_TEST_SYLLABUS.png
+1945	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\midterm-2.txt.txt
+34413660	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Sanjit K Mitra Digital Signal Processing A Computer-Based Approach, 2e with DSP Laboratory using MATLAB.pdf
+131550	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Screenshot 2026-09-27 200004.png
+93152	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Whole-syllabus-course.pdf
+1799177	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Final Question\IMG_6120.HEIC
+1454257	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Final Question\IMG_6121.HEIC
+336	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\santiago.py
+2645	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step1_ct_signals.py
+2897	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step2_sampling.py
+2685	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step3_aliasing.py
+3825	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step4b_audio_file.py
+3046	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step4_quantization_image.py
+3552	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step5b_dt_operations.py
+3428	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step5_dt_sequences.py
+2148	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step6_convolution.py
+1892	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step7_correlation.py
+2296	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step8_moving_average.py
+3493	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step9_spectrum_audio.py
+111	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\tempCodeRunnerFile.py
+16044	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\test_tone.wav
+4772	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\_verify_solutions.py
+7352	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\study\lab-doomsday.md
+1299891	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\TT\Tt1.jpg
+1243544	C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\TT\TT2.HEIC
