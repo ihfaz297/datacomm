@@ -140,8 +140,8 @@ y = x ∗ h ↔ Y = X·H, Parseval Σ|x[n]|² = (1/2π)∫|X(e^jw)|²dw.
 - H(e^jw) = DTFT of h[n] = Y(e^jw)/X(e^jw).
 - **Sinusoid in, sinusoid out:** x[n] = A cos(w₀n + θ) → y[n] = A\|H(e^{jw₀})\| cos(w₀n + θ + ∠H(e^{jw₀})).
 - Moving average (4.8.4): \|H(0)\| = 1, first null at **w = 2π/M**, phase = −w(M−1)/2, so **linear phase =
-  a pure delay of (M−1)/2 samples** (measured 2.0 for M = 5). Its sidelobes are only ~13 dB down, so it is
-  a smoother, not a real lowpass filter.
+  a pure delay of (M−1)/2 samples** (measured 2.0 for M = 5). Its sidelobes are only ~12 dB down for M = 5
+  (the classic −13 dB is the long-window limit), so it is a smoother, not a real lowpass filter.
 - Steady state vs transient (4.8.5): the natural (transient) part decays like αⁿ when |α| < 1; the forced
   (steady-state) part is the same sinusoid with amplitude \|H\|. In a long record only the steady-state
   term is left — that is the whole answer if he asks about steady-state response.

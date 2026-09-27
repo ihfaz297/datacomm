@@ -53,7 +53,7 @@ That *is* the answer; a DTFT of a finite sequence is just a polynomial in e^{−
 **Step 2 — substitute the w values and use e^{−jπ/2} = −j, e^{−jπ} = −1:**
 
 | w | 1 + 2e^{−jw} + 3e^{−j2w} | X | \|X\| | ∠X |
-|---|---|---|---|
+|---|---|---|---|---|
 | 0 | 1 + 2 + 3 | 6 | 6 | 0° |
 | π/2 | 1 + 2(−j) + 3(−1) = −2 − 2j | −2 − 2j | 2.828 | −135° |
 | π | 1 − 2 + 3 | 2 | 2 | 0° |
@@ -82,6 +82,10 @@ sum_{n=0}^{M-1} (a e^(-jw))^n  =  (1 - a^M e^(-jwM)) / (1 - a e^(-jw))
 
 Same formula, the series just stops at M − 1. The numerator is where the "ripples" in a finite-length
 response come from.
+
+One degenerate point to know: if α = 1 **and** w is a multiple of 2π, then the denominator is zero as well,
+so the quotient is 0/0 — the true value there is its limit, M (e.g. the flat sequence of M ones at DC gives
+M = 10 in practice question 9). Everywhere else the formula is exact.
 
 **Magnitude formula you should derive once and then memorise:**
 
@@ -159,13 +163,21 @@ Y(0) = (1 - a^M)/(1 - a) = 1 + a + a^2 + ... + a^(M-1)      <- the plain sum of 
 ```
 
 For α = 0.5, M = 5: (1 − 0.03125)/(1 − 0.5) = 0.96875/0.5 = **1.9375**, which is exactly
-1 + 0.5 + 0.25 + 0.125 + 0.0625. The drill prints 1.9375 at w = 0 and matches the direct DTFT sample by
-sample.
+1 + 0.5 + 0.25 + 0.125 + 0.0625. Machine-checked on a 1001-point grid: the closed form matches the direct
+DTFT sum sample by sample, and it lands on 1.9375 at w = 0.
 
-**Step 4 — the "so what".** Because the length is finite, |Y| now has **nulls**, where α^M e^{−jwM} = 1,
-i.e. w = 2πk/M (for the flat case α = 1 this is the Dirichlet kernel). Finite length → ripples and nulls.
-That observation is the bridge to the window method in tutorial 13: multiplying an ideal infinite response
-by a finite window is what creates the ripples.
+**Step 4 — the "so what".** Because the length is finite, |Y| is no longer the smooth curve of §4: it is
+rippled by the numerator factor 1 − α^M e^{−jwM}.
+
+**Careful — for |α| < 1 there are NO nulls.** The numerator can only vanish when α^M e^{−jwM} = 1, and that
+needs |α| = 1. For α = 0.5, M = 5 its smallest value is 1 − α^M = 0.96875 > 0, so |Y| merely *dips* (measured
+profile: 1.9375 at w = 0, 1.2295 at 0.3π, 0.9987 at 0.4π, 0.8949 at 0.5π, minimum 0.6685 near 0.85π, 0.6875
+at π). Exact nulls at w = 2πk/M appear only in the undamped case |α| = 1, and the cleanest example is the
+flat sequence α = 1, whose DTFT is the Dirichlet kernel sin(Mw/2)/sin(w/2) with nulls at 2πk/M — that is
+practice question 9. (α = −1 also gives nulls, at w = (2k+1)π/M.)
+
+Either way, finite length → ripple. That is the bridge to the window method in tutorial 13: multiplying an
+ideal infinite response by a finite window is what creates the ripples.
 
 ---
 
@@ -204,7 +216,9 @@ phase is a pure delay of (M−1)/2 = 2 samples.** In the exam, write the general
 
 **Step 4 — the interpretation marks.** H(0) = 1 (DC passes: the average of a constant is the constant),
 the first null is at **w = 2π/5 = 0.4π**, and the phase is linear → a constant delay of 2 samples. The
-sidelobes are only about 13 dB down, so it is a poor lowpass filter; it is a smoother.
+sidelobes are only about **12 dB** down for this 5-point filter — |H| peaks at exactly 0.25 between the
+nulls, i.e. −12.04 dB — so it is a poor lowpass filter; it is a smoother. (The familiar −13 dB figure is the
+long-window limit of the same rectangular shape; short windows do slightly worse.)
 
 ---
 
@@ -312,8 +326,8 @@ Verified numerically: **0.83333** from the time integral, 0.83325 from a truncat
   the algebra collapses.
 - **Reporting |X| when the question says X.** Give the complex expression and then the magnitude; both
   lines are marked.
-- **Calling the moving average a good lowpass.** Sidelobes are ~13 dB down; say "poor lowpass, good
-  smoother".
+- **Calling the moving average a good lowpass.** Its sidelobes are only ~12 dB down for M = 5 (the classic
+  −13 dB is the long-window limit); say "poor lowpass, good smoother".
 - **Forgetting the periodicity.** X(e^{jw}) = X(e^{j(w+2π)}); if asked for a sketch from −π to π, mirror
   the 0…π part.
 
@@ -352,7 +366,9 @@ Verified numerically: **0.83333** from the time integral, 0.83325 from a truncat
 10. Because x[n] real means X(e^{−jw}) = X*(e^{jw}): the real part (hence the magnitude) is even in w and
     the imaginary part (hence the phase) is odd.
 
-Check yourself by editing the numbers into `DSP/practice/step10_dtft.py` — the checker at the bottom will
-tell you PASS or FAIL with the expected value.
+Check yourself in `DSP/practice/step10_dtft.py` — its checker prints PASS/FAIL with the expected value for the
+causal-exponential DTFT, its magnitude formula, the M-point moving average, the first null and the group
+delay. The finite-length example of §5 is covered by `.scratch/verify_t10.py`, which re-derives every number
+in this file.
 
 

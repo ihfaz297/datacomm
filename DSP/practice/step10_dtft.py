@@ -10,7 +10,8 @@
 # M-point moving average (past final paper Q5b):  h[n] = 1/M, 0 <= n <= M-1
 #       H(e^jw) = sin(w M/2) / (M sin(w/2)) * exp(-j w (M-1)/2)
 #       |H| = 1 at w = 0,  first null at w = 2 pi / M,  linear phase = pure delay of (M-1)/2 samples
-#       (that is why the moving average is a poor lowpass: 13 dB sidelobes, wide transition band)
+#       (that is why the moving average is a poor lowpass: sidelobes only ~12 dB down for M = 5, ~13 dB for
+#        long windows, and a wide transition band)
 #
 # Run:  python DSP/practice/step10_dtft.py
 
