@@ -5,7 +5,7 @@ Book page = PDF page − 27 (book p.457 is PDF p.484).
 
 | Exam | Syllabus | Notes file | Drills |
 |---|---|---|---|
-| **Midterm (TT2)** | 5.1 Intro, 5.2 Caches (incl. writes), 5.3 Cache performance, 5.4 Virtual memory | `01-ch5-caches.md`, `02-ch5-virtual-memory.md` | `practice/drill1`–`drill7` |
+| **Midterm (TT2)** | 5.1 Intro, 5.2 Caches (incl. writes), 5.3 Cache performance, 5.4 Virtual memory | **`01a-ch5-core.md` (study this)**. `01`/`02` = reference only | `practice/drill1`–`drill7` |
 | **Quiz** | All of Ch 7 (7.1–7.13) | `03a-ch7-from-zero.md` (start here) → `03-ch7-quiz.md` (full reference) | `practice/drill8_ch7_numbers.py` |
 | Both | Trick questions (small print, elaborations, Check Yourself) | `04-trick-bank.md` | self-test |
 | Phone | Cache stepper (any trace, step by step with exam wording), write-allocate counter, 85 flashcards | https://claude.ai/artifact/1t9uxu7wGe6GBRCoHhmwAq | |
