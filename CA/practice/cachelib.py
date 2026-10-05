@@ -5,6 +5,32 @@
 #
 # and edit the demo at the bottom. Don't open this before you've tried the drills by hand.
 
+_score = [0, 0]
+
+
+def check(name, got, expected, tol=0.01):
+    """PASS/FAIL printer for drills. Blank answers (None / ...) are skipped, not spoiled."""
+    _score[1] += 1
+    if got is None or got is ...:
+        print(f"[ TODO ] {name}")
+        return
+    if isinstance(expected, float) or isinstance(got, float):
+        ok = abs(float(got) - float(expected)) <= tol * max(1.0, abs(float(expected)))
+    elif isinstance(expected, str):
+        ok = str(got).strip().lower() == expected.lower()
+    else:
+        ok = got == expected
+    if ok:
+        _score[0] += 1
+        print(f"[ PASS ] {name}")
+    else:
+        print(f"[ FAIL ] {name}: you said {got!r}, expected {expected!r}")
+
+
+def score():
+    print(f"\n{_score[0]}/{_score[1]} correct")
+
+
 def split(addr, offset_bits, index_bits):
     """Return (tag, index, offset) of a byte/word address."""
     offset = addr & ((1 << offset_bits) - 1)

@@ -6,8 +6,9 @@ Book page = PDF page − 27 (book p.457 is PDF p.484).
 | Exam | Syllabus | Notes file | Drills |
 |---|---|---|---|
 | **Midterm (TT2)** | 5.1 Intro, 5.2 Caches (incl. writes), 5.3 Cache performance, 5.4 Virtual memory | `01-ch5-caches.md`, `02-ch5-virtual-memory.md` | `practice/drill1`–`drill7` |
-| **Quiz** | All of Ch 7 (7.1–7.13) | `03-ch7-quiz.md` | `practice/drill8_ch7_numbers.py` |
+| **Quiz** | All of Ch 7 (7.1–7.13) | `03a-ch7-from-zero.md` (start here) → `03-ch7-quiz.md` (full reference) | `practice/drill8_ch7_numbers.py` |
 | Both | Trick questions (small print, elaborations, Check Yourself) | `04-trick-bank.md` | self-test |
+| Phone | Cache stepper (any trace, step by step with exam wording), write-allocate counter, 85 flashcards | https://claude.ai/artifact/1t9uxu7wGe6GBRCoHhmwAq | |
 
 ---
 
@@ -61,7 +62,7 @@ The examiner changed ~2 years ago, so I weighted papers by how recent they are:
 | 1:40–2:20 | `01` writes + performance section, then **drill5, drill6, drill4** |
 | 2:20–3:10 | `02-ch5-virtual-memory.md`, then **drill7** |
 | 3:10–3:20 | Break. Walk. Water. |
-| 3:20–4:40 | `03-ch7-quiz.md`, then **drill8** |
+| 3:20–4:40 | **`03a-ch7-from-zero.md` first** (story + mnemonics, ~30 min), then skim `03-ch7-quiz.md` for the numbers, then **drill8** |
 | 4:40–5:30 | `04-trick-bank.md`: cover the answers, say each out loud, mark the ones you miss |
 | 5:30–6:15 | Sleep 40 min if you can. Seriously. A 40-min nap beats 40 more minutes of reading at 5 AM |
 | 6:15–6:45 | Re-do only the drills you FAILed + your marked trick questions |
