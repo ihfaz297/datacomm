@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>8-QAM worked example</title>
+<style>
+  :root {
+    --bg: #0f1218;
+    --panel: #161b24;
+    --ink: #e8eef7;
+    --muted: #8b97a8;
+    --line: #2b3442;
+    --accent: #5cc8ff;
+    --accent2: #ffb454;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 24px;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 32px 0 8px; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+  p.sub { color: var(--muted); margin: 0 0 16px; max-width: 70ch; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 12px 0 24px;
+    overflow-x: auto;
+  }
+  svg { display: block; width: 100%; height: auto; }
+
+  /* --- shared drawing classes used by the JS --- */
+  .ax   { stroke: var(--line); stroke-width: 1.25; }
+  .axd  { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  .ring { fill: none; stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 4; }
+  .tr   { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .env  { stroke: var(--accent2); stroke-width: 1; stroke-dasharray: 4 3; opacity: .7; }
+  .bd   { stroke: var(--line); stroke-width: 1; }
+  .dotp { fill: var(--accent2); }
+  .hit  { fill: transparent; cursor: pointer; outline: none; }
+  .hit:hover, .hit:focus-visible { fill: rgba(92, 200, 255, .08); stroke: var(--accent); stroke-width: 1; }
+  .tx   { fill: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .tx.s { font-size: 10px; }
+  .tx.b { font-size: 12px; font-weight: 700; }
+  .tx.tm{ fill: var(--muted); }
+  .tx.tp{ fill: var(--accent2); }
+
+  /* --- the interactive wheel at the top --- */
+  #wheel-svg .pointer { fill: var(--accent2); }
+  #wheel-readout { font-family: ui-monospace, monospace; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .legend { color: var(--muted); font-size: 13px; }
+  .legend b { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>8-QAM, one seat at a time</h1>
+  <p class="sub">
+    Each of the eight symbols is a point in the I/Q plane. It sits at some
+    <b>size</b> (distance from the origin, called the amplitude) and some
+    <b>angle</b> (its phase). The table below shows all eight. Click any row
+    to load that symbol into the spinning wheel up top and watch it turn
+    into a wave.
+  </p>
+
+  <h2>The spinning wheel</h2>
+  <div class="card">
+    <svg id="wheel-svg" viewBox="0 0 420 240" role="img" aria-label="An I/Q point rotating into a sine wave"></svg>
+    <div id="wheel-readout">click a seat below ↓</div>
+  </div>
+
+  <h2>All eight seats</h2>
+  <div class="card">
+    <svg id="qam8-grid" viewBox="0 0 400 548" role="img" aria-label="Eight 8-QAM symbols arranged in a grid"></svg>
+  </div>
+
+  <h2>A message on the wire</h2>
+  <p class="sub">
+    Four symbols sent one after another: <b>000</b> → <b>011</b> → <b>110</b> → <b>101</b>.
+    The wave jumps in amplitude and phase at every boundary.
+  </p>
+  <div class="card">
+    <svg id="qam8-strip" viewBox="0 0 380 190" role="img" aria-label="A sequence of four 8-QAM symbols drawn as a waveform"></svg>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   Tiny helpers the illustrations rely on
+   ============================================================ */
+function $(id) { return document.getElementById(id); }
+
+/** Create an SVG element with attrs, append to parent, return it. */
+function el(tag, attrs, parent, text) {
+  var n = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  if (attrs) for (var k in attrs) n.setAttribute(k, attrs[k]);
+  if (text != null) n.textContent = text;
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+/** [[x,y],...] -> "x,y x,y ..." for <polyline points="..."> */
+function pts(arr) {
+  return arr.map(function (p) { return p[0].toFixed(2) + "," + p[1].toFixed(2); }).join(" ");
+}
+
+/* ============================================================
+   The interactive spinning wheel (the thing the grid loads into)
+   ============================================================ */
+var constApi = (function () {
+  var svg = $("wheel-svg");
+  var readout = $("wheel-readout");
+  var dots = {
+    "000": [ 3,  0],
+    "001": [ 1,  0],
+    "010": [ 0,  3],
+    "011": [ 0,  1],
+    "100": [ 0, -3],
+    "101": [ 0, -1],
+    "110": [-3,  0],
+    "111": [-1,  0]
+  };
+  var U = 22, CX = 110, CY = 120, R = 80;
+  var cur = { code: "000", I: 3, Q: 0 };
+
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var I = cur.I, Q = cur.Q;
+    var A = Math.hypot(I, Q), phi = Math.atan2(Q, I);
+
+    // axes
+    el("line", { class: "ax", x1: CX - R - 10, y1: CY, x2: CX + R + 10, y2: CY }, svg);
+    el("line", { class: "ax", x1: CX, y1: CY - R - 10, x2: CX, y2: CY + R + 10 }, svg);
+    el("text", { class: "tx s tm", x: CX + R + 14, y: CY + 4 }, svg, "I");
+    el("text", { class: "tx s tm", x: CX + 6, y: CY - R - 14 }, svg, "Q");
+
+    // the ring at this symbol's amplitude
+    el("circle", { class: "ring", cx: CX, cy: CY, r: A * U }, svg);
+
+    // arrow from origin to the symbol
+    var sx = CX + I * U, sy = CY - Q * U;
+    el("line", { class: "axd", x1: CX, y1: CY, x2: sx, y2: sy }, svg);
+    el("circle", { class: "dotp", cx: sx, cy: sy, r: 5 }, svg);
+    el("text", { class: "tx s b", x: sx + 8, y: sy - 6 }, svg, cur.code);
+
+    // the wave: y = A*sin(phi + 2pi * t), drawn to the right
+    var X0 = 230, X1 = 410, mid = CY, amp = A * U;
+    el("line", { class: "ax", x1: X0, y1: mid, x2: X1, y2: mid }, svg);
+    var p = [];
+    for (var i = 0; i <= 160; i++) {
+      var t = i / 160;
+      p.push([X0 + t * (X1 - X0), mid - amp * Math.sin(phi + 2 * Math.PI * t)]);
+    }
+    el("polyline", { class: "tr", points: pts(p) }, svg);
+
+    // readout
+    var deg = Math.round(((phi * 180 / Math.PI) + 360) % 360);
+    readout.textContent =
+      cur.code + "  ·  I = " + I + ", Q = " + Q +
+      "  ·  size " + A + "  ·  " + deg + "°";
+  }
+
+  draw();
+  return {
+    pick: function () { /* only one constellation here */ },
+    select: function (idx) {
+      // idx is the index into the grid's `dots` array; map it back by code
+      var codes = ["001", "000", "011", "010", "111", "110", "101", "100"];
+      var code = codes[idx];
+      var d = dots[code];
+      cur = { code: code, I: d[0], Q: d[1] };
+      draw();
+    },
+    show: function (code) {
+      var d = dots[code] || [0, 0];
+      cur = { code: code, I: d[0], Q: d[1] };
+      draw();
+    }
+  };
+})();
+
+/* ============================================================
+   Your code, verbatim (below this line)
+   ============================================================ */
+/* ---------- 8-QAM worked example: all eight seats ---------- */
+(function qam8Grid() {
+  var svg = $("qam8-grid"); if (!svg) return;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var dots = [[1, 0, "001"], [3, 0, "000"], [0, 1, "011"], [0, 3, "010"], [-1, 0, "111"], [-3, 0, "110"], [0, -1, "101"], [0, -3, "100"]];
+  var rows = [[0, 0, 1], [90, 2, 3], [180, 4, 5], [270, 6, 7]], u = 11;
+  function f(v) { return String(v).replace("-", "−"); }
+  el("text", { "class": "tx b", x: 8, y: 18 }, svg, "small wheel, size 1");
+  el("text", { "class": "tx b", x: 208, y: 18 }, svg, "big wheel, size 3");
+  el("line", { "class": "ax", x1: 200, y1: 26, x2: 200, y2: 548 }, svg);
+  rows.forEach(function (row, r) {
+    var ry = 34 + r * 128;
+    if (r > 0) el("line", { "class": "ax", x1: 0, y1: ry - 4, x2: 400, y2: ry - 4 }, svg);
+    [row[1], row[2]].forEach(function (idx, c) {
+      var d = dots[idx], I = d[0], Q = d[1], A = Math.hypot(I, Q), phi = Math.atan2(Q, I), px = c * 200;
+      var cx = px + 44, cy = ry + 52, sx = cx + I * u, sy = cy - Q * u;
+      el("line", { "class": "ax", x1: cx - 38, y1: cy, x2: cx + 38, y2: cy }, svg);
+      el("line", { "class": "ax", x1: cx, y1: cy - 38, x2: cx, y2: cy + 38 }, svg);
+      el("circle", { "class": "ring", cx: cx, cy: cy, r: A * u }, svg);
+      el("line", { "class": "axd", x1: cx, y1: cy, x2: sx, y2: sy }, svg);
+      el("line", { "class": "ax", x1: px + 92, y1: cy, x2: px + 194, y2: cy }, svg);
+      var p = [];
+      for (var i = 0; i <= 160; i++) { var t = i / 160; p.push([px + 92 + t * 102, cy - A * u * Math.sin(phi + 3 * Math.PI * t)]); }
+      el("polyline", { "class": "tr", points: pts(p) }, svg);
+      el("line", { "class": "env", x1: sx, y1: sy, x2: px + 92, y2: sy }, svg);
+      el("circle", { "class": "dotp", cx: sx, cy: sy, r: 4.5 }, svg);
+      el("circle", { "class": "dotp", cx: px + 92, cy: sy, r: 3.5 }, svg);
+      el("text", { "class": "tx s b", x: px + 8, y: ry + 106 }, svg, d[2] + " · size " + A + " · " + row[0] + "°");
+      el("text", { "class": "tx s tm", x: px + 8, y: ry + 121 }, svg, "I = " + f(I) + ", Q = " + f(Q));
+      var hit = el("rect", { "class": "hit", x: px + 2, y: ry - 2, width: 196, height: 124, tabindex: 0, role: "button", "aria-label": "Load " + d[2] + " into the spinning wheel above" }, svg);
+      function go() {
+        if (constApi) { constApi.pick("qam8"); constApi.select(idx); }
+        var w = $("wheel-svg");
+        if (w && w.scrollIntoView) w.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      }
+      hit.addEventListener("click", go);
+      hit.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); go(); } });
+    });
+  });
+})();
+
+/* ---------- 8-QAM worked example: a message on the wire ---------- */
+(function qam8Strip() {
+  var svg = $("qam8-strip"); if (!svg) return;
+  var msg = [[3, 0, "000"], [0, 1, "011"], [-3, 0, "110"], [0, -1, "101"]];
+  var x0 = 20, w = 90, cy = 92, u = 15, k, i;
+  msg.forEach(function (d, j) {
+    var A = Math.hypot(d[0], d[1]), deg = Math.round((Math.atan2(d[1], d[0]) * 180 / Math.PI + 360) % 360);
+    el("text", { "class": "tx b", x: x0 + j * w + w / 2, y: 20, "text-anchor": "middle" }, svg, d[2]);
+    el("text", { "class": "tx s tp", x: x0 + j * w + w / 2, y: 166, "text-anchor": "middle" }, svg, "size " + A + " · " + deg + "°");
+  });
+  for (k = 0; k <= msg.length; k++) el("line", { "class": "bd", x1: x0 + k * w, y1: 28, x2: x0 + k * w, y2: 150 }, svg);
+  el("line", { "class": "ax", x1: x0, y1: cy, x2: x0 + w * msg.length, y2: cy }, svg);
+  var p = [], N = 800;
+  for (i = 0; i <= N; i++) {
+    var t = i / N * msg.length, seg = Math.min(Math.floor(t), msg.length - 1), d = msg[seg];
+    var A = Math.hypot(d[0], d[1]), phi = Math.atan2(d[1], d[0]);
+    p.push([x0 + t * w, cy - A * u * Math.sin(phi + 4 * Math.PI * (t - seg))]);
+  }
+  el("polyline", { "class": "tr", points: pts(p) }, svg);
+})();
+</script>
+</body>
+</html>

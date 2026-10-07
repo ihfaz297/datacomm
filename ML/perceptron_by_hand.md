@@ -6,7 +6,7 @@
 |---|---|---|---|
 | Alex | 4 | 3 | +1 (in) |
 | Blake | 1 | 1 | −1 (out) |
-| Cara | 3 | 4 | +1 (in) |
+| Cara | 3 | 4 | +1 (in) |vvv
 | Dan | 2 | 1 | −1 (out) |
 
 Init w = [w₀, w₁, w₂] = [0, 0, 0], η = 0.5, x₀ = 1 (bias input).

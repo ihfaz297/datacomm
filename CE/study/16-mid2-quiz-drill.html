@@ -1,0 +1,489 @@
+<title>CE Mid-2 Quiz Drill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column of tap-to-answer cards; chapters open with a header drawn as an HDLC frame; sticky control bar on top. */
+:root{
+  --bg:#eef1f3; --grid:#dde3e8; --paper:#ffffff; --ink:#15212b; --muted:#5b6b78; --line:#cfd8df;
+  --accent:#0b6f78; --accent-soft:#d8eef0; --star:#b7791f; --star-soft:#fbefd9;
+  --ok:#1f7a3f; --ok-soft:#e1f3e6; --bad:#b4322c; --bad-soft:#fbe5e3;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1519; --grid:#172026; --paper:#172127; --ink:#e3eaee; --muted:#93a4b0; --line:#2a3842;
+  --accent:#4cc3cc; --accent-soft:#16343a; --star:#e3ad55; --star-soft:#3a2e18;
+  --ok:#5fcf86; --ok-soft:#163222; --bad:#f07d74; --bad-soft:#3b1d1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1519; --grid:#172026; --paper:#172127; --ink:#e3eaee; --muted:#93a4b0; --line:#2a3842;
+  --accent:#4cc3cc; --accent-soft:#16343a; --star:#e3ad55; --star-soft:#3a2e18;
+  --ok:#5fcf86; --ok-soft:#163222; --bad:#f07d74; --bad-soft:#3b1d1b; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 80px}
+header.top{display:grid;gap:6px;padding-block:8px 14px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;font-size:44px;line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+h1 span{color:var(--accent)}
+.lede{margin:0;color:var(--muted);max-width:60ch}
+.wave{width:100%;height:34px;display:block}
+.wave path{fill:none;stroke:var(--accent);stroke-width:2}
+.wave line{stroke:var(--line);stroke-width:1}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin-inline:-16px;padding:10px 16px 10px;display:grid;gap:8px}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.score b{font-family:var(--display);font-size:26px;font-weight:700;line-height:1}
+.score .sub{color:var(--muted);font-size:13px}
+.meter{height:5px;background:var(--line);border-radius:3px;overflow:hidden;display:flex}
+.meter i{display:block;height:100%}
+.meter .r{background:var(--ok)} .meter .w{background:var(--bad)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;font:500 13px/1 var(--body);padding:8px 11px;border-radius:999px;border:1px solid var(--line);
+  background:var(--paper);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip small{color:var(--muted);font-weight:400;margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.8}
+.chip.fast[aria-pressed="true"]{background:var(--star);border-color:var(--star)}
+.chip.danger{color:var(--bad)}
+.chip:focus-visible,.opt:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+section.chap{display:grid;gap:12px;margin-top:26px}
+.frame{display:flex;align-items:stretch;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden;background:var(--paper);
+  font-family:var(--mono);font-size:11.5px}
+.frame span{padding:7px 8px;border-right:1.5px solid var(--ink);display:flex;align-items:center;white-space:nowrap}
+.frame span:last-child{border-right:0}
+.frame .flag{color:var(--muted)}
+.frame .no{font-family:var(--display);font-size:20px;font-weight:700;background:var(--ink);color:var(--paper);padding-inline:10px}
+.frame .nm{font-family:var(--display);font-size:20px;font-weight:600;flex:1 1 auto;min-width:0;white-space:normal;line-height:1.1}
+.frame .ct{color:var(--muted)}
+@media (max-width:480px){.frame .flag{display:none}}
+
+details.primer{background:var(--accent-soft);border-radius:6px;padding:4px 14px}
+details.primer summary{cursor:pointer;font-weight:600;padding-block:8px;list-style-position:outside}
+details.primer summary em{font-style:normal;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+  background:var(--star);color:var(--paper);padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:2px}
+details.primer ul{margin:0 0 10px;padding-left:18px;display:grid;gap:6px}
+code{font-family:var(--mono);font-size:.88em;background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:0 4px;white-space:nowrap}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 14px 12px;display:grid;gap:10px}
+.card.ok{border-color:var(--ok)} .card.bad{border-color:var(--bad)}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.meta .num{font-weight:500;color:var(--ink)}
+.meta .st{color:var(--star);background:var(--star-soft);padding:1px 6px;border-radius:3px}
+.meta .src{margin-left:auto;text-align:right}
+.qt{margin:0;font-weight:500;font-size:16px;line-height:1.45}
+.opts{display:grid;gap:7px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;padding:10px 12px;border:1px solid var(--line);
+  border-radius:6px;background:transparent;color:var(--ink);font:inherit;font-size:15px;cursor:pointer;line-height:1.4}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .lt{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:2px;flex:0 0 auto}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.right .lt{color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.wrong .lt{color:var(--bad)}
+.opt.dim{opacity:.55}
+.why{border-left:3px solid var(--accent);padding:2px 0 2px 10px;font-size:14.5px;color:var(--ink)}
+.why b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-right:6px}
+.empty{background:var(--paper);border:1px dashed var(--line);border-radius:8px;padding:18px;color:var(--muted);text-align:center;margin-top:24px}
+footer{margin-top:34px;color:var(--muted);font-size:13px;display:grid;gap:6px}
+footer table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;background:var(--paper)}
+footer td,footer th{border:1px solid var(--line);padding:6px 8px;text-align:left}
+@media (prefers-reduced-motion:no-preference){.why{animation:in .18s ease-out}@keyframes in{from{opacity:.3;transform:translateY(-2px)}to{opacity:1}}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">CSE 365 · Forouzan 5e · Mid-term 2 quiz</div>
+    <h1>Quiz <span>Drill</span></h1>
+    <svg class="wave" viewBox="0 0 600 34" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="0" y1="17" x2="600" y2="17"/><line x1="150" y1="0" x2="150" y2="34"/><line x1="300" y1="0" x2="300" y2="34"/><line x1="450" y1="0" x2="450" y2="34"/>
+      <path id="wv"/>
+    </svg>
+    <p class="lede">Tap an answer. The reason shows up straight away. Starred ones come up most often in past papers, so if time runs out, do <b>★ Fast lane</b> only. You haven't studied ch 7, 8 and 11 yet: read their primer first (about a minute each).</p>
+  </header>
+
+  <div class="bar" id="bar">
+    <div class="score"><b id="sc">0 / 0</b><span class="sub" id="scsub">answered</span></div>
+    <div class="meter"><i class="r" id="mr"></i><i class="w" id="mw"></i></div>
+    <div class="chips" id="chaps"></div>
+    <div class="chips" id="modes">
+      <button class="chip fast" id="m-fast" aria-pressed="false">★ Fast lane</button>
+      <button class="chip" id="m-missed" aria-pressed="false">Missed only</button>
+      <button class="chip" id="m-read" aria-pressed="false">Show all answers</button>
+      <button class="chip" id="m-retry">Retry missed</button>
+      <button class="chip danger" id="m-reset">Reset</button>
+    </div>
+  </div>
+
+  <main id="list"></main>
+  <div class="empty" id="empty" hidden>Nothing to show with these filters. Turn off "Missed only" or pick another chapter.</div>
+
+  <footer>
+    <table id="tally"></table>
+    <div>Every numerical was recomputed. Where the publisher's quiz key is wrong, the question says "key corrected" and uses the book's answer.</div>
+  </footer>
+</div>
+
+<script>
+// c = chapter, s = 1 high-yield, q = question, o = options, a = correct index, w = why, t = source tag
+const CH = {
+  5: { name: "Analog Transmission", primer: [
+    "ASK / FSK / PSK / QAM = <b>digital data on an analog carrier</b> (digital-to-analog). AM / FM / PM = analog-to-analog.",
+    "<code>r = log2 L</code> bits per signal element. <code>S = N / r</code> baud. <code>N = S × r</code> bps.",
+    "ASK, PSK, QAM bandwidth <code>B = (1+d)S</code>. BFSK adds <code>2Δf</code>. MFSK (d = 0): <code>B = L × S</code>. Carrier = middle of the band.",
+    "Constellation: X = I (in-phase), Y = Q (quadrature). Distance from origin = peak amplitude, angle = phase, number of dots = L.",
+    "AM bandwidth <code>2B</code> (station 10 kHz). FM <code>2(1+β)B</code> (station 200 kHz). ASK is the most noise-sensitive."
+  ]},
+  6: { name: "Bandwidth Utilization", primer: [
+    "FDM and WDM (FDM for light) are analog. TDM is digital.",
+    "FDM with guard bands: <code>B = n·Bc + (n−1)·Bg</code>. Guard bands sit only <i>between</i> channels.",
+    "Synchronous TDM: link is n times faster, each unit n times shorter. Idle inputs still get a slot. Statistical TDM: slots only for active inputs, each slot carries an address.",
+    "Unequal rates: multilevel (combine in stages), multiple-slot (fast line gets 2+ slots), pulse stuffing (pad with dummy bits up to the highest rate).",
+    "T-1 = (24 × 8 + 1) bits × 8000 frames/s = <code>1.544 Mbps</code>.",
+    "Spread spectrum (privacy, anti-jamming): FHSS hops between M carriers using a PN code. DSSS turns each bit into n chips (Barker, n = 11)."
+  ]},
+  7: { name: "Transmission Media", primer: [
+    "<b>Guided</b> (a cable): twisted-pair, coaxial, fiber. <b>Unguided</b> (wireless): radio, microwave, infrared. Media sit <i>below</i> the physical layer.",
+    "<b>Twisted pair</b>: twisting makes noise hit both wires equally, and it cancels at the receiver. UTP has no shield, STP has a metal foil shield. Connector <code>RJ-45</code>.",
+    "<b>Coax</b>: copper core, insulator, then an <b>outer conductor</b> that shields against noise. RG ratings, <code>BNC</code> connector, cable TV.",
+    "<b>Fiber</b> carries light. The core is denser than the <b>cladding</b>. When light hits the boundary above the critical angle it <b>reflects</b> and stays in the core. Modes: multimode step-index (most distortion), multimode graded-index, single-mode (least). Connectors SC, ST, MT-RJ.",
+    "Fiber pros: bandwidth, low attenuation, immune to noise, light, hard to tap. Cons: needs skilled installation, one-way (needs 2 fibers), cost.",
+    "<b>Radio</b> 3 kHz–1 GHz, omnidirectional (AM/FM, TV). <b>Microwave</b> 1–300 GHz, unidirectional, line-of-sight (cell, satellite, WLAN). <b>Infrared</b> 300 GHz–400 THz, can't pass walls (remote).",
+    "Propagation: ground (&lt; 2 MHz), sky (off the ionosphere), line-of-sight (very high freq). VHF = 30–300 MHz."
+  ]},
+  8: { name: "Switching", primer: [
+    "Three methods: <b>circuit</b> (physical layer), <b>packet</b>: datagram (network layer) or virtual-circuit (data-link layer), <b>message</b> (application layer).",
+    "<b>Circuit</b>: a dedicated path is reserved for the whole call (telephone). 3 phases: setup, data transfer, teardown. Low delay, poor efficiency.",
+    "<b>Datagram</b>: no setup or teardown (1 phase). Each packet independent, may take a different route and arrive out of order. Table uses the <b>destination address</b>, which never changes.",
+    "<b>Virtual-circuit</b>: setup, data, teardown (3 phases). All packets take the same path. Table uses the <b>VCI</b>, which is local and changes at every switch.",
+    "Crossbar n × m = n·m crosspoints, never blocks. 3-stage: <code>2kN + k(N/n)²</code> crosspoints, fewer but can <b>block</b>. Clos: <code>n = √(N/2)</code>, <code>k ≥ 2n − 1</code>.",
+    "Time-division switch = <b>TSI</b> (time-slot interchange, uses RAM)."
+  ]},
+  10: { name: "Error Detection & Correction", primer: [
+    "Single-bit = 1 bit changed. Burst = 2+ bits, length from first to last bad bit. Burst is more likely.",
+    "Hamming distance = number of 1s in <code>x XOR y</code>. Detect s errors: <code>dmin = s+1</code>. Correct t: <code>dmin = 2t+1</code>.",
+    "Even parity bit = makes the count of 1s even. Simple parity catches only odd numbers of errors.",
+    "CRC: append (divisor length − 1) zeros, XOR-divide, append the remainder. Receiver: remainder 0 = accept.",
+    "Checksum: one's complement add (wrap the carry), then complement. Receiver total complemented = 0 → OK. It only <b>detects</b>.",
+    "Polynomial: bit i from the right is x^i. Shift left m = multiply by x^m."
+  ]},
+  11: { name: "Data Link Control", primer: [
+    "DLC = <b>framing + flow control + error control</b>, node to node.",
+    "Variable-size frames need <b>flags</b>. Flag = <code>01111110</code>.",
+    "<b>Byte stuffing</b> (byte-oriented, PPP): put an ESC byte before any FLAG or ESC in the data. <b>Bit stuffing</b> (bit-oriented, HDLC): after five 1s, insert a 0.",
+    "<b>Stop-and-Wait</b>: one frame, keep a copy, start a timer. Seq 0/1. ACK = next frame expected (F0 → ACK 1). Lost frame or lost ACK → timeout → resend the same number. A corrupted frame is silently dropped.",
+    "<b>HDLC</b>: bit-oriented. NRM (primary/secondary), ABM (peers). I-frame = data, S-frame = ACK/flow only, U-frame = link management. Flag | Address | Control | Info | FCS | Flag.",
+    "<b>PPP</b>: byte-oriented. Flag | <code>11111111</code> | <code>00000011</code> | Protocol | Payload | FCS | Flag. Dead → Establish (LCP) → Authenticate (PAP/CHAP) → Network (NCP) → Open → Terminate. No flow control."
+  ]}
+};
+
+const Q = [
+// ---------- CH 5 ----------
+{c:5,s:1,q:"ASK, FSK, PSK and QAM are examples of ____ conversion.",o:["digital-to-digital","digital-to-analog","analog-to-analog","analog-to-digital"],a:1,w:"Bits (digital data) ride on an analog carrier, so it's digital-to-analog. AM, FM and PM carry an analog signal, so they are analog-to-analog.",t:"Official quiz"},
+{c:5,s:1,q:"An analog signal has a bit rate of 8000 bps and a baud rate of 1000 baud. Bits per signal element (r) and number of signal elements (L)?",o:["r = 8, L = 8","r = 3, L = 8","r = 8, L = 256","r = 1/8, L = 2"],a:2,w:"r = N / S = 8000 / 1000 = 8. L = 2^r = 2^8 = 256.",t:"Ex 5.2 · asked 3×, incl. TT2 2025"},
+{c:5,q:"A signal carries 4 bits per signal element and sends 1000 signal elements per second. Bit rate?",o:["250 bps","1000 bps","4000 bps","16000 bps"],a:2,w:"N = S × r = 1000 × 4 = 4000 bps.",t:"Final 2018-19"},
+{c:5,s:1,q:"Bits per baud for FSK with 8 frequencies, and for QAM with 128 points?",o:["3 and 7","8 and 128","4 and 64","3 and 64"],a:0,w:"r = log2 L. log2 8 = 3, log2 128 = 7. Same idea: ASK with 4 amplitudes = 2, PSK with 4 phases = 2.",t:"P5-3 · Final 2016-17"},
+{c:5,q:"In analog transmission of digital data, the baud rate is ____ the bit rate.",o:["always greater than","less than or equal to","always equal to","double"],a:1,w:"S = N / r and r ≥ 1, so S ≤ N. They are equal only when r = 1 (binary ASK, FSK, PSK).",t:"Official quiz"},
+{c:5,s:1,q:"Bandwidth is 100 kHz, from 200 to 300 kHz. ASK with d = 1. Carrier frequency and bit rate?",o:["250 kHz, 50 kbps","200 kHz, 100 kbps","250 kHz, 100 kbps","300 kHz, 50 kbps"],a:0,w:"The carrier sits in the middle: fc = 250 kHz. B = (1+d)S → 100k = 2S → S = 50 kbaud. ASK is binary (r = 1), so N = 50 kbps.",t:"Ex 5.3 · Final 2019-20"},
+{c:5,s:1,q:"QPSK at 12 Mbps with d = 0. Baud rate and bandwidth?",o:["12 Mbaud, 12 MHz","6 Mbaud, 6 MHz","6 Mbaud, 12 MHz","3 Mbaud, 3 MHz"],a:1,w:"QPSK has 4 phases, so r = 2. S = 12M / 2 = 6 Mbaud. B = (1 + 0) × 6M = 6 MHz.",t:"Ex 5.7 · Final 2018-19"},
+{c:5,s:1,q:"Which modulation is most susceptible to noise?",o:["ASK","FSK","PSK","All equal"],a:0,w:"Noise mostly changes amplitude. ASK stores the data in the amplitude, so noise corrupts it directly. FSK and PSK keep the amplitude constant.",t:"Q5-5 · Final 2019-20"},
+{c:5,q:"QAM is a combination of:",o:["ASK and FSK","ASK and PSK","FSK and PSK","AM and FM"],a:1,w:"QAM varies amplitude and phase together. The frequency stays fixed. It uses two carriers, one in-phase (I) and one quadrature (Q).",t:"Official quiz"},
+{c:5,s:1,q:"In a constellation diagram, a point's distance from the origin is the ____ and its angle is the ____.",o:["frequency; amplitude","phase; amplitude","peak amplitude; phase","bit rate; baud rate"],a:2,w:"X axis = in-phase (I), Y axis = quadrature (Q). Peak amplitude = √(I² + Q²). Angle from the +X axis = phase. The number of dots is L.",t:"Concept · TT2 2025 constellations"},
+{c:5,q:"Which one uses two carrier frequencies?",o:["BASK","BPSK","BFSK","8-PSK"],a:2,w:"BFSK sends 0 on f1 and 1 on f2. BASK and BPSK use a single carrier frequency.",t:"Official quiz"},
+{c:5,q:"With the same signal rate, FSK bandwidth is ____ ASK bandwidth.",o:["less than","equal to","greater than","half of"],a:2,w:"BFSK: B = (1+d)S + 2Δf. The extra 2Δf (the gap between f1 and f2) makes it wider than ASK's (1+d)S.",t:"Official quiz"},
+{c:5,s:1,q:"Audio of bandwidth B is sent by AM. The AM signal bandwidth is:",o:["B","2B","2(1+β)B","10B"],a:1,w:"AM uses two sidebands: 2B. FM uses 2(1+β)B. AM stations get 10 kHz each (530–1700 kHz). FM stations get 200 kHz each (88–108 MHz).",t:"Official quiz"},
+{c:5,q:"Send 2 bits at a time at 4 Mbps using MFSK, carrier 10 MHz, d = 0. Levels L, baud S, bandwidth B?",o:["L = 2, S = 4 Mbaud, B = 8 MHz","L = 4, S = 2 Mbaud, B = 8 MHz","L = 4, S = 4 Mbaud, B = 16 MHz","L = 4, S = 2 Mbaud, B = 2 MHz"],a:1,w:"L = 2² = 4 frequencies. S = 4M / 2 = 2 Mbaud. The carriers are S apart, so B = L × S = 4 × 2M = 8 MHz.",t:"Ex 5.6 pattern · Final 2015-16"},
+
+// ---------- CH 6 ----------
+{c:6,q:"Multiplexing is needed because:",o:["a link's bandwidth is usually far more than one device needs","it encrypts the data","it lowers noise","it lets one device use many links"],a:0,w:"Multiplexing lets several signals share one link at the same time, so the spare bandwidth isn't wasted and fewer links are laid.",t:"Asked 3× (2014-15, 2015-16, 2018-19)"},
+{c:6,s:1,q:"Which multiplexing technique is used for analog signals?",o:["TDM","FDM","Statistical TDM","DSSS"],a:1,w:"FDM is analog. WDM is also analog, but it is FDM for light. TDM is digital. (The publisher's key says PDM, which is wrong.)",t:"Official quiz (key corrected)"},
+{c:6,s:1,q:"Five channels, 100 kHz each, are FDM'd with a 10 kHz guard band between channels. Minimum link bandwidth?",o:["500 kHz","540 kHz","550 kHz","510 kHz"],a:1,w:"B = n·Bc + (n−1)·Bg = 5 × 100 + 4 × 10 = 540 kHz. Five channels have only 4 gaps between them.",t:"Ex 6.2 · Final 2018-19"},
+{c:6,s:1,q:"Three voice channels of 4 kHz each, with 500 Hz guard bands. Total FDM bandwidth?",o:["12 kHz","13.5 kHz","13 kHz","14 kHz"],a:2,w:"3 × 4 + 2 × 0.5 = 13 kHz. With no guard bands it would be 12 kHz. (The original P6-1 with 10 channels gives 10 × 4 + 9 × 0.5 = 44.5 kHz.)",t:"P6-1 · TT2 2025"},
+{c:6,s:1,q:"Four 1-Mbps lines are combined with synchronous TDM, 1 bit per slot. Output bit duration?",o:["1 µs","4 µs","0.25 µs","0.5 µs"],a:2,w:"Input bit = 1/1M = 1 µs. Link rate = 4 × 1 = 4 Mbps, so each output bit = 1/4M = 0.25 µs. Frame duration = 1 µs, frame rate = 1,000,000 frames/s.",t:"Ex 6.6 · Final 2019-20, TT1"},
+{c:6,q:"In synchronous TDM with n inputs, the link data rate is ____ and each unit's duration is ____.",o:["n times faster; n times shorter","the same; the same","n times slower; n times longer","n times faster; the same"],a:0,w:"In the time one input sends one unit, the link must carry one unit from every input.",t:"Concept"},
+{c:6,s:1,q:"In ____ TDM, each input gets a slot in every frame even when it has nothing to send.",o:["statistical","synchronous","asynchronous","multilevel"],a:1,w:"Synchronous TDM fixes the slots, so idle inputs waste them. Statistical TDM fills slots only from active inputs, which is why it's more efficient.",t:"Official quiz · Final 2015-16, 2018-19"},
+{c:6,q:"Which TDM needs an address in every slot?",o:["synchronous","statistical","both","neither"],a:1,w:"In statistical TDM a slot isn't tied to one input, so it carries the destination address. Synchronous TDM knows each slot's owner from its position. Statistical TDM needs no sync bits, and its link can be slower than the sum of the inputs.",t:"Official quiz"},
+{c:6,s:1,q:"Two inputs run at 190 kbps and 180 kbps. The technique that adds dummy bits so they can be multiplexed is:",o:["multilevel multiplexing","multiple-slot allocation","pulse stuffing","frame synchronization"],a:2,w:"Pulse stuffing (bit padding) raises the slower line to the highest rate with dummy bits. It's used when the rates are not integer multiples of each other.",t:"P6-9 · Final 2015-16, 2019-20"},
+{c:6,q:"Two 20-kbps inputs are first combined into one 40-kbps line, which is then multiplexed with other 40-kbps lines. This is:",o:["multiple-slot allocation","multilevel multiplexing","pulse stuffing","statistical TDM"],a:1,w:"Multilevel = multiplex in stages when one rate is an integer multiple of the others. Multiple-slot instead gives one fast line 2 or more slots in every frame.",t:"Q6-8 · Final 2015-16"},
+{c:6,s:1,q:"A T-1 line: frames per second and data rate?",o:["8000 frames/s, 1.544 Mbps","8000 frames/s, 1.536 Mbps","24 frames/s, 64 kbps","4000 frames/s, 1.544 Mbps"],a:0,w:"Each frame has 24 channels × 8 bits + 1 framing bit = 193 bits. 193 × 8000 = 1,544,000 bps. The 1.536 Mbps option forgets the framing bit. Frame time = 125 µs.",t:"Official quiz"},
+{c:6,q:"WDM is designed for:",o:["twisted-pair","coaxial cable","fiber-optic cable","radio links"],a:2,w:"WDM is FDM for light. Several wavelengths share one fiber and are combined and split by a prism. Application: SONET and fiber backbones.",t:"Official quiz · Final 2015-16"},
+{c:6,q:"Groups, supergroups, master groups and jumbo groups are terms used in:",o:["the FDM analog hierarchy","the TDM digital hierarchy","DSSS","FHSS"],a:0,w:"Analog hierarchy: a group = 12 voice channels (48 kHz), a supergroup = 5 groups, a master group = 10 supergroups, a jumbo group = 6 master groups.",t:"Official quiz"},
+{c:6,s:1,q:"FHSS spreads the bandwidth by:",o:["replacing each bit with n chips","hopping among M carrier frequencies chosen by a pseudorandom code","adding guard bands","sending each bit on every frequency at once"],a:1,w:"The signal sits on one carrier for a short time, then hops to another chosen by a PN (pseudorandom noise) generator. Over time it uses M × B.",t:"Q6-11 · Final 2015-16, 2014-15"},
+{c:6,s:1,q:"DSSS spreads the bandwidth by:",o:["replacing each data bit with n chips using a spreading code","hopping between frequencies","adding guard bands","interleaving time slots"],a:0,w:"Direct Sequence: each bit becomes n chips (a Barker sequence, n = 11), so the bandwidth grows n times. One difference from FHSS: DSSS spreads with a code, FHSS spreads by hopping frequencies.",t:"Official quiz · Final 2019-20, 2014-15"},
+{c:6,q:"The goal of spread spectrum is:",o:["bandwidth efficiency","privacy and anti-jamming","shorter frames","a lower bit rate"],a:1,w:"Spread spectrum deliberately uses far more bandwidth than needed (B_ss ≫ B) so the signal is hard to intercept or jam. Multiplexing has the opposite goal: efficiency.",t:"Concept"},
+
+// ---------- CH 7 ----------
+{c:7,s:1,q:"Transmission media are categorized as:",o:["fixed or unfixed","guided or unguided","metallic or nonmetallic","simplex or duplex"],a:1,w:"Guided media use a physical conduit (twisted-pair, coax, fiber). Unguided media are wireless, with no conductor (radio, microwave, infrared).",t:"Official quiz · Q7-3, TT1"},
+{c:7,q:"Transmission media lie below the ____ layer.",o:["physical","data-link","network","transport"],a:0,w:"The medium is controlled by the physical layer and sits under it. It's sometimes called layer 0.",t:"Official quiz"},
+{c:7,s:1,q:"Twisting in twisted-pair cable reduces:",o:["cost","length","noise and crosstalk","bandwidth"],a:2,w:"Each wire is alternately nearer to and farther from the noise source, so both pick up equal noise. The receiver takes the difference, and the noise cancels.",t:"Official quiz · P7-7"},
+{c:7,q:"STP differs from UTP by having:",o:["a metal foil or braided-mesh shield","more twists only","a glass core","a BNC connector"],a:0,w:"Shielded twisted pair has less noise and crosstalk but is bulkier and costlier. UTP has no shield and is the common LAN cable.",t:"Final 2016-17"},
+{c:7,s:1,q:"Noise in a coaxial cable is reduced by:",o:["twisting the cable","the outer conductor","the inner conductor","the cladding"],a:1,w:"Coax = copper core, insulator, then an outer conductor (foil or braid) that is both a noise shield and the second conductor. Cladding belongs to fiber.",t:"Official quiz"},
+{c:7,s:1,q:"Match the connectors RJ-45, BNC and SC/ST to their cables.",o:["coax, twisted-pair, fiber","twisted-pair, coax, fiber","fiber, coax, twisted-pair","twisted-pair, fiber, coax"],a:1,w:"RJ-45 → twisted-pair (Ethernet jack). BNC → coax. SC, ST, MT-RJ → fiber. RG ratings (RG-59, RG-58) also mean coax.",t:"Official quiz"},
+{c:7,q:"In fiber optics, the signal is:",o:["light","radio waves","electric current","very low-frequency waves"],a:0,w:"Fiber guides a light beam through glass or plastic.",t:"Official quiz"},
+{c:7,s:1,q:"In an optical fiber, the cladding is ____ the core.",o:["denser than","less dense than","the same density as","a copper shield around"],a:1,w:"The core is the denser glass. Light going from dense to less dense at more than the critical angle reflects back, so it stays inside the core.",t:"Q7-7 · Final 2016-17"},
+{c:7,s:1,q:"Light hits the core–cladding boundary at an angle greater than the critical angle. It:",o:["refracts into the cladding","reflects back into the core","bends along the boundary","is absorbed"],a:1,w:"Angle < critical → refraction (it leaks out). Angle = critical → it bends along the boundary. Angle > critical → reflection. Fiber works on reflection.",t:"P7-4 · Q7-6"},
+{c:7,q:"Which fiber mode has the least distortion and reaches the farthest?",o:["multimode step-index","multimode graded-index","single-mode","all the same"],a:2,w:"Single-mode has a very thin core, so the beams run almost straight and arrive together. Step-index has the most distortion. Graded-index (density highest at the centre) falls in between.",t:"P7-6"},
+{c:7,s:1,q:"Which is a DISADVANTAGE of fiber-optic cable?",o:["immune to electromagnetic noise","low attenuation","needs skilled installation and is one-way","light weight"],a:2,w:"Pros: high bandwidth, low attenuation (repeaters every ~50 km vs ~5 km for copper), immune to noise, no corrosion, light, hard to tap. Cons: installation and maintenance skill, light goes one way (two fibers for two-way), cost.",t:"Q7-8 · Final 2016-17"},
+{c:7,s:1,q:"Radio waves (3 kHz – 1 GHz) are mostly ____ and so suit ____.",o:["unidirectional; unicast","omnidirectional; multicast like AM/FM radio and TV","unidirectional; satellites","omnidirectional; point-to-point only"],a:1,w:"Radio goes in all directions and needs no antenna alignment, which suits broadcasting. Microwaves (1–300 GHz) are unidirectional and line-of-sight, which suits unicast.",t:"P7-9"},
+{c:7,q:"Cellular phones, satellite links and wireless LANs use:",o:["radio waves","microwaves","infrared","VLF"],a:1,w:"Microwave antennas (a parabolic dish or a horn) send a narrow beam that must line up. That's ideal for one-to-one links.",t:"Concept"},
+{c:7,s:1,q:"Infrared frequencies are ____ microwave frequencies.",o:["below","above","the same as","unrelated to"],a:1,w:"Microwave is 1–300 GHz and infrared is 300 GHz–400 THz, so infrared is above. (The publisher's key says 'below', which is wrong.) Infrared can't pass walls and sunlight interferes, so it's short-range, like a TV remote.",t:"Official quiz (key corrected)"},
+{k:1,c:7,q:"Frequency range of VHF?",o:["3–30 MHz","30–300 MHz","300 MHz–3 GHz","3–30 GHz"],a:1,w:"Each band is ×10 the previous, starting at 3 kHz: VLF, LF, MF, HF, VHF, UHF, SHF, EHF. VHF = 30–300 MHz (FM radio, VHF TV). UHF = 300 MHz–3 GHz (UHF TV, cell phones).",t:"Final 2015-16"},
+{c:7,q:"Signals that go up to the ionosphere and reflect back to Earth use ____ propagation.",o:["ground","sky","line-of-sight","guided"],a:1,w:"Ground: low frequencies (below 2 MHz) hug the Earth. Sky: reflected off the ionosphere, so they travel far. Line-of-sight: very high frequencies, and the antennas must see each other.",t:"Final 2019-20"},
+
+// ---------- CH 8 ----------
+{c:8,s:1,q:"Circuit switching takes place at the ____ layer.",o:["physical","data-link","network","application"],a:0,w:"Circuit = physical. Virtual-circuit = data-link. Datagram = network. Message switching = application (store-and-forward).",t:"Official quiz"},
+{c:8,q:"Packet switching is normally used at which layers?",o:["physical and data-link","data-link and network","network and transport","transport and application"],a:1,w:"Virtual-circuit networks work at the data-link layer and datagram networks at the network layer.",t:"Official quiz"},
+{k:1,c:8,q:"Packet switching has ____ subcategories.",o:["two","three","four","none"],a:0,w:"There are two: datagram and virtual-circuit. (The publisher's key says three, which is wrong.) There are three switching methods overall: circuit, packet and message.",t:"Official quiz (key corrected)"},
+{k:1,c:8,s:1,q:"How many phases does a circuit-switched network have?",o:["one","two","three","four"],a:2,w:"Setup (request and acknowledgment, resources reserved), data transfer, teardown.",t:"Official quiz"},
+{k:1,c:8,s:1,q:"How many phases does a datagram network have?",o:["one","two","three","four"],a:0,w:"Only data transfer. There's no setup and no teardown, which is why it's called connectionless. (The publisher's key says three, which is wrong.)",t:"Official quiz (key corrected)"},
+{k:1,c:8,s:1,q:"How many phases does a virtual-circuit network have?",o:["one","two","three","none"],a:2,w:"Setup, data transfer and teardown, like circuit switching, but the data still travels as packets.",t:"Official quiz"},
+{c:8,s:1,q:"In a ____ network, each packet is treated independently and may take a different route.",o:["circuit-switched","virtual-circuit","datagram","message"],a:2,w:"Packets of one message may arrive out of order, and an upper layer reorders them. In a virtual-circuit network, all packets follow the same path.",t:"Official quiz"},
+{c:8,s:1,q:"The routing table is based on ____ in a datagram network, and on ____ in a virtual-circuit network.",o:["VCI; destination address","destination address; VCI","flow label; VCI","destination address; destination address"],a:1,w:"Datagram table: destination address → output port. VC table: (incoming port, incoming VCI) → (outgoing port, outgoing VCI).",t:"Official quiz"},
+{c:8,q:"In a datagram network, the destination address:",o:["changes at each switch","stays the same from source to destination","is dropped after setup","is replaced by a VCI"],a:1,w:"It's a global address that stays fixed for the whole trip. The VCI is what changes at each switch, and only in virtual-circuit networks. (The publisher's key is wrong here too.)",t:"Official quiz (key corrected)"},
+{c:8,q:"A VCI (virtual-circuit identifier) has:",o:["global scope, the same at every switch","local (switch) scope, and can change at each switch","the destination's IP address","no role during data transfer"],a:1,w:"Each switch maps an incoming VCI to an outgoing VCI. The numbers are small and only mean something between two switches.",t:"Concept"},
+{c:8,q:"In circuit switching, resources such as bandwidth and switch buffers are reserved during:",o:["data transfer","the setup phase","teardown","every packet"],a:1,w:"They're reserved at setup and held until teardown, even when nobody is talking. So efficiency is low but delay is minimal.",t:"Concept"},
+{c:8,q:"Telephone network and the Internet's network layer use, respectively:",o:["circuit; datagram","datagram; circuit","message; virtual-circuit","virtual-circuit; message"],a:0,w:"A phone call uses a dedicated circuit. IP is connectionless datagram switching.",t:"Concept"},
+{c:8,s:1,q:"Total delay in a datagram network with 2 switches (3 links):",o:["3T + 3τ + w1 + w2","2T + 2τ","T + τ + setup","3T + 3τ + setup + teardown"],a:0,w:"Each link adds one transmission time T and one propagation delay τ. Each switch adds a waiting time w. A virtual-circuit network instead has 3T + 3τ + setup + teardown, with no waiting.",t:"Final 2015-16"},
+{c:8,q:"An n × m crossbar switch needs ____ crosspoints. Its main drawback?",o:["n + m; blocking","n × m; too many crosspoints, most of them idle","n × m; blocking","log2 n; delay"],a:1,w:"A 1000 × 1000 crossbar needs 1,000,000 crosspoints, and fewer than 25% are in use at any time. A crossbar never blocks.",t:"Concept"},
+{c:8,s:1,q:"Three-stage switch: N = 100, 10 crossbars in stages 1 and 3, 4 in the middle. Total crosspoints?",o:["10,000","1200","800","2000"],a:1,w:"n = 100/10 = 10, k = 4. Stage 1: 10 × (10×4) = 400. Stage 2: 4 × (10×10) = 400. Stage 3: 400. Total = 1200 = 2kN + k(N/n)².",t:"P8-12 · asked 3× (2015-16, 2016-17, 2019-20)"},
+{c:8,s:1,q:"Same switch (N = 100, n = 10, k = 4). Max simultaneous connections and blocking factor?",o:["100, 1.0","40, 0.4","4, 0.04","10, 0.1"],a:1,w:"Max = (N/n) × k = 10 × 4 = 40. A single 100 × 100 crossbar allows 100. Blocking factor = 40/100 = 0.4.",t:"P8-12 · Final 2016-17"},
+{c:8,q:"Multistage switches reduce crosspoints but suffer from:",o:["blocking","collision","attenuation","crosstalk"],a:0,w:"Blocking: an input can't reach a free output because every path through the middle stage is busy. Clos's non-blocking rule: n = √(N/2), k ≥ 2n − 1.",t:"Concept"},
+{c:8,q:"A time-division switch uses:",o:["crosspoints","time-slot interchange (TSI)","prisms","VCIs"],a:1,w:"TSI writes the slots into RAM in arrival order and reads them out in a controlled order. There are no crosspoints, but it adds delay. TST = TSI + crossbar + TSI.",t:"Concept"},
+
+// ---------- CH 10 ----------
+{c:10,q:"A burst error means:",o:["exactly one bit changed","2 or more bits changed in the data unit","the whole frame is lost","bits arrive late"],a:1,w:"Single-bit = only 1 bit changed. Burst = 2 or more. Burst is more likely, because noise usually lasts longer than one bit.",t:"Official quiz"},
+{k:1,c:10,q:"Sent 0100010001000011, received 0101110101100011. Length of the burst error?",o:["4","8","11","16"],a:1,w:"Only 4 bits flipped (positions 4, 5, 8, 11), but the burst length runs from the first bad bit to the last: 11 − 4 + 1 = 8.",t:"Fig 10.2 example"},
+{k:1,c:10,s:1,q:"Hamming distance d(10101, 11110)?",o:["2","3","4","5"],a:1,w:"10101 XOR 11110 = 01011, which has three 1s, so d = 3.",t:"Concept"},
+{c:10,s:1,q:"To detect up to s errors, dmin must be at least ____. To correct up to t errors, ____.",o:["s; t","s + 1; 2t + 1","2s + 1; t + 1","s + 1; 2t"],a:1,w:"Detect 5 → dmin 6. Correct 5 → dmin 11.",t:"Q10-5, Q10-6 · Final 2016-17, 2019-20"},
+{c:10,q:"A code has dmin = 5. It detects up to ____ errors and corrects up to ____.",o:["5, 2","4, 2","4, 4","5, 5"],a:1,w:"Detect: s = dmin − 1 = 4. Correct: t = (dmin − 1)/2 = 2.",t:"Concept"},
+{k:1,c:10,q:"Minimum Hamming distance of the code {00000, 01011, 10101, 11110}?",o:["2","3","4","5"],a:1,w:"The six pair distances are 3, 3, 4, 4, 3, 3. The smallest is 3, so the code detects 2 errors and corrects 1.",t:"Ex 10.x"},
+{k:1,c:10,s:1,q:"Even parity bit for 11001100?",o:["0","1","2","Can't tell"],a:0,w:"11001100 has four 1s, which is already even, so the parity bit is 0. For 1011 (three 1s) it would be 1.",t:"Final 2019-20"},
+{c:10,s:1,q:"A simple parity check can detect:",o:["any number of errors","only an odd number of errors","only burst errors","and correct single-bit errors"],a:1,w:"Two flipped bits leave the parity unchanged, so the check passes. A simple parity code has dmin = 2.",t:"Concept"},
+{c:10,s:1,q:"CRC: dataword 1001, divisor 1011. Codeword?",o:["1001011","1001110","1001000","1011110"],a:1,w:"The divisor has 4 bits, so append 3 zeros: 1001000. XOR-divide by 1011 → remainder 110. Codeword = data + remainder = 1001110.",t:"Fig 10.6"},
+{c:10,q:"CRC: dataword 111111, divisor 1010. Dividend at the sender?",o:["111111","111111000","1111110000","1111111010"],a:1,w:"The divisor has 4 bits, so append 4 − 1 = 3 zeros.",t:"Official quiz"},
+{c:10,q:"At the CRC checker, a ____ remainder means the data is damaged.",o:["zero","nonzero","all-ones","equal-to-divisor"],a:1,w:"The receiver divides the whole codeword by the same divisor. Remainder 0 → accept. Anything else → discard.",t:"Official quiz"},
+{k:1,c:10,q:"How many bits are in the CRC-8 divisor?",o:["8","9","7","16"],a:1,w:"CRC-n gives an n-bit remainder, so the generator has n + 1 bits. CRC-32 → 33 bits.",t:"Official quiz"},
+{c:10,s:1,q:"Binary for x⁵ + x²?",o:["100100","00100100","101","010010"],a:0,w:"The power is the bit position from the right (starting at 0). Positions 5 and 2 are 1: 100100. Reverse: 10011 = x⁴ + x + 1.",t:"Final 2019-20"},
+{c:10,q:"Shift 111110 four bits to the right.",o:["1111100000","11","111110","0011"],a:1,w:"Shifting right by 4 drops the 4 rightmost bits → 11. In polynomials that's dividing by x⁴ and dropping the leftover terms. Shifting left by m adds m zeros, which is multiplying by x^m.",t:"P10-14 · Final 2019-20, 2016-17"},
+{c:10,s:1,q:"4-bit one's complement checksum of 7, 11, 12, 0, 6?",o:["6","9","36","4"],a:1,w:"Sum = 36 = 10 0100. Wrap the carry: 0100 + 10 = 0110 (6). Complement → 1001 = 9. The receiver adds all six numbers including 9, wraps and complements. A result of 0 means no error.",t:"Ex 10.11"},
+{c:10,s:1,q:"A checksum can:",o:["only detect errors","only correct errors","detect and correct","neither"],a:0,w:"Checksum, CRC and parity only detect. Correcting needs FEC such as a Hamming code. (The publisher's key says 'both', which is wrong.)",t:"Official quiz (key corrected)"},
+{c:10,q:"Match: uses polynomials / uses one's complement / one redundant bit per unit.",o:["CRC, checksum, simple parity","checksum, CRC, 2D parity","CRC, simple parity, checksum","Hamming, checksum, CRC"],a:0,w:"CRC works on polynomials. Checksum uses one's complement addition. Simple parity adds a single bit.",t:"Official quiz"},
+{c:10,q:"Chunk interleaving (FEC) protects mainly against:",o:["single-bit errors","burst errors and lost packets","timing jitter","crosstalk"],a:1,w:"Each packet's chunks are spread over several packets, so a burst or a loss damages only one chunk per packet. FEC means the receiver fixes errors without asking for a resend, which suits real-time audio and video.",t:"Final 2016-17"},
+{k:1,c:10,q:"Hamming code for 7 data bits (e.g. 1001101). How many parity bits?",o:["3","4","5","7"],a:1,w:"Pick the smallest r with 2^r ≥ m + r + 1: 2⁴ = 16 ≥ 7 + 4 + 1 = 12. The codeword has 11 bits, with parity at positions 1, 2, 4, 8. The classic answer is 10011100101.",t:"Final 2014-15"},
+
+// ---------- CH 11 ----------
+{c:11,s:1,q:"The data link control (DLC) sublayer handles:",o:["routing and addressing","framing, flow control and error control","modulation","media access only"],a:1,w:"DLC = node-to-node framing, flow control and error control. MAC (the other sublayer, ch 12) decides who uses a shared medium.",t:"TT2 (old) Q3"},
+{c:11,s:1,q:"Why do variable-size frames need flags?",o:["to encrypt the frame","to mark where each frame starts and ends","to carry the address","to hold the CRC"],a:1,w:"With variable sizes, the receiver can't count bits to find the boundary, so a special pattern (the flag) marks it. Fixed-size frames (ATM cells) need no flags because the size itself is the delimiter.",t:"Q11-2 · TT2 (old) Q4a"},
+{c:11,q:"In byte stuffing, we add a(n) ____ when a flag-like byte appears in the data.",o:["flag byte","ESC (escape) byte","null byte","0 bit"],a:1,w:"An ESC goes before any data byte that looks like a FLAG or an ESC. The receiver removes the ESC and keeps the next byte as data.",t:"Official quiz"},
+{c:11,q:"Byte-stuff D F E D (F = flag, E = escape, D = data).",o:["D F E D","D E F E E D","D E F E D","E D F E D E"],a:1,w:"Put an E before every F and every E in the data: D, [E F], [E E], D → D E F E E D. Forgetting to escape the E itself is the trap.",t:"P11-3 style"},
+{c:11,s:1,q:"In bit stuffing, a 0 is inserted after:",o:["every 0","five consecutive 1s","six consecutive 1s","every 8 bits"],a:1,w:"The flag 01111110 has six 1s. Stuffing after five 1s means the data never shows six in a row. The 0 is added even if the next bit is already 0. The receiver deletes any 0 that follows five 1s.",t:"Official quiz"},
+{c:11,s:1,q:"Bit-stuff 01111110 (a flag pattern sitting inside the data).",o:["01111110","011111010","0111110110","001111110"],a:1,w:"0, then 11111 → insert 0, then the remaining 1 and 0: 0 11111 0 10 = 011111010.",t:"Concept"},
+{c:11,s:1,q:"HDLC is ____-oriented and PPP is ____-oriented.",o:["byte; bit","bit; byte","bit; bit","byte; byte"],a:1,w:"HDLC uses the 01111110 flag with bit stuffing. PPP uses a flag byte (0x7E) with byte stuffing (ESC = 0x7D). (The publisher's key says HDLC is byte, which is wrong.)",t:"Q11-4 · Official quiz (key corrected)"},
+{c:11,q:"Stop-and-Wait uses sequence numbers:",o:["0 to 7","0 and 1 (modulo 2)","1 to 8","none"],a:1,w:"Only one frame is outstanding at a time, so you only need to tell a new frame from a resent one: 0, 1, 0, 1…",t:"Concept"},
+{c:11,s:1,q:"In Stop-and-Wait the receiver gets frame 0 correctly. It sends:",o:["ACK 0","ACK 1","NAK 0","nothing"],a:1,w:"The ACK number names the next frame expected. Frame 0 → ACK 1. Frame 1 → ACK 0.",t:"P11-7, P11-8"},
+{c:11,s:1,q:"Stop-and-Wait: frame 1 arrives safely but its ACK is lost. What happens?",o:["The sender sends frame 0 next","The sender times out and resends frame 1; the receiver discards the duplicate and sends the ACK again","The receiver sends NAK 1","The link is torn down"],a:1,w:"The sender can't tell a lost frame from a lost ACK. Both cause a timeout and a resend with the same sequence number, and that number lets the receiver spot the duplicate.",t:"P11-8 · Final 2016-17, 2019-20 (drawing)"},
+{c:11,q:"In Stop-and-Wait, a corrupted frame is:",o:["corrected by the receiver","silently discarded; the sender's timer expires and it resends","acknowledged with ACK 0","forwarded anyway"],a:1,w:"The CRC fails, so the receiver drops the frame without replying. Stop-and-Wait has no NAK, so the timer handles recovery.",t:"Concept"},
+{c:11,q:"Piggybacking means:",o:["sending two frames at once","carrying an ACK inside a data frame going the other way","stuffing bits","sending every ACK twice"],a:1,w:"In two-way traffic, the ACK rides in a data frame instead of its own frame, which saves bandwidth. HDLC I-frames do this.",t:"Concept"},
+{c:11,s:1,q:"1 Mbps link, round-trip time 20 ms, 1000-bit frames, Stop-and-Wait. Bandwidth-delay product and utilization?",o:["20,000 bits, 5%","20 bits, 50%","2,000 bits, 50%","20,000 bits, 50%"],a:0,w:"BDP = 1,000,000 × 0.020 = 20,000 bits could be in flight. Stop-and-Wait sends 1000 bits, then waits: 1000 / 20,000 = 5%. (2015-16 asked: 10 Mbps × 2 ms = 20,000 bits.)",t:"Ex 11.x · Final 2015-16"},
+{c:11,q:"ACK 3 and NAK 3 mean:",o:["ACK 3: frame 3 received; NAK 3: frame 3 not needed","ACK 3: everything before 3 arrived, send frame 3 next; NAK 3: frame 3 was lost or damaged, resend it","both mean resend frame 3","ACK 3: 3 frames were lost"],a:1,w:"An ACK number always points at the next frame expected.",t:"Final 2014-15"},
+{k:1,c:11,q:"How many protocols does a noisy channel have?",o:["one","two","three","four"],a:2,w:"There are three: Stop-and-Wait ARQ, Go-Back-N ARQ and Selective Repeat ARQ. A noiseless channel has two: Simplest and Stop-and-Wait. With m-bit sequence numbers, the Go-Back-N window is 2^m − 1 and the Selective Repeat window is 2^(m−1).",t:"Final 2015-16"},
+{c:11,s:1,q:"HDLC I-frames carry ____, S-frames carry ____, U-frames are for ____.",o:["user data (+ piggybacked ACK); ACK/flow control only; link management","ACK; user data; errors","management; data; ACK","data; management; ACK"],a:0,w:"S-frames (RR, RNR, REJ, SREJ) have no data field. U-frames set up and tear down the link.",t:"Concept"},
+{c:11,q:"The address field of an HDLC frame holds the address of the:",o:["primary station","secondary station","router","both stations"],a:1,w:"A command from the primary carries the secondary's address ('to'), and a response carries the secondary's own address ('from'). Either way, it's the secondary's address.",t:"Official quiz"},
+{c:11,q:"HDLC's two transfer modes are:",o:["NRM and ABM","LCP and NCP","PAP and CHAP","ARQ and FEC"],a:0,w:"NRM (normal response mode): one primary and one or more secondaries, unbalanced, point-to-point or multipoint. ABM (asynchronous balanced mode): each station acts as both, peer-to-peer.",t:"Concept"},
+{c:11,q:"The HDLC field that marks the start and end of a frame is:",o:["control","flag","FCS","address"],a:1,w:"The flag is 01111110. FCS is the CRC for error detection. Control says the frame type (I, S or U) and holds the sequence numbers.",t:"Official quiz"},
+{c:11,s:1,q:"In PPP, the address field is ____ and the control field is ____.",o:["11111111 (broadcast); 00000011 (like an HDLC U-frame)","the sender's IP; the ACK number","01111110; 01111101","00000000; 11111111"],a:0,w:"A point-to-point link has only one receiver, so the address is the constant broadcast 11111111. Control is the constant 00000011.",t:"Official quiz"},
+{c:11,q:"In PPP, the ____ field says what the payload carries (user data, LCP, AP or NCP).",o:["flag","address","protocol","FCS"],a:2,w:"The protocol field is 1 or 2 bytes. The FCS is a 2- or 4-byte CRC for error detection.",t:"Official quiz"},
+{c:11,s:1,q:"In which PPP phase are options negotiated?",o:["Establish","Authenticate","Network","Open"],a:0,w:"Dead → Establish (LCP negotiates options) → Authenticate (optional, PAP or CHAP) → Network (NCP, e.g. IPCP) → Open (data) → Terminate → Dead.",t:"Official quiz"},
+{c:11,q:"In which PPP phase is the user's identity checked?",o:["Establish","Authenticate","Network","Terminate"],a:1,w:"The Authenticate phase uses PAP or CHAP, and it's optional.",t:"Official quiz"},
+{c:11,s:1,q:"CHAP compared with PAP:",o:["PAP uses a 3-way challenge; CHAP sends the password in plain text","CHAP: 3-way handshake and the password is never sent; PAP: 2 steps, username and password sent in plain text","both send plain-text passwords","PPP uses neither"],a:1,w:"CHAP: the system sends a challenge, the user returns f(challenge, password), and the system replies success or failure. The password never crosses the line, so CHAP is safer.",t:"Official quiz"},
+{c:11,q:"PPP does NOT provide:",o:["framing","error detection","flow control","authentication"],a:2,w:"PPP has no flow control and only basic error control: it checks the CRC and silently discards bad frames, with no resend. It's point-to-point only, with no multipoint addressing.",t:"Concept"}
+];
+
+// ---------- app ----------
+const ORDER = [5, 6, 7, 8, 10, 11];
+const NEW_TO_YOU = { 7: 1, 8: 1, 11: 1 };
+const KEY = "ce-mid2-quiz-v1";
+const st = { ans: {}, ch: "all", fast: false, missed: false, read: false };
+let only = null; // temporary retry set (ids), not saved
+try { const s = JSON.parse(localStorage.getItem(KEY) || "{}"); if (s && typeof s === "object") Object.assign(st, s); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+// header waveform: ASK | FSK | PSK | QAM, one segment each
+(function () {
+  let d = "";
+  for (let x = 0; x <= 600; x += 1.5) {
+    const seg = Math.floor(x / 150), u = (x % 150) / 150;
+    let amp = 13, f = 6, ph = 0;
+    if (seg === 0) amp = u < 0.5 ? 13 : 5;
+    if (seg === 1) f = u < 0.5 ? 4 : 9;
+    if (seg === 2) ph = u < 0.5 ? 0 : Math.PI;
+    if (seg === 3) { amp = u < 0.5 ? 13 : 7; ph = u < 0.5 ? Math.PI / 2 : -Math.PI / 4; }
+    const y = 17 - amp * Math.sin(2 * Math.PI * f * u + ph);
+    d += (x === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1);
+  }
+  document.getElementById("wv").setAttribute("d", d);
+})();
+
+// stable shuffle of options per question (seeded), except ordinal ones
+function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+Q.forEach((q, i) => {
+  const ord = q.o.map((_, j) => j);
+  if (!q.k) { const r = rng(i * 7919 + 101); for (let j = ord.length - 1; j > 0; j--) { const k = Math.floor(r() * (j + 1)); [ord[j], ord[k]] = [ord[k], ord[j]]; } }
+  q.ord = ord;
+});
+
+const list = document.getElementById("list");
+const cards = [], sections = {};
+const LET = "ABCD";
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+ORDER.forEach(c => {
+  const sec = el("section", "chap"); sec.dataset.c = c; sections[c] = sec;
+  const qs = Q.filter(q => q.c === c);
+  const fr = el("div", "frame");
+  fr.append(el("span", "flag", "01111110"), el("span", "no", "CH " + String(c).padStart(2, "0")), el("span", "nm", CH[c].name), el("span", "ct", qs.length + " Q"), el("span", "flag", "01111110"));
+  sec.append(fr);
+  const det = el("details", "primer");
+  if (NEW_TO_YOU[c]) det.open = true;
+  const sum = el("summary"); sum.textContent = "60-second primer";
+  if (NEW_TO_YOU[c]) { const em = el("em", null, "read first"); sum.append(em); }
+  const ul = el("ul");
+  CH[c].primer.forEach(p => { const li = el("li"); li.innerHTML = p; ul.append(li); });
+  det.append(sum, ul); sec.append(det);
+  list.append(sec);
+});
+
+let n = {};
+Q.forEach((q, i) => {
+  n[q.c] = (n[q.c] || 0) + 1;
+  const card = el("article", "card"); card.id = "q" + i;
+  const meta = el("div", "meta");
+  meta.append(el("span", "num", q.c + "." + n[q.c]));
+  if (q.s) meta.append(el("span", "st", "★ high-yield"));
+  meta.append(el("span", "src", q.t));
+  const qt = el("p", "qt", q.q);
+  const opts = el("div", "opts");
+  const btns = q.ord.map((orig, j) => {
+    const b = el("button", "opt"); b.type = "button"; b.dataset.o = orig;
+    b.append(el("span", "lt", LET[j]), el("span", null, q.o[orig]));
+    b.addEventListener("click", () => choose(i, orig));
+    opts.append(b); return b;
+  });
+  const why = el("div", "why"); why.hidden = true;
+  why.append(el("b", null, "Why"), document.createTextNode(q.w));
+  card.append(meta, qt, opts, why);
+  sections[q.c].append(card);
+  cards[i] = { card, btns, why };
+});
+
+function choose(i, orig) {
+  if (st.read || st.ans[i] !== undefined) return;
+  st.ans[i] = orig; save(); renderCard(i); renderScore();
+}
+function renderCard(i) {
+  const q = Q[i], { card, btns, why } = cards[i];
+  const ch = st.ans[i], answered = ch !== undefined, show = st.read || answered;
+  btns.forEach(b => {
+    const o = +b.dataset.o;
+    b.disabled = show;
+    b.classList.toggle("right", show && o === q.a);
+    b.classList.toggle("wrong", answered && o === ch && o !== q.a);
+    b.classList.toggle("dim", show && o !== q.a && o !== ch);
+  });
+  why.hidden = !show;
+  card.classList.toggle("ok", answered && ch === q.a);
+  card.classList.toggle("bad", answered && ch !== q.a);
+}
+function isWrong(i) { return st.ans[i] !== undefined && st.ans[i] !== Q[i].a; }
+function visible(i) {
+  const q = Q[i];
+  if (only) return only.includes(i);
+  if (st.ch !== "all" && q.c !== +st.ch) return false;
+  if (st.fast && !q.s) return false;
+  if (st.missed && !isWrong(i)) return false;
+  return true;
+}
+function applyFilters() {
+  let any = false;
+  const shown = {};
+  Q.forEach((q, i) => { const v = visible(i); cards[i].card.hidden = !v; if (v) { shown[q.c] = 1; any = true; } });
+  ORDER.forEach(c => { sections[c].hidden = !shown[c]; });
+  document.getElementById("empty").hidden = any;
+}
+function tally(ids) {
+  let a = 0, r = 0;
+  ids.forEach(i => { if (st.ans[i] !== undefined) { a++; if (st.ans[i] === Q[i].a) r++; } });
+  return { a, r, t: ids.length };
+}
+function renderScore() {
+  const pool = Q.map((_, i) => i).filter(i => {
+    const q = Q[i];
+    if (st.ch !== "all" && q.c !== +st.ch) return false;
+    if (st.fast && !q.s) return false;
+    return true;
+  });
+  const s = tally(pool);
+  document.getElementById("sc").textContent = s.a + " / " + s.t;
+  document.getElementById("scsub").textContent = "answered · " + s.r + " right" + (s.a ? " (" + Math.round(100 * s.r / s.a) + "%)" : "") +
+    (st.ch === "all" ? "" : " · ch " + st.ch) + (st.fast ? " · fast lane" : "");
+  document.getElementById("mr").style.width = (s.t ? 100 * s.r / s.t : 0) + "%";
+  document.getElementById("mw").style.width = (s.t ? 100 * (s.a - s.r) / s.t : 0) + "%";
+  // chapter chips
+  const box = document.getElementById("chaps"); box.textContent = "";
+  const mk = (val, label, ids) => {
+    const b = el("button", "chip"); b.type = "button"; b.setAttribute("aria-pressed", String(!only && String(st.ch) === String(val)));
+    const t = tally(ids); b.append(document.createTextNode(label)); b.append(el("small", null, t.a + "/" + t.t));
+    b.addEventListener("click", () => { only = null; st.ch = val; save(); syncModes(); applyFilters(); renderScore(); window.scrollTo({ top: document.getElementById("list").offsetTop - 160 }); });
+    box.append(b);
+  };
+  const allIds = Q.map((_, i) => i).filter(i => !st.fast || Q[i].s);
+  mk("all", "All", allIds);
+  ORDER.forEach(c => mk(c, "Ch " + c, allIds.filter(i => Q[i].c === c)));
+  if (only) { const b = el("button", "chip"); b.setAttribute("aria-pressed", "true"); b.textContent = "Retry set (" + only.length + ") ✕"; b.addEventListener("click", () => { only = null; applyFilters(); renderScore(); }); box.prepend(b); }
+  // tally table
+  const tb = document.getElementById("tally"); tb.textContent = "";
+  const hr = el("tr"); ["Chapter", "Answered", "Right", "Missed"].forEach(h => hr.append(el("th", null, h))); tb.append(hr);
+  ORDER.forEach(c => {
+    const t = tally(Q.map((_, i) => i).filter(i => Q[i].c === c));
+    const tr = el("tr"); [c + " · " + CH[c].name, t.a + " / " + t.t, String(t.r), String(t.a - t.r)].forEach(v => tr.append(el("td", null, v))); tb.append(tr);
+  });
+}
+function syncModes() {
+  document.getElementById("m-fast").setAttribute("aria-pressed", String(st.fast));
+  document.getElementById("m-missed").setAttribute("aria-pressed", String(st.missed));
+  document.getElementById("m-read").setAttribute("aria-pressed", String(st.read));
+}
+function toggle(k) { only = null; st[k] = !st[k]; save(); syncModes(); if (k === "read") Q.forEach((_, i) => renderCard(i)); applyFilters(); renderScore(); }
+document.getElementById("m-fast").addEventListener("click", () => toggle("fast"));
+document.getElementById("m-missed").addEventListener("click", () => toggle("missed"));
+document.getElementById("m-read").addEventListener("click", () => toggle("read"));
+document.getElementById("m-retry").addEventListener("click", e => {
+  const ids = Q.map((_, i) => i).filter(isWrong);
+  const b = e.currentTarget;
+  if (!ids.length) { b.textContent = "No misses yet"; setTimeout(() => { b.textContent = "Retry missed"; }, 1600); return; }
+  ids.forEach(i => { delete st.ans[i]; renderCard(i); });
+  st.read = false; st.missed = false; save(); syncModes(); Q.forEach((_, i) => renderCard(i));
+  only = ids; applyFilters(); renderScore();
+  window.scrollTo({ top: document.getElementById("list").offsetTop - 160 });
+});
+let resetArmed = null;
+document.getElementById("m-reset").addEventListener("click", e => {
+  const b = e.currentTarget;
+  if (!resetArmed) { b.textContent = "Tap again to clear all"; resetArmed = setTimeout(() => { resetArmed = null; b.textContent = "Reset"; }, 3000); return; }
+  clearTimeout(resetArmed); resetArmed = null; b.textContent = "Reset";
+  st.ans = {}; only = null; st.missed = false; st.read = false; save(); syncModes();
+  Q.forEach((_, i) => renderCard(i)); applyFilters(); renderScore();
+});
+
+syncModes();
+Q.forEach((_, i) => renderCard(i));
+applyFilters();
+renderScore();
+</script>

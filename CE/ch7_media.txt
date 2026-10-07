@@ -1,0 +1,814 @@
+=== PAGE 223 ===
+185
+CHAPTER 7
+Transmission Media
+e discussed many issues related to the physical layer in Chapters 3 through 6. In
+this chapter, we discuss transmission me dia. We definitely need transmission
+media to conduct signals from the source to the destination. However, the media can be
+wired or wireless. 
+This chapter is divided into three sections:
+❑ The first section introduces the transmission media and defines its position in the
+Internet model. It shows that we can classify transmission media into two broad
+categories: guided and unguided media.
+❑ The second section discusses guided media.  The first part describes twisted-pair
+cables and their characteristics and applications. The second part describes coaxial
+cables and their characteristics and applications. Finally, the third part describes
+fiber-optic cables and their characteristics and applications. 
+❑ The third section discusses unguided media. The first part describes radio waves
+and their characteristics and applications. The second part describes microwaves
+and their characteristics and applications. Finally, the third part describes infrared
+waves and their characteristics and applications. 
+W
+=== PAGE 224 ===
+186 PART II PHYSICAL LAYER
+7.1 INTRODUCTION
+Transmission media are actually located below the physical layer and are directly con-
+trolled by the physical layer. We could say that transmission media belong to layer
+zero. Figure 7.1 shows the position of transmission media in relation to the physical
+layer. 
+A transmission medium can be broadly defined as anything that can carry infor-
+mation from a source to a destination. For example, the transmission medium for two
+people having a dinner conversation is the air.  The air can also be used to convey the
+message in a smoke signal or semaphore.  For a written message, the transmission
+medium might be a mail carrier, a truck, or an airplane. 
+In data communications the definition of the information and the transmission
+medium is more specific. The transmission medium is usually free space, metallic cable,
+or fiber-optic cable. The information is usually a signal that is the result of a conversion
+of data from another form.
+The use of long-distance co mmunication using electric signals started with the
+invention of the telegraph by Morse in the 19th century. Communication by telegraph
+was slow and dependent on a metallic medium.
+Extending the range of the human voice became possible when the telephone was
+invented in 1869. Telephone communication at that time also needed a metallic medium
+to carry the electric signals that were the result of a conversion from the human voice.
+The communication was, however, unreliable due to the poor quality of the wires. The
+lines were often noisy and the technology was unsophisticated.
+Wireless communication started in 1895 when Hertz was able to send high-
+frequency signals. Later, Marconi devised a method to send telegraph-type messages
+over the Atlantic Ocean.
+We have come a long way. Better metallic media have been invented (twisted-pair
+and coaxial cables, for example). The use of optical fibers has increased the data rate
+incredibly. Free space (air, vacuum, and water)  is used more efficiently, in part due
+to the technologies (such as modulation and multiplexing) discussed in the previous
+chapters. 
+As discussed in Chapter 3, computers and other telecommunication devices use
+signals to represent data. These signals are transmitted from one device to another in the
+form of electromagnetic energy, which is propagated through transmission media. 
+Electromagnetic energy, a combination of electric and ma gnetic fields vibrating in
+relation to each other, includes power, radio waves, infrared light, visible light, ultraviolet
+Figure 7.1 Transmission medium and physical layer
+Physical layer Physical layer
+Cable or air
+Sender Receiver
+Transmission medium
+=== PAGE 225 ===
+CHAPTER 7 TRANSMISSION MEDIA 187
+light, and X, gamma, and cosmic rays. E ach of these constitutes a portion of the elec-
+tromagnetic spectrum. Not all portions of the spectrum are currently usable for tele-
+communications, however. The media to harnes s those that are usable are also limited
+to a few types.
+In telecommunications, transmission medi a can be divided into two broad catego-
+ries: guided and unguided. Guided media include twisted-pair cable, coaxial cable, and
+fiber-optic cable. Unguided medium is free space. Figure 7.2 shows this taxonomy. 
+7.2 GUIDED MEDIA
+Guided media,  which are those that provide a conduit from one device to another,
+include twisted-pair cabl e, coaxial cable,  and fiber-optic cable. A signal traveling
+along any of these media is directed and contained by the physical limits of the
+medium. Twisted-pair and coaxial cable us e metallic (copper) conductors that accept
+and transport signals in the form of electric current. Optical fiber is a cable that accepts
+and transports signals in the form of light.
+7.2.1 Twisted-Pair Cable
+A twisted pair consists of two conductors (normally copper), each with its own plastic
+insulation, twisted together, as shown in Figure 7.3.  
+One of the wires is used to carry signals to the receiver, and the other is used only
+as a ground reference. The receiver uses the difference between the two. 
+In addition to the signal sent by the sender on one of the wires, interference (noise)
+and crosstalk may affect both wires and create unwanted signals. 
+If the two wires are parallel, the effect of these unwanted signals is not the same in
+both wires because they are at different locations relative to the noise or crosstalk sources
+(e.g., one is closer and the other is farther). This results in a difference at the receiver.
+Figure 7.2 Classes of transmission media
+Figure 7.3 Twisted-pair cable
+Transmission
+media
+Guided
+(wired)
+Unguided
+(wireless)
+Twisted-pair
+cable
+Coaxial
+cable
+Fiber-optic
+cable Radio wave Microwave Infrared
+ConductorInsulator
+=== PAGE 226 ===
+188 PART II PHYSICAL LAYER
+By twisting the pairs, a balance is maintain ed. For example, suppose in one twist, one
+wire is closer to the noise source and the other is farther; in the next twist, the reverse is
+true. Twisting makes it probable that both wires are equally affected by external influ-
+ences (noise or crosstalk). This means that the receiver, which calculates the difference
+between the two, receives no unwanted signals. The unwanted signals are mostly can-
+celed out. From the above discussion, it is clear that the number of twists per unit of
+length (e.g., inch) has some effect on the quality of the cable. 
+Unshielded Versus Shielded Twisted-Pair Cable
+The most common twisted-pair cable used in communications is referred to as
+unshielded twisted-pair (UTP). IBM has also produced a version of twisted-pair cable
+for its use, called shielded twisted-pair (STP). STP cable has a metal foil or braided-
+mesh covering that encases each pair of  insulated conductors. Although metal casing
+improves the quality of cable by preventing th e penetration of noise or crosstalk, it is
+bulkier and more expensive. Figure 7.4 shows the difference between UTP and STP.
+Our discussion focuses primarily on UTP because STP is seldom used outside of IBM. 
+Categories
+The Electronic Industries Association (E IA) has developed standards to classify
+unshielded twisted-pair cable into seven categories. Categories are determined by cable
+quality, with 1 as the lowest and 7 as th e highest. Each EIA category is suitable for
+specific uses. Table 7.1 shows these categories.  
+Figure 7.4 UTP and STP cables
+Table 7.1 Categories of unshielded twisted-pair cables
+Category Specification
+Data Rate
+(Mbps) Use
+1 Unshielded twisted-pair used in telephone < 0.1 Telephone
+2 Unshielded twis ted-pair originally used in
+T lines
+2 T-1 lines
+3 Improved CAT 2 used in LANs 10 LANs
+4 Improved CAT 3 used in Token Ring networks 20 LANs
+5 Cable wire is normally 24 AWG with a jacket 
+and outside sheath 
+100 LANs
+a. UTP b. STP
+Plastic cover Plastic cover
+Metal shield
+=== PAGE 227 ===
+CHAPTER 7 TRANSMISSION MEDIA 189
+Connectors
+The most common UTP connector is RJ45 (RJ stands for registered jack), as shown
+in Figure 7.5. The RJ45 is a keyed connector, meaning the connector can be inserted in
+only one way. 
+Performance
+One way to measure the performance of twis ted-pair cable is to compare attenuation
+versus frequency and distance. A twisted-pair cable can pass a wide range of frequencies.
+However, Figure 7.6 shows that with increasing frequency, the attenuation, measured in
+decibels per kilometer (dB/km), sharply increases with frequencies above 100 kHz. Note
+that gauge is a measure of the thickness of the wire. 
+Applications
+Twisted-pair cables are used in telephone lines to provide voice and data channels.
+The local loop—the line that connects subscribers to the central telephone office—
+commonly consists of unshielded twisted-pa ir cables. We discuss telephone networks
+in Chapter 14.
+The DSL lines that are used by the tele phone companies to provide high-data-rate
+connections also use the high -bandwidth capability of unshielded twisted-pair cables.
+We discuss DSL technology in Chapter 14. 
+5E An extension to category 5 that includes 
+extra features to minimize the crosstalk and 
+electromagnetic interference
+125 LANs
+6 A new category with matched components 
+coming from the same manufacturer. The 
+cable must be tested at a 200-Mbps data rate.
+200 LANs
+7 Sometimes called SSTP (shielded screen 
+twisted-pair). Each pair is individually 
+wrapped in a helical metallic foil followed by 
+a metallic foil shield in addition to the outside 
+sheath. The shield decreases the effect of 
+crosstalk and increases the data rate.
+600 LANs
+Figure 7.5 UTP connector
+Table 7.1 Categories of unshielded twisted-pair cables (continued)
+Category Specification
+Data Rate
+(Mbps) Use
+12345678 12345678
+RJ-45 Female RJ-45 Male
+=== PAGE 228 ===
+190 PART II PHYSICAL LAYER
+Local-area networks, such as 10Base-T and 100Base-T, also use twisted-pair cables.
+We discuss these networks in Chapter 13.
+7.2.2 Coaxial Cable
+Coaxial cable (or coax) carries signals of higher frequency ranges than those in twisted-
+pair cable, in part because the two media are constructed quite differently. Instead of
+having two wires, coax has a central core conductor of solid or stranded wire (usually
+copper) enclosed in an insulating sheath, which is, in turn, encased in an outer conductor
+of metal foil, braid, or a combination of the two. The outer metallic wrapping serves
+both as a shield against noise and as the second conductor, which completes the circuit.
+This outer conductor is also enclosed in an insulating sheath, and the whole cable is
+protected by a plastic cover (see Figure 7.7).
+Coaxial Cable Standards
+Coaxial cables are categorized by their Radio Government (RG) ratings. Each RG
+number denotes a unique set of physical specifications, including the wire gauge of the
+Figure 7.6 UTP performance
+Figure 7.7 Coaxial cable
+20
+18
+16
+14
+12
+10
+8
+6
+4
+2
+Attenuation (dB/km)
+1 10 100 1000
+f (kHz)
+26 gauge
+24 gauge
+22 gauge
+18 gauge
+Gauge
+18
+22
+24
+26
+Diameter (inches)
+0.0403
+0.02320
+0.02010
+0.0159
+Plastic cover
+Inner conductor
+Outer conductor
+(shield)
+Insulator
+Insulator
+=== PAGE 229 ===
+CHAPTER 7 TRANSMISSION MEDIA 191
+inner conductor, the thickness and type of th e inner insulator, the construction of the
+shield, and the size and type of the outer cas ing. Each cable defined by an RG rating is
+adapted for a specialized function, as shown in Table 7.2. 
+Coaxial Cable Connectors
+To connect coaxial cable to devices, we need coaxial connector s. The most common
+type of connector used today is the Bayonet Neill-Concelman (BNC) connector.
+Figure 7.8 shows three popular types of these connectors: the BNC connector, the
+BNC T connector, and the BNC terminator.
+The BNC connector is used to connect the end of the cable to a device, such as a
+TV set. The BNC T connector is used in Ethernet networks (see Chapter 13) to branch
+out to a connection to a computer or other device. The BNC terminator is used at the
+end of the cable to prevent the reflection of the signal.
+Performance
+As we did with twisted-pair cable, we can measure the performance of a coaxial cable.
+We notice in Figure 7.9 that the attenuation is much higher in coaxial cable than in
+twisted-pair cable. In other words, although coaxial cable has a much higher bandwidth,
+the signal weakens rapidly and requires the frequent use of repeaters.  
+Applications
+Coaxial cable was widely used in analog telephone networks where a single coaxial
+network could carry 10,000 voice signals. Later it was used in digital telephone
+networks where a single coaxial cable could carry digital data up to 600 Mbps. How-
+ever, coaxial cable in telephone networks ha s largely been replaced today with fiber-
+optic cable.
+Table 7.2
+Categories of coaxial cables
+Category Impedance Use
+RG-59 75 Ω Cable TV
+RG-58 50 Ω Thin Ethernet
+RG-11 50 Ω Thick Ethernet
+Figure 7.8 BNC connectors
+Cable BNC T
+BNC connector 50-W
+BNC terminator
+Ground
+wire
+=== PAGE 230 ===
+192 PART II PHYSICAL LAYER
+Cable TV networks (see Chapter 14) also use coaxial cables. In the traditional cable
+TV network, the entire network used coaxial cable. Later, however, cable TV providers
+replaced most of the media with fiber-optic cable; hybrid networks use coaxial cable
+only at the network boundaries, near the consumer premises. Cable TV uses RG-59
+coaxial cable.
+Another common application of coaxial cable is in traditional Ethernet LANs (see
+Chapter 13). Because of its high bandwidth, and consequently high data rate, coaxial
+cable was chosen for digital transmission in early Ethernet LANs. The 10Base-2, or Thin
+Ethernet, uses RG-58 coaxial cable with BNC connectors to transmit data at 10 Mbps
+with a range of 185 m. The 10Base5, or Thick Ethernet, uses RG-11 (thick coaxial cable)
+to transmit 10 Mbps with a range of 5000 m. Thick Ethernet has specialized connectors. 
+7.2.3 Fiber-Optic Cable
+A fiber-optic cable is made of glass or plastic and transmits signals in the form of light.
+To understand optical fiber, we first need to explore several aspects of the nature of
+light.
+Light travels in a straight line as long as it is moving through a single uniform sub-
+stance. If a ray of light traveling through one substance suddenly enters another substance
+(of a different density), the ray changes direction. Figure 7.10 shows how a ray of light
+changes direction when going from a more dense to a less dense substance. 
+As the figure shows, if the angle of incidence I (the angle the ray makes with the
+line perpendicular to the interface between  the two substances) is less than the critical
+angle, the ray refracts and moves closer to the surface. If the angle of incidence is
+equal to the critical angle, the light bends along the interface. If the angle is greater than
+the critical angle, the ray reflects  (makes a turn) and travels again in the denser
+Figure 7.9 Coaxial cable performance
+35
+30
+25
+20
+15
+10
+5
+Attenuation (dB/km)
+0.01 1.00.1 10 100
+f (MHz)
+0.7/2.9 mm
+1.2/4.4 mm
+2.6/9.5 mm
+=== PAGE 231 ===
+CHAPTER 7 TRANSMISSION MEDIA 193
+substance. Note that the critical angle is a property of the substance, and its value differs
+from one substance to another. 
+Optical fibers use reflection to guide light through a channel. A glass or plastic core
+is surrounded by a cladding of less dense glass or plastic. The difference in density of the
+two materials must be such that a beam of light moving through the core is reflected off
+the cladding instead of being refracted into it. See Figure 7.11. 
+Propagation Modes
+Current technology supports two modes (multimode and single mode) for propagating light
+along optical channels, each requiring fiber with different physical characteristics. Multi-
+mode can be implemented in two forms: step-index or graded-index (see Figure 7.12).
+Multimode
+Multimode is so named because multiple b eams from a light source move through the
+core in different paths. How these beams move within the cable depends on the struc-
+ture of the core, as shown in Figure 7.13. 
+Figure 7.10 Bending of light ray
+Figure 7.11 Optical fiber
+Figure 7.12 Propagation modes
+I
+More
+dense
+More
+dense
+More
+dense
+I < critical angle,
+refraction 
+I = critical angle,
+refraction 
+I > critical angle,
+reflection 
+Less
+dense
+Less
+dense
+Less
+dense
+I I
+Cladding
+ReceiverCore
+Cladding
+Sender
+Multimode
+Mode
+Single mode
+Step index Graded index
+=== PAGE 232 ===
+194 PART II PHYSICAL LAYER
+In multimode step-index fiber, the density of the core remains constant from the
+center to the edges. A beam of light moves through this constant density in a straight
+line until it reaches th e interface of the core and the cladding. At the interface, there is
+an abrupt change due to a lower density; this alters the angle of the beam’s motion. The
+term step-index refers to the suddenness of this change, which contributes to the distor-
+tion of the signal as it passes through the fiber.
+A second type of fiber, called multimode graded-index fiber, decreases this dis-
+tortion of the signal th rough the cable. The word index here refers to the index of
+refraction. As we saw above, the index of refraction is related to density. A graded-
+index fiber, therefore, is one with varying densities. Density is highest at the center of
+the core and decreases gradually to its lowest at the edge. Figure 7.13 shows the impact
+of this variable density on the propagation of light beams.
+Single-Mode 
+Single-mode uses step-index fiber and a highly focused source of light that limits
+beams to a small range of angles, all close to the horizontal. The single-mode fiber
+itself is manufactured with a much smaller di ameter than that of multimode fiber, and
+with substantially lower density (index of refraction). The decrease in density results in
+a critical angle that is close enough to 90 ° to make the propagation of beams almost
+horizontal. In this case, pr opagation of different beams is  almost identical, and delays
+are negligible. All the beams arrive at the destination “together” and can be recombined
+with little distortion to the signal (see Figure 7.13).
+Figure 7.13 Modes
+Source Destination
+Source
+Source
+Destination
+Destination
+a. Multimode, step index
+b. Multimode, graded index
+c. Single mode
+
+=== PAGE 233 ===
+CHAPTER 7 TRANSMISSION MEDIA 195
+Fiber Sizes
+Optical fibers are defined by the ratio of the diameter of their core to the diameter of
+their cladding, both expressed in micrometers. The common sizes are shown in Table 7.3.
+Note that the last size listed is for single-mode only.
+Cable Composition
+Figure 7.14 shows the composition of a t ypical fiber-optic cable. The outer jacket is
+made of either PVC or Teflon. Inside the jacket are Kevlar strands to strengthen the cable.
+Kevlar is a strong material used in the fabrication of bulletproof vests. Below the Kevlar is
+another plastic coating to cushion the fiber. The fiber is at the center of the cable, and it
+consists of cladding and core. 
+Fiber-Optic Cable Connectors
+There are three types of connectors for fiber-optic cables, as shown in Figure 7.15. The
+subscriber channel (SC) connector  is used for cable TV . It uses a push/pull locking
+system. The straight-tip (ST) connector  is used for connecting cable to networking
+devices. It uses a bayonet locking sy stem and is more reliable than SC. MT-RJ is a
+connector that is the same size as RJ45. 
+Performance
+The plot of attenuation versus wavelength in Figure 7.16 shows a very interesting
+phenomenon in fiber-optic cable. Attenuation is flatter than in the case of twisted-pair
+cable and coaxial cable. The performance is  such that we need fewer (actually one-
+tenth as many) repeaters when we use fiber-optic cable. 
+Table 7.3
+Fiber types
+Type Core (μm) Cladding (μm) Mode
+50/125   50.0 125 Multimode, graded index
+62.5/125   62.5 125 Multimode, graded index
+100/125 100.0 125 Multimode, graded index
+7/125     7.0 125 Single mode
+Figure 7.14 Fiber construction
+Outer jacket
+Plastic
+buffer
+DuPont Kevlar
+for strength
+Glass or
+plastic core
+Cladding
+=== PAGE 234 ===
+196 PART II PHYSICAL LAYER
+Applications
+Fiber-optic cable is often found in backbon e networks because its wide bandwidth is
+cost-effective. Today, with wavelength-division multiplexing (WDM), we can transfer
+data at a rate of 1600 Gbps. The SONET network that we discuss in Chapter 14 provides
+such a backbone.
+Some cable TV companies use a combination of optical fiber and coaxial cable,
+thus creating a hybrid network. Optical fiber provides the backbone structure while
+coaxial cable provides the connection to the user premises. This is a cost-effective con-
+figuration since the narrow bandwidth requirement at the user end does not justify the
+use of optical fiber. 
+Figure 7.15 Fiber-optic cable connectors
+Figure 7.16 Optical fiber performance
+SC connector
+MT-RJ connector
+ST connector
+RX
+ TX
+100
+50
+10
+5
+1
+0.5
+0.1
+0.05 Loss (dB/km)
+0.01 1200 14001000800 1600 1800
+Wavelength (nm)
+=== PAGE 235 ===
+CHAPTER 7 TRANSMISSION MEDIA 197
+Local-area networks such as 100Base-FX network (Fast Ethernet) and 1000Base-X
+also use fiber-optic cable. 
+Advantages and Disadvantages of Optical Fiber
+Advantages
+Fiber-optic cable has several advantages over metallic cable (twisted-pair or coaxial).
+❑ Higher bandwidth. Fiber-optic cable can support dramatically higher bandwidths
+(and hence data rates) than either twisted-pair or coaxial cable. Currently, data rates
+and bandwidth utilization over fiber-optic cable are limited not by the medium but
+by the signal generation and reception technology available.
+❑ Less signal attenuation. Fiber-optic transmission distance is significantly greater
+than that of other guided media. A signal can run for 50 km without requiring
+regeneration. We need repeaters every 5 km for coaxial or twisted-pair cable.
+❑ Immunity to electromagnetic interference. Electromagnetic noise cannot affect
+fiber-optic cables. 
+❑ Resistance to corrosive materials. Glass is more resistant to corrosive materials
+than copper. 
+❑ Light weight. Fiber-optic cables are much lighter than copper cables.
+❑ Greater immunity to tapping. Fiber-optic cables are more immune to tapping than
+copper cables. Copper cables create antenna effects that can easily be tapped.
+Disadvantages
+There are some disadvantages in the use of optical fiber.
+❑ Installation and maintenance. Fiber-optic cable is a relatively new technology. Its
+installation and maintenance require expertise that is not yet available everywhere.
+❑ Unidirectional light propagation. Propagation of light is unidirectional. If we
+need bidirectional communication, two fibers are needed.
+❑ Cost. The cable and the interfaces are relatively more expensive than those of other
+guided media. If the demand for bandwidth is not high, often the use of optical fiber
+cannot be justified. 
+7.3 UNGUIDED MEDIA: WIRELESS
+Unguided medium transport electromagnetic waves without using a physical conduc-
+tor. This type of communication is often referred to as wireless communication. Sig-
+nals are normally broadcast through free space  and thus are available to anyone who
+has a device capable of receiving them. 
+Figure 7.17 shows the part of the electromagnetic spectrum, ranging from 3 kHz to
+900 THz, used for wireless communication. 
+Unguided signals can travel from the source to the destination in several ways: ground
+propagation, sky propagation, and line-of-sight propagation, as shown in Figure 7.18.
+=== PAGE 236 ===
+198 PART II PHYSICAL LAYER
+In ground propagation, radio waves travel through the lowest portion of the atmo-
+sphere, hugging the earth. These low-frequency signals emanate in all directions from the
+transmitting antenna and follow the curvature of the planet. Distance depends on the
+amount of power in the signal: The greater  the power, the greater the distance. In sky
+propagation, higher-frequency radio waves radiate upward into the ionosphere (the layer
+of atmosphere where particles exist as ions) where they are reflected back to earth. This
+type of transmission allows for greater distances with lower output power. In line-of-sight
+propagation, very high-frequency signals are transmitted in straight lines directly from
+antenna to antenna. Antennas must be directional, facing each other, and either tall
+enough or close enough together not to be affected by the curvature of the earth. Line-of-
+sight propagation is tricky because radio transmissions cannot be completely focused. 
+The section of the electromagnetic spectrum defined as radio waves and microwaves
+is divided into eight ranges, called bands, each regulated by government authorities.
+These bands are rated from very low frequency (VLF) to extremely high frequency (EHF). 
+Table 7.4 lists these bands, their ranges, propagation methods, and some applications.
+Figure 7.17 Electromagnetic spectrum for wireless communication
+Figure 7.18 Propagation methods
+Table 7.4 Bands
+Band Range Propagation Application
+very low frequency (VLF) 3–30 kHz Ground Long-range radio 
+navigation
+low frequency (LF) 30–300 kHz Ground Radio beacons and 
+navigational locators
+400
+THz
+300
+GHz
+3
+kHz
+900
+THz
+Radio wave and microwave Infrared
+Light wave
+Ionosphere Ionosphere
+Ground propagation
+(below 2 MHz)
+Sky propagation
+(2–30 MHz)
+Ionosphere
+Line-of-sight propagation
+(above 30 MHz)
+=== PAGE 237 ===
+CHAPTER 7 TRANSMISSION MEDIA 199
+We can divide wireless transmission into three broad groups: radio waves, micro-
+waves, and infrared waves. 
+7.3.1 Radio Waves
+Although there is no clear-cut demarcation between radio waves and microwaves, elec-
+tromagnetic waves ranging in frequencies between 3 kHz and 1 GHz are normally called
+radio waves; waves ranging in frequencies between 1 and 300 GHz are called micro-
+waves. However, the behavior of the waves, rather than the frequencies, is a better
+criterion for classification. 
+Radio waves, for the most part, are omni directional. When an antenna transmits
+radio waves, they are propagated in all di rections. This means that the sending and
+receiving antennas do not have to be alig ned. A sending antenna sends waves that can
+be received by any receiving antenna. The omnidirectional property has a disadvantage,
+too. The radio waves transmitted by one an tenna are susceptible to interference by
+another antenna that may send signals using the same frequency or band. 
+Radio waves, particularly those waves that propagate in the sky mode, can travel
+long distances. This makes radio waves a good candidate for long-distance broadcast-
+ing such as AM radio.
+Radio waves, particularly those of lo w and medium frequencies, can penetrate
+walls. This characteristic can be both an advantage and a disadvantage. It is an advan-
+tage because, for example, an AM radio can receive signals inside a building. It is a dis-
+advantage because we cannot isolate a communication to just inside or outside a
+building. The radio wave band is relatively narrow, just under 1 GHz, compared to
+the microwave band. When this band is di vided into subbands, the subbands are also
+narrow, leading to a low data rate for digital communications.
+Almost the entire band is regulated by authorities (e.g., the FCC in the United
+States). Using any part of the band requires permission from the authorities.
+Omnidirectional Antenna
+Radio waves use omnidirectional antennas  that send out signals in all directions.
+Based on the wavelength, strength, and the purpose of transmission, we can have sev-
+eral types of antennas. Figure 7.19 shows an omnidirectional antenna. 
+middle frequency (MF) 300 kHz–3 MHz Sky AM radio
+high frequency (HF) 3–30 MHz Sky Citizens band (CB),
+ship/aircraft
+very high frequency (VHF) 30–300 MHz Sky and
+line-of-sight
+VHF TV , FM radio
+ultrahigh frequency (UHF) 300 MHz–3 GHz Line-of-sight UHF TV , cellular phones, 
+paging, satellite
+superhigh frequency (SF) 3–30 GHz Line-of-sight Satellite
+extremely high frequency (EHF) 30–300 GHz Line-of-sight Radar, satellite
+Table 7.4 Bands (continued)
+Band Range Propagation Application
+=== PAGE 238 ===
+200 PART II PHYSICAL LAYER
+Applications
+The omnidirectional characteristics of radio waves make them useful for multicasting,
+in which there is one sender but many rece ivers. AM and FM radio, television, mari-
+time radio, cordless phones, and paging are examples of multicasting. 
+7.3.2 Microwaves
+Electromagnetic waves having frequencie s between 1 and 300 GHz are called micro-
+waves. Microwaves are unid irectional. When an antenn a transmits microwaves, they
+can be narrowly focused. This means that the sending and receiving antennas need to
+be aligned. The unidirectional property ha s an obvious advantage. A pair of antennas
+can be aligned without interfering with another pair of aligned antennas. The following
+describes some characteristics of microwave propagation:
+❑ Microwave propagation is line-of-sight. Since the towers with the mounted antennas
+need to be in direct sight of each other, towers that are far apart need to be very tall.
+The curvature of the earth as well as other blocking obstacles do not allow two short
+towers to communicate by using microwaves. Repeaters are often needed for long-
+distance communication. 
+❑ Very high-frequency microwaves cannot penetrate walls. This characteristic can be
+a disadvantage if receivers are inside buildings. 
+❑ The microwave band is relatively wide, almost 299 GHz. Therefore wider subbands
+can be assigned, and a high data rate is possible. 
+❑ Use of certain portions of the band requires permission from authorities.
+Unidirectional Antenna
+Microwaves need unidirectional antennas that send out signals in one direction. Two
+types of antennas are used for microwave communications: the parabolic dish and the
+horn (see Figure 7.20). 
+Figure 7.19 Omnidirectional antenna
+Radio waves are used for multicast communications,
+such as radio and television, and paging systems.
+=== PAGE 239 ===
+CHAPTER 7 TRANSMISSION MEDIA 201
+A parabolic dish antenna is based on the geometry of a parabola: Every line
+parallel to the line of symmetry (line of sight)  reflects off the curve at angles such that
+all the lines intersect in a common point called the focus. The parabolic dish works as a
+funnel, catching a wide range of waves and directing them to a common point. In
+this way, more of the signal is recovere d than would be possible with a single-point
+receiver.
+Outgoing transmissions are broadcast through a horn aimed at the dish. The micro-
+waves hit the dish and are deflected outward in a reversal of the receipt path.
+A horn antenna looks like a gigantic scoop. Outgoing transmissions are broadcast
+up a stem (resembling a handle) and deflected outward in a series of narrow parallel
+beams by the curved head. Received transmissions are collected by the scooped shape of
+the horn, in a manner similar to the parabolic dish, and are deflected down into the stem.
+Applications
+Microwaves, due to their unidirectional proper ties, are very useful when unicast (one-
+to-one) communication is needed between th e sender and the receiver. They are used
+in cellular phones (Chapter 16), satellite netw orks (Chapter 16), and wireless LANs
+(Chapter 15). 
+7.3.3 Infrared
+Infrared waves, with frequencies from 300 GHz to 400 THz (wavelengths from 1 mm
+to 770 nm), can be used for short-range communication. Infrared waves, having high
+frequencies, cannot penetrate walls. This advantageous characteristic prevents interfer-
+ence between one system and another; a short-range communication system in one
+room cannot be affected by another system in the next room. When we use our infrared
+remote control, we do not interfere with the use of the remote by our neighbors. How-
+ever, this same characteristic makes infrared signals useless for long-range communica-
+tion. In addition, we cannot use infrared waves outside a building because the sun’s
+rays contain infrared waves that can interfere with the communication.
+Figure 7.20 Unidirectional antennas
+Microwaves are used for unicast communication such as cellular telephones,
+satellite networks, and wireless LANs.
+Waveguide
+b. Horn antenna
+Focus
+a. Parabolic dish antenna
+=== PAGE 240 ===
+202 PART II PHYSICAL LAYER
+Applications
+The infrared band, almost 400 THz, has an excellent potential for data transmission.
+Such a wide bandwidth can be used to transmit digital data with a very high data rate.
+The Infrared Data Association (IrDA), an association for sponsoring the use of infrared
+waves, has established standards for us ing these signals for communication between
+devices such as keyboards, mice, PCs, and printers. For example, some manufacturers
+provide a special port called the IrDA port that allows a wireless keyboard to commnicate
+with a PC. The standard originally defined a data rate of 75 kbps for a distance up to
+8 m. The recent standard defines a data rate of 4 Mbps. 
+Infrared signals defined by IrDA transmit through line of sight; the IrDA port on
+the keyboard needs to point to the PC for transmission to occur.
+7.4 END-CHAPTER MATERIALS
+7.4.1 Recommended Reading
+For more details about subjects discussed in this chapter, we recommend the following
+books. The items in brackets [. . .] refer to the reference list at the end of the text.
+Books
+Transmission media is discussed in [GW04] , [Sta04], and [Tan03]. [SSS05] gives full
+coverage of transmission media.
+7.4.2 Key Terms
+Infrared signals can be used for short-range communication in a closed 
+area using line-of-sight propagation
+angle of incidence
+Bayonet Neill-Concelman (BNC)
+cladding
+coaxial cable
+core
+critical angle
+electromagnetic spectrum
+fiber-optic cable
+gauge
+ground propagation
+guided media
+horn antenna
+infrared wave
+IrDA port
+line-of-sight propagation
+microwave
+MT-RJ
+multimode graded-index fiber
+multimode step-index fiber
+omnidirectional antenna
+optical fiber
+parabolic dish antenna
+Radio Government (RG) rating
+radio wave
+reflection
+refraction
+RJ45
+shielded twisted-pair (STP)
+single-mode fiber
+sky propagation
+straight-tip (ST) connector
+subscriber channel (SC) connector
+transmission medium
+twisted-pair cable
+unguided medium
+unidirectional antenna
+unshielded twisted-pair (UTP)
+wireless communication
+=== PAGE 241 ===
+CHAPTER 7 TRANSMISSION MEDIA 203
+7.4.3 Summary
+Transmission media are actually located below the physical layer and are directly con-
+trolled by the physical layer. We could say that transmission media belong to layer
+zero. 
+A guided medium provides a physical  conduit from one device to another.
+Twisted-pair cable consists of two insulated copper wires twisted together. Twisted-pair
+cable is used for voice and data communica tions. Coaxial cable consists of a central
+conductor and a shield. Coaxial cable is us ed in cable TV networks and traditional
+Ethernet LANs. Fiber-optic cables are compos ed of a glass or plastic inner core sur-
+rounded by cladding, all encased in an outside jacket. Fiber-optic transmission is
+becoming increasingly popular due to its noi se resistance, low attenuation, and high-
+bandwidth capabilities. Fiber-optic cable is used in backbone networks, cable TV net-
+works, and Fast Ethernet networks.
+Unguided media (free space) transport electromagnetic waves without the use of a
+physical conductor. Wireless data ar e transmitted through ground propagation, sky
+propagation, and line-of-sight propagation.Wi reless waves can be classified as radio
+waves, microwaves, or infrared waves. Radio waves are omnidirectional; microwaves
+are unidirectional. Microwaves are used for cellular phone, satellite, and wireless LAN
+communications. Infrared waves are used for short-range communications such as
+those between a PC and a peripheral device. They can also be used for indoor LANs.
+7.5  PRACTICE SET
+7.5.1 Quizzes
+A set of interactive quizzes for this chapter can be found on the book website. It is
+strongly recommended that the student take the quizzes to check his/her understanding
+of the materials before continuing with the practice set.
+7.5.2 Questions
+Q7-1. What is the position of the transmission media in the OSI or the Internet
+model?
+Q7-2. Name the two major categories of transmission media.
+Q7-3. How do guided media differ from unguided media?
+Q7-4. What are the three major classes of guided media?
+Q7-5. What is the function of the twisting in twisted-pair cable?
+Q7-6. What is refraction? What is reflection? 
+Q7-7. What is the purpose of cladding in an optical fiber?
+Q7-8. Name the advantages of optical fiber over twisted-pair and coaxial cable.
+Q7-9. How does sky propagation differ from line-of-sight propagation?
+Q7-10. What is the difference between omni directional waves and unidirectional
+waves?
+=== PAGE 242 ===
+204 PART II PHYSICAL LAYER
+7.5.3 Problems
+P7-1. Using Figure 7.6, tabulate the attenua tion (in dB) of a 18-gauge UTP for the
+indicated frequencies and distances.    
+P7-2. Use the results of Problem P7-1 to in fer that the bandwidth of a UTP cable
+decreases with an increase in distance. 
+P7-3. If the power at the beginning of a 1 Km 18-gauge UTP is 200 mw, what is the
+power at the end for frequencies 1 KHz, 10 KHz, and 100 KHz? Use the
+results of Problem P7-1. 
+P7-4. Using Figure 7.9, tabulate the attenuation (in dB) of a 2.6/9.5 mm coaxial
+cable for the indicated frequencies and distances.    
+P7-5. Use the results of Problem P7-4 to infer that the bandwidth of a coaxial cable
+decreases with the increase in distance. 
+P7-6. If the power at the beginning of a 1 Km 2.6/9.5 mm coaxial cable is 200 mw,
+what is the power at the end for frequencies 1 KHz, 10 KHz, and 100 KHz?
+Use the results of Problem P7-4. 
+P7-7. Calculate the bandwidth of the light for the following wavelength ranges
+(assume a propagation speed of 2 × 10
+8 m):
+P7-8. The horizontal axes in Figures 7.6 and 7.9 represent frequencies. The horizon-
+tal axis in Figure 7.16 represents wavelength. Can you explain the reason? If
+the propagation speed in an optical fiber is 2 × 10
+8 m, can you change the units
+in the horizontal axis to frequency? Should the vertical-axis units be changed
+too? Should the curve be changed too? 
+Table 7.5
+Attenuation for 18-gauge UTP
+Distance dB at 1 KHz dB at 10 KHz dB at 100 KHz
+1 Km
+10 Km
+15 Km
+20 Km
+Table 7.6 Attenuation for 2.6/9.5 mm coaxial cable
+Distance dB at 1 KHz dB at 10 KHz dB at 100 KHz
+1 Km
+10 Km
+15 Km
+20 Km
+a. 1000 to 1200 nm b. 1000 to 1400 nm
+=== PAGE 243 ===
+CHAPTER 7 TRANSMISSION MEDIA 205
+P7-9. Using Figure 7.16, tabulate the attenuation (in dB) of an optical fiber for the indi-
+cated wavelength and distances.    
+P7-10. A light signal is travelling through a fiber. What is the delay in the signal if the
+length of the fiber-optic cable is 10 m, 100 m, and 1 Km (assume a propaga-
+tion speed of 2 × 10
+8 m)? 
+P7-11. A beam of light moves from one medium to another medium with less density.
+The critical angle is 60 °. Do we have refraction or reflection for each of the
+following incident angles? Show the bending of the light ray in each case. 
+Table 7.7
+Attenuation for optical fiber
+Distance dB at 800 nm dB at 1000 nm dB at 1200 nm
+1 Km
+10 Km
+15 Km
+20 Km
+a. 40° b. 60° c. 80°
+=== PAGE 244 ===

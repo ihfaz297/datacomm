@@ -1,0 +1,346 @@
+<title>CE Quiz Cram Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one phone-width column; each chapter is a block of "see this → answer that" lines; guess rules first, unstudied chapters next. */
+:root{
+  --bg:#eef1f3; --grid:#dde3e8; --paper:#ffffff; --ink:#15212b; --muted:#5b6b78; --line:#d3dbe1;
+  --accent:#0b6f78; --accent-soft:#d8eef0; --hot:#b7791f; --hot-soft:#fbefd9; --bad:#b4322c; --bad-soft:#fbe5e3;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1519; --grid:#172026; --paper:#172127; --ink:#e3eaee; --muted:#93a4b0; --line:#2a3842;
+  --accent:#4cc3cc; --accent-soft:#16343a; --hot:#e3ad55; --hot-soft:#3a2e18; --bad:#f07d74; --bad-soft:#3b1d1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1519; --grid:#172026; --paper:#172127; --ink:#e3eaee; --muted:#93a4b0; --line:#2a3842;
+  --accent:#4cc3cc; --accent-soft:#16343a; --hot:#e3ad55; --hot-soft:#3a2e18; --bad:#f07d74; --bad-soft:#3b1d1b; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:18px 70px;display:grid;gap:18px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;font-size:42px;line-height:1;margin:4px 0 6px;text-wrap:balance}
+h1 span{color:var(--accent)}
+.lede{margin:0;color:var(--muted)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:3;background:var(--bg);border-bottom:1px solid var(--line);
+  margin-inline:-16px;padding:8px 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;font:500 13px/1 var(--body);padding:8px 11px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;white-space:nowrap}
+nav a.hot{border-color:var(--hot);color:var(--hot)}
+nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 14px 10px;scroll-margin-top:60px}
+section.rules{border:2px solid var(--accent)}
+section.traps{border:2px solid var(--bad)}
+h2{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.05;margin:0 0 4px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+h2 .no{font-family:var(--mono);font-size:12px;font-weight:500;background:var(--ink);color:var(--paper);padding:3px 7px;border-radius:3px;letter-spacing:.04em}
+h2 .tag{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--hot);background:var(--hot-soft);padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}
+.time{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px}
+h3{font-size:12px;font-family:var(--mono);font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:12px 0 4px}
+ul{margin:0;padding:0;list-style:none;display:grid}
+li{padding:7px 0;border-top:1px solid var(--line)}
+li:first-child{border-top:0}
+li .k{font-weight:600}
+li .ar{color:var(--accent);font-weight:600;padding-inline:2px}
+li .hook{display:block;color:var(--muted);font-size:13.5px;margin-top:1px}
+code{font-family:var(--mono);font-size:.88em;background:var(--accent-soft);border-radius:3px;padding:0 4px;white-space:nowrap}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+td,th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.trap li .k{color:var(--bad)}
+footer{color:var(--muted);font-size:13px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">CSE 365 · Forouzan 5e · ch 5 6 7 8 10 11</div>
+    <h1>Quiz <span>Cram</span> Sheet</h1>
+    <p class="lede">No questions here, just what to recognise. Each line reads "see this in the question → pick this". Grey lines are memory hooks. Read top to bottom once, then read the guess rules again right before the quiz.</p>
+  </header>
+
+  <nav aria-label="Jump to">
+    <a class="hot" href="#rules">Guess rules</a><a href="#traps">Traps</a><a class="hot" href="#formulas">Formulas</a><a href="#c7">Ch 7</a><a href="#c8">Ch 8</a><a href="#c11">Ch 11</a><a href="#c5">Ch 5</a><a href="#c6">Ch 6</a><a href="#c10">Ch 10</a><a href="#nums">Numbers</a>
+  </nav>
+
+  <section class="rules" id="rules">
+    <h2>Guess rules <span class="tag">read twice</span></h2>
+    <p class="time">10 min · when you blank, these pick the answer</p>
+    <ul>
+      <li><span class="k">Amplitude</span> <span class="ar">→</span> ASK / AM. <span class="k">Frequency</span> <span class="ar">→</span> FSK / FM. <span class="k">Phase</span> <span class="ar">→</span> PSK / PM. <span class="k">Amplitude + phase</span> <span class="ar">→</span> QAM.<span class="hook">The first letter tells you what changes: A, F, P. QAM mixes two of them.</span></li>
+      <li><span class="k">Light, glass, cladding, "high bandwidth of fiber"</span> <span class="ar">→</span> fiber-optic / WDM.</li>
+      <li><span class="k">Analog</span> multiplexing <span class="ar">→</span> FDM. <span class="k">Digital</span> <span class="ar">→</span> TDM. <span class="k">Light</span> <span class="ar">→</span> WDM.</li>
+      <li><span class="k">Noise</span> question: the amplitude-based one suffers most <span class="ar">→</span> ASK. Twist / shield / outer conductor are what <span class="k">reduce</span> noise.<span class="hook">Noise is a spike in height, so whatever stores data in height gets hurt.</span></li>
+      <li><span class="k">How many phases?</span> Anything "connection" (circuit, virtual-circuit) <span class="ar">→</span> 3 (setup, data, teardown). <span class="k">Datagram</span> <span class="ar">→</span> 1.</li>
+      <li><span class="k">Independent / different routes / out of order</span> <span class="ar">→</span> datagram. <span class="k">Same path / VCI</span> <span class="ar">→</span> virtual-circuit. <span class="k">Dedicated / reserved / telephone</span> <span class="ar">→</span> circuit switching.</li>
+      <li><span class="k">Detect</span> s errors <span class="ar">→</span> d<sub>min</sub> = s+1. <span class="k">Correct</span> t errors <span class="ar">→</span> 2t+1.<span class="hook">Detect 5 → 6. Correct 5 → 11.</span></li>
+      <li><span class="k">Checksum, CRC, parity</span> <span class="ar">→</span> detect only. <span class="k">Correct</span> <span class="ar">→</span> Hamming code / FEC.</li>
+      <li><span class="k">Bit-oriented</span> <span class="ar">→</span> HDLC, bit stuffing. <span class="k">Byte-oriented</span> <span class="ar">→</span> PPP, ESC byte.<span class="hook">Alphabetical: HDLC comes before PPP, and bit before byte.</span></li>
+      <li><span class="k">ACK number</span> = the <b>next</b> frame expected. Got frame 0 <span class="ar">→</span> ACK 1.</li>
+      <li><span class="k">Bits per symbol</span> = log<sub>2</sub>(levels): 2→1, 4→2, 8→3, 16→4, 32→5, 64→6, 128→7, 256→8.</li>
+      <li><span class="k">Statistical</span> TDM = smart: only active inputs get slots, so each slot needs an <b>address</b>. <span class="k">Synchronous</span> = fixed: idle inputs still get slots (wasted).</li>
+      <li><span class="k">Spread spectrum</span> wastes bandwidth on purpose <span class="ar">→</span> privacy / anti-jamming. <span class="k">Hops</span> <span class="ar">→</span> FHSS. <span class="k">Chips / code / n bits per bit</span> <span class="ar">→</span> DSSS.</li>
+      <li><span class="k">"Which is NOT guided?"</span> <span class="ar">→</span> air / atmosphere. Guided = any cable.</li>
+      <li>No idea at all? On "how many" questions, the middle number (two or three) is the safest guess. On "which layer", circuit = physical is the classic.</li>
+    </ul>
+  </section>
+
+  <section class="traps" id="traps">
+    <h2>Traps <span class="tag">official key is wrong here</span></h2>
+    <p class="time">2 min · the book's answer, not the website's</p>
+    <ul class="trap">
+      <li><span class="k">Datagram network phases</span> <span class="ar">→</span> 1 (only data transfer).</li>
+      <li><span class="k">Packet switching categories</span> <span class="ar">→</span> 2 (datagram, virtual-circuit). Switching methods overall <span class="ar">→</span> 3 (circuit, packet, message).</li>
+      <li><span class="k">Circuit switching "categories"</span> <span class="ar">→</span> None of the choices.</li>
+      <li><span class="k">Datagram destination address</span> <span class="ar">→</span> stays the same end to end (it's the VCI that changes).</li>
+      <li><span class="k">Infrared vs microwave</span> <span class="ar">→</span> infrared is <b>above</b>.</li>
+      <li><span class="k">Checksum</span> <span class="ar">→</span> only detects.</li>
+      <li><span class="k">HDLC</span> <span class="ar">→</span> bit-oriented. <span class="k">PPP</span> <span class="ar">→</span> byte-oriented.</li>
+      <li><span class="k">Analog multiplexing</span> <span class="ar">→</span> FDM (not PDM).</li>
+    </ul>
+  </section>
+
+  <section class="rules" id="formulas">
+    <h2>Formulas <span class="tag">all of them</span></h2>
+    <p class="time">15 min · formula, then when to use it, then one worked example in grey</p>
+
+    <h3>Ch 5 · Analog transmission</h3>
+    <ul>
+      <li><code>r = log₂ L</code> · <code>L = 2^r</code> <span class="ar">→</span> bits per signal element from the number of levels (amplitudes, frequencies, phases, dots).<span class="hook">FSK with 8 frequencies → 3. QAM with 128 points → 7.</span></li>
+      <li><code>S = N / r</code> · <code>N = S × r</code> <span class="ar">→</span> baud rate from bit rate.<span class="hook">8000 bps, 1000 baud → r = 8, L = 256. 4 bits/element × 1000 baud → 4000 bps.</span></li>
+      <li><code>B = (1 + d) S</code> <span class="ar">→</span> bandwidth for ASK, PSK, QAM (d is between 0 and 1). d = 0 → B = S. d = 1 → B = 2S.<span class="hook">QPSK at 12 Mbps, d = 0: S = 6 Mbaud, B = 6 MHz.</span></li>
+      <li><code>B = (1 + d) S + 2Δf</code> <span class="ar">→</span> BFSK (2Δf is the gap between the two frequencies).</li>
+      <li><code>B = L × S</code> <span class="ar">→</span> MFSK with d = 0.<span class="hook">2 bits at a time, 4 Mbps: L = 4, S = 2 Mbaud, B = 8 MHz.</span></li>
+      <li><code>fc = (f_low + f_high) / 2</code> <span class="ar">→</span> carrier frequency is the middle of the band.<span class="hook">200–300 kHz, ASK, d = 1: fc = 250 kHz, S = 100k / 2 = 50 kbaud = 50 kbps.</span></li>
+      <li><code>B_AM = 2B</code> · <code>B_FM = 2(1 + β)B</code> (β ≈ 4) · <code>B_PM = 2(1 + β)B</code><span class="hook">5 kHz audio → 10 kHz AM station. 15 kHz audio, β = 4 → 150 kHz (FM station allocated 200 kHz).</span></li>
+      <li><code>A = √(I² + Q²)</code> · <code>phase = tan⁻¹(Q / I)</code> <span class="ar">→</span> peak amplitude and phase of a constellation point.<span class="hook">Point (−1, 1) → A = √2 ≈ 1.41, phase 135°.</span></li>
+    </ul>
+
+    <h3>Ch 6 · Multiplexing</h3>
+    <ul>
+      <li><code>B = n·Bc + (n − 1)·Bg</code> <span class="ar">→</span> FDM total bandwidth (guard bands only between channels).<span class="hook">5 × 100 kHz, 10 kHz guard: 500 + 40 = 540 kHz. 3 × 4 kHz, 500 Hz guard: 13 kHz.</span></li>
+      <li>Synchronous TDM, n inputs at R bps, 1 unit per slot: <code>link rate = n × R</code> · <code>output bit = 1 / link rate</code> · <code>frame duration = input bit duration</code> · <code>frame rate = R / unit</code><span class="hook">4 × 1 Mbps: input bit 1 µs, link 4 Mbps, output bit 0.25 µs, frame 1 µs, 1,000,000 frames/s.</span></li>
+      <li><code>bits per frame = n × u + framing bits</code> · <code>link rate = frame rate × bits per frame</code></li>
+      <li><code>T-1 = (24 × 8 + 1) × 8000 = 1.544 Mbps</code> · frame = 1/8000 = 125 µs</li>
+      <li><code>B_ss = n × B</code> <span class="ar">→</span> DSSS with n chips per bit (Barker n = 11). FHSS uses <code>M = 2^k</code> hop frequencies.</li>
+    </ul>
+
+    <h3>Ch 7 · Media</h3>
+    <ul>
+      <li><code>dB = 10 log₁₀(P₂ / P₁)</code> <span class="ar">→</span> gain or loss. Half the power → −3 dB, a tenth → −10 dB. Total dB = add them up.</li>
+      <li><code>propagation time = distance / speed</code> (cable ≈ 2 × 10⁸ m/s, air ≈ 3 × 10⁸ m/s)<span class="hook">1 km of cable: 1000 / 2×10⁸ = 5 µs.</span></li>
+    </ul>
+
+    <h3>Ch 8 · Switching</h3>
+    <ul>
+      <li><code>crossbar = n × m</code> crosspoints (N × N → N²)<span class="hook">100 × 100 → 10,000.</span></li>
+      <li><code>3-stage total = 2kN + k(N/n)²</code> <span class="ar">→</span> stage 1: N/n crossbars of n × k. Middle: k crossbars of (N/n) × (N/n). Stage 3: N/n crossbars of k × n.<span class="hook">N = 100, 10 crossbars (n = 10), k = 4 → 800 + 400 = 1200.</span></li>
+      <li><code>max connections = k × (N/n)</code> · <code>blocking factor = that / N</code><span class="hook">4 × 10 = 40 → 40/100 = 0.4.</span></li>
+      <li>Clos: <code>n = √(N/2)</code> · <code>k = 2n − 1</code> · <code>total ≥ 4N(√(2N) − 1)</code><span class="hook">N = 200 → n = 10, k = 19, 15,200 crosspoints.</span></li>
+      <li><code>datagram delay = 3T + 3τ + w₁ + w₂</code> · <code>VC delay = 3T + 3τ + setup + teardown</code> (2 switches, 3 links)</li>
+      <li><code>Banyan stages = log₂ N</code></li>
+    </ul>
+
+    <h3>Ch 10 · Errors</h3>
+    <ul>
+      <li><code>d(x, y) = number of 1s in x XOR y</code><span class="hook">10101 vs 11110 → 01011 → 3.</span></li>
+      <li><code>detect s: d_min = s + 1</code> · <code>correct t: d_min = 2t + 1</code><span class="hook">d_min = 5 → detects 4, corrects 2.</span></li>
+      <li><code>bits hit by a burst = noise duration × bit rate</code><span class="hook">1/100 s noise at 1 kbps → 10 bits. At 1 Mbps → 10,000 bits.</span></li>
+      <li>Block code: <code>r = n − k</code> · <code>unused codewords = 2ⁿ − 2ᵏ</code><span class="hook">4B/5B: 32 − 16 = 16 unused.</span></li>
+      <li>CRC: <code>zeros to append = divisor bits − 1</code> · <code>codeword = data + remainder</code><span class="hook">1001 ÷ 1011: dividend 1001000, remainder 110, codeword 1001110.</span></li>
+      <li>Hamming code: <code>2^r ≥ m + r + 1</code><span class="hook">7 data bits → r = 4 → 11-bit codeword.</span></li>
+      <li>Checksum: add, wrap the carry back in, complement.<span class="hook">4-bit: 7+11+12+0+6 = 36 → 0100 + 10 = 6 → complement → 9.</span></li>
+      <li>Polynomial: <code>bits = degree + 1</code> · <code>terms = number of 1s</code> · shift left m = × x^m</li>
+    </ul>
+
+    <h3>Ch 11 · Data link control</h3>
+    <ul>
+      <li><code>bandwidth-delay product = bandwidth × RTT</code> <span class="ar">→</span> bits that fit "in the pipe".<span class="hook">1 Mbps × 20 ms = 20,000 bits. 10 Mbps × 2 ms = 20,000 bits.</span></li>
+      <li><code>Stop-and-Wait utilization = frame bits / (bandwidth × RTT)</code><span class="hook">1000 / 20,000 = 5%.</span></li>
+      <li>Window with m-bit sequence numbers: <code>Stop-and-Wait: mod 2</code> · <code>Go-Back-N ≤ 2^m − 1</code> · <code>Selective Repeat ≤ 2^(m−1)</code><span class="hook">m = 3 → GBN 7, SR 4.</span></li>
+    </ul>
+  </section>
+
+  <section id="c7">
+    <h2><span class="no">CH 07</span> Transmission Media <span class="tag">new to you</span></h2>
+    <p class="time">15 min</p>
+    <h3>The split</h3>
+    <ul>
+      <li><span class="k">Guided</span> (a cable) <span class="ar">→</span> twisted-pair, coaxial, fiber. <span class="k">Unguided</span> (wireless, air) <span class="ar">→</span> radio, microwave, infrared.</li>
+      <li>Media sit <span class="k">below the physical layer</span>.</li>
+    </ul>
+    <h3>Cables: what reduces noise, which connector</h3>
+    <div class="tbl"><table>
+      <tr><th>Cable</th><th>Noise beaten by</th><th>Connector / rating</th><th>Used in</th></tr>
+      <tr><td><b>Twisted-pair</b></td><td>Twisting (UTP). STP adds a metal foil shield.</td><td>RJ-45 · categories (Cat 5…)</td><td>Phone lines, LAN</td></tr>
+      <tr><td><b>Coaxial</b></td><td>The outer conductor (shield)</td><td>BNC · RG ratings</td><td>Cable TV</td></tr>
+      <tr><td><b>Fiber</b></td><td>Immune: it carries light, not electricity</td><td>SC, ST, MT-RJ</td><td>Backbones</td></tr>
+    </table></div>
+    <ul>
+      <li><span class="k">Why twist?</span> <span class="ar">→</span> reduce noise / crosstalk.<span class="hook">Both wires pick up the same noise, and the receiver subtracts one from the other, so it cancels.</span></li>
+      <li><span class="k">UTP vs STP</span> <span class="ar">→</span> STP has a metal shield. UTP = unshielded, cheap, common.</li>
+      <li><span class="k">Coax build</span> <span class="ar">→</span> inner copper core, insulator, outer conductor (shield), plastic cover.</li>
+    </ul>
+    <h3>Fiber</h3>
+    <ul>
+      <li><span class="k">Core is denser than cladding.</span> Light hits the edge above the <span class="k">critical angle</span> <span class="ar">→</span> <b>reflects</b> and stays inside.<span class="hook">Below the critical angle it refracts (leaks out). At exactly critical it bends along the edge. Above it, it reflects. Fiber works on reflection.</span></li>
+      <li><span class="k">Modes</span>: multimode step-index (worst distortion), multimode graded-index (middle), <b>single-mode</b> (best: thinnest core, longest distance).</li>
+      <li><span class="k">Advantages</span> <span class="ar">→</span> higher bandwidth, less attenuation, immune to electromagnetic noise, light weight, no corrosion, hard to tap.</li>
+      <li><span class="k">Disadvantages</span> <span class="ar">→</span> needs skilled installation, one-way (two fibers for two-way), cost.</li>
+    </ul>
+    <h3>Wireless</h3>
+    <div class="tbl"><table>
+      <tr><th>Wave</th><th>Range</th><th>Direction</th><th>Used for</th></tr>
+      <tr><td><b>Radio</b></td><td>3 kHz – 1 GHz</td><td>Omnidirectional</td><td>AM/FM radio, TV (broadcast)</td></tr>
+      <tr><td><b>Microwave</b></td><td>1 – 300 GHz</td><td>Unidirectional, line-of-sight</td><td>Cell phones, satellite, WLAN</td></tr>
+      <tr><td><b>Infrared</b></td><td>300 GHz – 400 THz</td><td>Short range, can't pass walls</td><td>TV remote</td></tr>
+    </table></div>
+    <ul>
+      <li><span class="k">Order</span>: radio &lt; microwave &lt; infrared &lt; light.<span class="hook">Going up the list: more frequency, more directional, shorter reach.</span></li>
+      <li><span class="k">Propagation</span>: ground (low freq, hugs the Earth) · <b>sky</b> (bounces off the ionosphere) · line-of-sight (high freq, antennas face each other).</li>
+      <li><span class="k">Bands</span> ×10 from 3 kHz: VLF, LF, MF, HF, <b>VHF = 30–300 MHz</b> (FM, TV), UHF = 300 MHz–3 GHz (cell, UHF TV), SHF, EHF.</li>
+    </ul>
+  </section>
+
+  <section id="c8">
+    <h2><span class="no">CH 08</span> Switching <span class="tag">new to you</span></h2>
+    <p class="time">15 min · learn the one table, then the crossbar lines</p>
+    <div class="tbl"><table>
+      <tr><th></th><th>Circuit</th><th>Virtual-circuit</th><th>Datagram</th></tr>
+      <tr><td>Layer</td><td>Physical</td><td>Data-link</td><td>Network</td></tr>
+      <tr><td>Phases</td><td>3</td><td>3</td><td><b>1</b></td></tr>
+      <tr><td>Path</td><td>Dedicated, reserved</td><td>Same for all packets</td><td>Each packet on its own</td></tr>
+      <tr><td>Table uses</td><td>(set at setup)</td><td>VCI (changes every switch)</td><td>Destination address (never changes)</td></tr>
+      <tr><td>Example</td><td>Telephone</td><td>ATM, Frame Relay</td><td>Internet (IP)</td></tr>
+    </table></div>
+    <ul>
+      <li><span class="k">Three switching methods</span> <span class="ar">→</span> circuit, packet, message. <span class="k">Message switching</span> <span class="ar">→</span> application layer (store and forward).</li>
+      <li><span class="k">Packet switching</span> <span class="ar">→</span> 2 kinds (datagram + virtual-circuit), used at data-link + network layers.</li>
+      <li><span class="k">3 phases</span> <span class="ar">→</span> setup, data transfer, teardown.<span class="hook">Like a phone call: dial, talk, hang up. A datagram is a postcard: just send it.</span></li>
+      <li><span class="k">Datagram needs</span> setup? teardown? <span class="ar">→</span> neither ("None"). <span class="k">Virtual-circuit needs</span> <span class="ar">→</span> setup and teardown.</li>
+      <li><span class="k">Circuit</span>: resources reserved at setup and held the whole time <span class="ar">→</span> low efficiency, low delay. No addressing during data transfer.</li>
+      <li><span class="k">Datagram delay</span> (2 switches) <span class="ar">→</span> 3T + 3τ + w1 + w2. Virtual-circuit <span class="ar">→</span> 3T + 3τ + setup + teardown.<span class="hook">Per link: T (push out) + τ (travel). Per switch: w (wait in queue).</span></li>
+    </ul>
+    <h3>Switch hardware</h3>
+    <ul>
+      <li><span class="k">Crossbar</span> n × m <span class="ar">→</span> n·m crosspoints. Never blocks, but too many crosspoints and fewer than 25% are used at once.</li>
+      <li><span class="k">Multistage</span> <span class="ar">→</span> fewer crosspoints, but <b>blocking</b>.</li>
+      <li><span class="k">3-stage crosspoints</span> <code>2kN + k(N/n)²</code>. Classic: N = 100, n = 10, k = 4 <span class="ar">→</span> <b>1200</b>, max 40 connections, blocking factor 0.4.</li>
+      <li><span class="k">Clos (non-blocking)</span> <span class="ar">→</span> n = √(N/2), k = 2n − 1.</li>
+      <li><span class="k">Time-division switch</span> <span class="ar">→</span> TSI (time-slot interchange, uses RAM). TST = time-space-time.</li>
+      <li><span class="k">Banyan</span> <span class="ar">→</span> log<sub>2</sub>N stages (8 inputs → 3).</li>
+    </ul>
+  </section>
+
+  <section id="c11">
+    <h2><span class="no">CH 11</span> Data Link Control <span class="tag">new to you</span></h2>
+    <p class="time">20 min</p>
+    <ul>
+      <li><span class="k">DLC does</span> <span class="ar">→</span> framing + flow control + error control (node to node).</li>
+      <li><span class="k">Flow control</span> = don't drown the receiver. <span class="k">Error control</span> = CRC; a bad frame is silently dropped and resent later.</li>
+      <li><span class="k">Fixed-size frames</span> (ATM) <span class="ar">→</span> no flags needed. <span class="k">Variable-size</span> <span class="ar">→</span> need <b>flags</b> to mark start and end.</li>
+      <li><span class="k">Flag</span> = <code>01111110</code> (a 0, six 1s, a 0).</li>
+      <li><span class="k">Byte stuffing</span> <span class="ar">→</span> add an <b>ESC</b> byte before any flag or ESC inside the data.</li>
+      <li><span class="k">Bit stuffing</span> <span class="ar">→</span> after <b>five 1s</b>, add a <b>0</b>. So <code>01111110</code> becomes <code>011111010</code>.<span class="hook">Six 1s in a row would look like a flag, so we break it at five.</span></li>
+    </ul>
+    <h3>Stop-and-Wait</h3>
+    <ul>
+      <li>Send <b>one</b> frame, keep a copy, start a timer, wait for the ACK.</li>
+      <li><span class="k">Sequence numbers</span> <span class="ar">→</span> 0 and 1 only (modulo 2).</li>
+      <li><span class="k">ACK</span> = next expected. Frame 0 <span class="ar">→</span> ACK 1. Frame 1 <span class="ar">→</span> ACK 0.</li>
+      <li><span class="k">Frame lost or ACK lost</span> <span class="ar">→</span> timer expires <span class="ar">→</span> resend the same frame. The receiver throws away the duplicate and ACKs again.</li>
+      <li><span class="k">Corrupted frame</span> <span class="ar">→</span> silently discarded (no NAK). The timer saves it.</li>
+      <li><span class="k">Piggybacking</span> <span class="ar">→</span> the ACK rides inside a data frame going back.</li>
+      <li><span class="k">Noisy channel protocols</span> <span class="ar">→</span> 3: Stop-and-Wait ARQ, Go-Back-N, Selective Repeat. Noiseless <span class="ar">→</span> 2: Simplest, Stop-and-Wait.</li>
+      <li><span class="k">ACK 3</span> = got everything up to 2, send 3. <span class="k">NAK 3</span> = frame 3 was bad, resend it.</li>
+    </ul>
+    <h3>HDLC vs PPP</h3>
+    <div class="tbl"><table>
+      <tr><th></th><th>HDLC</th><th>PPP</th></tr>
+      <tr><td>Stands for</td><td>High-level Data Link Control</td><td>Point-to-Point Protocol</td></tr>
+      <tr><td>Type</td><td><b>Bit</b>-oriented (bit stuffing)</td><td><b>Byte</b>-oriented (byte stuffing)</td></tr>
+      <tr><td>Frame</td><td>Flag | Address | Control | Info | FCS | Flag</td><td>Flag | Address <code>11111111</code> | Control <code>00000011</code> | Protocol | Payload | FCS | Flag</td></tr>
+      <tr><td>Extra</td><td>Modes: NRM (primary/secondary), ABM (peers)</td><td>No flow control. Used for dial-up / point-to-point.</td></tr>
+    </table></div>
+    <ul>
+      <li><span class="k">HDLC frames</span>: <b>I</b> = information (user data) · <b>S</b> = supervisory (ACK/flow only, the <b>shortest</b>) · <b>U</b> = unnumbered (link management).<span class="hook">I = Info, S = Supervise, U = Unnumbered, used for setup and teardown.</span></li>
+      <li><span class="k">HDLC address field</span> <span class="ar">→</span> address of the <b>secondary</b> station. <span class="k">Flag</span> <span class="ar">→</span> marks the start and end. <span class="k">FCS</span> <span class="ar">→</span> error check (CRC). <span class="k">P/F bit</span> <span class="ar">→</span> present in every control field.</li>
+      <li><span class="k">PPP address</span> <code>11111111</code> = broadcast. It defines no sender or receiver, so the answer is "None". <span class="k">Control</span> <code>00000011</code> is like an HDLC U-frame.</li>
+      <li><span class="k">PPP protocol field</span> <span class="ar">→</span> what's inside the payload. <span class="k">FCS</span> <span class="ar">→</span> error control.</li>
+      <li><span class="k">PPP phases</span>: Dead → <b>Establish</b> (options negotiated, LCP) → <b>Authenticate</b> (identity checked) → Network (NCP) → Open → Terminate → Dead.<span class="hook">"Do Each Agent's Network Opening, Then Die."</span></li>
+      <li><span class="k">LCP purpose</span> <span class="ar">→</span> all of them: configuration, termination, option negotiation.</li>
+      <li><span class="k">PAP</span> <span class="ar">→</span> 2 steps, sends the password in plain text. <span class="k">CHAP</span> <span class="ar">→</span> <b>3</b> steps: challenge value + own password → result. The password is never sent.</li>
+    </ul>
+  </section>
+
+  <section id="c5">
+    <h2><span class="no">CH 05</span> Analog Transmission</h2>
+    <p class="time">8 min · you've done this, skim it</p>
+    <ul>
+      <li><span class="k">ASK, FSK, PSK, QAM</span> <span class="ar">→</span> digital-to-analog. <span class="k">AM, FM, PM</span> <span class="ar">→</span> analog-to-analog. <span class="k">"Not analog-to-analog"</span> <span class="ar">→</span> QAM.</li>
+      <li><span class="k">Carriers</span>: BASK 1, BPSK 1, <b>BFSK 2</b>. QAM uses two carriers: in-phase + quadrature.</li>
+      <li><span class="k">Baud vs bit rate</span> <span class="ar">→</span> baud ≤ bit rate (S = N / r).</li>
+      <li><span class="k">ASK bandwidth</span> <code>B = (1+d)S</code> <span class="ar">→</span> "equal to or greater than the signal rate". <span class="k">FSK</span> is wider than ASK.</li>
+      <li><span class="k">Carrier frequency</span> <span class="ar">→</span> middle of the band (200–300 kHz → 250 kHz).</li>
+      <li><span class="k">Constellation</span>: distance from centre = amplitude, angle = phase, number of dots = levels.</li>
+      <li><span class="k">AM bandwidth</span> = 2 × audio. <span class="k">AM station</span> 10 kHz · <span class="k">FM station</span> 200 kHz.</li>
+      <li><span class="k">8000 bps, 1000 baud</span> <span class="ar">→</span> 8 bits per element, 2⁸ = 256 levels.</li>
+    </ul>
+  </section>
+
+  <section id="c6">
+    <h2><span class="no">CH 06</span> Bandwidth Utilization</h2>
+    <p class="time">8 min</p>
+    <ul>
+      <li><span class="k">Multiplexing</span> = many signals share one link at the same time.</li>
+      <li><span class="k">"Shifts each signal to a different carrier"</span> <span class="ar">→</span> FDM. <span class="k">Light beams</span> <span class="ar">→</span> WDM. <span class="k">"Digital process sharing a link"</span> <span class="ar">→</span> TDM.</li>
+      <li><span class="k">TDM types</span> <span class="ar">→</span> synchronous and statistical.</li>
+      <li><span class="k">Groups, supergroups, master, jumbo</span> <span class="ar">→</span> FDM.</li>
+      <li><span class="k">Multilevel, multiple-slot, pulse stuffing, frame synchronization</span> <span class="ar">→</span> all TDM.<span class="hook">Slots, frames, pulses, levels: those are time words, so TDM.</span></li>
+      <li><span class="k">Pulse stuffing</span> = add dummy bits so unequal rates fit. <span class="k">Multiple-slot</span> = the fast line gets more slots. <span class="k">Multilevel</span> = combine in stages.</li>
+      <li><span class="k">FDM bandwidth</span> = channels + guard bands <b>between</b> them: 5 × 100 + 4 × 10 = 540 kHz.</li>
+      <li><span class="k">T-1</span> <span class="ar">→</span> 8000 frames/s, 24 channels, 193 bits per frame, 1.544 Mbps.</li>
+      <li><span class="k">FHSS</span> = M carrier frequencies, hops between them. <span class="k">DSSS</span> = each bit replaced by n bits (a spreading code).</li>
+    </ul>
+  </section>
+
+  <section id="c10">
+    <h2><span class="no">CH 10</span> Error Detection</h2>
+    <p class="time">8 min</p>
+    <ul>
+      <li><span class="k">Single-bit error</span> = one bit per data unit flipped. <span class="k">Burst</span> = 2 or more bits.</li>
+      <li><span class="k">ASCII letter swap</span> (G→D, H→L): compare the bits. 1 bit differs <span class="ar">→</span> single-bit. More <span class="ar">→</span> burst. G→D = burst, H→L = single-bit.</li>
+      <li><span class="k">One's complement</span> <span class="ar">→</span> checksum. <span class="k">Polynomials</span> <span class="ar">→</span> CRC. <span class="k">One redundant bit</span> <span class="ar">→</span> simple parity.</li>
+      <li><span class="k">Simple parity</span> detects only an <b>odd</b> number of errors.</li>
+      <li><span class="k">CRC check bits</span> = the <b>remainder</b>. The quotient is <b>discarded</b>. Nonzero remainder at the receiver = damaged.</li>
+      <li><span class="k">CRC dividend</span> = data + (divisor length − 1) zeros. 111111 with 1010 <span class="ar">→</span> 111111000. Codeword = data + remainder: 111111 + 110 = 111111110.</li>
+      <li><span class="k">Remainder of r bits</span> <span class="ar">→</span> divisor of r+1 bits. CRC-8 <span class="ar">→</span> 9 bits.</li>
+      <li><span class="k">Polynomial terms</span> = number of 1s. 10 bits with four 0s <span class="ar">→</span> 6 terms.</li>
+      <li><span class="k">Checksum at receiver</span>: sum = all 1s (−0), complement = 0 <span class="ar">→</span> no error.</li>
+      <li><span class="k">Hamming distance</span> = count the positions that differ.</li>
+    </ul>
+  </section>
+
+  <section id="nums">
+    <h2>Numbers to know</h2>
+    <p class="time">3 min · last look before the quiz</p>
+    <div class="tbl"><table>
+      <tr><th>What</th><th>Value</th></tr>
+      <tr><td>Flag (HDLC and PPP)</td><td><code>01111110</code></td></tr>
+      <tr><td>PPP address / control</td><td><code>11111111</code> / <code>00000011</code></td></tr>
+      <tr><td>T-1</td><td>1.544 Mbps · 8000 frames/s · 193 bits · 24 channels</td></tr>
+      <tr><td>AM / FM station</td><td>10 kHz / 200 kHz</td></tr>
+      <tr><td>Radio / micro / IR</td><td>3 kHz–1 GHz / 1–300 GHz / 300 GHz–400 THz</td></tr>
+      <tr><td>VHF</td><td>30–300 MHz</td></tr>
+      <tr><td>Phases: circuit / VC / datagram</td><td>3 / 3 / 1</td></tr>
+      <tr><td>Detect s / correct t</td><td>d<sub>min</sub> = s+1 / 2t+1</td></tr>
+      <tr><td>Bit stuffing</td><td>0 after five 1s</td></tr>
+      <tr><td>CHAP / PAP steps</td><td>3 / 2</td></tr>
+      <tr><td>Noisy-channel protocols</td><td>3</td></tr>
+    </table></div>
+  </section>
+
+  <footer>Every fact is checked against Forouzan 5e, and the Traps box overrides the publisher's quiz key. Good luck.</footer>
+</div>
