@@ -1,0 +1,41 @@
+
+rel                                                                                                               Length LastWriteTime      
+---                                                                                                               ------ -------------      
+DSP\Chapter 2.pdf                                                                                                3689587 23/09/2026 01:36:03
+DSP\Chapter 3_z_Transform.pdf                                                                                    1758570 23/09/2026 01:26:10
+DSP\Chapter 4 Problems.pdf                                                                                       4018484 27/09/2026 23:50:05
+DSP\Chapter 4.8.6_4.8.7.pdf                                                                                      4422867 27/09/2026 23:50:05
+DSP\CSE 0714 3276- Assignment 1.pdf                                                                                49474 23/09/2026 03:51:44
+DSP\CSE 0714 3276- Assignment 2.pdf                                                                                46894 23/09/2026 03:50:54
+DSP\CSE 0714 3276- Assignment 3.pdf                                                                                70912 23/09/2026 03:51:23
+DSP\CSE 0714 3276- Assignment 4.pdf                                                                                51204 23/09/2026 01:29:08
+DSP\DSP.md                                                                                                           966 27/09/2026 23:50:05
+DSP\DSP_Chapter4_Frequency_Analysis_CTFT.pdf                                                                     2214905 27/09/2026 23:50:05
+DSP\Final Question\IMG_6120.HEIC                                                                                 1799177 27/09/2026 23:50:05
+DSP\Final Question\IMG_6121.HEIC                                                                                 1454257 27/09/2026 23:50:05
+DSP\LAB_TEST_SYLLABUS.png                                                                                          44299 23/09/2026 03:47:54
+DSP\midterm-2.txt.txt                                                                                               1945 27/09/2026 23:50:05
+DSP\practice\_verify_solutions.py                                                                                   4772 23/09/2026 11:30:02
+DSP\practice\santiago.py                                                                                             336 27/09/2026 23:50:05
+DSP\practice\step1_ct_signals.py                                                                                    2645 23/09/2026 20:05:57
+DSP\practice\step2_sampling.py                                                                                      2897 23/09/2026 20:05:57
+DSP\practice\step3_aliasing.py                                                                                      2685 27/09/2026 23:50:05
+DSP\practice\step4_quantization_image.py                                                                            3046 27/09/2026 23:50:05
+DSP\practice\step4b_audio_file.py                                                                                   3825 27/09/2026 23:50:05
+DSP\practice\step5_dt_sequences.py                                                                                  3428 27/09/2026 23:50:05
+DSP\practice\step5b_dt_operations.py                                                                                3552 27/09/2026 23:50:05
+DSP\practice\step6_convolution.py                                                                                   2148 23/09/2026 11:04:23
+DSP\practice\step7_correlation.py                                                                                   1892 23/09/2026 11:04:33
+DSP\practice\step8_moving_average.py                                                                                2296 23/09/2026 11:04:46
+DSP\practice\step9_spectrum_audio.py                                                                                3493 27/09/2026 23:50:05
+DSP\practice\tempCodeRunnerFile.py                                                                                   111 23/09/2026 20:33:22
+DSP\practice\test_tone.wav                                                                                         16044 23/09/2026 11:27:36
+DSP\Sanjit K Mitra Digital Signal Processing A Computer-Based Approach, 2e with DSP Laboratory using MATLAB.pdf 34413660 23/09/2026 03:56:03
+DSP\Screenshot 2026-09-27 200004.png                                                                              131550 27/09/2026 23:50:05
+DSP\study\lab-doomsday.md                                                                                           7352 27/09/2026 23:50:05
+DSP\TT\Tt1.jpg                                                                                                   1299891 27/09/2026 23:50:05
+DSP\TT\TT2.HEIC                                                                                                  1243544 27/09/2026 23:50:05
+DSP\Whole-syllabus-course.pdf                                                                                      93152 27/09/2026 23:50:05
+
+
+

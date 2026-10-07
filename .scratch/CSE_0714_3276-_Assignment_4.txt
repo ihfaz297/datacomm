@@ -1,0 +1,40 @@
+Department of Computer Science and Engineering 
+Course: CSE 0714 3276 Title: Digital Signal Processing Lab 
+ 
+Assignment 4 
+ 
+ 
+1. Write a program to generate the following sequences and plot the graph- 
+          a. Unit impulse (delay, advance) 
+          b. Step sequence (delay, advance) 
+          c. Combination of unit impulse (delay/advance) and/or step sequence (delay/advance) 
+ 
+2. Write a program to implement the convolution of two sequences. Simulate the convolution 
+sum step by step. 
+ 
+3. Write a program to implement the autocorrelation and cross-correlation of two sequences. 
+ 
+4. Implement a Moving Average Filter. Suppose there is an original uncorrupted signal 
+s[n]=2[n(0.9)n], and noise d[n]=rand(R,1)-0.5. 
+ 
+a. Plot the signal s[n] of 50 points 
+b. Plot a random signal d[n] of same 50 points 
+c. Subtract 0.5 from each random signal d[n] and plot them 
+d. Sum x[n]=s[n]+d[n] 
+e. Plot the corrupted signal x[n] 
+f. Do the same process for 50 times 
+For n=1:50 
+D=rand(R,1)-0.5 
+X=s+d 
+X1=X1+x 
+End 
+X1=X1/50; 
+g. Plot the noise removed signal X1 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Assignment Submission Due: 27/08/2026 

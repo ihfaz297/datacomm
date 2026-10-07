@@ -1,0 +1,187 @@
+Giving Computers the Ability to 
+Learn from Data
+Dr. Md. Shahidur Rahman
+Professor, DoCSE, SUST
+rahmanms@sust.edu
+
+=== PAGE BREAK ===
+What is Machine Learning? 
+• Machine learning is the application and science of algorithms that make 
+sense of data.
+• Machine learning is the field of study that gives computers the ability to 
+learn without being explicitly programmed” —Arthur L. Samuel, AI pioneer, 
+1959
+• “A computer program is said to learn from experience E with respect to 
+some class of tasks T and performance measure P, if its performance at 
+tasks in T, as measured by P, improves with experience E.” —Tom Mitchell, 
+Professor at Carnegie Mellon University
+
+=== PAGE BREAK ===
+ML Applications
+• Near-human-level image recognition/ classification
+• Near-human-level speech transcription
+• Near-human-level handwriting transcription
+• Dramatically improved text-to-speech conversion
+• Digital assistants such as Google Assistant and Amazon Alexa
+• Near-human-level autonomous driving
+• Improved ad targeting, as used by Google, Baidu, or Bing
+• Improved search results on the web
+• Ability to answer natural language questions
+• Medical Diagnostic - Cancer detection
+
+=== PAGE BREAK ===
+Driving forces of machine learning
+Three technical forces are driving advances in machine learning:
+• Datasets and benchmarks
+• Hardware
+• Algorithmic advances
+
+=== PAGE BREAK ===
+Data
+If ML is the steam engine of this revolution, then data is its coal:
+• User-generated image tags on Flickr, for instance, have been a 
+treasure trove of data for computer vision. 
+• YouTube videos, 
+• Wikipedia
+• ImageNet dataset, consisting of 1.4 million images that have been 
+hand annotated with 1,000 image categories 
+• Bengali to English Translation Dataset (2.75 million sentence pairs)
+
+=== PAGE BREAK ===
+Hardware
+• The NVIDIA Titan RTX, a GPU that cost $2,500 at the end of 2019, can 
+deliver a peak of 16 teraFLOPS in single precision (16 trillion float32 
+operations per second). 
+• That’s about 500 times more computing power than the world’s fastest 
+supercomputer from 1990, the Intel Touchstone Delta.
+• In 2020, the third iteration of the TPU card represents 420 teraFLOPS
+of computing power. 
+• That’s 10,000 times more than the Intel Touchstone Delta from 1990.
+• Google revealed its Tensor Processing Unit (TPU) project
+
+=== PAGE BREAK ===
+Algorithm
+• Better activation functions for neural layers
+• Better optimization schemes, such as RMSProp and Adam
+• Transformer based Models
+• ConvNets
+
+=== PAGE BREAK ===
+Three types of ML
+
+=== PAGE BREAK ===
+Making predictions with supervised learning
+• Learn a model from labeled 
+training data that allows us to 
+make predictions about unseen 
+or future data.
+• For the email spam filtering 
+example , we can train a model 
+using a supervised ML algorithm 
+on a corpus of labeled emails, 
+which are correctly marked as 
+spam or non-spam, to predict 
+whether a new email belongs to 
+either of the two categories.
+
+=== PAGE BREAK ===
+Classification for predicting class labels
+• Supervised learning task with discrete class 
+labels, such as in the previous email spam 
+filtering example, is also called a 
+classification task.
+• A binary classification task given 30 training 
+examples; 15 training examples are labeled 
+as the negative class (minus signs) and 15 
+training examples are labeled as the positive 
+class (plus signs).
+• A supervised ML algorithm learns a rule—
+the decision boundary (dashed line)
+
+=== PAGE BREAK ===
+Multiclass classification
+• A typical example of a multiclass classification task is handwritten 
+character recognition.
+• Also, Digits recognition between 0 and 9, is a multiclass classification 
+
+=== PAGE BREAK ===
+Regression for predicting continuous outcome
+• Supervised learning where the 
+outcome signal is a continuous value 
+is regression
+• We are given a number of predictor 
+(explanatory) variables and a 
+continuous response variable 
+(outcome), and we try to find a 
+relationship between those variables 
+that allows us to predict an 
+outcome.
+
+=== PAGE BREAK ===
+Solving interactive problems with
+reinforcement learning
+• In reinforcement learning, the goal is 
+to develop a system (agent) that 
+improves its performance based on 
+interactions with the environment.
+• Learns a series of actions that 
+maximizes a so-called reward via an 
+exploratory trial-and-error approach
+
+=== PAGE BREAK ===
+Discovering hidden structures with
+unsupervised learning
+• In unsupervised learning deals with unlabeled data or data of 
+unknown structure
+• Explore the structure of data to extract meaningful information 
+without the guidance of a known outcome variable
+
+=== PAGE BREAK ===
+Finding subgroups with clustering
+• Clustering is an exploratory data analysis 
+technique that allows us to organize a pile 
+of information into meaningful 
+subgroups (clusters) without having any 
+prior knowledge of their group 
+memberships
+• Example, three distinct groups based on 
+the similarity of their features, x1 and x2
+
+=== PAGE BREAK ===
+Dimensionality reduction for data compression
+• A high-dimensional feature set can be projected onto one-, two-, or 
+three-dimensional feature spaces in order to visualize it via 2D or 3D 
+scatterplots or histograms.
+• Example, Compress a 3D Swiss Roll onto a new 2D feature subspace:
+
+=== PAGE BREAK ===
+Basic terminology in ML
+
+=== PAGE BREAK ===
+Basic terminology in ML
+• Training example: A row in a table representing the dataset and 
+synonymous with an observation, instance, or sample.
+• Training: Model fitting, for parametric models similar to parameter 
+estimation.
+• Feature, abbrev. x: A column in a data table or data (design) matrix. 
+Synonymous with variable, input, attribute, or covariate.
+• Target, abbrev. y: Synonymous with outcome, output, response 
+variable, dependent variable, (class) label, and ground truth.
+• Loss function: Often used synonymously with a cost function or an 
+error function. 
+
+=== PAGE BREAK ===
+A roadmap for building machine 
+learning systems:
+
+=== PAGE BREAK ===
+A roadmap for building machine learning systems
+• Preprocessing – getting data into shape
+• Transforming the features in the range [0, 1] or a standard normal distribution 
+with zero mean and unit variance
+• Training and selecting a predictive model
+• Compare at least a handful of different algorithms in order to train and select 
+the best performing model. 
+• Evaluating models and predicting unseen data instances
+• After selecting a model that has been fitted on the training dataset, we can 
+use the test dataset to estimate how well it performs on this unseen data

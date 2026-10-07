@@ -1,0 +1,414 @@
+T R A I N I N G  S I M P L E  M A C H I N E  L E A R N I N G  A L G O R I T H M S
+Perceptron, Adaline & Gradient Descent
+From rule-based updates to continuous optimization of a cost function
+Dr. Md. Shahidur Rahman
+Professor, DoCSE, SUST
+rahmanms@sust.edu
+
+=== PAGE BREAK ===
+TODAY'S SESSION
+Roadmap
+1
+Perceptron & Adaline
+Why a continuous activation function changes everything
+2
+The Cost Function
+Sum of squared errors as an optimization objective
+3
+Gradient Descent
+Climbing down the cost surface, one step at a time
+4
+Feature Scaling
+Standardization speeds up convergence
+5
+SGD & Mini-Batch
+Scaling learning to large, streaming datasets
+Learn weights by minimizing a 
+differentiable cost function
+2
+
+=== PAGE BREAK ===
+ORIGINS
+A brief history of the artificial neuron
+1943
+McCulloch & Pitts
+Proposed the McCulloch–Pitts (MCP) neuron: 
+a simplified model of a brain cell, aiming to 
+understand how biological neurons could 
+inspire artificial intelligence.
+1957
+Frank Rosenblatt
+Published the perceptron learning rule, 
+building on the MCP model — the first 
+algorithm that could automatically learn 
+optimal weights from data.
+Today
+Foundations
+These ideas underpin every modern 
+classifier: a weighted sum of inputs 
+compared against a threshold.
+3
+
+=== PAGE BREAK ===
+T H E  I N S P I R A T I O N
+From biological neuron to logic gate
+Biological neuron
+Multiple signals arrive at the dendrites and are 
+integrated in the cell body. When the accumulated 
+signal exceeds a threshold, the neuron fires and passes 
+a signal along the axon.
+The MCP reframing
+McCulloch and Pitts described this behavior in 
+computational terms:
+A simple logic gate with binary output
+Inputs are integrated (summed) in the cell 
+body
+An output fires only if the accumulated signal 
+exceeds a threshold
+This binary, threshold-based logic gate is the seed 
+from which the perceptron grows.
+4
+
+=== PAGE BREAK ===
+THE MATH
+The net input: a weighted sum
+For an input vector x and weight vector w, the perceptron 
+computes a net input z as their dot product:
+z  =  w₀x₀ + w₁x₁ + … + wₘxₘ  =  wᵀx
+x₀ = 1 is a constant input tied to the bias weight w₀ (the 
+negative threshold).
+Worked example
+[1  2  3] × [4  5  6]ᵀ  =  1×4 + 2×5 + 3×6  =  32
+Decision rule
+Compare z to a threshold θ:
+z ≥ θ   →   predict class +1
+z < θ   →   predict class –1
+Folding –θ into w₀ lets us write the rule 
+compactly as z ≥ 0 vs. z < 0. The value w₀ 
+= –θ is called the bias unit.
+5
+
+=== PAGE BREAK ===
+T H E  M A T H
+Squashing z into a binary output
+Discriminating two linearly separable classes
+decision
+boundary
+6
+If the accumulated net input meets the threshold, 
+the neuron outputs +1; otherwise, it outputs –1.
+
+=== PAGE BREAK ===
+THE ALGORITHM
+The perceptron learning rule
+A reductionist approach mimicking a single neuron: it either fires, or it doesn't.
+1
+Initialize
+Set weights to 0 or 
+small random numbers.
+2a
+Predict
+For each training 
+example x⁽ⁱ⁾, compute 
+the predicted output ŷ 
+using the step function.
+2b
+Update
+Update every weight wⱼ
+simultaneously based 
+on the prediction error.
+→
+Repeat
+Pass over the training 
+set (epoch) until 
+convergence or a max-
+epoch limit.
+7
+
+=== PAGE BREAK ===
+THE ALGORITHM
+Updating the weights
+Each weight is updated simultaneously as:
+wⱼ:=  wⱼ+ Δwⱼ
+Δwⱼ=  η (y⁽ⁱ⁾ – ŷ⁽ⁱ⁾) xⱼ⁽ⁱ⁾
+η
+learning rate, typically between 0.0 and 1.0
+y⁽ⁱ⁾
+the true class label of example i
+ŷ⁽ⁱ⁾
+the predicted class label of example i
+Two quick examples
+Misclassified as –1, with xⱼ⁽ⁱ⁾ = 0.5:
+Δwⱼ= (1 – (–1))(0.5) = 1
+Misclassified as –1, with a larger xⱼ⁽ⁱ⁾ = 2:
+Δwⱼ= (1 – (–1))(2) = 4
+Larger input values push the decision boundary 
+by a proportionally larger amount — the update 
+scales with xⱼ⁽ⁱ⁾.
+8
+
+=== PAGE BREAK ===
+THE ALGORITHM
+When do weights actually change?
+Correct
+True label +1, 
+predicted +1
+Δwⱼ= η(1–1)x = 0
+No update — the 
+prediction was 
+already right.
+Correct
+True label –1, 
+predicted –1
+Δwⱼ= η(–1–(–1))x = 0
+No update — the 
+prediction was 
+already right.
+Wrong
+True label +1, 
+predicted –1
+Δwⱼ= η(1–(–1))x = 2ηx
+Weights pushed 
+toward the positive 
+class.
+Wrong
+True label –1, 
+predicted +1
+Δwⱼ= η(–1–1)x = –2ηx
+Weights pushed 
+toward the negative 
+class.
+9
+
+=== PAGE BREAK ===
+A  C A V E A T
+Convergence depends on separability
+Convergence is only guaranteed if the two classes are linearly separable and the learning rate is small 
+enough. Otherwise, the perceptron will never stop updating — so we cap training with a maximum 
+number of epochs and/or a tolerated error threshold.
+Linearly separable
+–
+–
+–
+–
+–
+– –
++
++
++
++ +
++
++
+Not linearly separable
+–
+–
+–
+–
+–
+–
+–
+–
++
++
++
++ +
++
+Not linearly separable
+–
+–
+–
+–
+–
+–
+–
+–
+–
+–
++
++
++
++
++
+10
+
+=== PAGE BREAK ===
+P U T T I N G  I T  T O G E T H E R
+The perceptron, end to end
+Error
+Output
+(+1 or –1)
+Inputs are combined with weights into a net input, passed through a threshold function, and turned into 
+a binary prediction. During learning, the resulting error flows back to update every weight.
+11
+
+=== PAGE BREAK ===
+SECTION 1
+Perceptron vs. Adaline
+Same inputs, same weighted sum — a different signal drives the weight update.
+PERCEPTRON
+Inputs
+(x, 1)
+Net input
+Σ wᵢxᵢ
+Unit step
+threshold
+Predicted
+label
+Weights update using the PREDICTED CLASS LABEL vs. the true label (integer comparison).
+ADALINE
+Inputs
+(x, 1)
+Net input
+Σ wᵢxᵢ
+Linear
+activation ϕ(z)
+Threshold
+(prediction)
+Weights update using ( true label − ϕ(z) ) — the CONTINUOUS activation output, before thresholding.
+3
+
+=== PAGE BREAK ===
+SECTION 2
+Defining the Cost Function
+Every supervised learner needs an objective 
+function to optimize during training.
+●Adaline defines cost J(w) as the Sum of Squared 
+Errors (SSE) between the true label and the 
+continuous output ϕ(z)
+●The ½ term is a convenience factor — it cancels 
+cleanly when we differentiate
+●Because ϕ(z) is a linear (identity) function, J(w) 
+is differentiable and convex
+●A convex, differentiable cost function 
+guarantees gradient descent can find the global 
+minimum
+COST FUNCTION
+J(w) =  ½ Σᵢ ( y⁽ⁱ⁾ − ϕ(z⁽ⁱ⁾) )²
+y⁽ⁱ⁾
+true class label for example i
+z⁽ⁱ⁾
+net input, wᵀx⁽ⁱ⁾
+ϕ(z)
+linear activation, ϕ(z) = z
+Why not just count misclassifications?
+A 0/1 misclassification count is flat almost 
+everywhere — its gradient is zero, so there is no 
+signal to guide learning. SSE is smooth instead.
+4
+
+=== PAGE BREAK ===
+SECTION 3
+Gradient Descent: Climbing Down the Hill
+The step-by-step idea
+1
+Start from an initial (often random) weight 
+vector w
+2
+Compute the gradient ∇J(w) — the slope of the 
+cost surface at the current point
+3
+Take a step in the OPPOSITE direction of the 
+gradient
+4
+Step size is controlled by the learning rate η
+5
+Repeat until the cost stops decreasing 
+meaningfully
+w := w + Δw        Δw = −η∇J(w)
+5
+
+=== PAGE BREAK ===
+SECTION 3
+Deriving the Weight Update Rule
+Partial derivative of cost w.r.t. wⱼ
+∂J/∂wⱼ= − Σᵢ ( y⁽ⁱ⁾ − ϕ(z⁽ⁱ⁾) ) xⱼ⁽ⁱ⁾
+Weight change for wⱼ
+Δwⱼ= −η (∂J/∂wⱼ) = η Σᵢ ( y⁽ⁱ⁾ − ϕ(z⁽ⁱ⁾) ) xⱼ⁽ⁱ⁾
+Simultaneous update, all weights
+w := w + Δw
+Key distinction from the perceptron:  ϕ(z⁽ⁱ⁾) here is a real-valued number, not an integer class label — and 
+the update sums over the entire training set before any weight changes, which is why this is called batch 
+gradient descent.
+6
+
+=== PAGE BREAK ===
+S E C T I O N  3
+Choosing the Learning Rate Matters
+Too large → overshoots the minimum; cost 
+grows every epoch instead of shrinking.
+Too small → converges safely, but needs far too many 
+epochs to be practical.
+7
+
+=== PAGE BREAK ===
+SECTION 4
+Improving Convergence with Feature Scaling
+STANDARDIZATION
+x′ⱼ= ( xⱼ− μⱼ) / σⱼ
+Zero-mean, unit-variance features reshape 
+the cost surface into rounder, more 
+symmetric contours.
+Result: gradient descent takes fewer, 
+more direct steps to reach the minimum.
+In NumPy:  X_std[:, j] = (X[:, j] - X[:, j].mean()) / X[:, j].std()
+Note: standardization does not make the data normally distributed — it only recenters and rescales each feature. 
+After scaling, Adaline converges within about 15 epochs at η = 0.01, and every example is classified correctly —
+though SSE never quite reaches zero.
+8
+
+=== PAGE BREAK ===
+SECTION 5
+Batch Gradient Descent Doesn't Scale
+Every single weight update re-evaluates the ENTIRE training set — fine for the 
+100-row Iris dataset, but costly once we reach millions of examples.
+Batch GD
+Δw = η Σᵢ (y⁽ⁱ⁾ − ϕ(z⁽ⁱ⁾)) x⁽ⁱ⁾
+One update per epoch, using all m examples 
+— stable but slow at scale.
+Stochastic GD
+Δw = η (y⁽ⁱ⁾ − ϕ(z⁽ⁱ⁾)) x⁽ⁱ⁾
+One update per training example — noisy but 
+fast, and enables online learning.
+Both share the same underlying idea — the difference is how much data each weight update looks at 
+before moving.
+9
+
+=== PAGE BREAK ===
+SECTION 5
+Mini-Batch: The Practical Middle Ground
+Applies batch gradient descent to small subsets of the data (e.g., 32 examples at a time) — combining 
+faster convergence with vectorized, efficient computation.
+Batch GD
+Stochastic GD
+Mini-Batch GD
+Update frequency
+Per epoch (all m)
+Per example
+Per small batch
+Gradient noise
+None — smooth
+High — noisy
+Moderate
+Convergence speed
+Slow per update
+Fast, erratic path
+Fast & efficient
+Best suited for
+Small datasets
+Streaming / online
+Large-scale training
+11
+For most modern deep learning workloads, mini-batch gradient descent is the default choice — it 
+balances speed, stability, and hardware efficiency.
+
+=== PAGE BREAK ===
+RECAP
+Key Takeaways
+Adaline updates weights using a continuous linear activation, not the thresholded prediction 
+— making its cost function differentiable
+SSE is a convex, differentiable cost function — the ideal setting for gradient descent
+The learning rate η trades off stability against speed of convergence
+Standardizing features reshapes the cost surface and speeds up convergence dramatically
+Batch, stochastic, and mini-batch gradient descent trade computation cost against update 
+frequency and noise
+12

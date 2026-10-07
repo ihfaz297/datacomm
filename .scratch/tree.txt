@@ -1,0 +1,169 @@
+﻿C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\19_tt1.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\19_tt2.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\Chapter_2.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\Chapter_3_z_Transform.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\Chapter_4.8.6_4.8.7.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\Chapter_4_Problems.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\Copy_of_SolnCSE630_SUST_TT1.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\CSE_0714_3276-_Assignment_1.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\CSE_0714_3276-_Assignment_2.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\CSE_0714_3276-_Assignment_3.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\CSE_0714_3276-_Assignment_4.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\DSP_Chapter4_Frequency_Analysis_CTFT.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\extract.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\img_20_TT_1.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\img_IMG_6120.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\img_IMG_6121.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\img_TT2.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\list_files.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\machine_learning_.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\mods.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\probe_out.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\probe_pdfs.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\small_6120.jpg
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\small_6121.jpg
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\small_TT1.jpg
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\small_TT2.jpg
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\tree.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\tt2_frame0.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\.scratch\Whole-syllabus-course.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\dd1.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\dd4.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\doomsday_manchester.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\doomsday_nrz_i.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\fa1.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\fa5.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\fee-amanillah.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\lab1_q1_mp3.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\lab1_step1_delays.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\lab1_step2_bitstuff.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\pcm.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\pcm.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\pcm_drill.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step1_nrz_l.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step2_nrz_i.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step3_manchester.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step4_diff_manchester.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step5_steps.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step6.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step6_plot.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step6_plot_doomsday.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step6_plot_short.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\practice\step6_short.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\diffman_decode_storyboard.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\diffman_practice.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig1_4_mesh.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig1_5_star.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig1_6_bus.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig1_7_ring.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig2_11_osi.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig2_12_osi_vs_tcpip.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig2_4_tcpip_layers.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig2_8_encapsulation.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig3_13_bandwidth.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig3_14_spectrum.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig3_32_bdp.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig4_21_pcm.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig4_26_quant.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig4_6_nrz.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig4_8_manchester.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\fig4_9_ami.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\pp_q12_soln.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\pp_q13_wave.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\pp_q14_wave.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\pp_q15_table.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\crops\pp_q5_table.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b061_timefreq.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b062_freqdomain.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b063_composite.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b064_composite_decomp.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b065_nonperiodic_bw.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b066_bandwidth_ex.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b067_bandwidth_ex2.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b068_digital.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b100_sync.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b101_unipolarNRZ.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b102_NRZ_LI.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b103_RZ.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b104_manchester.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b105_AMI.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\b120_quantization.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\pastpaper_p1.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\pastpaper_p2.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\pastpaper_p3.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\pastpaper_p4.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\pastpaper_p5.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\pastpaper_p6.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\figs\pastpaper_p7.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\00-battle-plan.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\01-ch1-2-cuesheet.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\02-ch3-data-signals.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\03-ch4-digital-transmission.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\04-diagram-drills.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\05-lab2-linecoding-python.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\06-lab1-delays-encapsulation-python.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\study\SHOWTIME.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\ch1_full.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\ch2_osi.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\ch3_math.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\ch4_linecoding.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\ch4_pcm.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\Copy of SolnCSE630 SUST_TT1.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\Data-Communications-and-Network by BEHROUZ A. FOROUZAN-5e.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\Data-Communications-and-Networking by BEHROUZ A. FOROUZAN-4e.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\soln_extracted.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CE\sos.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\santiago.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step1_ct_signals.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step2_sampling.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step3_aliasing.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step4b_audio_file.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step4_quantization_image.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step5b_dt_operations.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step5_dt_sequences.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step6_convolution.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step7_correlation.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step8_moving_average.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\step9_spectrum_audio.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\tempCodeRunnerFile.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\practice\_verify_solutions.py
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\study\lab-doomsday.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\TT\Tt1.jpg
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 2.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 3_z_Transform.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 4 Problems.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Chapter 4.8.6_4.8.7.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 1.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 2.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 3.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\CSE 0714 3276- Assignment 4.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\DSP.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\DSP_Chapter4_Frequency_Analysis_CTFT.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\LAB_TEST_SYLLABUS.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\midterm-2.txt.txt
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Sanjit K Mitra Digital Signal Processing A Computer-Based Approach, 2e with DSP Laboratory using MATLAB.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Screenshot 2026-09-27 200004.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\DSP\Whole-syllabus-course.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\fit_quality.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\l1_l2.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\learning_curves.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\learning_rate.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\logistic_cost.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\separable.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\sigmoid.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\figures\validation_curve.png
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\Questions\19_tt1.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\Questions\19_tt2.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\Questions\2018-2019-1.jpg
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\Questions\2018-2019-2.jpg
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\Questions\machine learning .pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\slides\Ch1 Intro to ML.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\slides\Ch2 - Simple ML Algorithms.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\slides\Ch3 ML Classifiers.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\slides\Ch4 Data Preprocessing.pdf
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\exam_prep.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\FULL_SOLUTIONS.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\gini_by_hand.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\naive_bayes_by_hand.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\ML\perceptron_by_hand.md
+C:\Users\ADIB\OneDrive\Desktop\datacomm\CLAUDE.md

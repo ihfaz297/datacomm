@@ -1,0 +1,9 @@
+﻿fitz True
+PIL True
+numpy True
+scipy True
+matplotlib True
+sklearn True
+soundfile True
+pillow_heif False
+pytesseract True
