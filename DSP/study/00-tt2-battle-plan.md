@@ -1,5 +1,9 @@
 # TT2 battle plan — transforms and discrete-time systems
 
+> ⚠ **Superseded. Open `00-mid2-battle-plan.md` instead.** This plan was built from an older TT2 paper
+> (DFT/FFT/FIR windows). The *updated* Mid-2 syllabus is Mitra 4.8 + Proakis Ch 3 (z) + Ch 4 (frequency analysis).
+> Kept for reference only.
+
 CSE 325 Term Test 2. **30 minutes, 20 marks, 2 questions (Q2 and Q3 of the paper), each 10 marks.**
 Quiz 2 is the third question (Q1) and it comes from the same three topics, so nothing here is wasted.
 

@@ -1,0 +1,278 @@
+<title>DSP Mid-2 Picture Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one narrow lab-notebook column; each section = caption, controls, a plotted figure, a "write this" line. */
+:root{
+  --paper:#f6f8fb; --sheet:#ffffff; --ink:#18233a; --muted:#5a6680; --grid:#dde3ee;
+  --accent:#c8312b; --blue:#2458b8; --shade:rgba(36,88,184,.16); --line:#c9d2e2;
+  --display:"Spectral",Georgia,serif; --body:"Atkinson Hyperlegible",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1522; --sheet:#151d2e; --ink:#e3e8f2; --muted:#9aa6bf; --grid:#26314a;
+  --accent:#ff6b5e; --blue:#7aa7ff; --shade:rgba(122,167,255,.18); --line:#2e3a55; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1522; --sheet:#151d2e; --ink:#e3e8f2; --muted:#9aa6bf; --grid:#26314a;
+  --accent:#ff6b5e; --blue:#7aa7ff; --shade:rgba(122,167,255,.18); --line:#2e3a55; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font:16px/1.55 var(--body);padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:28px}
+header h1{font:700 clamp(28px,6vw,40px)/1.1 var(--display);margin:0;text-wrap:balance}
+header p{margin:.4em 0 0;color:var(--muted);max-width:62ch}
+nav{display:flex;flex-wrap:wrap;gap:6px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);padding-block:8px;z-index:2;border-bottom:1px solid var(--line)}
+nav a{font:600 13px var(--mono);color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:4px;padding:4px 8px;background:var(--sheet)}
+nav a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:12px;min-width:0;scroll-margin-top:64px}
+.tag{font:600 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h2{font:700 24px/1.2 var(--display);margin:0;text-wrap:balance}
+section>p{margin:0;max-width:65ch}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:14px}
+.ctl label{display:flex;align-items:center;gap:8px}
+.ctl output{font:600 13px var(--mono);min-width:3.5em;font-variant-numeric:tabular-nums}
+input[type=range]{width:140px;accent-color:var(--accent)}
+select,button{font:600 14px var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
+button{cursor:pointer}
+canvas{width:100%;display:block;border-radius:4px;background:var(--sheet)}
+.read{font:14px/1.6 var(--mono);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;min-width:0}
+.write{border-left:3px solid var(--accent);padding:4px 0 4px 12px;font-size:15px}
+.write b{color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px}
+footer{color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>DSP Mid-2 Picture Book</h1>
+  <p>CSE 325 · Jahirul sir · Sunday 10:00. Six pictures for the three Mid-2 questions plus convolution. Move a slider, watch the picture, then read the line under <b>Write this</b>. That line is what earns the marks.</p>
+</header>
+<nav aria-label="Sections">
+  <a href="#conv">Conv</a><a href="#ma">Q1 · MA filter</a><a href="#ss">Q1 · Transient</a><a href="#roc">Q2 · ROC</a><a href="#pz">Q2 · Pole-zero</a><a href="#sq">Q3 · Harmonics</a>
+</nav>
+
+<section id="conv">
+  <span class="tag">Revise · TT1 Q4 · Proakis Ex 2.3.2</span>
+  <h2>Convolution by expansion</h2>
+  <p>x(n) = {1↑, 2, 3, 1}, h(n) = {1, 2↑, 1, −1}. Step through n. Top row: x(k). Bottom row: h(n−k), which is h folded and shifted to n. Red stems overlap, and their products add up to y(n).</p>
+  <div class="ctl"><button id="cPrev" type="button">◀ n − 1</button><button id="cNext" type="button">n + 1 ▶</button><output id="cN"></output></div>
+  <canvas id="cvConv" height="300"></canvas>
+  <div class="read" id="rConv"></div>
+  <p class="write"><b>Write this:</b> ranges first (y on −1…5, length 4+4−1 = 7), then y(n) = h(n)+2h(n−1)+3h(n−2)+h(n−3) expanded for every n. Check: Σy = Σx·Σh = 21.</p>
+</section>
+
+<section id="ma">
+  <span class="tag">Q1 · Mitra 4.8.4</span>
+  <h2>Moving-average filter</h2>
+  <p>|H(e<sup>jω</sup>)| = |sin(Mω/2) / (M sin(ω/2))|. Zeros at ω = 2πk/M. The phase is −(M−1)ω/2 and jumps by π at each zero, because the real factor changes sign there.</p>
+  <div class="ctl"><label for="maM">M <input id="maM" type="range" min="2" max="12" value="5"></label><output id="maMo"></output></div>
+  <canvas id="cvMA" height="320"></canvas>
+  <div class="legend"><span><i style="background:var(--blue)"></i>|H|</span><span><i style="background:var(--accent)"></i>phase θ(ω) / π</span></div>
+  <div class="read" id="rMA"></div>
+  <p class="write"><b>Write this:</b> |H(0)| = 1 and the gain falls toward ω = π, so it is a <b>low-pass</b> filter. Linear phase means a delay of (M−1)/2 samples.</p>
+</section>
+
+<section id="ss">
+  <span class="tag">Q1 · Mitra 4.8.5 · 4.8.6 · 4.68</span>
+  <h2>Transient dies, steady state stays</h2>
+  <p>h[n] = aⁿu[n], input sin(ω₀n)u[n] switched on at n = 0. Blue stems are the true output y[n]. The grey curve is y<sub>ss</sub> = |H| sin(ω₀n + θ). Red bars are the difference y − y<sub>ss</sub>, the transient. They shrink like aⁿ.</p>
+  <div class="ctl">
+    <label for="ssA">a <input id="ssA" type="range" min="0" max="0.95" step="0.05" value="0.4"></label><output id="ssAo"></output>
+    <label for="ssW">ω₀ <select id="ssW"><option value="16">π/16</option><option value="8">π/8</option><option value="4" selected>π/4</option><option value="2">π/2</option></select></label>
+  </div>
+  <canvas id="cvSS" height="300"></canvas>
+  <div class="legend"><span><i style="background:var(--blue)"></i>y[n]</span><span><i style="background:var(--muted)"></i>y<sub>ss</sub>[n]</span><span><i style="background:var(--accent)"></i>y<sub>tr</sub>[n]</span></div>
+  <div class="read" id="rSS"></div>
+  <p class="write"><b>Write this:</b> y[n] = H(e<sup>jω</sup>)e<sup>jωn</sup> − e<sup>jωn</sup>Σ<sub>k=n+1</sub><sup>∞</sup>h[k]e<sup>−jωk</sup>. The second term → 0 because the system is stable (|a| &lt; 1).</p>
+</section>
+
+<section id="roc">
+  <span class="tag">Q2 · Proakis 3.1.3 · 3.1.5 · final 6a</span>
+  <h2>Where the ROC lives</h2>
+  <p>Shaded = ROC. × = pole, ○ = zero, dashed = unit circle. The formula is the same for causal and anti-causal. Only the ROC tells them apart.</p>
+  <div class="ctl">
+    <label for="rocT">signal <select id="rocT"><option value="c">aⁿu[n]</option><option value="a">−aⁿu[−n−1]</option><option value="t" selected>aⁿu[n] + bⁿu[−n−1]</option></select></label>
+    <label for="rocA">|a| <input id="rocA" type="range" min="0.1" max="1.8" step="0.05" value="0.5"></label><output id="rocAo"></output>
+    <label for="rocB">|b| <input id="rocB" type="range" min="0.1" max="1.8" step="0.05" value="1.5"></label><output id="rocBo"></output>
+  </div>
+  <canvas id="cvROC" height="340"></canvas>
+  <div class="read" id="rROC"></div>
+  <p class="write"><b>Write this:</b> right-sided → outside a circle, left-sided → inside, two-sided → ring |a| &lt; |z| &lt; |b|. If |b| ≤ |a| there is no overlap, so <b>X(z) does not exist</b>. Stable ⇔ the ROC contains |z| = 1.</p>
+</section>
+
+<section id="pz">
+  <span class="tag">Q2 · final 6b</span>
+  <h2>Pole-zero plot of aⁿ, 0 ≤ n ≤ M−1</h2>
+  <p>X(z) = (z<sup>M</sup> − a<sup>M</sup>) / (z<sup>M−1</sup>(z − a)). The M zeros sit evenly on the circle of radius a. The one at z = a is cancelled by the pole at z = a, which leaves M−1 zeros and M−1 poles at the origin.</p>
+  <div class="ctl">
+    <label for="pzM">M <input id="pzM" type="range" min="2" max="12" value="8"></label><output id="pzMo"></output>
+    <label for="pzA">a <input id="pzA" type="range" min="0.3" max="1.2" step="0.05" value="0.8"></label><output id="pzAo"></output>
+  </div>
+  <canvas id="cvPZ" height="340"></canvas>
+  <div class="read" id="rPZ"></div>
+  <p class="write"><b>Write this:</b> zeros z<sub>k</sub> = a·e<sup>j2πk/M</sup>, k = 1…M−1; an (M−1)-order pole at z = 0; ROC |z| &gt; 0.</p>
+</section>
+
+<section id="sq">
+  <span class="tag">Q3 · Proakis 4.1 · note p.35–37</span>
+  <h2>Building a square wave from harmonics</h2>
+  <p>c<sub>k</sub> = (2/kπ) sin(kπ/2). Even harmonics are zero, and the odd ones shrink like 1/k. Add more harmonics and the sum hugs the square. The overshoot at the jumps never goes away (Gibbs).</p>
+  <div class="ctl"><label for="sqK">highest k <input id="sqK" type="range" min="1" max="31" step="2" value="5"></label><output id="sqKo"></output></div>
+  <canvas id="cvSQ" height="250"></canvas>
+  <canvas id="cvSQc" height="190"></canvas>
+  <div class="read" id="rSQ"></div>
+  <p class="write"><b>Write this:</b> x(t) even ⇒ sine terms integrate to 0. c₀ = 0, c<sub>even</sub> = 0, c<sub>odd</sub> = ±2/(kπ). Only odd harmonics survive, decaying as 1/k.</p>
+</section>
+
+<footer>Numbers match <code>DSP/study/_mid2_verify.py</code>. The full working is in <code>20-T1</code>, <code>21-T2</code>, <code>22-T3</code> and <code>23-convolution-revise.md</code>.</footer>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C=()=>({ink:css('--ink'),muted:css('--muted'),grid:css('--grid'),acc:css('--accent'),blue:css('--blue'),shade:css('--shade'),sheet:css('--sheet'),mono:css('--mono')||'monospace'});
+function setup(cv){const r=window.devicePixelRatio||1,w=cv.clientWidth,h=+cv.getAttribute('height');cv.style.height=h+'px';cv.width=Math.round(w*r);cv.height=Math.round(h*r);const g=cv.getContext('2d');g.setTransform(r,0,0,r,0,0);g.clearRect(0,0,w,h);return{g,w,h};}
+const PI=Math.PI, f2=v=>(Math.abs(v)<5e-4?0:v).toFixed(3);
+
+// generic axis box: returns mappers
+function box(g,x0,y0,w,h,xr,yr,c,opt={}){
+  const X=v=>x0+(v-xr[0])/(xr[1]-xr[0])*w, Y=v=>y0+h-(v-yr[0])/(yr[1]-yr[0])*h;
+  g.strokeStyle=c.grid;g.lineWidth=1;g.fillStyle=c.muted;g.font='11px '+c.mono;
+  (opt.yt||[]).forEach(t=>{g.beginPath();g.moveTo(x0,Y(t));g.lineTo(x0+w,Y(t));g.stroke();g.textAlign='right';g.fillText(t.label??t,x0-4,Y(t)+4);});
+  (opt.xt||[]).forEach(t=>{const v=t.v??t;g.beginPath();g.moveTo(X(v),y0);g.lineTo(X(v),y0+h);g.stroke();g.textAlign='center';g.fillText(t.l??v,X(v),y0+h+14);});
+  g.strokeStyle=c.muted;g.beginPath();g.moveTo(x0,Y(Math.max(yr[0],Math.min(0,yr[1]))));g.lineTo(x0+w,Y(Math.max(yr[0],Math.min(0,yr[1]))));g.stroke();
+  return{X,Y};
+}
+function stem(g,X,Y,n,v,col,r=3.2){g.strokeStyle=col;g.fillStyle=col;g.lineWidth=2;g.beginPath();g.moveTo(X(n),Y(0));g.lineTo(X(n),Y(v));g.stroke();g.beginPath();g.arc(X(n),Y(v),r,0,2*PI);g.fill();}
+
+// ---------- Convolution ----------
+const cx={0:1,1:2,2:3,3:1}, ch={'-1':1,0:2,1:1,2:-1}, xv=k=>cx[k]||0, hv=k=>ch[k]||0;
+let cn=-1;
+function yOf(n){let s=0;for(let k=0;k<=3;k++)s+=xv(k)*hv(n-k);return s;}
+function drawConv(){
+  const c=C(),{g,w,h}=setup($('cvConv'));const L=40,W=w-L-12,kr=[-5,9];
+  $('cN').textContent='n = '+cn;
+  const xt=[];for(let k=-4;k<=8;k+=2)xt.push(k);
+  const top=box(g,L,14,W,90,kr,[-2,4],c,{yt:[0,2,4],xt});
+  g.fillStyle=c.ink;g.textAlign='left';g.font='600 12px '+c.mono;g.fillText('x(k)',L+4,26);
+  for(let k=-4;k<=8;k++){if(xv(k))stem(g,top.X,top.Y,k,xv(k),(hv(cn-k)&&xv(k))?c.acc:c.blue);}
+  const bot=box(g,L,140,W,90,kr,[-2,4],c,{yt:[0,2,4],xt});
+  g.fillStyle=c.ink;g.textAlign='left';g.fillText('h('+cn+' − k)',L+4,152);
+  for(let k=-4;k<=8;k++){const v=hv(cn-k);if(v)stem(g,bot.X,bot.Y,k,v,xv(k)?c.acc:c.muted);}
+  // y so far strip
+  g.font='12px '+c.mono;g.textAlign='left';g.fillStyle=c.muted;g.fillText('y so far:',L,268);
+  let s='';for(let n=-1;n<=5;n++){s+=(n<=cn?yOf(n):'·')+(n===0?'↑':'')+'  ';}
+  g.fillStyle=c.ink;g.font='600 13px '+c.mono;g.fillText(s,L+76,268);
+  const terms=[0,1,2,3].map(k=>{const coef=xv(k),arg=cn-k;return{coef,arg,v:hv(arg)};});
+  const sym=terms.map(t=>(t.coef===1?'':t.coef)+'h('+t.arg+')').join(' + ');
+  const num=terms.map(t=>(t.coef===1?'':t.coef+'·')+'('+t.v+')').join(' + ');
+  $('rConv').textContent='y('+cn+') = Σ x(k)h('+cn+'−k) = h(n)+2h(n−1)+3h(n−2)+h(n−3)\n       = '+sym+'\n       = '+num+'\n       = '+yOf(cn)+(cn===5?'\n\ny(n) = {1, 4↑, 8, 8, 3, −2, −1}   Σy = 21 = 7 × 3 ✔':'');
+}
+$('cPrev').onclick=()=>{cn=cn<=-1?5:cn-1;drawConv();};
+$('cNext').onclick=()=>{cn=cn>=5?-1:cn+1;drawConv();};
+
+// ---------- Moving average ----------
+function drawMA(){
+  const M=+$('maM').value;$('maMo').textContent=M;const c=C(),{g,w,h}=setup($('cvMA'));
+  const L=40,W=w-L-14;
+  const xt=[{v:0,l:'0'},{v:PI/2,l:'π/2'},{v:PI,l:'π'}];
+  const A=box(g,L,10,W,130,[0,PI],[0,1],c,{yt:[0,0.5,1],xt});
+  g.strokeStyle=c.blue;g.lineWidth=2.2;g.beginPath();
+  for(let i=0;i<=600;i++){const om=i/600*PI;const v=om===0?1:Math.abs(Math.sin(M*om/2)/(M*Math.sin(om/2)));i?g.lineTo(A.X(om),A.Y(v)):g.moveTo(A.X(om),A.Y(v));}g.stroke();
+  g.fillStyle=c.acc;const zs=[];
+  for(let k=1;2*PI*k/M<=PI+1e-9;k++){const z=2*PI*k/M;zs.push(k);g.beginPath();g.arc(A.X(z),A.Y(0),4,0,2*PI);g.fill();}
+  const B=box(g,L,175,W,120,[0,PI],[-1.2,1.2],c,{yt:[-1,0,1],xt});
+  g.strokeStyle=c.acc;g.lineWidth=2;g.beginPath();let prev=null;
+  for(let i=1;i<=600;i++){const om=i/600*PI;let re=0,im=0;for(let n=0;n<M;n++){re+=Math.cos(om*n)/M;im-=Math.sin(om*n)/M;}
+    const p=Math.atan2(im,re)/PI;if(prev!==null&&Math.abs(p-prev)>0.6){g.stroke();g.beginPath();g.moveTo(B.X(om),B.Y(p));}else if(prev===null)g.moveTo(B.X(om),B.Y(p));else g.lineTo(B.X(om),B.Y(p));prev=p;}
+  g.stroke();
+  g.fillStyle=c.muted;g.font='11px '+c.mono;g.textAlign='left';g.fillText('|H|',L+4,22);g.fillText('θ/π',L+4,188);
+  const zl=zs.map(k=>(2*k)+'π/'+M).join(', ');
+  $('rMA').textContent='M = '+M+'   h[n] = 1/'+M+' for 0 ≤ n ≤ '+(M-1)+'\nzeros of |H| at ω = '+zl+'\nphase = −'+((M-1)/2)+'ω (+π at each zero)  →  delay '+((M-1)/2)+' samples\n|H(π/2)| = '+f2(Math.abs(Math.sin(M*PI/4)/(M*Math.sin(PI/4)))) ;
+}
+
+// ---------- Steady state vs transient ----------
+function drawSS(){
+  const a=+$('ssA').value,w0=PI/+$('ssW').value;$('ssAo').textContent=a.toFixed(2);
+  const c=C(),{g,w,h}=setup($('cvSS'));const L=40,W=w-L-12,N=40;
+  const re=1-a*Math.cos(w0),im=a*Math.sin(w0);const den=re*re+im*im;const Hr=re/den,Hi=-im/den;const mag=Math.hypot(Hr,Hi),th=Math.atan2(Hi,Hr);
+  const y=[];for(let n=0;n<N;n++)y[n]=(n?a*y[n-1]:0)+Math.sin(w0*n);
+  const lim=Math.ceil(Math.max(mag,...y.map(Math.abs))*1.1*2)/2;
+  const xt=[0,10,20,30];const A=box(g,L,12,W,h-42,[-1,N],[-lim,lim],c,{yt:[-lim,0,lim].map(v=>+v.toFixed(1)),xt});
+  g.strokeStyle=c.muted;g.lineWidth=1.5;g.setLineDash([4,3]);g.beginPath();
+  for(let i=0;i<=400;i++){const t=i/400*(N-1);const v=mag*Math.sin(w0*t+th);i?g.lineTo(A.X(t),A.Y(v)):g.moveTo(A.X(t),A.Y(v));}g.stroke();g.setLineDash([]);
+  for(let n=0;n<N;n++){const ss=mag*Math.sin(w0*n+th),tr=y[n]-ss;
+    g.fillStyle=c.acc;g.globalAlpha=.75;const y0=A.Y(0),y1=A.Y(tr);g.fillRect(A.X(n)-3,Math.min(y0,y1),6,Math.abs(y1-y0));g.globalAlpha=1;
+    stem(g,A.X,A.Y,n,y[n],c.blue,2.6);}
+  $('rSS').textContent='H(e^{jω₀}) = 1/(1 − a e^{−jω₀}) = '+f2(Hr)+(Hi<0?' − j':' + j')+f2(Math.abs(Hi))+'\n|H| = '+f2(mag)+'   θ = '+(th*180/PI).toFixed(2)+'° = '+f2(th)+' rad\ny_ss[n] = '+f2(mag)+' sin(ω₀n '+(th<0?'− ':'+ ')+f2(Math.abs(th))+')\ntransient at n=0: '+f2(y[0]-mag*Math.sin(th))+'   at n=10: '+f2(y[10]-mag*Math.sin(w0*10+th))+(a===0.4&&w0===PI/4?'\n← this is Mitra 4.68: 1.297 sin(πn/4 − 0.376)':'');
+}
+
+// ---------- z-plane helpers ----------
+function zplane(cv,R){const c=C(),{g,w,h}=setup(cv);const s=Math.min(w,h)/2/R*0.92,cx=w/2,cy=h/2;
+  const P=(x,y)=>[cx+x*s,cy-y*s];
+  g.strokeStyle=c.grid;g.lineWidth=1;g.beginPath();g.moveTo(0,cy);g.lineTo(w,cy);g.moveTo(cx,0);g.lineTo(cx,h);g.stroke();
+  g.fillStyle=c.muted;g.font='11px '+c.mono;g.textAlign='left';g.fillText('Re(z)',w-44,cy-6);g.fillText('Im(z)',cx+6,12);
+  const circle=(r,dash,col,lw=1.5)=>{g.strokeStyle=col;g.lineWidth=lw;g.setLineDash(dash);g.beginPath();g.arc(cx,cy,r*s,0,2*PI);g.stroke();g.setLineDash([]);};
+  const X=(x,y,col)=>{const[p,q]=P(x,y);g.strokeStyle=col;g.lineWidth=2.4;g.beginPath();g.moveTo(p-6,q-6);g.lineTo(p+6,q+6);g.moveTo(p+6,q-6);g.lineTo(p-6,q+6);g.stroke();};
+  const O=(x,y,col)=>{const[p,q]=P(x,y);g.strokeStyle=col;g.lineWidth=2;g.fillStyle=c.sheet;g.beginPath();g.arc(p,q,5.5,0,2*PI);g.fill();g.stroke();};
+  return{g,w,h,s,cx,cy,c,circle,X,O,P};}
+
+function drawROC(){
+  const t=$('rocT').value,a=+$('rocA').value,b=+$('rocB').value;$('rocAo').textContent=a.toFixed(2);$('rocBo').textContent=b.toFixed(2);
+  $('rocB').disabled=t!=='t';
+  const Z=zplane($('cvROC'),2),{g,w,h,s,cx,cy,c}=Z;
+  g.fillStyle=c.shade;let roc,exists=true;
+  if(t==='c'){g.beginPath();g.rect(0,0,w,h);g.arc(cx,cy,a*s,0,2*PI,true);g.fill('evenodd');roc='|z| > '+a.toFixed(2);}
+  else if(t==='a'){g.beginPath();g.arc(cx,cy,a*s,0,2*PI);g.fill();roc='|z| < '+a.toFixed(2);}
+  else if(a<b){g.beginPath();g.arc(cx,cy,b*s,0,2*PI);g.arc(cx,cy,a*s,0,2*PI,true);g.fill('evenodd');roc=a.toFixed(2)+' < |z| < '+b.toFixed(2);}
+  else{exists=false;roc='EMPTY (|b| ≤ |a|)';g.fillStyle=c.acc;g.font='700 14px '+c.mono;g.textAlign='center';g.fillText('no overlap → X(z) does not exist',cx,24);}
+  Z.circle(1,[5,4],c.muted);Z.circle(a,[],c.blue);if(t==='t')Z.circle(b,[],c.blue);
+  Z.X(a,0,c.acc);if(t==='t')Z.X(b,0,c.acc);Z.O(0,0,c.acc);
+  const inU=t==='c'?a<1:t==='a'?a>1:(a<1&&1<b);
+  const formula=t==='t'?'X(z) = 1/(1 − az⁻¹) − 1/(1 − bz⁻¹) = (a − b)z⁻¹ / ((1 − az⁻¹)(1 − bz⁻¹))':'X(z) = 1/(1 − az⁻¹) = z/(z − a)';
+  const side=t==='c'?'right-sided (causal) → outside the circle':t==='a'?'left-sided (anti-causal) → inside the circle':'two-sided → ring between the circles';
+  $('rROC').textContent=formula+'\nROC: '+roc+'\n'+side+(exists?'\nunit circle inside ROC? '+(inU?'yes → stable, DTFT exists':'no → not stable, no DTFT'):'');
+}
+
+function drawPZ(){
+  const M=+$('pzM').value,a=+$('pzA').value;$('pzMo').textContent=M;$('pzAo').textContent=a.toFixed(2);
+  const Z=zplane($('cvPZ'),1.4),{g,c}=Z;
+  Z.circle(1,[5,4],c.muted);Z.circle(a,[2,3],c.blue,1);
+  for(let k=1;k<M;k++)Z.O(a*Math.cos(2*PI*k/M),a*Math.sin(2*PI*k/M),c.blue);
+  const[p,q]=Z.P(a,0);g.globalAlpha=.4;Z.O(a,0,c.muted);Z.X(a,0,c.muted);g.globalAlpha=1;
+  g.fillStyle=c.muted;g.font='11px '+c.mono;g.textAlign='left';g.fillText('cancelled',p+8,q+18);
+  Z.X(0,0,c.acc);const[o1,o2]=Z.P(0,0);g.fillStyle=c.acc;g.font='700 12px '+c.mono;g.fillText('('+(M-1)+')',o1+8,o2-8);
+  const zl=[];for(let k=1;k<Math.min(M,4);k++)zl.push(a.toFixed(2)+'·e^{j2π·'+k+'/'+M+'}');
+  $('rPZ').textContent='X(z) = (1 − a^M z^{−M})/(1 − a z⁻¹) = (z^'+M+' − '+a.toFixed(2)+'^'+M+') / (z^'+(M-1)+'(z − '+a.toFixed(2)+'))\nzeros: '+(M-1)+' of them, z_k = '+zl.join(', ')+(M>4?', …':'')+'\npoles: '+(M-1)+' at z = 0   (pole at z = a cancels the k = 0 zero)\nROC: |z| > 0';
+}
+
+function drawSQ(){
+  const K=+$('sqK').value;$('sqKo').textContent=K;const c=C();
+  let {g,w,h}=setup($('cvSQ'));const L=40,W=w-L-12;
+  const A=box(g,L,10,W,h-36,[-1,1],[-1.4,1.4],c,{yt:[-1,0,1],xt:[{v:-1,l:'−T₀'},{v:-.5,l:'−T₀/2'},{v:0,l:'0'},{v:.5,l:'T₀/2'},{v:1,l:'T₀'}]});
+  const sq=t=>{const u=((t%1)+1.5)%1-.5;return Math.abs(u)<.25?1:-1;};
+  g.strokeStyle=c.muted;g.lineWidth=1.5;g.beginPath();for(let i=0;i<=800;i++){const t=-1+2*i/800;i?g.lineTo(A.X(t),A.Y(sq(t))):g.moveTo(A.X(t),A.Y(sq(t)));}g.stroke();
+  g.strokeStyle=c.blue;g.lineWidth=2.2;g.beginPath();
+  for(let i=0;i<=800;i++){const t=-1+2*i/800;let v=0;for(let k=1;k<=K;k+=2)v+=2*(4/(k*PI))*Math.sin(k*PI/2)/2*Math.cos(2*PI*k*t);i?g.lineTo(A.X(t),A.Y(v)):g.moveTo(A.X(t),A.Y(v));}g.stroke();
+  ({g,w,h}=setup($('cvSQc')));
+  const kmax=Math.max(K,7);const xt=[];for(let k=-kmax;k<=kmax;k+=kmax>11?4:2)xt.push(k);
+  const B=box(g,L,10,W,h-36,[-kmax-1,kmax+1],[-.4,.7],c,{yt:[-.2,0,.2,.4,.6],xt});
+  for(let k=-kmax;k<=kmax;k++){if(k===0)continue;const v=(2/(k*PI))*Math.sin(k*PI/2);if(Math.abs(v)>1e-9)stem(g,B.X,B.Y,k,v,Math.abs(k)<=K?c.acc:c.grid,2.6);else{g.fillStyle=c.muted;g.beginPath();g.arc(B.X(k),B.Y(0),2,0,2*PI);g.fill();}}
+  g.fillStyle=c.muted;g.font='11px '+c.mono;g.textAlign='left';g.fillText('c_k',L+4,22);
+  const list=[];for(let k=1;k<=Math.min(K,7);k+=2)list.push('c'+k+' = '+((2/(k*PI))*Math.sin(k*PI/2)).toFixed(3));
+  $('rSQ').textContent=list.join('   ')+'\nc0 = 0, c2 = c4 = … = 0   |c_k| = 2/(π|k|)';
+}
+
+const all=()=>{drawConv();drawMA();drawSS();drawROC();drawPZ();drawSQ();};
+['maM'].forEach(i=>$(i).addEventListener('input',drawMA));
+['ssA','ssW'].forEach(i=>$(i).addEventListener('input',drawSS));
+['rocT','rocA','rocB'].forEach(i=>$(i).addEventListener('input',drawROC));
+['pzM','pzA'].forEach(i=>$(i).addEventListener('input',drawPZ));
+$('sqK').addEventListener('input',drawSQ);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(all,120);});
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',all);}catch(e){}
+new MutationObserver(all).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(all);
+all();
+})();
+</script>
