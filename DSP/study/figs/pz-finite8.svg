@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" width="280" height="280" role="img" aria-label="Pole-zero plot for a to the n, n from 0 to 7: seven zeros on a circle of radius a, the eighth cancelled, seven poles at the origin" style="font-family:var(--f-ui, 'IBM Plex Sans', 'Segoe UI', sans-serif)">
+<rect width="280" height="280" rx="8" style="fill:var(--sheet, #ffffff)"/>
+<clipPath id="pz-finite8"><rect x="18" y="18" width="244" height="244"/></clipPath>
+<path d="M18 18h244v244h-244Z" fill-rule="evenodd" clip-path="url(#pz-finite8)" style="fill:var(--trace, #17698a);fill-opacity:0.17"/>
+<line x1="18" y1="140" x2="262" y2="140" style="stroke:var(--ink-soft, #505b6b);stroke-width:0.8"/><line x1="140" y1="18" x2="140" y2="262" style="stroke:var(--ink-soft, #505b6b);stroke-width:0.8"/><text x="259.0" y="134.0" font-size="11" font-weight="400" text-anchor="end" style="fill:var(--ink-soft, #505b6b)">Re</text><text x="146.0" y="31.0" font-size="11" font-weight="400" text-anchor="start" style="fill:var(--ink-soft, #505b6b)">Im</text>
+<path d="M233.85 140.00A93.85 93.85 0 1 0 46.15 140.00A93.85 93.85 0 1 0 233.85 140.00Z" clip-path="url(#pz-finite8)" style="fill:none;stroke:var(--ink, #18212e);stroke-width:1.1;stroke-dasharray:5 3.5;opacity:0.75"/><text x="189.1" y="236.9" font-size="11" font-weight="400" text-anchor="start" style="fill:var(--ink-soft, #505b6b)">|z| = 1</text>
+<path d="M215.08 140.00A75.08 75.08 0 1 0 64.92 140.00A75.08 75.08 0 1 0 215.08 140.00Z" style="fill:none;stroke:var(--ink-soft, #505b6b);stroke-width:0.8;stroke-dasharray:1.5 3"/>
+<circle cx="193.1" cy="86.9" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2"/>
+<circle cx="140.0" cy="64.9" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2"/>
+<circle cx="86.9" cy="86.9" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2"/>
+<circle cx="64.9" cy="140.0" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2"/>
+<circle cx="86.9" cy="193.1" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2"/>
+<circle cx="140.0" cy="215.1" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2"/>
+<circle cx="193.1" cy="193.1" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2"/>
+<circle cx="215.1" cy="140.0" r="5.0" style="fill:var(--sheet, #ffffff);stroke:var(--note, #8a5800);stroke-width:2;stroke-dasharray:2 2;opacity:0.6"/>
+<text x="215.1" y="160.0" font-size="10" font-weight="400" text-anchor="middle" style="fill:var(--ink-soft, #505b6b)">cancelled</text>
+<path d="M134.5 134.5L145.5 145.5M145.5 134.5L134.5 145.5" style="stroke:var(--ink, #18212e);stroke-width:2.2;stroke-linecap:round"/>
+<text x="153.0" y="131.0" font-size="12" font-weight="400" text-anchor="start" style="fill:var(--ink, #18212e)">(7)</text>
+<rect x="14.0" y="16.0" width="92.6" height="21.0" rx="4" style="fill:var(--sheet, #ffffff);fill-opacity:0.92;stroke:var(--rule, #c9d1db)"/><text x="20.0" y="32.0" font-size="12" font-weight="400" text-anchor="start" style="fill:var(--ink, #18212e)">ROC: |z| &gt; 0</text>
+</svg>

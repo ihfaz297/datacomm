@@ -1,0 +1,131 @@
+“Draw a suitable neural network to classify the animal kingdom given below. Use appropriate labels. (b) How different types of input feature values are fed into the network? (c) How do you initialize the network? (d) How much training data are needed to have a fair decision boundary? (e) How to avoid over-fitting while training the network? (f) What activation functions you would use in different layers?” (TT1 2022 Q3; Bengali TT Q2)Copy
+Revise
+Show answer
+“Consider the classification task of the animal kingdom given below using Neural Networks: (i) How many learning parameters are there in the simplest possible network? (ii) How different types of feature values are fed into the network? (iii) How to initialize the network? (iv) How much training data are needed for a fair classification? (v) How long do you need to train the network?” (F2021 Q3b)Copy
+Revise
+Show answer
+“Draw the simplest possible neural network necessary to classify the animal kingdom given below. Use appropriate labels. Use bias 
+≈
+−
+1
+ and activation threshold 
+0
+. (b) How is a set of feature values fed into the network? (c) How do you initialize the network? (d) How much training data are needed to have a fair decision boundary? (e) What activation functions you would use in different layers?” (F2013 Q4)Copy
+Revise
+Show answer
+10.1.2 The packet-classification dataset
+“You have a dataset for some packets with the following information: Height, Width, Depth, Weight and Color. You need to distribute these in categories named Small, Medium and Large. Now design a neural network and answer: (a) Draw the network structure with appropriate labels. (b) How many weights are there in the network? Specify how you will initialize the weights. (c) How much training data will you need? (d) Explain how you will determine the number of iterations to train the network. (e) What activation function will you use?” (TT2 — two years)Copy
+Revise
+Show answer
+10.1.3 The weather-to-activity dataset
+“You have been keeping records for your outdoor activities (Going Out / Staying home) for the past few days based on weather: Sky condition (Sunny, Cloudy, Rainy); temperature (Hot, Mild, Cold); humidity (Normal, High); Wind flow (Calm, Windy). Design a neural network for determining your activity. (a) Explain how you will handle the feature values. (b) State how many nodes you will use and draw the network structure with appropriate labels. (c) How many weights are there in the network, and how will you initialize them? (d) How much training data will you need? (e) For how long will you train the network?” (F2016 Q5)Copy
+Revise
+Show answer
+10.1.4 The WeTube recommendation dataset
+Video	Type	Length (Min)	#Views	Recommended by a friend	Action
+1	Drama	40	1000	No	Liked
+2	Vlog	10	500	No	Disliked
+3	Cat Video	5	50000	Yes	Liked
+4	Tech News	15	2000	Yes	Disliked
+5	Food Recipe	10	400	No	No-Reaction
+6	Drama	75	2000	No	Liked
+⋮
+10000	Music	5	1200	Yes	?
+“Assume you own a video-sharing platform WeTube and here is the watch-and-action history of a user. You want to predict her action using a neural network to recommend good videos: (i) Draw a suitable neural network for predicting the actions, using appropriate labels and biases. (ii) Show the weight matrices with proper initialization. (iii) For each layer write what activation function(s) are suitable and why. (iv) What loss function can be used here? (v) How much training data are needed for making a reasonable prediction? (vi) What techniques can you apply to optimize the training?” (F2021 Q3a)Convolutional neural networks
+Orientation. The CNN topic supplies both conceptual questions (the advantage over dense layers, the purpose of max-pooling) and numericals (convolution by hand, patch counting, parameter counting, and full-architecture design). The convolution and parameter-counting numericals are of high value.
+
+15.1 Previously examined questions
+
+“What key characteristic gives CNN an upper hand compared with a densely connected layer in image classification?” (F2024a Q6c-i)
+
+Copy
+Revise
+Show answer
+
+“Why CNN is more suitable for image classification?” (F2022 Q4b)
+
+Copy
+Revise
+Show answer
+
+“Describe how a kernel of size 
+3
+×
+3
+ is convolved with an input feature map of size 
+5
+×
+5
+ with stride 
+2
+×
+2
+ and input depth 
+=
+1
+. How many patches will be extracted?” (F2024a Q6c-ii)
+
+Copy
+Revise
+Show answer
+
+“What is convolution? Apply convolution on the following using ‘valid’ padding and stride 
+1
+.” Then: “What is pooling? Apply max pooling on the result of the previous convolution.” (F2021 Q2f)
+
+Input 
+=
+[
+10
+20
+30
+40
+50
+60
+70
+80
+20
+]
+, Kernel 
+=
+[
+1
+−
+1
+−
+0.5
+1
+]
+.
+
+Copy
+Revise
+Show answer
+
+“What is the purpose of max-pooling in CNN? Illustrate the process with an example.” (F2024a Q5e)
+
+Copy
+Revise
+Show answer
+
+“Draw the architecture of a CNN where: the input is an 
+8
+×
+8
+ grayscale image; there are two convolution layers (the first with a 
+2
+×
+2
+ kernel, ‘valid’ padding, stride 
+2
+; the second with two 
+2
+×
+2
+ kernels, ‘same’ padding, stride 
+1
+); max pooling is then done by a 
+2
+×
+2
+ filter; the pooled output is flattened and a dense layer (state the number of neurons) with two hidden layers is applied; there are three output classes. (ii) What activation function(s) are used? (iii) What is the total number of learning parameters in the entire network?” (F2021 Q3c)

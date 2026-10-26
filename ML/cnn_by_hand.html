@@ -1,0 +1,760 @@
+<title>CNN by Hand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: same field-notebook column as Table to Network; matrices are drawn as cell grids, layers as a vertical flow. */
+:root {
+  --bg: #f3f5f1;
+  --surface: #ffffff;
+  --ink: #17201b;
+  --muted: #56625b;
+  --line: #d5dcd6;
+  --accent: #1c6a56;
+  --accent-ink: #ffffff;
+  --accent-soft: #e0eee8;
+  --warn: #94470f;
+  --warn-soft: #f7eadf;
+  --code-bg: #eef1ed;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.9rem, 6vw, 2.6rem);
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101512; --surface: #18201c; --ink: #e3eae5; --muted: #9ba8a0; --line: #2b3530;
+    --accent: #5cc3a4; --accent-ink: #0d1a15; --accent-soft: #1b3a30; --warn: #e6a370; --warn-soft: #3a2a1c;
+    --code-bg: #1f2823; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101512; --surface: #18201c; --ink: #e3eae5; --muted: #9ba8a0; --line: #2b3530;
+  --accent: #5cc3a4; --accent-ink: #0d1a15; --accent-soft: #1b3a30; --warn: #e6a370; --warn-soft: #3a2a1c;
+  --code-bg: #1f2823; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6; }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; display: grid; gap: 44px; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: var(--step-3); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: var(--step-2); font-weight: 700; }
+h3 { font-size: var(--step-1); font-weight: 700; }
+p { margin: 0; }
+a { color: var(--accent); }
+code, .mono { font-family: var(--f-mono); font-size: 0.88em; }
+code { background: var(--code-bg); padding: 0.05em 0.35em; border-radius: 4px; }
+.eyebrow { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { color: var(--muted); font-size: 1.05rem; max-width: 62ch; }
+section { display: grid; gap: 16px; min-width: 0; }
+.stack { display: grid; gap: 12px; min-width: 0; }
+header.top { display: grid; gap: 12px; }
+nav.jump { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+nav.jump a { flex: none; text-decoration: none; color: var(--ink); border: 1px solid var(--line); background: var(--surface); padding: 6px 12px; border-radius: 999px; font-size: 0.9rem; }
+nav.jump a:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--f-display); font-weight: 700; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: center; font-variant-numeric: tabular-nums; font-family: var(--f-mono); }
+.yes { color: var(--accent); font-weight: 700; }
+ul, ol { margin: 0; padding-left: 1.25em; display: grid; gap: 6px; }
+.callout { border-radius: var(--r); padding: 14px 16px; background: var(--accent-soft); display: grid; gap: 8px; }
+.trap { border-radius: var(--r); padding: 12px 14px; background: var(--warn-soft); color: var(--ink); display: grid; gap: 6px; }
+.trap b.tag, .rule b.tag { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.trap b.tag { color: var(--warn); }
+.rule { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; display: grid; gap: 6px; }
+.rule b.tag { color: var(--accent); }
+.src { font-family: var(--f-mono); font-size: 0.72rem; color: var(--muted); }
+
+/* pipeline */
+ol.pipe { list-style: none; padding: 0; gap: 0; counter-reset: p; }
+ol.pipe li { counter-increment: p; display: grid; grid-template-columns: 40px 1fr; gap: 0 12px; position: relative; padding-bottom: 18px; }
+ol.pipe li::before { content: counter(p); grid-row: 1 / span 3; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-family: var(--f-mono); font-weight: 600; display: grid; place-items: center; font-size: 0.9rem; position: relative; z-index: 1; }
+ol.pipe li:not(:last-child)::after { content: ""; position: absolute; left: 15px; top: 34px; bottom: 0; width: 2px; background: var(--line); }
+ol.pipe li > * { min-width: 0; }
+ol.pipe .q { font-family: var(--f-display); font-weight: 700; font-size: 1.08rem; }
+ol.pipe .ex { color: var(--muted); }
+ol.pipe .words { font-family: var(--f-mono); font-size: 0.75rem; color: var(--accent); }
+
+/* step cards */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: grid; gap: 14px; min-width: 0; }
+.card .head { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+.card .n { font-family: var(--f-mono); font-weight: 600; font-size: 0.85rem; background: var(--ink); color: var(--bg); border-radius: 6px; padding: 3px 8px; margin-top: 3px; }
+.think { font-style: italic; color: var(--muted); }
+details { border-top: 1px dashed var(--line); padding-top: 12px; }
+summary { cursor: pointer; font-family: var(--f-display); font-weight: 700; color: var(--accent); list-style: none; display: flex; align-items: center; gap: 8px; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "+"; font-family: var(--f-mono); width: 22px; height: 22px; display: grid; place-items: center; border: 1.5px solid var(--accent); border-radius: 6px; font-size: 0.9rem; }
+details[open] summary::before { content: "−"; }
+details > .stack { margin-top: 12px; }
+
+/* builder */
+.builder { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: grid; gap: 16px; }
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.controls label { display: grid; gap: 4px; font-size: 0.85rem; color: var(--muted); }
+.controls input, .controls select { font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
+.figure { overflow-x: auto; }
+svg.net { display: block; width: 100%; max-width: 560px; height: auto; margin: 0 auto; }
+svg.net .edge { stroke: var(--muted); stroke-opacity: 0.45; stroke-width: 1; }
+svg.net .edge.bias { stroke-dasharray: 3 3; stroke-opacity: 0.6; }
+svg.net .node-in { fill: var(--surface); stroke: var(--ink); stroke-width: 1.6; }
+svg.net .node-h { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.8; }
+svg.net .node-out { fill: var(--accent); stroke: var(--accent); stroke-width: 1.8; }
+svg.net .node-b { fill: var(--bg); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 2 2; }
+svg.net text { fill: var(--ink); font-family: var(--f-body); font-size: 13px; }
+svg.net text.cap { fill: var(--muted); font-family: var(--f-mono); font-size: 11px; }
+svg.net text.inner { font-family: var(--f-mono); font-size: 10.5px; fill: var(--muted); }
+svg.net text.inner-out { font-family: var(--f-mono); font-size: 11px; fill: var(--accent-ink); font-weight: 600; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { border: 1px solid var(--line); border-radius: var(--r); padding: 10px 12px; display: grid; gap: 2px; background: var(--bg); }
+.stat .k { font-size: 0.8rem; color: var(--muted); }
+.stat .v { font-family: var(--f-mono); font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 0.8rem; color: var(--muted); }
+.warnline { color: var(--warn); font-weight: 700; }
+.doom { border: 2px solid var(--ink); border-radius: 14px; padding: 18px 16px; display: grid; gap: 12px; background: var(--surface); }
+dl.words { display: grid; gap: 0; margin: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+dl.words > div { display: grid; grid-template-columns: minmax(110px, 30%) 1fr; gap: 4px 14px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+dl.words > div:last-child { border-bottom: 0; }
+dl.words dt { font-family: var(--f-display); font-weight: 700; }
+dl.words dd { margin: 0; min-width: 0; }
+dl.words dd .here { color: var(--muted); font-size: 0.92rem; display: block; }
+@media (max-width: 480px) { dl.words > div { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: no-preference) { details[open] > .stack { animation: drop 0.18s ease-out; } }
+@keyframes drop { from { opacity: 0.4; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* CNN page additions */
+.matrow { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: flex-end; min-width: 0; }
+.matrow > div { display: grid; gap: 4px; }
+.matrow .arrow { font-family: var(--f-mono); font-size: 0.85rem; color: var(--muted); padding-bottom: 8px; }
+.mat { display: inline-grid; grid-template-columns: repeat(var(--c), minmax(2.6em, auto)); gap: 3px; }
+.mat span { font-family: var(--f-mono); font-size: 0.9rem; text-align: center; padding: 6px 6px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); font-variant-numeric: tabular-nums; }
+.mat span.qa { background: var(--accent-soft); }
+.mat span.qb { background: var(--warn-soft); }
+.mat span.hl { border-color: var(--accent); border-width: 2px; font-weight: 700; }
+.mat.mini { grid-template-columns: repeat(var(--c), 16px); gap: 2px; }
+.mat.mini span { width: 16px; height: 16px; padding: 0; border-radius: 2px; }
+.mat.mini span.hl { background: var(--accent); border-color: var(--accent); border-width: 1px; }
+.flow { display: grid; gap: 4px; }
+.flow .layer { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); }
+.flow .layer > * { min-width: 0; }
+.flow .shape { font-family: var(--f-mono); font-weight: 600; text-align: right; }
+.flow .p { grid-column: 1 / -1; font-family: var(--f-mono); font-size: 0.8rem; color: var(--muted); }
+.flow .arrow { text-align: center; color: var(--muted); line-height: 1; }
+.controls textarea { font-family: var(--f-mono); font-size: 0.95rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; resize: vertical; }
+.controls textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* animation */
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button, .anim-ctl button { font: inherit; font-size: 0.9rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.seg button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.anim-ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.anim-ctl button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; min-width: 5.5em; }
+.anim-ctl label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+.anim-ctl input[type=range] { accent-color: var(--accent); width: 110px; }
+.phases { display: flex; flex-wrap: wrap; gap: 6px; }
+.phases span { font-family: var(--f-mono); font-size: 0.75rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.phases span.now { background: var(--warn-soft); color: var(--ink); border-color: var(--warn); }
+.phases span.done { color: var(--accent); border-color: var(--accent); }
+.phases span.skip { display: none; }
+.stage { display: flex; flex-wrap: wrap; gap: 16px 22px; align-items: flex-start; }
+.panel { display: grid; gap: 4px; }
+.agrid { position: relative; display: grid; grid-template-columns: repeat(var(--c), var(--cell)); gap: 3px; }
+.ac { width: var(--cell); height: var(--cell); display: grid; place-items: center; font-family: var(--f-mono); font-size: 0.78rem; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); transition: background-color 0.25s ease, color 0.25s ease; font-variant-numeric: tabular-nums; }
+.ac.empty { border-style: dashed; color: transparent; background: transparent !important; }
+.ac.now { outline: 2px solid var(--warn); outline-offset: 1px; }
+.ac.flash { animation: flash 0.6s ease; }
+@keyframes flash { 0% { transform: scale(1.18); } 100% { transform: none; } }
+.win { position: absolute; left: 0; top: 0; border: 3px solid var(--warn); border-radius: 6px; pointer-events: none; opacity: 0; box-shadow: 0 0 0 2px var(--surface); transition: transform 0.35s ease, width 0.35s ease, height 0.35s ease, opacity 0.2s; }
+.win.show { opacity: 1; }
+.strip { min-height: 3.2em; padding: 10px 12px; border-radius: var(--r); background: var(--code-bg); font-size: 0.85rem; overflow-wrap: anywhere; margin: 0; }
+@media (prefers-reduced-motion: reduce) { .win, .ac { transition: none; } .ac.flash { animation: none; } }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">CSE 475 · Convolutional neural networks</span>
+  <h1>CNN by hand</h1>
+  <p class="lede">Every CNN question from your past papers, from "why CNN beats a dense layer" to convolution, pooling and parameter counting worked step by step. Start with the picture, then answer each card in your head before you open it.</p>
+  <nav class="jump" aria-label="Sections">
+    <a href="#papers">Past papers</a>
+    <a href="#picture">The picture</a>
+    <a href="#watch">Watch it run</a>
+    <a href="#formulas">Formulas</a>
+    <a href="#cards">6 questions</a>
+    <a href="#calc">Calculator</a>
+    <a href="#doom">Doomsday</a>
+  </nav>
+</header>
+
+<section id="papers">
+  <span class="eyebrow">Your past papers</span>
+  <h2>Where each question is answered</h2>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Paper</th><th>Asks</th><th>Go to</th></tr></thead>
+      <tbody>
+        <tr><td>F2024a Q6c-i</td><td>Key characteristic that beats a dense layer</td><td><a href="#c1">C1</a></td></tr>
+        <tr><td>F2022 Q4b</td><td>Why CNN suits image classification</td><td><a href="#c2">C2</a></td></tr>
+        <tr><td>F2024a Q6c-ii</td><td>3×3 kernel on 5×5, stride 2: how many patches</td><td><a href="#c3">C3</a></td></tr>
+        <tr><td>F2021 Q2f</td><td>Convolution, then max pooling, by hand</td><td><a href="#c4">C4</a></td></tr>
+        <tr><td>F2024a Q5e</td><td>Purpose of max pooling, with an example</td><td><a href="#c5">C5</a></td></tr>
+        <tr><td>F2021 Q3c</td><td>Design an 8×8 CNN and count its parameters</td><td><a href="#c6">C6</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="picture">
+  <span class="eyebrow">Start here</span>
+  <h2>The picture: a stencil sliding over the image</h2>
+  <ol class="pipe">
+    <li><span class="q">A kernel is a small stencil of weights</span><span>For example a 3×3 grid of 9 numbers. It describes one small pattern, like a vertical edge.</span><span class="ex">The network learns these 9 numbers, just like weights in an MLP.</span></li>
+    <li><span class="q">Slide it over the image</span><span>At each spot, multiply every cell of the stencil by the pixel under it and add them up.</span><span class="ex">One number per spot: "how much does this patch look like my pattern?"</span></li>
+    <li><span class="q">The grid of answers is a feature map</span><span>It's a map of where the pattern shows up in the image.</span><span class="ex">10 kernels give 10 feature maps, stacked as the depth of the output.</span></li>
+    <li><span class="q">The same stencil is used everywhere</span><span>This is weight sharing. An "ear detector" learned in one corner finds ears anywhere.</span><span class="ex">That's translation invariance, and it's why CNNs need so few weights.</span></li>
+    <li><span class="q">Max pooling shrinks the map</span><span>Each 2×2 block is replaced by its biggest value.</span><span class="ex">"Was the pattern somewhere around here?" Yes or no, and not exactly where.</span></li>
+    <li><span class="q">Stack layers into a hierarchy</span><span>Early layers find edges, later ones combine edges into textures, then parts, then objects.</span><span class="ex">At the end: flatten, a dense layer or two, then softmax over the classes.</span></li>
+  </ol>
+  <div class="callout">
+    <p><b>The number that makes the point:</b> on a 28×28 image, a dense layer of 64 neurons needs 784 × 64 + 64 = <b>50,240</b> parameters. A conv layer with 64 filters of 3×3 needs (3×3×1 + 1) × 64 = <b>640</b>.</p>
+  </div>
+</section>
+
+<section id="watch">
+  <span class="eyebrow">Watch it run</span>
+  <h2>A convolution, step by step</h2>
+  <p>Pick a scene and press Play, or use Step to go one patch at a time. The outlined box is the kernel's current position.</p>
+  <div class="builder">
+    <div class="seg" role="group" aria-label="Scene">
+      <button type="button" data-scene="line" class="on">Line detector</button>
+      <button type="button" data-scene="f2021">F2021 question</button>
+      <button type="button" data-scene="stride">Stride 2 (C3)</button>
+    </div>
+    <p id="an-cap"></p>
+    <div class="phases"><span data-ph="conv">1 · Convolution</span><span data-ph="relu">2 · ReLU</span><span data-ph="pool">3 · Max pooling</span></div>
+    <div class="stage">
+      <div class="panel"><p class="src">Input</p><div class="agrid" id="an-in"></div></div>
+      <div class="panel"><p class="src">Kernel</p><div class="agrid" id="an-k"></div></div>
+      <div class="panel"><p class="src">Feature map</p><div class="agrid" id="an-fm"></div></div>
+      <div class="panel"><p class="src">Pooled</p><div class="agrid" id="an-pool"></div></div>
+    </div>
+    <p class="strip mono" id="an-strip" aria-live="polite"></p>
+    <div class="anim-ctl">
+      <button type="button" id="an-play" class="primary">Play</button>
+      <button type="button" id="an-back">◀ Back</button>
+      <button type="button" id="an-step">Step ▶</button>
+      <button type="button" id="an-reset">Reset</button>
+      <label for="an-speed">Speed<input type="range" id="an-speed" min="250" max="1600" step="50" value="900"></label>
+    </div>
+  </div>
+</section>
+
+<section id="formulas">
+  <span class="eyebrow">Memorise these</span>
+  <h2>Formula box</h2>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>What</th><th>Formula</th></tr></thead>
+      <tbody>
+        <tr><td>Output side, valid padding</td><td class="mono">⌊(n − k) / s⌋ + 1</td></tr>
+        <tr><td>Output side, same padding</td><td class="mono">⌈n / s⌉ (stride 1 keeps n)</td></tr>
+        <tr><td>Number of patches</td><td class="mono">output height × output width</td></tr>
+        <tr><td>Conv layer parameters</td><td class="mono">(k × k × input depth + 1) × filters</td></tr>
+        <tr><td>Pooling / flatten parameters</td><td class="mono">0</td></tr>
+        <tr><td>Flatten size</td><td class="mono">height × width × depth</td></tr>
+        <tr><td>Dense parameters</td><td class="mono">(inputs + 1) × neurons</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src">n = input side, k = kernel side, s = stride. Output depth = number of filters. The "+1" is one bias per filter or neuron.</p>
+</section>
+
+<section id="cards">
+  <span class="eyebrow">The exam questions</span>
+  <h2>6 questions, worked</h2>
+  <p>Answer the italic question first, then open the card.</p>
+
+  <article class="card" id="c1">
+    <div class="head"><span class="n">C1</span><h3>The key characteristic that beats a dense layer</h3></div>
+    <p class="src">F2024a Q6c-i</p>
+    <p class="think">A dense layer connects every pixel to every neuron. What does a conv layer look at instead, and what does that buy you?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>Dense layers learn global patterns</b>, which involve all the pixels at once. <b>Convolution layers learn local patterns</b>: small windows such as 3×3, with the same weights reused at every position. That one characteristic gives CNNs two properties:</p>
+      <ol>
+        <li><b>Translation invariance.</b> A pattern learned in one place (say, an edge in the bottom-right corner) is recognised anywhere in the image. A dense layer would have to learn it again for every position. So a CNN needs far fewer training images.</li>
+        <li><b>Spatial hierarchy.</b> The first layers learn small patterns like edges. The next layers combine them into textures and parts, and later layers into whole objects. Images are built this way, so CNNs fit them well.</li>
+      </ol>
+      <p><b>Bonus line:</b> weight sharing also means far fewer parameters, 640 vs 50,240 in the example above.</p>
+      <p class="src">The question's wording comes from Chollet, Deep Learning with Python, which gives exactly these two properties.</p>
+    </div></details>
+  </article>
+
+  <article class="card" id="c2">
+    <div class="head"><span class="n">C2</span><h3>Why CNN suits image classification</h3></div>
+    <p class="src">F2022 Q4b</p>
+    <p class="think">What does a dense layer throw away when it flattens an image? What does a CNN keep?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <ul>
+        <li><b>It keeps the 2-D structure.</b> A dense layer flattens the image into a long vector and loses which pixels are neighbours. Convolution works on neighbourhoods directly.</li>
+        <li><b>Local patterns with shared weights.</b> The same filter scans the whole image, so a feature is found wherever it appears (translation invariance), with far fewer parameters, which means less overfitting and less data needed.</li>
+        <li><b>A hierarchy of features.</b> Edges, then textures, then parts, then objects, the way images are actually built.</li>
+        <li><b>Pooling.</b> It shrinks the feature maps, cutting computation, and makes the network tolerant of small shifts.</li>
+      </ul>
+      <p><b>Numbers to quote:</b> a 28×28 image into 64 dense neurons is 50,240 parameters. 64 conv filters of 3×3 is 640.</p>
+    </div></details>
+  </article>
+
+  <article class="card" id="c3">
+    <div class="head"><span class="n">C3</span><h3>3×3 kernel on a 5×5 input, stride 2</h3></div>
+    <p class="src">F2024a Q6c-ii</p>
+    <p class="think">The window moves 2 cells at a time and must stay inside the 5×5 grid. Where can its top-left corner sit?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>How it's convolved:</b> put the 3×3 kernel on the top-left corner of the input. Multiply the 9 input values under it by the 9 kernel weights, add them up (plus the bias), and write that one number into the output. Move 2 columns right and repeat. At the end of a row, go back to the left edge and move 2 rows down. With input depth 1, each patch is a single 3×3 slice.</p>
+      <p><b>Where the corner can sit:</b> columns 0 and 2, and rows 0 and 2. Column 4 doesn't work, because the window would need columns 4, 5 and 6, and the input ends at column 4.</p>
+      <div class="patches" data-n="5" data-k="3" data-s="2" role="img" aria-label="The four 3 by 3 patches on a 5 by 5 grid with stride 2"></div>
+      <p class="mono">patches per side = ⌊(5 − 3) / 2⌋ + 1 = 2<br>patches = 2 × 2 = 4   → output feature map is 2×2</p>
+      <div class="trap"><b class="tag">Trap</b><p>With stride 1 it's (5 − 3 + 1)² = 9 patches and a 3×3 output. The patches overlap in both cases: here the middle row and column are shared.</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="c4">
+    <div class="head"><span class="n">C4</span><h3>Convolution, then max pooling, by hand</h3></div>
+    <p class="src">F2021 Q2f</p>
+    <div class="matrow">
+      <div><p class="src">Input</p><div class="mat" style="--c:3"><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span><span>70</span><span>80</span><span>20</span></div></div>
+      <div><p class="src">Kernel</p><div class="mat" style="--c:2"><span>1</span><span>−1</span><span>−0.5</span><span>1</span></div></div>
+    </div>
+    <p class="think">Valid padding, stride 1. How big is the output? Work out the top-left value before you open the answer.</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>What convolution is:</b> slide the kernel over the input. At each position, multiply the overlapping values cell by cell and add them up. The grid of results is the feature map.</p>
+      <p><b>Output size:</b> ⌊(3 − 2) / 1⌋ + 1 = 2, so the output is 2×2 and there are 4 positions.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Position</th><th>Patch</th><th>Multiply and add</th><th class="num">Result</th></tr></thead>
+          <tbody>
+            <tr><td>top-left</td><td class="mono">10 20 / 40 50</td><td class="mono">10(1) + 20(−1) + 40(−0.5) + 50(1)</td><td class="num"><b>20</b></td></tr>
+            <tr><td>top-right</td><td class="mono">20 30 / 50 60</td><td class="mono">20 − 30 − 25 + 60</td><td class="num"><b>25</b></td></tr>
+            <tr><td>bottom-left</td><td class="mono">40 50 / 70 80</td><td class="mono">40 − 50 − 35 + 80</td><td class="num"><b>35</b></td></tr>
+            <tr><td>bottom-right</td><td class="mono">50 60 / 80 20</td><td class="mono">50 − 60 − 40 + 20</td><td class="num"><b>−30</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="matrow">
+        <div><p class="src">Feature map</p><div class="mat" style="--c:2"><span>20</span><span>25</span><span class="hl">35</span><span>−30</span></div></div>
+        <span class="arrow">→ 2×2 max pool →</span>
+        <div><p class="src">Pooled</p><div class="mat" style="--c:1"><span class="hl">35</span></div></div>
+      </div>
+      <p><b>What pooling is:</b> replace each window of the feature map with one summary value. Max pooling keeps the largest. A 2×2 window over this 2×2 map covers everything, so the answer is <b>35</b>. If ReLU is applied first, −30 becomes 0, and the max is still 35.</p>
+      <div class="trap"><b class="tag">Flip or not?</b><p>CNNs (Keras, PyTorch) slide the kernel without flipping it, which is what's above. The maths definition of convolution flips the kernel 180° first, giving [[1, −0.5], [−1, 1]], a feature map of [[10, 15], [25, −40]], and a max pool of 25. Write the unflipped version and add one line: "kernel not flipped, as in CNN libraries".</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="c5">
+    <div class="head"><span class="n">C5</span><h3>The purpose of max pooling</h3></div>
+    <p class="src">F2024a Q5e</p>
+    <p class="think">Max pooling throws away 3 out of every 4 numbers. Why would you want that?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <ul>
+        <li><b>Downsampling:</b> a 2×2 pool with stride 2 keeps ¼ of the values. Later layers have less to compute and fewer parameters to learn, which also reduces overfitting.</li>
+        <li><b>Keeps the strongest signal:</b> the max says whether the feature is present in that region, not exactly where. Small shifts in the image barely change the output.</li>
+        <li><b>A wider view:</b> after pooling, the next 3×3 conv window covers a bigger part of the original image. That's how the spatial hierarchy is built.</li>
+        <li><b>No parameters:</b> pooling learns nothing. It's a fixed operation.</li>
+      </ul>
+      <p><b>Example:</b> 4×4 feature map, 2×2 max pool, stride 2. Each coloured block becomes its largest value.</p>
+      <div class="matrow">
+        <div class="mat" style="--c:4">
+          <span class="qa">1</span><span class="qa">3</span><span class="qb">2</span><span class="qb">1</span>
+          <span class="qa">4</span><span class="qa hl">6</span><span class="qb hl">5</span><span class="qb">2</span>
+          <span class="qb hl">3</span><span class="qb">1</span><span class="qa">1</span><span class="qa">0</span>
+          <span class="qb">1</span><span class="qb">2</span><span class="qa">2</span><span class="qa hl">4</span>
+        </div>
+        <span class="arrow">→</span>
+        <div class="mat" style="--c:2"><span>6</span><span>5</span><span>3</span><span>4</span></div>
+      </div>
+      <p>16 values become 4, and each block's strongest response survives.</p>
+    </div></details>
+  </article>
+
+  <article class="card" id="c6">
+    <div class="head"><span class="n">C6</span><h3>Design an 8×8 CNN and count its parameters</h3></div>
+    <p class="src">F2021 Q3c</p>
+    <p class="think">"Input 8×8 grayscale. Conv 1: a 2×2 kernel, valid, stride 2. Conv 2: two 2×2 kernels, same, stride 1. Then 2×2 max pooling, flatten, a dense part with two hidden layers (state the neurons), and 3 output classes. (ii) Activations? (iii) Total learning parameters?" Track the shape after every layer before you open this.</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>(i) Architecture, with the shape after each layer:</b></p>
+      <div class="flow">
+        <div class="layer"><span><b>Input</b> · 8×8 grayscale</span><span class="shape">8×8×1</span><span class="p">0 params</span></div>
+        <div class="arrow">↓</div>
+        <div class="layer"><span><b>Conv 1</b> · 1 filter 2×2, valid, stride 2, ReLU<br><span class="src">⌊(8 − 2) / 2⌋ + 1 = 4</span></span><span class="shape">4×4×1</span><span class="p">(2·2·1 + 1) × 1 = 5</span></div>
+        <div class="arrow">↓</div>
+        <div class="layer"><span><b>Conv 2</b> · 2 filters 2×2, same, stride 1, ReLU<br><span class="src">same + stride 1 keeps 4×4; depth = 2 filters</span></span><span class="shape">4×4×2</span><span class="p">(2·2·1 + 1) × 2 = 10</span></div>
+        <div class="arrow">↓</div>
+        <div class="layer"><span><b>Max pool</b> · 2×2, stride 2</span><span class="shape">2×2×2</span><span class="p">0</span></div>
+        <div class="arrow">↓</div>
+        <div class="layer"><span><b>Flatten</b> · 2 × 2 × 2</span><span class="shape">8</span><span class="p">0</span></div>
+        <div class="arrow">↓</div>
+        <div class="layer"><span><b>Dense hidden 1</b> · 4 neurons, ReLU</span><span class="shape">4</span><span class="p">(8 + 1) × 4 = 36</span></div>
+        <div class="arrow">↓</div>
+        <div class="layer"><span><b>Dense hidden 2</b> · 4 neurons, ReLU</span><span class="shape">4</span><span class="p">(4 + 1) × 4 = 20</span></div>
+        <div class="arrow">↓</div>
+        <div class="layer"><span><b>Output</b> · 3 neurons, softmax</span><span class="shape">3</span><span class="p">(4 + 1) × 3 = 15</span></div>
+      </div>
+      <p><b>(iii) Total:</b> 5 + 10 + 0 + 0 + 36 + 20 + 15 = <b>86 learning parameters</b>.</p>
+      <p><b>"State the number of neurons"</b> is your choice. 4 per hidden layer is about half of the 8 flattened inputs. With 8 and 8 instead, the dense part is 72 + 72 + 27 and the total is 186. Use the formula and any sensible choice earns the marks.</p>
+      <p><b>(ii) Activations:</b> ReLU after each conv layer and in both hidden dense layers. Softmax at the output, because there are 3 classes. Pooling and flatten have no activation. Loss: categorical cross-entropy.</p>
+      <div class="trap"><b class="tag">Traps</b><p>Conv 2's input depth is 1 (Conv 1 had one filter), so each of its kernels is 2×2×1, not 2×2×2. "Same" with stride 1 keeps 4×4. Pooling and flatten add 0 parameters. Every filter has one bias.</p></div>
+      <p><b>Drawing it:</b> draw each feature map as a labelled square (8×8×1, 4×4×1, two stacked 4×4 squares, two stacked 2×2 squares), then the flattened 8 as a column of circles, followed by the dense columns of 4, 4 and 3.</p>
+    </div></details>
+  </article>
+</section>
+
+<section id="calc">
+  <span class="eyebrow">Tool · any convolution numerical</span>
+  <h2>Convolution and pooling calculator</h2>
+  <p>Type each matrix with one row per line. It shows the working for every position, then max pools the result. It starts loaded with the F2021 question.</p>
+  <div class="builder">
+    <div class="controls">
+      <label for="cv-in">Input<textarea id="cv-in" rows="4" spellcheck="false">10 20 30
+40 50 60
+70 80 20</textarea></label>
+      <label for="cv-k">Kernel<textarea id="cv-k" rows="4" spellcheck="false">1 -1
+-0.5 1</textarea></label>
+      <label for="cv-s">Stride<input id="cv-s" type="number" min="1" value="1"></label>
+      <label for="cv-pad">Padding<select id="cv-pad"><option value="valid">valid</option><option value="same">same</option></select></label>
+      <label for="cv-flip">Kernel<select id="cv-flip"><option value="no">not flipped (CNN)</option><option value="yes">flipped 180° (maths)</option></select></label>
+      <label for="cv-relu">ReLU before pooling<select id="cv-relu"><option value="no">no</option><option value="yes">yes</option></select></label>
+      <label for="cv-pool">Pool size (stride = size)<input id="cv-pool" type="number" min="1" value="2"></label>
+    </div>
+    <p id="cv-note" class="warnline" hidden></p>
+    <p id="cv-info" class="src" hidden></p>
+    <div class="matrow" id="cv-mats"></div>
+    <div class="tablebox" id="cv-work"></div>
+  </div>
+</section>
+
+<section id="doom">
+  <div class="doom">
+    <span class="eyebrow">Doomsday · 6 lines</span>
+    <h2>If you remember nothing else</h2>
+    <ol>
+      <li><b>Convolution:</b> slide the kernel, multiply-and-add each patch, and the results form a feature map. CNN libraries don't flip the kernel.</li>
+      <li><b>Size:</b> output side = ⌊(n − k) / s⌋ + 1 for valid; same padding gives ⌈n / s⌉. Patches = output height × width.</li>
+      <li><b>Parameters:</b> conv (k·k·input depth + 1) × filters; pooling and flatten 0; dense (inputs + 1) × neurons.</li>
+      <li><b>Max pooling</b> keeps the biggest value in each window: it downsamples, keeps the strongest signal, tolerates small shifts and widens the next layer's view. It has no parameters.</li>
+      <li><b>CNN beats dense:</b> local patterns with shared weights give translation invariance, a spatial hierarchy, and far fewer parameters.</li>
+      <li><b>Activations:</b> ReLU in conv and hidden dense layers; softmax at a multiclass output (sigmoid for binary).</li>
+    </ol>
+  </div>
+  <p class="src">Concepts follow F. Chollet, <i>Deep Learning with Python</i>, chapter on convnets. Every number on this page was recomputed in Python.</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var MINUS = "−";
+
+  function num(v) {
+    var r = Math.round(v * 10000) / 10000;
+    var s = String(Math.abs(r));
+    return (r < 0 ? MINUS : "") + s;
+  }
+  function paren(v) { return v < 0 ? "(" + num(v) + ")" : "(" + num(v) + ")"; }
+
+  function matHTML(M, cols, hlMax) {
+    var max = -Infinity;
+    if (hlMax) M.forEach(function (r) { r.forEach(function (v) { if (v > max) max = v; }); });
+    var cells = "";
+    M.forEach(function (r) { r.forEach(function (v) { cells += "<span" + (hlMax && v === max ? " class='hl'" : "") + ">" + num(v) + "</span>"; }); });
+    return "<div class='mat' style='--c:" + cols + "'>" + cells + "</div>";
+  }
+  function block(title, M, hlMax) {
+    return "<div><p class='src'>" + title + "</p>" + matHTML(M, M[0].length, hlMax) + "</div>";
+  }
+
+  /* C3 figure: every patch position on an n x n grid */
+  document.querySelectorAll(".patches").forEach(function (box) {
+    var n = +box.getAttribute("data-n"), k = +box.getAttribute("data-k"), s = +box.getAttribute("data-s");
+    var out = Math.floor((n - k) / s) + 1, html = "", count = 0;
+    for (var r = 0; r < out; r++) for (var c = 0; c < out; c++) {
+      count++;
+      var cells = "";
+      for (var i = 0; i < n; i++) for (var j = 0; j < n; j++) {
+        var inside = i >= r * s && i < r * s + k && j >= c * s && j < c * s + k;
+        cells += "<span" + (inside ? " class='hl'" : "") + "></span>";
+      }
+      html += "<div><p class='src'>Patch " + count + " · corner (" + (r * s) + ", " + (c * s) + ")</p><div class='mat mini' style='--c:" + n + "'>" + cells + "</div></div>";
+    }
+    box.className += " matrow";
+    box.innerHTML = html;
+  });
+
+  function parse(text) {
+    var rows = text.trim().split(/\n+/).map(function (line) {
+      return line.trim().replace(/−/g, "-").split(/[\s,;]+/).filter(Boolean).map(Number);
+    });
+    if (!rows.length || !rows[0].length) return { err: "is empty" };
+    var w = rows[0].length;
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].length !== w) return { err: "needs the same number of values on every row" };
+      if (rows[i].some(function (v) { return !isFinite(v); })) return { err: "has something that isn't a number" };
+    }
+    if (rows.length > 12 || w > 12) return { err: "is bigger than 12×12" };
+    return { M: rows };
+  }
+
+  function update() {
+    var note = $("cv-note"), info = $("cv-info");
+    var fail = function (msg) { note.textContent = msg; note.hidden = false; info.hidden = true; $("cv-mats").innerHTML = ""; $("cv-work").innerHTML = ""; };
+    var A = parse($("cv-in").value), B = parse($("cv-k").value);
+    if (A.err) return fail("The input " + A.err + ".");
+    if (B.err) return fail("The kernel " + B.err + ".");
+    var X = A.M, K = B.M;
+    if ($("cv-flip").value === "yes") K = K.slice().reverse().map(function (r) { return r.slice().reverse(); });
+    var s = Math.max(1, parseInt($("cv-s").value, 10) || 1), p = Math.max(1, parseInt($("cv-pool").value, 10) || 2);
+    var nh = X.length, nw = X[0].length, kh = K.length, kw = K[0].length;
+    var oh, ow, P = X, padText = "";
+    if ($("cv-pad").value === "same") {
+      oh = Math.ceil(nh / s); ow = Math.ceil(nw / s);
+      var th = Math.max((oh - 1) * s + kh - nh, 0), tw = Math.max((ow - 1) * s + kw - nw, 0);
+      var top = Math.floor(th / 2), left = Math.floor(tw / 2);
+      P = [];
+      for (var i = 0; i < nh + th; i++) {
+        var row = [];
+        for (var j = 0; j < nw + tw; j++) {
+          var ii = i - top, jj = j - left;
+          row.push(ii >= 0 && ii < nh && jj >= 0 && jj < nw ? X[ii][jj] : 0);
+        }
+        P.push(row);
+      }
+      padText = "Same padding: zeros added, top " + top + ", bottom " + (th - top) + ", left " + left + ", right " + (tw - left) + ".";
+    } else {
+      oh = Math.floor((nh - kh) / s) + 1; ow = Math.floor((nw - kw) / s) + 1;
+      if (oh < 1 || ow < 1) return fail("The kernel is bigger than the input, so valid padding gives no output.");
+    }
+    note.hidden = true;
+
+    var Y = [], work = "";
+    for (var r = 0; r < oh; r++) {
+      var yr = [];
+      for (var c = 0; c < ow; c++) {
+        var sum = 0, terms = [], patch = [];
+        for (var a = 0; a < kh; a++) {
+          var pr = [];
+          for (var b = 0; b < kw; b++) {
+            var v = P[r * s + a][c * s + b];
+            pr.push(num(v)); terms.push(num(v) + paren(K[a][b])); sum += v * K[a][b];
+          }
+          patch.push(pr.join(" "));
+        }
+        yr.push(sum);
+        if (r * ow + c < 64) work += "<tr><td class='num'>(" + r + ", " + c + ")</td><td class='mono'>" + patch.join(" / ") + "</td><td class='mono'>" + terms.join(" + ") + "</td><td class='num'><b>" + num(sum) + "</b></td></tr>";
+      }
+      Y.push(yr);
+    }
+
+    var relu = $("cv-relu").value === "yes";
+    var Z = relu ? Y.map(function (r) { return r.map(function (v) { return Math.max(0, v); }); }) : Y;
+    var ph = Math.min(p, Z.length), pw = Math.min(p, Z[0].length);
+    var qh = Math.floor(Z.length / ph), qw = Math.floor(Z[0].length / pw), Q = [];
+    for (var r2 = 0; r2 < qh; r2++) {
+      var qr = [];
+      for (var c2 = 0; c2 < qw; c2++) {
+        var m = -Infinity;
+        for (var a2 = 0; a2 < ph; a2++) for (var b2 = 0; b2 < pw; b2++) m = Math.max(m, Z[r2 * ph + a2][c2 * pw + b2]);
+        qr.push(m);
+      }
+      Q.push(qr);
+    }
+
+    var lines = ["Output " + oh + "×" + ow + " (" + (oh * ow) + " positions)."];
+    if (padText) lines.push(padText);
+    if (ph !== p || pw !== p) lines.push("The feature map is smaller than the pool, so one window covers all of it.");
+    info.textContent = lines.join(" ");
+    info.hidden = false;
+
+    var mats = block("Input", X) + block("Kernel used", K) + block("Feature map", Y);
+    if (relu) mats += block("After ReLU", Z);
+    mats += "<span class='arrow'>→ " + p + "×" + p + " max pool →</span>" + block("Pooled", Q, false);
+    $("cv-mats").innerHTML = mats;
+    $("cv-work").innerHTML = "<table><thead><tr><th class='num'>Position</th><th>Patch</th><th>Multiply and add</th><th class='num'>Result</th></tr></thead><tbody>" + work + "</tbody></table>";
+  }
+
+  ["cv-in", "cv-k", "cv-s", "cv-pad", "cv-flip", "cv-relu", "cv-pool"].forEach(function (id) { $(id).addEventListener("input", update); });
+  update();
+})();
+</script>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var GAP = 3;
+  function num(v) { var r = Math.round(v * 100) / 100; return (r < 0 ? "−" : "") + Math.abs(r); }
+  function grid(h, w, f) { var M = []; for (var i = 0; i < h; i++) { var r = []; for (var j = 0; j < w; j++) r.push(f(i, j)); M.push(r); } return M; }
+
+  var SCENES = {
+    line: {
+      cap: "A vertical-line detector: every kernel row is −1, 2, −1. The feature map lights up only where the line is. ReLU throws away the negatives, and pooling keeps one fact: the line is on the left, strongest at the top.",
+      X: grid(6, 6, function (i, j) { return j === 2 && i < 4 ? 9 : 0; }),
+      K: [[-1, 2, -1], [-1, 2, -1], [-1, 2, -1]], s: 1, relu: true, pool: 2
+    },
+    f2021: {
+      cap: "Your F2021 question: a 2×2 kernel on a 3×3 input, valid padding, stride 1, then a 2×2 max pool. The answer is 35.",
+      X: [[10, 20, 30], [40, 50, 60], [70, 80, 20]],
+      K: [[1, -1], [-0.5, 1]], s: 1, relu: false, pool: 2
+    },
+    stride: {
+      cap: "Question C3: a 3×3 window on a 5×5 input with stride 2 fits in only 4 places. The kernel is all 1s here, so each output is just the sum of its patch.",
+      X: grid(5, 5, function (i, j) { return i * 5 + j + 1; }),
+      K: grid(3, 3, function () { return 1; }), s: 2, relu: false, pool: 2
+    }
+  };
+
+  var sc, frames, t, timer = null, cell, els = {};
+
+  function shade(el, v, max) {
+    if (!v || !max) { el.style.background = ""; el.style.color = ""; return; }
+    var pct = Math.round(18 + 62 * Math.min(1, Math.abs(v) / max));
+    el.style.background = "color-mix(in srgb, var(" + (v > 0 ? "--accent" : "--warn") + ") " + pct + "%, var(--surface))";
+    el.style.color = pct > 55 ? "var(--accent-ink)" : "";
+  }
+
+  function makeGrid(host, h, w) {
+    host.innerHTML = "";
+    host.style.setProperty("--c", w);
+    host.style.setProperty("--cell", cell + "px");
+    var cells = [];
+    for (var i = 0; i < h * w; i++) { var d = document.createElement("div"); d.className = "ac"; host.appendChild(d); cells.push(d); }
+    var win = document.createElement("div"); win.className = "win"; host.appendChild(win);
+    return { cells: cells, win: win, w: w };
+  }
+  function place(g, r, c, kh, kw) {
+    g.win.style.transform = "translate(" + (c * (cell + GAP) - 3) + "px," + (r * (cell + GAP) - 3) + "px)";
+    g.win.style.width = (kw * cell + (kw - 1) * GAP + 6) + "px";
+    g.win.style.height = (kh * cell + (kh - 1) * GAP + 6) + "px";
+    g.win.classList.add("show");
+  }
+  function maxAbs(M) { var m = 0; M.forEach(function (r) { r.forEach(function (v) { m = Math.max(m, Math.abs(v)); }); }); return m; }
+
+  function build(name) {
+    sc = SCENES[name];
+    var X = sc.X, K = sc.K, s = sc.s, kh = K.length, kw = K[0].length;
+    var oh = Math.floor((X.length - kh) / s) + 1, ow = Math.floor((X[0].length - kw) / s) + 1;
+    frames = [];
+    sc.Y = grid(oh, ow, function (r, c) {
+      var sum = 0, terms = [];
+      for (var a = 0; a < kh; a++) for (var b = 0; b < kw; b++) {
+        var v = X[r * s + a][c * s + b]; sum += v * K[a][b];
+        terms.push({ v: v, k: K[a][b] });
+      }
+      frames.push({ ph: "conv", r: r, c: c, terms: terms, sum: sum });
+      return sum;
+    });
+    sc.Z = sc.relu ? sc.Y.map(function (r) { return r.map(function (v) { return Math.max(0, v); }); }) : sc.Y;
+    if (sc.relu) frames.push({ ph: "relu", n: sc.Y.reduce(function (n, r) { return n + r.filter(function (v) { return v < 0; }).length; }, 0) });
+    var p = sc.pool, ph = Math.min(p, oh), pw = Math.min(p, ow);
+    sc.ph = ph; sc.pw = pw;
+    sc.Q = grid(Math.floor(oh / ph), Math.floor(ow / pw), function (r, c) {
+      var vals = [];
+      for (var a = 0; a < ph; a++) for (var b = 0; b < pw; b++) vals.push(sc.Z[r * ph + a][c * pw + b]);
+      var m = Math.max.apply(null, vals);
+      frames.push({ ph: "pool", r: r, c: c, vals: vals, max: m });
+      return m;
+    });
+    frames.push({ ph: "done" });
+
+    var n = Math.max(X.length, X[0].length);
+    cell = n >= 6 ? 34 : n >= 5 ? 38 : 46;
+    els.inp = makeGrid($("an-in"), X.length, X[0].length);
+    els.k = makeGrid($("an-k"), kh, kw);
+    els.fm = makeGrid($("an-fm"), oh, ow);
+    els.pool = makeGrid($("an-pool"), sc.Q.length, sc.Q[0].length);
+    var mx = maxAbs(X), mk = maxAbs(K);
+    X.forEach(function (row, i) { row.forEach(function (v, j) { var d = els.inp.cells[i * X[0].length + j]; d.textContent = num(v); shade(d, v, mx); }); });
+    K.forEach(function (row, i) { row.forEach(function (v, j) { var d = els.k.cells[i * kw + j]; d.textContent = num(v); shade(d, v, mk); }); });
+    $("an-cap").textContent = sc.cap;
+    document.querySelector('.phases [data-ph="relu"]').classList.toggle("skip", !sc.relu);
+    t = -1;
+    render(false);
+  }
+
+  function render(stepped) {
+    var f = t >= 0 ? frames[t] : null;
+    var reluDone = sc.relu && frames.some(function (fr, i) { return fr.ph === "relu" && i <= t; });
+    var M = reluDone ? sc.Z : sc.Y, mf = maxAbs(sc.Y), ow = sc.Y[0].length;
+
+    frames.forEach(function (fr, i) {
+      if (fr.ph !== "conv") return;
+      var d = els.fm.cells[fr.r * ow + fr.c], filled = i <= t, v = M[fr.r][fr.c];
+      d.classList.toggle("empty", !filled);
+      d.classList.toggle("now", !!f && f === fr);
+      d.textContent = filled ? num(v) : "";
+      if (filled) shade(d, v, mf); else shade(d, 0, 0);
+      if (stepped && f && f.ph === "relu" && sc.Y[fr.r][fr.c] < 0) { d.classList.remove("flash"); void d.offsetWidth; d.classList.add("flash"); }
+    });
+    var qw = sc.Q[0].length, mq = maxAbs(sc.Q) || 1;
+    frames.forEach(function (fr, i) {
+      if (fr.ph !== "pool") return;
+      var d = els.pool.cells[fr.r * qw + fr.c], filled = i <= t;
+      d.classList.toggle("empty", !filled);
+      d.classList.toggle("now", !!f && f === fr);
+      d.textContent = filled ? num(fr.max) : "";
+      if (filled) shade(d, fr.max, mq); else shade(d, 0, 0);
+    });
+
+    if (f && f.ph === "conv") place(els.inp, f.r * sc.s, f.c * sc.s, sc.K.length, sc.K[0].length); else els.inp.win.classList.remove("show");
+    if (f && f.ph === "pool") place(els.fm, f.r * sc.ph, f.c * sc.pw, sc.ph, sc.pw); else els.fm.win.classList.remove("show");
+    els.k.win.classList.remove("show");
+
+    var order = ["conv", "relu", "pool"], cur = f ? f.ph : null;
+    document.querySelectorAll(".phases span").forEach(function (sp) {
+      var ph = sp.getAttribute("data-ph");
+      sp.classList.toggle("now", ph === cur);
+      sp.classList.toggle("done", cur === "done" || (cur && order.indexOf(ph) < order.indexOf(cur)));
+    });
+
+    var msg;
+    if (!f) msg = "Press Play or Step. The kernel starts at the top-left corner.";
+    else if (f.ph === "conv") {
+      var shown = f.terms.length > 4 ? f.terms.filter(function (x) { return x.v !== 0; }) : f.terms;
+      var txt = shown.map(function (x) { return num(x.v) + "×" + (x.k < 0 ? "(" + num(x.k) + ")" : num(x.k)); }).join(" + ");
+      msg = "Patch (" + f.r + ", " + f.c + "): " + (txt || "every input under the kernel is 0") + (shown.length < f.terms.length && txt ? "  (zeros skipped)" : "") + " = " + num(f.sum);
+    } else if (f.ph === "relu") msg = "ReLU: max(0, z). The " + f.n + " negative values become 0. Only \"the pattern is here\" survives.";
+    else if (f.ph === "pool") msg = "Max pool window (" + f.r + ", " + f.c + "): max(" + f.vals.map(num).join(", ") + ") = " + num(f.max);
+    else msg = "Done. The feature map shrank to " + sc.Q.length + "×" + sc.Q[0].length + ". Press Reset to watch again, or pick another scene.";
+    $("an-strip").textContent = msg;
+    $("an-play").textContent = timer ? "Pause" : (t >= frames.length - 1 ? "Replay" : "Play");
+  }
+
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  function step() { if (t < frames.length - 1) { t++; render(true); } if (t >= frames.length - 1) { stop(); render(false); } }
+  function delay() { return 1850 - (+$("an-speed").value); }
+  function play() {
+    if (timer) { stop(); render(false); return; }
+    if (t >= frames.length - 1) t = -1;
+    timer = setInterval(step, delay());
+    step();
+  }
+
+  $("an-play").addEventListener("click", play);
+  $("an-step").addEventListener("click", function () { stop(); step(); render(false); });
+  $("an-back").addEventListener("click", function () { stop(); if (t > -1) t--; render(false); });
+  $("an-reset").addEventListener("click", function () { stop(); t = -1; render(false); });
+  $("an-speed").addEventListener("input", function () { if (timer) { clearInterval(timer); timer = setInterval(step, delay()); } });
+  document.querySelectorAll(".seg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      stop();
+      document.querySelectorAll(".seg button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      build(b.getAttribute("data-scene"));
+    });
+  });
+  build("line");
+})();
+</script>

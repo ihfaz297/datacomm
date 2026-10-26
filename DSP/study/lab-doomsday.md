@@ -183,21 +183,10 @@ mp3 cannot be read with the allowed libraries. Say so, ask for WAV.
 
 ## TT2 / transforms (not lab-exam material — kept here so it is findable)
 
-The lab exam is CT signals, sampling, aliasing, quantization and DT sequences. **Term Test 2 is the
-transforms topic** and has no plotting in it, so it lives in its own set of files:
-
-| File | What it is |
-|---|---|
-| `DSP/study/00-tt2-battle-plan.md` | the map: syllabus → question → answer, formula sheet, model answers to the 4 real TT2 questions, 30-minute plan, 12-item self-test |
-| `DSP/study/10-dtft-worked-tutorial.md` | DTFT, H(e^jw), moving average, steady state, Parseval — step by step with hand arithmetic |
-| `DSP/study/11-ztransform-worked-tutorial.md` | z-transform, ROC, poles/zeros, H(z) from a difference equation |
-| `DSP/study/12-dft-circular-conv-tutorial.md` | DFT/IDFT, circular convolution by the wrap table, N ≥ L + M − 1, FFT cost |
-| `DSP/study/13-fir-window-design-tutorial.md` | FIR lowpass by the window method, attenuation/ripple/roll-off |
-| `DSP/practice/step10…step13_*.py` | the same four topics as runnable drills with a PASS/FAIL checker at the bottom |
-
-Read the battle plan first; it tells you which of the four tutorials your weak topic is in. Everything in
-those files is machine-checked (`.scratch/verify_log.txt`, 27 Sep 2026), including the numbers printed in the
-tables, so the values quoted in an answer can be trusted.
+The lab exam is CT signals, sampling, aliasing, quantization and DT sequences. **Mid-2 / Term Test 2 is the
+transforms topic** and has no plotting in it. Its notes start at `DSP/study/00-mid2-battle-plan.md`, with
+the topic files `20-*` to `24-*` next to it. `DSP/practice/step10…step13_*.py` are runnable drills on DTFT,
+z-transform, DFT and FIR windows, each with a PASS/FAIL checker at the bottom.
 
 The one overlap to remember: the moving average filter appears in the lab (`step8`, `step10`) *and* in TT2
 (frequency response, first null at 2π/M) — same filter, two different questions.
