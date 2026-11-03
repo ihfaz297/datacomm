@@ -44,6 +44,9 @@ h4{font-size:var(--s0);font-weight:600}
 p{margin:0}
 a{color:var(--accent)}
 code,.mono{font-family:var(--f-mono);font-size:.9em}
+/* no programming ligatures: "==" must look like two equals signs, not one long bar */
+code,.mono,.eq,table.mono,.pipe,input,textarea,svg text{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+@media (max-width:520px){.eq{font-size:.78rem}}
 .muted{color:var(--muted)}
 .label{font:600 .72rem var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 button,select,input,textarea{font:inherit;color:inherit}
@@ -206,6 +209,7 @@ svg .acc{fill:var(--accent)}
     <a href="#plan" data-pane="plan">Plan</a>
     <a href="#l1" data-pane="l1">L1 Performance <small data-count="l1"></small></a>
     <a href="#l2" data-pane="l2">L2 ISA <small data-count="l2"></small></a>
+    <a href="#mips" data-pane="mips">MIPS <small data-count="mips"></small></a>
     <a href="#mem" data-pane="mem">L3–5 Memory <small data-count="mem"></small></a>
     <a href="#num" data-pane="num">L6 Numbers <small data-count="num"></small></a>
     <a href="#pipe" data-pane="pipe">L7–8 Pipeline <small data-count="pipe"></small></a>
@@ -266,6 +270,7 @@ svg .acc{fill:var(--accent)}
       <tr><td>CPU time, CPI, instruction mix</td><td class="h2">2+5</td><td class="h3">2+5+5+10</td><td class="h1">·</td><td class="h3">5×4</td><td>L1</td></tr>
       <tr><td>Amdahl's law</td><td class="h2">5+5</td><td class="h2">5</td><td class="h1">·</td><td class="h2">1×4 + 8</td><td>L1, L9</td></tr>
       <tr><td>Flynn, SIMD, vector, multithreading</td><td class="h3">2+5+5</td><td class="h3">2+2+10</td><td class="h2">5</td><td class="h2">2+1+1+3</td><td>L9</td></tr>
+      <tr><td>MIPS code: compile C, decode machine code</td><td class="h1">·</td><td class="h1">·</td><td class="h1">·</td><td class="h3">2.5+5+5+10</td><td>MIPS</td></tr>
       <tr><td>Addressing modes, ISA classes</td><td class="h2">2+5</td><td class="h2">2+5</td><td class="h1">·</td><td class="h2">5+6</td><td>L2</td></tr>
       <tr><td>RISC vs CISC</td><td class="h1">·</td><td class="h2">5</td><td class="h2">2</td><td class="h1">2.5</td><td>L2</td></tr>
       <tr><td>Von Neumann vs Harvard, five components</td><td class="h2">5</td><td class="h2">5</td><td class="h2">2</td><td class="h2">2+1+1</td><td>L1</td></tr>
@@ -529,6 +534,7 @@ Yield           = 1 / (1 + Defects per area × Die area / 2)²</div>
   </div>
   <div class="idea">
     <p>The instruction set architecture (ISA) is the contract between software and hardware. It lists everything a machine-language program can rely on: the instructions, the registers, and how an instruction finds its operands. Lecture 2 sorts ISAs by <b>where operands live</b> (stack, accumulator, register-memory, load-store), lists the ways an instruction can <b>locate an operand</b> (addressing modes), and compares the two design philosophies, <b>RISC and CISC</b>.</p>
+    <p>Writing MIPS code and machine-code encoding have their own tab: <b>MIPS</b>.</p>
   </div>
 
   <div class="block">
@@ -677,28 +683,8 @@ Yield           = 1 / (1 + Defects per area × Die area / 2)²</div>
     <details class="qa" data-id="l2-overflow"><summary><span class="q">What is a stack overflow, and how does it occur?</span><span class="tags"><span class="tg">20-21 · 4c</span><span class="tg">TT1 '25 · 1c</span><span class="marks">2m</span></span></summary>
       <div class="ans"><p>A stack overflow happens when the stack grows beyond the memory set aside for it. Every call pushes a frame, so <b>very deep or infinite recursion</b>, or a procedure with <b>very large local arrays</b>, keeps pushing until the stack runs into the heap or a guard region. The program then crashes (a segmentation fault) or overwrites other data.</p></div></details>
 
-    <details class="qa" data-id="l2-formats"><summary><span class="q">Give the fields and field sizes of the MIPS R-, I- and J-type formats. Decode op=0 rs=18 rt=8 rd=8 shamt=0 funct=32, and 00af8020<sub>hex</sub>.</span><span class="tags"><span class="tg old">17-18 · 4b, 2c</span><span class="tg old">Jun '20 · 1d</span><span class="marks">1–5m</span></span></summary>
-      <div class="ans">
-        <div class="scroll"><table class="mono">
-          <tr><th>Type</th><th>Fields (bits)</th><th>Used for</th></tr>
-          <tr><td>R</td><td>op 6 | rs 5 | rt 5 | rd 5 | shamt 5 | funct 6</td><td>register arithmetic and logic</td></tr>
-          <tr><td>I</td><td>op 6 | rs 5 | rt 5 | constant or address 16</td><td>immediates, loads, stores, branches</td></tr>
-          <tr><td>J</td><td>op 6 | address 26</td><td>jumps</td></tr>
-        </table></div>
-        <ol class="steps"><li>op = 0 means R-type, and funct 32 is <code>add</code>. rs = 18 is <code>$s2</code>, rt = 8 is <code>$t0</code>, rd = 8 is <code>$t0</code>.</li><li class="ansline"><code>add $t0, $s2, $t0</code></li>
-        <li>00af8020<sub>hex</sub> = 000000 00101 01111 10000 00000 100000. op 0, rs 5 = <code>$a1</code>, rt 15 = <code>$t7</code>, rd 16 = <code>$s0</code>, funct 32 = add.</li><li class="ansline"><code>add $s0, $a1, $t7</code></li></ol>
-        <p class="note">Register numbers: $zero 0, $v0–$v1 2–3, $a0–$a3 4–7, $t0–$t7 8–15, $s0–$s7 16–23, $t8–$t9 24–25, $gp 28, $sp 29, $fp 30, $ra 31.</p>
-      </div></details>
   </div>
 
-  <div class="block">
-    <h3>Bench: MIPS instruction decoder</h3>
-    <div class="bench">
-      <div class="presets" id="mipsPresets"></div>
-      <label class="field"><span>Instruction in hex</span><input id="mipsHex" value="00af8020"></label>
-      <div class="out" id="mipsOut" aria-live="polite"></div>
-    </div>
-  </div>
 
   <div class="traps"><h4>Traps</h4><ul>
     <li>In <code>add $t0, $s2, $t0</code> the destination is <b>rd</b>, written first in assembly but third in the machine fields.</li>
@@ -714,6 +700,268 @@ Yield           = 1 / (1 + Defects per area × Die area / 2)²</div>
     <li>Stack: frames (return address, saved registers, locals), LIFO, grows down. Heap: malloc/free, grows up. Overflow: deep recursion.</li>
   </ol></div>
 </section>
+
+<!-- ===================== MIPS ===================== -->
+<section class="pane" id="mips" data-pane="mips" hidden>
+  <div class="pane-head">
+    <span class="label">MIPS assembly · P&amp;H Ch 2 §2.2–2.10</span>
+    <h2>MIPS: just enough to write it and pass</h2>
+    <div class="meta"><span>Asked in older finals: compile C to MIPS (if-else, while loop, recursion), decode machine code, field sizes</span></div>
+  </div>
+  <div class="idea">
+    <p>MIPS looks scary but it is tiny on purpose. Three ideas carry you through:</p>
+    <ul>
+      <li><b>Registers are your variables.</b> There are 32 of them. In exam questions the C variables are given to you as <code>$s</code> registers; use <code>$t</code> registers for scratch work.</li>
+      <li><b>Memory is one long row of bytes.</b> A word (an int) is 4 bytes, so element <code>A[i]</code> sits at <code>base + 4 × i</code>.</li>
+      <li><b>Only <code>lw</code> and <code>sw</code> touch memory.</b> Everything else works on registers. So the pattern is always: load, compute, store.</li>
+    </ul>
+    <p>Assembly is just C with one small step per line. Learn the 20 instructions below and the recipes after them, and you can write anything a paper asks.</p>
+  </div>
+
+  <div class="block">
+    <h3>The cheat sheet</h3>
+    <div class="scroll"><table>
+      <tr><th>Instruction</th><th>Means in C</th><th>Note</th></tr>
+      <tr><td><code>add $t0, $s1, $s2</code></td><td>t0 = s1 + s2</td><td>destination first</td></tr>
+      <tr><td><code>sub $t0, $s1, $s2</code></td><td>t0 = s1 − s2</td><td></td></tr>
+      <tr><td><code>addi $t0, $s1, 5</code></td><td>t0 = s1 + 5</td><td>no <code>subi</code>: use <code>addi</code> with −5</td></tr>
+      <tr><td><code>and / or / nor</code></td><td>&amp;, |, ~(a | b)</td><td><code>andi</code>, <code>ori</code> take a constant</td></tr>
+      <tr><td><code>sll $t0, $s1, 2</code></td><td>t0 = s1 &lt;&lt; 2 (× 4)</td><td>handy for index × 4</td></tr>
+      <tr><td><code>srl $t0, $s1, 2</code></td><td>t0 = s1 &gt;&gt; 2 (÷ 4)</td><td></td></tr>
+      <tr><td><code>slt $t0, $s1, $s2</code></td><td>t0 = (s1 &lt; s2) ? 1 : 0</td><td>the only "less than"; <code>slti</code> with a constant</td></tr>
+      <tr><td><code>lw $t0, 8($s3)</code></td><td>t0 = memory[s3 + 8]</td><td>load a word</td></tr>
+      <tr><td><code>sw $t0, 8($s3)</code></td><td>memory[s3 + 8] = t0</td><td>store a word</td></tr>
+      <tr><td><code>lui $t0, 61</code></td><td>t0 = 61 &lt;&lt; 16</td><td>upper half of a big constant</td></tr>
+      <tr><td><code>beq $s1, $s2, L</code></td><td>if (s1 == s2) goto L</td><td></td></tr>
+      <tr><td><code>bne $s1, $s2, L</code></td><td>if (s1 != s2) goto L</td><td></td></tr>
+      <tr><td><code>j L</code></td><td>goto L</td><td></td></tr>
+      <tr><td><code>jal F</code></td><td>call F (saves the return address in <code>$ra</code>)</td><td></td></tr>
+      <tr><td><code>jr $ra</code></td><td>return</td><td></td></tr>
+    </table></div>
+    <div class="scroll"><table>
+      <tr><th>Register</th><th>Number</th><th>Use</th></tr>
+      <tr><td><code>$zero</code></td><td>0</td><td>always 0 (use it to compare with 0 or to copy: <code>add $t0, $s1, $zero</code>)</td></tr>
+      <tr><td><code>$v0–$v1</code></td><td>2–3</td><td>a procedure's return value</td></tr>
+      <tr><td><code>$a0–$a3</code></td><td>4–7</td><td>a procedure's arguments</td></tr>
+      <tr><td><code>$t0–$t7</code>, <code>$t8–$t9</code></td><td>8–15, 24–25</td><td>temporaries (scratch)</td></tr>
+      <tr><td><code>$s0–$s7</code></td><td>16–23</td><td>saved: your variables</td></tr>
+      <tr><td><code>$gp</code>, <code>$sp</code>, <code>$fp</code>, <code>$ra</code></td><td>28, 29, 30, 31</td><td>global pointer, stack pointer, frame pointer, return address</td></tr>
+    </table></div>
+  </div>
+
+  <div class="block">
+    <h3>Recipes: C on the left, MIPS on the right</h3>
+
+    <details class="qa" data-id="mi-arith"><summary><span class="q">Arithmetic: <code>f = (g + h) − (i + j);</code> with f, g, h, i, j in $s0–$s4.</span><span class="tags"><span class="tg new">book §2.3</span></span></summary>
+      <div class="ans"><p>One operation per line, using <code>$t</code> registers to hold the partial results.</p>
+        <div class="eq">add $t0, $s1, $s2    # t0 = g + h
+add $t1, $s3, $s4    # t1 = i + j
+sub $s0, $t0, $t1    # f = t0 - t1</div></div></details>
+
+    <details class="qa" data-id="mi-array"><summary><span class="q">Arrays with a fixed index: <code>A[12] = h + A[8];</code> with h in $s2 and the base of A in $s3.</span><span class="tags"><span class="tg new">book §2.3</span></span></summary>
+      <div class="ans"><p>The offset is in <b>bytes</b>: element 8 is 8 × 4 = 32 bytes from the base, element 12 is 48. Load, compute, store.</p>
+        <div class="eq">lw  $t0, 32($s3)     # t0 = A[8]
+add $t0, $s2, $t0    # t0 = h + A[8]
+sw  $t0, 48($s3)     # A[12] = t0</div></div></details>
+
+    <details class="qa" data-id="mi-index"><summary><span class="q">Arrays with a variable index: <code>g = A[i];</code> with i in $s3, base of A in $s6, g in $s1.</span><span class="tags"><span class="tg new">book §2.7</span></span></summary>
+      <div class="ans"><p>The offset must be a constant in <code>lw</code>, so build the address yourself: multiply i by 4 with a shift, add the base, then load with offset 0.</p>
+        <div class="eq">sll $t1, $s3, 2      # t1 = i * 4
+add $t1, $t1, $s6    # t1 = address of A[i]
+lw  $s1, 0($t1)      # g = A[i]</div></div></details>
+
+    <details class="qa" data-id="o-ifelse"><summary><span class="q">Compile <code>if (i == j) f = g + h; else f = g − h;</code> with f…j in $s0…$s4.</span><span class="tags"><span class="tg old">Jun '20 · B2a</span><span class="marks">2.5m</span></span></summary>
+      <div class="ans"><div class="eq">      bne  $s3, $s4, Else   # go to Else if i != j
+      add  $s0, $s1, $s2    # f = g + h
+      j    Exit
+Else: sub  $s0, $s1, $s2    # f = g - h
+Exit:</div></div></details>
+
+    <details class="qa" data-id="mi-trick"><summary><span class="q">The one trick for every <code>if</code>: branch on the opposite condition.</span><span class="tags"><span class="tg new">intuition</span></span></summary>
+      <div class="ans"><p>The code under <code>if</code> should run when the condition is true, so the branch must <b>skip it when the condition is false</b>. That is why <code>if (i == j)</code> becomes <code>bne</code> ("if not equal, jump past"). After the "then" part, a <code>j Exit</code> jumps over the "else" part.</p>
+        <p>MIPS has only <code>beq</code>, <code>bne</code> and <code>slt</code>. Every other comparison is built from them:</p>
+        <div class="scroll"><table>
+          <tr><th>C condition</th><th>MIPS test</th><th>Then skip the "then" part with</th></tr>
+          <tr><td><code>a == b</code></td><td>compare directly</td><td><code>bne a, b, Else</code></td></tr>
+          <tr><td><code>a != b</code></td><td>compare directly</td><td><code>beq a, b, Else</code></td></tr>
+          <tr><td><code>a &lt; b</code></td><td><code>slt $t0, a, b</code> (1 if true)</td><td><code>beq $t0, $zero, Else</code></td></tr>
+          <tr><td><code>a &gt; b</code></td><td><code>slt $t0, b, a</code> (swap them)</td><td><code>beq $t0, $zero, Else</code></td></tr>
+          <tr><td><code>a &gt;= b</code></td><td><code>slt $t0, a, b</code> (1 means a &lt; b)</td><td><code>bne $t0, $zero, Else</code></td></tr>
+          <tr><td><code>a &lt;= b</code></td><td><code>slt $t0, b, a</code> (1 means a &gt; b)</td><td><code>bne $t0, $zero, Else</code></td></tr>
+        </table></div>
+        <p>Example, the smaller of two numbers: <code>if (g &lt; h) f = g; else f = h;</code> with f, g, h in $s0, $s1, $s2.</p>
+        <div class="eq">      slt $t0, $s1, $s2     # t0 = 1 if g < h
+      beq $t0, $zero, Else  # g >= h ? go to Else
+      add $s0, $s1, $zero   # f = g
+      j   Exit
+Else: add $s0, $s2, $zero   # f = h
+Exit:</div></div></details>
+
+    <details class="qa" data-id="o-while"><summary><span class="q">Compile <code>while (save[i] == k) i += 1;</code> with i in $s3, k in $s5, base of save in $s6.</span><span class="tags"><span class="tg old">17-18 · 5d</span><span class="marks">5m</span></span></summary>
+      <div class="ans"><div class="eq">Loop: sll  $t1, $s3, 2      # $t1 = i * 4 (byte offset)
+      add  $t1, $t1, $s6    # $t1 = address of save[i]
+      lw   $t0, 0($t1)      # $t0 = save[i]
+      bne  $t0, $s5, Exit   # leave if save[i] != k
+      addi $s3, $s3, 1      # i = i + 1
+      j    Loop
+Exit:</div></div></details>
+
+    <details class="qa" data-id="mi-for"><summary><span class="q">A for loop: <code>sum = 0; for (i = 0; i &lt; n; i++) sum += A[i];</code> with sum in $s0, n in $s1, base of A in $s2.</span><span class="tags"><span class="tg new">pattern</span></span></summary>
+      <div class="ans"><p>Every loop has the same shape: a label at the top, a test that jumps out, the body, then a jump back to the top.</p>
+        <div class="eq">      add  $s0, $zero, $zero  # sum = 0
+      add  $t0, $zero, $zero  # i = 0
+Loop: slt  $t1, $t0, $s1      # t1 = 1 if i < n
+      beq  $t1, $zero, Exit   # i >= n ? leave
+      sll  $t2, $t0, 2        # t2 = i * 4
+      add  $t2, $t2, $s2      # t2 = address of A[i]
+      lw   $t3, 0($t2)        # t3 = A[i]
+      add  $s0, $s0, $t3      # sum += A[i]
+      addi $t0, $t0, 1        # i++
+      j    Loop               # back to the test
+Exit:</div></div></details>
+
+    <details class="qa" data-id="mi-proc"><summary><span class="q">Procedures: how to call one and how to return.</span><span class="tags"><span class="tg new">book §2.8</span></span></summary>
+      <div class="ans">
+        <ul><li>Put the arguments in <code>$a0–$a3</code>.</li><li>Call with <code>jal Name</code>. It jumps and saves the return address in <code>$ra</code>.</li><li>The procedure leaves its result in <code>$v0</code> and returns with <code>jr $ra</code>.</li><li>If a procedure calls another one, <code>jal</code> will overwrite <code>$ra</code>, so it must <b>save <code>$ra</code> on the stack first</b>, plus any <code>$s</code> registers it changes. Push: <code>addi $sp, $sp, -8</code> then <code>sw</code>. Pop: <code>lw</code> then <code>addi $sp, $sp, 8</code>.</li></ul>
+        <p>A leaf procedure (it calls nothing, so no stack is needed): <code>int add3(int a, int b, int c) { return a + b + c; }</code></p>
+        <div class="eq">add3: add $v0, $a0, $a1   # v0 = a + b
+      add $v0, $v0, $a2   # v0 = a + b + c
+      jr  $ra             # return</div>
+        <p>Calling it as <code>x = add3(1, 2, 3);</code> with x in $s0:</p>
+        <div class="eq">addi $a0, $zero, 1
+addi $a1, $zero, 2
+addi $a2, $zero, 3
+jal  add3
+add  $s0, $v0, $zero     # x = result</div></div></details>
+
+    <details class="qa" data-id="o-fact"><summary><span class="q">MIPS code for the recursive factorial <code>int fact(int n) { if (n &lt; 1) return 1; else return n * fact(n − 1); }</code></span><span class="tags"><span class="tg old">17-18 · 6c</span><span class="marks">10m</span></span></summary>
+      <div class="ans"><div class="eq">fact: addi $sp, $sp, -8     # room for 2 items on the stack
+      sw   $ra, 4($sp)      # save the return address
+      sw   $a0, 0($sp)      # save the argument n
+      slti $t0, $a0, 1      # n < 1 ?
+      beq  $t0, $zero, L1   # if n >= 1, go to L1
+      addi $v0, $zero, 1    # return 1
+      addi $sp, $sp, 8      # pop 2 items
+      jr   $ra
+L1:   addi $a0, $a0, -1     # n - 1
+      jal  fact             # fact(n - 1)
+      lw   $a0, 0($sp)      # restore n
+      lw   $ra, 4($sp)      # restore the return address
+      addi $sp, $sp, 8      # pop 2 items
+      mul  $v0, $a0, $v0    # n * fact(n - 1)
+      jr   $ra</div><p>Explain the stack frame: each call saves $ra and $a0 because the recursive <code>jal</code> overwrites them.</p></div></details>
+
+    <details class="qa" data-id="mi-const"><summary><span class="q">A constant too big for 16 bits: put 4,000,000 in $s0.</span><span class="tags"><span class="tg new">book §2.10</span></span></summary>
+      <div class="ans"><p>Immediates hold only 16 bits. Load the top 16 bits with <code>lui</code>, then OR in the bottom 16 bits. 4,000,000 = 0x003D0900: the top half is 0x003D = 61, the bottom half 0x0900 = 2304.</p>
+        <div class="eq">lui $s0, 61           # s0 = 61 * 65536 = 3,997,696
+ori $s0, $s0, 2304    # s0 = 3,997,696 + 2,304 = 4,000,000</div></div></details>
+  </div>
+
+  <div class="block">
+    <h3>Machine code</h3>
+
+    <details class="qa" data-id="mi-formats"><summary><span class="q">The three formats, with the intuition.</span><span class="tags"><span class="tg old">17-18 · 4b</span><span class="marks">2m</span></span></summary>
+      <div class="ans">
+        <div class="scroll"><table class="mono">
+          <tr><th>Type</th><th>Think of it as</th><th>Fields (bits)</th></tr>
+          <tr><td>R</td><td>three registers</td><td>op 6 | rs 5 | rt 5 | rd 5 | shamt 5 | funct 6</td></tr>
+          <tr><td>I</td><td>two registers and a 16-bit number</td><td>op 6 | rs 5 | rt 5 | immediate 16</td></tr>
+          <tr><td>J</td><td>a jump far away</td><td>op 6 | address 26</td></tr>
+        </table></div>
+        <ul><li>Every R-type has <b>op = 0</b>; the <b>funct</b> field says which operation.</li>
+        <li><b>The order trap:</b> in <code>add rd, rs, rt</code> the destination is written <b>first</b> in assembly but sits <b>third</b> in the machine fields. In <code>lw rt, imm(rs)</code> the destination is rt.</li></ul>
+        <div class="scroll"><table class="mono">
+          <tr><th>Instruction</th><th>op</th><th>funct</th><th>Instruction</th><th>op</th></tr>
+          <tr><td>add</td><td>0</td><td>32</td><td>addi</td><td>8</td></tr>
+          <tr><td>sub</td><td>0</td><td>34</td><td>lw</td><td>35</td></tr>
+          <tr><td>and</td><td>0</td><td>36</td><td>sw</td><td>43</td></tr>
+          <tr><td>or</td><td>0</td><td>37</td><td>beq</td><td>4</td></tr>
+          <tr><td>slt</td><td>0</td><td>42</td><td>bne</td><td>5</td></tr>
+          <tr><td>sll</td><td>0</td><td>0</td><td>j</td><td>2</td></tr>
+          <tr><td>jr</td><td>0</td><td>8</td><td>jal</td><td>3</td></tr>
+        </table></div>
+      </div></details>
+
+    <details class="qa" data-id="mi-encode"><summary><span class="q">Encode <code>add $t0, $s1, $s2</code> and <code>lw $t0, 32($s3)</code> into hex.</span><span class="tags"><span class="tg new">book §2.5</span></span></summary>
+      <div class="ans"><ol class="steps">
+        <li><code>add $t0, $s1, $s2</code> is R-type: op 0, rs = $s1 = 17, rt = $s2 = 18, rd = $t0 = 8, shamt 0, funct 32.</li>
+        <li>In binary: 000000 10001 10010 01000 00000 100000.</li>
+        <li>Regroup into fours: 0000 0010 0011 0010 0100 0000 0010 0000.</li>
+        <li class="ansline">= 0x02324020</li>
+        <li><code>lw $t0, 32($s3)</code> is I-type: op 35, rs = $s3 = 19, rt = $t0 = 8, immediate 32.</li>
+        <li>100011 10011 01000 0000000000100000 → 1000 1110 0110 1000 0000 0000 0010 0000.</li>
+        <li class="ansline">= 0x8E680020</li></ol>
+        <p class="note">Check any answer with the decoder below.</p></div></details>
+
+    <details class="qa" data-id="l2-formats"><summary><span class="q">Give the fields and field sizes of the MIPS R-, I- and J-type formats. Decode op=0 rs=18 rt=8 rd=8 shamt=0 funct=32, and 00af8020<sub>hex</sub>.</span><span class="tags"><span class="tg old">17-18 · 4b, 2c</span><span class="tg old">Jun '20 · 1d</span><span class="marks">1–5m</span></span></summary>
+      <div class="ans">
+        <div class="scroll"><table class="mono">
+          <tr><th>Type</th><th>Fields (bits)</th><th>Used for</th></tr>
+          <tr><td>R</td><td>op 6 | rs 5 | rt 5 | rd 5 | shamt 5 | funct 6</td><td>register arithmetic and logic</td></tr>
+          <tr><td>I</td><td>op 6 | rs 5 | rt 5 | constant or address 16</td><td>immediates, loads, stores, branches</td></tr>
+          <tr><td>J</td><td>op 6 | address 26</td><td>jumps</td></tr>
+        </table></div>
+        <ol class="steps"><li>op = 0 means R-type, and funct 32 is <code>add</code>. rs = 18 is <code>$s2</code>, rt = 8 is <code>$t0</code>, rd = 8 is <code>$t0</code>.</li><li class="ansline"><code>add $t0, $s2, $t0</code></li>
+        <li>00af8020<sub>hex</sub> = 000000 00101 01111 10000 00000 100000. op 0, rs 5 = <code>$a1</code>, rt 15 = <code>$t7</code>, rd 16 = <code>$s0</code>, funct 32 = add.</li><li class="ansline"><code>add $s0, $a1, $t7</code></li></ol>
+        <p class="note">Register numbers: $zero 0, $v0–$v1 2–3, $a0–$a3 4–7, $t0–$t7 8–15, $s0–$s7 16–23, $t8–$t9 24–25, $gp 28, $sp 29, $fp 30, $ra 31.</p>
+      </div></details>
+
+    <details class="qa" data-id="mi-cy"><summary><span class="q">What MIPS instruction is op 0, rs 8, rt 9, rd 10, shamt 0, funct 34?</span><span class="tags"><span class="tg old">17-18 · 1g</span><span class="marks">1m</span></span></summary>
+      <div class="ans"><p>op 0 means R-type, and funct 34 is <code>sub</code>. rd = 10 = <code>$t2</code>, rs = 8 = <code>$t0</code>, rt = 9 = <code>$t1</code>. Remember that rd is written first: <b><code>sub $t2, $t0, $t1</code></b>. (This is the book's Check Yourself in §2.5; the wrong options swap the register order.)</p></div></details>
+
+    <details class="qa" data-id="mi-branch"><summary><span class="q">Where do branches and jumps go?</span><span class="tags"><span class="tg new">book §2.10</span></span></summary>
+      <div class="ans"><p><b>Branches</b> (<code>beq</code>, <code>bne</code>) count <b>instructions</b> from the one after the branch: target = PC + 4 + offset × 4. In the if-else recipe, the <code>bne</code> skips the <code>add</code> and the <code>j</code> to reach <code>Else</code>, so its offset is <b>2</b>. <b>Jumps</b> (<code>j</code>, <code>jal</code>) store the target address ÷ 4 in 26 bits; the top 4 bits come from the PC.</p></div></details>
+  </div>
+
+  <div class="block">
+    <h3>Bench: MIPS instruction decoder</h3>
+    <div class="bench">
+      <div class="presets" id="mipsPresets"></div>
+      <label class="field"><span>Instruction in hex</span><input id="mipsHex" value="00af8020"></label>
+      <div class="out" id="mipsOut" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Practice (do these on paper first)</h3>
+    <details class="qa" data-id="mi-p1"><summary><span class="q"><code>a = b − c + d;</code> with a, b, c, d in $s0–$s3.</span><span class="tags"><span class="tg new">practice</span></span></summary>
+      <div class="ans"><div class="eq">sub $t0, $s1, $s2    # t0 = b - c
+add $s0, $t0, $s3    # a = t0 + d</div></div></details>
+    <details class="qa" data-id="mi-p2"><summary><span class="q"><code>x = A[3] + A[5];</code> with the base of A in $s6 and x in $s0.</span><span class="tags"><span class="tg new">practice</span></span></summary>
+      <div class="ans"><div class="eq">lw  $t0, 12($s6)     # A[3] is 3 * 4 = 12 bytes in
+lw  $t1, 20($s6)     # A[5] is 5 * 4 = 20 bytes in
+add $s0, $t0, $t1</div></div></details>
+    <details class="qa" data-id="mi-p3"><summary><span class="q"><code>if (x == 0) y = 1;</code> with x in $s0 and y in $s1.</span><span class="tags"><span class="tg new">practice</span></span></summary>
+      <div class="ans"><div class="eq">      bne  $s0, $zero, Skip   # x != 0 ? skip
+      addi $s1, $zero, 1      # y = 1
+Skip:</div></div></details>
+    <details class="qa" data-id="mi-p4"><summary><span class="q"><code>while (n != 0) n = n − 1;</code> with n in $s0.</span><span class="tags"><span class="tg new">practice</span></span></summary>
+      <div class="ans"><div class="eq">Loop: beq  $s0, $zero, Exit   # n == 0 ? leave
+      addi $s0, $s0, -1       # n = n - 1
+      j    Loop
+Exit:</div></div></details>
+    <details class="qa" data-id="mi-p5"><summary><span class="q">Encode <code>sub $t2, $t0, $t1</code> in hex. Decode 0x8E680020.</span><span class="tags"><span class="tg new">practice</span></span></summary>
+      <div class="ans"><p>op 0, rs 8, rt 9, rd 10, shamt 0, funct 34 → 000000 01000 01001 01010 00000 100010 → <b>0x01095022</b>. And 0x8E680020 is <b><code>lw $t0, 32($s3)</code></b>.</p></div></details>
+  </div>
+
+  <div class="traps"><h4>Traps</h4><ul>
+    <li>Array offsets are in <b>bytes</b>: index × 4 for ints.</li>
+    <li>Branch on the <b>opposite</b> condition to skip the "then" part, and put <code>j Exit</code> after it.</li>
+    <li>Real MIPS has no <code>subi</code>, <code>blt</code> or <code>bgt</code>: use <code>addi</code> with a negative number, and <code>slt</code> + <code>beq</code>/<code>bne</code>.</li>
+    <li>A procedure that calls another must save <code>$ra</code> on the stack first.</li>
+    <li>Compare with zero using <code>$zero</code>, never the number 0.</li>
+  </ul></div>
+
+  <div class="doom"><h4>Doomsday</h4><ol>
+    <li>Registers are variables ($s yours, $t scratch, $zero = 0). Only <code>lw</code>/<code>sw</code> touch memory. Byte offset = index × 4.</li>
+    <li>if: branch on the opposite (<code>bne</code> for ==), then the "then" part, then <code>j Exit</code>.</li>
+    <li>Loops: label, test and leave, body, <code>j</code> back.</li>
+    <li>&lt; and &gt;: <code>slt</code>, then <code>beq</code>/<code>bne</code> with <code>$zero</code>.</li>
+    <li>Calls: arguments in $a0–$a3, result in $v0, <code>jal</code> / <code>jr $ra</code>; save $ra if you call again.</li>
+    <li>R: op rs rt rd shamt funct (6 5 5 5 5 6). I: op rs rt imm (6 5 5 16). J: op address (6 26).</li>
+  </ol></div>
+</section>
+
 
 <!-- ===================== L3-5 MEMORY ===================== -->
 <section class="pane" id="mem" data-pane="mem" hidden>
@@ -1971,39 +2219,6 @@ Power_new  / Power_old  = 0.7² × 0.75 = 0.3675 → about 63% less power</div>
 
     <details class="qa" data-id="o-steps"><summary><span class="q">Describe the steps that turn a C program into something the processor executes.</span><span class="tags"><span class="tg old">17-18 · 5c</span><span class="tg old">Jun '20 · B2a</span><span class="marks">2.5–5m</span></span></summary>
       <div class="ans"><ol><li><b>Compiler</b>: C → assembly language.</li><li><b>Assembler</b>: assembly → an object file of machine code, with a symbol table and relocation information (it also expands pseudoinstructions).</li><li><b>Linker</b>: combines object files and library routines, resolves references between them and fixes addresses, producing an executable file.</li><li><b>Loader</b>: the OS reads the executable into memory, sets up the stack and arguments, initializes registers and jumps to the start routine.</li></ol></div></details>
-
-    <details class="qa" data-id="o-ifelse"><summary><span class="q">Compile <code>if (i == j) f = g + h; else f = g − h;</code> with f…j in $s0…$s4.</span><span class="tags"><span class="tg old">Jun '20 · B2a</span><span class="marks">2.5m</span></span></summary>
-      <div class="ans"><div class="eq">      bne  $s3, $s4, Else   # go to Else if i != j
-      add  $s0, $s1, $s2    # f = g + h
-      j    Exit
-Else: sub  $s0, $s1, $s2    # f = g - h
-Exit:</div></div></details>
-
-    <details class="qa" data-id="o-while"><summary><span class="q">Compile <code>while (save[i] == k) i += 1;</code> with i in $s3, k in $s5, base of save in $s6.</span><span class="tags"><span class="tg old">17-18 · 5d</span><span class="marks">5m</span></span></summary>
-      <div class="ans"><div class="eq">Loop: sll  $t1, $s3, 2      # $t1 = i * 4 (byte offset)
-      add  $t1, $t1, $s6    # $t1 = address of save[i]
-      lw   $t0, 0($t1)      # $t0 = save[i]
-      bne  $t0, $s5, Exit   # leave if save[i] != k
-      addi $s3, $s3, 1      # i = i + 1
-      j    Loop
-Exit:</div></div></details>
-
-    <details class="qa" data-id="o-fact"><summary><span class="q">MIPS code for the recursive factorial <code>int fact(int n) { if (n &lt; 1) return 1; else return n * fact(n − 1); }</code></span><span class="tags"><span class="tg old">17-18 · 6c</span><span class="marks">10m</span></span></summary>
-      <div class="ans"><div class="eq">fact: addi $sp, $sp, -8     # room for 2 items on the stack
-      sw   $ra, 4($sp)      # save the return address
-      sw   $a0, 0($sp)      # save the argument n
-      slti $t0, $a0, 1      # n < 1 ?
-      beq  $t0, $zero, L1   # if n >= 1, go to L1
-      addi $v0, $zero, 1    # return 1
-      addi $sp, $sp, 8      # pop 2 items
-      jr   $ra
-L1:   addi $a0, $a0, -1     # n - 1
-      jal  fact             # fact(n - 1)
-      lw   $a0, 0($sp)      # restore n
-      lw   $ra, 4($sp)      # restore the return address
-      addi $sp, $sp, 8      # pop 2 items
-      mul  $v0, $a0, $v0    # n * fact(n - 1)
-      jr   $ra</div><p>Explain the stack frame: each call saves $ra and $a0 because the recursive <code>jal</code> overwrites them.</p></div></details>
 
     <details class="qa" data-id="o-alu"><summary><span class="q">Design a 1-bit ALU for AND, OR and add, then a 32-bit ALU; add subtraction, set-on-less-than, equality and overflow detection.</span><span class="tags"><span class="tg old">Jun '20 · 3</span><span class="tg old">17-18 · 3a, 3c</span><span class="marks">5–10m</span></span></summary>
       <div class="ans"><ol>

@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CE Final Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: one reading column on engineering graph paper; every figure sits on its own scope-screen plate. */
+  --bg:#edf0f6; --grid:rgba(39,71,208,.065); --surface:#ffffff; --surface2:#f4f6fb;
+  --ink:#131c2e; --mut:#586276; --line:#d6dce9;
+  --acc:#2747d0; --acc2:#c9521a; --wave:#df5f1c; --tint:#e6ecff; --hl:#fff0c4;
+  --ok:#16803c; --warn:#946000; --code:#eef2fa;
+  --shadow:0 1px 2px rgba(19,28,46,.05),0 10px 24px -14px rgba(19,28,46,.28);
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,"Courier New",monospace;
+  --fg:var(--ink); --card:var(--surface);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b111d; --grid:rgba(138,168,255,.06); --surface:#131b2b; --surface2:#162035;
+  --ink:#e7ecf6; --mut:#9ba6bd; --line:#27324b;
+  --acc:#8aa8ff; --acc2:#ff9a5c; --wave:#ffa56c; --tint:#1a2747; --hl:#382c10;
+  --ok:#6fd393; --warn:#e9c25a; --code:#0f1727;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 28px -14px rgba(0,0,0,.7);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b111d; --grid:rgba(138,168,255,.06); --surface:#131b2b; --surface2:#162035;
+  --ink:#e7ecf6; --mut:#9ba6bd; --line:#27324b;
+  --acc:#8aa8ff; --acc2:#ff9a5c; --wave:#ffa56c; --tint:#1a2747; --hl:#382c10;
+  --ok:#6fd393; --warn:#e9c25a; --code:#0f1727;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 28px -14px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:64px;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font:16.5px/1.62 var(--f-body);background-color:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px}
+::selection{background:var(--tint)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:10px 14px;scrollbar-width:none;
+  background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px) saturate(1.3);backdrop-filter:blur(12px) saturate(1.3);
+  border-bottom:1px solid var(--line)}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;padding:6px 14px;border-radius:999px;text-decoration:none;color:var(--mut);font:500 14px/1.3 var(--f-body);white-space:nowrap;border:1px solid transparent}
+nav a:hover{color:var(--ink);border-color:var(--line)}
+nav a.on{background:var(--ink);color:var(--bg)}
+main{max-width:760px;margin:0 auto;padding:6px 18px 96px}
+.js section.tab{display:none}
+.js section.tab.on{display:block}
+
+/* type */
+.eyebrow{font:500 12px/1.4 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--acc2);margin:28px 0 6px}
+h1{font:700 2.05rem/1.08 var(--f-display);letter-spacing:-.025em;margin:0 0 10px;text-wrap:balance}
+h2{font:650 1.38rem/1.2 var(--f-display);letter-spacing:-.015em;margin:40px 0 12px;padding-top:20px;border-top:1px solid var(--line);text-wrap:balance}
+h3{font:650 1.1rem/1.3 var(--f-display);margin:18px 0 6px}
+.sn{display:block;font:500 12px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:4px}
+p{margin:8px 0}
+ul,ol{padding-left:22px;margin:6px 0}
+li{margin:4px 0}
+li::marker{color:var(--mut)}
+a{color:var(--acc);text-underline-offset:2px}
+b,strong{font-weight:600}
+.sub{color:var(--mut);font-size:15.5px;margin:0 0 6px}
+.small{font-size:14.5px}
+.mk{color:var(--mut);font-size:13px;font-weight:400}
+.big{font-size:1.08rem}
+.ok{color:var(--ok);font-weight:600}
+.bad{color:var(--acc2);font-weight:600}
+
+/* blocks */
+.card,.exam,.idea,.trap,.bonus,.tool{border-radius:16px;margin:14px 0}
+.card{background:var(--surface);border:1px solid var(--line);padding:14px 18px;box-shadow:var(--shadow)}
+.idea{background:var(--tint);border:1px solid color-mix(in srgb,var(--acc) 20%,transparent);padding:12px 18px}
+.exam{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--acc2);padding:14px 18px;box-shadow:var(--shadow)}
+.exam>b:first-child{display:inline-block;font:600 11px/1.5 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;background:var(--acc2);color:var(--surface);padding:2px 9px;border-radius:6px;margin-bottom:6px}
+.trap{background:var(--hl);border:1px solid color-mix(in srgb,var(--warn) 30%,transparent);padding:12px 18px}
+.bonus{border:1px dashed var(--line);padding:10px 18px;color:var(--mut);font-size:15px;background:color-mix(in srgb,var(--surface) 55%,transparent)}
+.brk{display:flex;align-items:center;gap:12px;color:var(--mut);font:500 11.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;margin:30px 0}
+.brk::before,.brk::after{content:"";flex:1;border-top:1px dashed var(--line)}
+
+/* code and tables */
+code,pre,kbd,.mono{font-family:var(--f-mono);font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+code{background:var(--code);border:1px solid var(--line);padding:0 5px;border-radius:6px;font-size:.88em}
+pre{background:var(--code);border:1px solid var(--line);border-left:3px solid var(--acc);padding:11px 14px;border-radius:10px;overflow-x:auto;font-size:13.5px;line-height:1.55;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+pre.al{white-space:pre;overflow-wrap:normal}
+.tw{overflow-x:auto;margin:10px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border:0;border-bottom:1px solid var(--line);padding:7px 10px;vertical-align:top;text-align:left}
+th{background:var(--surface2);font-weight:600;font-size:13.5px;color:var(--mut)}
+tr:last-child td{border-bottom:0}
+td+td,th+th{border-left:1px solid var(--line)}
+table.mono{font-variant-numeric:tabular-nums;font-size:13.5px}
+
+/* questions */
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:8px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+details>summary{cursor:pointer;list-style:none;position:relative;padding:12px 16px 12px 42px;font-weight:600;line-height:1.45}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";position:absolute;left:18px;top:19px;width:7px;height:7px;border-right:2px solid var(--acc);border-bottom:2px solid var(--acc);transform:rotate(-45deg)}
+details[open]>summary::before{transform:rotate(45deg);top:16px}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details>div{padding:10px 16px 12px}
+details.q>summary{font-weight:500}
+summary:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){details>summary::before{transition:transform .15s ease,top .15s ease}}
+.tag{display:inline-block;font:500 11px/1.6 var(--f-mono);padding:0 7px;border-radius:999px;background:var(--tint);color:var(--acc);margin:0 4px 0 0;white-space:nowrap;vertical-align:1px}
+.tag.hot{background:var(--acc2);color:var(--surface)}
+
+/* figures */
+.pic{margin:14px 0;padding:14px 12px 10px;border:1px solid var(--line);border-radius:16px;background-color:var(--surface2);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:14px 14px}
+.pic svg{width:100%;height:auto;display:block;max-width:600px;margin:0 auto}
+.cap{font-size:13px;color:var(--mut);text-align:center;margin-top:8px;line-height:1.45}
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .s{stroke:var(--ink);fill:none;stroke-width:1.7}
+svg .t{stroke:var(--mut);fill:none;stroke-width:1;stroke-dasharray:4 4}
+svg .a{stroke:var(--acc);fill:none;stroke-width:2.3}
+svg .b{stroke:var(--acc2);fill:none;stroke-width:2.3}
+svg .w{stroke:var(--wave);fill:none;stroke-width:2.8;stroke-linejoin:round;stroke-linecap:round}
+svg .fa{fill:var(--acc)}
+svg .fb{fill:var(--acc2)}
+svg .ff{fill:var(--ink)}
+svg .fc{fill:var(--surface);stroke:var(--ink);stroke-width:1.3}
+svg .fh{fill:var(--tint);stroke:var(--acc);stroke-width:1.3}
+svg .m{fill:var(--mut);font-size:12px}
+.hero{margin:18px 0 6px;padding:16px 14px 12px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero svg{width:100%;height:auto;display:block}
+.hero .cap{text-align:left;margin-top:10px}
+
+/* tools */
+.tool{background:var(--surface);border:1px solid var(--line);padding:14px 16px;box-shadow:var(--shadow)}
+.tool h3{margin-top:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.row>*{min-width:0}
+label{font-size:13.5px;color:var(--mut)}
+input,select,button,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:7px 10px;max-width:100%}
+input[type=text],textarea{width:100%;font-family:var(--f-mono)}
+input.n{width:7.5em}
+button{background:var(--ink);color:var(--bg);border-color:var(--ink);cursor:pointer;padding:7px 16px;font-weight:600}
+button.ghost{background:transparent;color:var(--acc);border-color:var(--line)}
+.out{margin-top:10px;overflow-x:auto}
+.out pre{margin:8px 0}
+.out .pic{margin:8px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.chips button{font:500 12.5px/1.4 var(--f-mono);padding:4px 11px;border-radius:999px;background:var(--tint);color:var(--acc);border-color:transparent}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.toc a{font:500 13px/1.4 var(--f-body);text-decoration:none;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two>*{min-width:0}
+.two>.pic,.two>.idea{margin:0}
+@media (max-width:540px){.two{grid-template-columns:1fr} h1{font-size:1.8rem}}
+.hide{display:none}
+</style>
+</head>
+<body>
+<nav id="nav">
+<a href="#start">Start</a>
+<a href="#ch7">Ch 7 Media</a>
+<a href="#ch8">Ch 8 Switching</a>
+<a href="#ch12">Ch 12 Access</a>
+<a href="#draw">Draw</a>
+<a href="#bank">Past Qs</a>
+<a href="#calc">Check</a>
+<a href="#doom">Doomsday</a>
+</nav>
+<main>
+
+<!-- ===================================================== START -->
+<section class="tab" id="start">
+<p class="eyebrow">CSE 365 &middot; Final &middot; 4 Nov 2026</p><h1>Your way out of the CE final</h1>
+<p class="sub">Forouzan 5e. Built from the five past finals in <code>CE/Questions</code> (2014-15 to 2019-20). Every number on this page was recomputed.</p>
+<div class="hero"><svg viewBox="0 0 360 116" role="img" aria-label="11100000000000 scrambled with B8ZS"><path d="M16 66 H346.4" stroke="var(--mut)" stroke-width=".8" stroke-dasharray="2 3" fill="none"/><path class="t" d="M16.0 22 V102"/><path class="t" d="M39.6 22 V102"/><path class="t" d="M63.2 22 V102"/><path class="t" d="M86.8 22 V102"/><path class="t" d="M110.4 22 V102"/><path class="t" d="M134.0 22 V102"/><path class="t" d="M157.6 22 V102"/><path class="t" d="M181.2 22 V102"/><path class="t" d="M204.8 22 V102"/><path class="t" d="M228.4 22 V102"/><path class="t" d="M252.0 22 V102"/><path class="t" d="M275.6 22 V102"/><path class="t" d="M299.2 22 V102"/><path class="t" d="M322.8 22 V102"/><path class="t" d="M346.4 22 V102"/><text x="27.8" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">1</text><text x="51.4" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">1</text><text x="75.0" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">1</text><text x="98.6" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="122.2" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="145.8" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="169.4" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="169.4" y="114" text-anchor="middle" font-size="11" style="fill:var(--acc2);font-family:var(--f-mono)">V</text><text x="193.0" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="193.0" y="114" text-anchor="middle" font-size="11" style="fill:var(--acc2);font-family:var(--f-mono)">B</text><text x="216.6" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="240.2" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="240.2" y="114" text-anchor="middle" font-size="11" style="fill:var(--acc2);font-family:var(--f-mono)">V</text><text x="263.8" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="263.8" y="114" text-anchor="middle" font-size="11" style="fill:var(--acc2);font-family:var(--f-mono)">B</text><text x="287.4" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="311.0" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><text x="334.6" y="14" text-anchor="middle" font-size="12" font-weight="600" style="font-family:var(--f-mono)">0</text><path class="w" d="M16 92 H39.6 V40 H63.2 V92 H86.8 V66 H110.4 H134.0 H157.6 V92 H181.2 V40 H204.8 V66 H228.4 V40 H252.0 V92 H275.6 V66 H299.2 H322.8 H346.4"/></svg><div class="cap"><b>11100000000000</b> scrambled with B8ZS. This sequence (Forouzan P4-14), or a shorter cut of it, came in four of the five finals. The Draw tab teaches it in 20 minutes.</div></div>
+
+<div class="idea">
+<b>The one thing to know tonight:</b> every past final lets you <b>choose</b>. "Answer any 5 of 8", "any 4 of 6", "any 2 of 3". So you never need every chapter. You need about 70% of the topics done cold, and you need to <b>recognise in 10 seconds</b> which questions are yours.
+</div>
+
+<h2>What the paper looks like</h2>
+<div class="tw"><table>
+<tr><th>Paper</th><th>Marks, time</th><th>Shape (each of Group A and B)</th></tr>
+<tr><td>2018-19, 2019-20 (newest)</td><td>50, 2 h</td><td>5 of 8 one-markers, 4 of 6 2.5-markers, 2 of 3 five-markers</td></tr>
+<tr><td>2014-15 to 2016-17</td><td>100, 3 h</td><td>Same idea, bigger: 5 of 7 two-markers, 4 of 6, 2 of 3 ten-markers</td></tr>
+</table></div>
+<p>So in each block you can <b>skip about a third</b>. Budget: 50 marks in 120 min is about <b>2.4 min per mark</b>.</p>
+
+<h2>What they ask, counted over the five finals</h2>
+<div class="tw"><table>
+<tr><th>#</th><th>Topic</th><th>Papers</th><th>Go to</th></tr>
+<tr><td>1</td><td><b>Draw a line code</b> (NRZ, RZ, Manchester, diff. Manchester, AMI, pseudoternary, MLT-3) and <b>scrambling B8ZS / HDB3</b></td><td><span class="tag hot">5 of 5</span></td><td>Draw</td></tr>
+<tr><td>2</td><td><b>PCM quantization table</b> (normalized PAM, quantized, error, code, word)</td><td><span class="tag hot">5 of 5</span></td><td>Past Qs ch 4, Check</td></tr>
+<tr><td>3</td><td>Shannon / Nyquist, SNR, dB, attenuation</td><td><span class="tag hot">5 of 5</span></td><td>Past Qs ch 3</td></tr>
+<tr><td>4</td><td>Bits per baud, modulation bandwidth</td><td><span class="tag hot">5 of 5</span></td><td>Past Qs ch 5</td></tr>
+<tr><td>5</td><td>Multiplexing: FDM, sync TDM, statistical vs sync, pulse stuffing</td><td><span class="tag hot">5 of 5</span></td><td>Past Qs ch 6</td></tr>
+<tr><td>6</td><td>Constellation diagrams</td><td><span class="tag">4 of 5</span></td><td>Draw</td></tr>
+<tr><td>7</td><td>CRC division, Hamming distance, parity, checksum</td><td><span class="tag">4 of 5</span></td><td>Past Qs ch 10</td></tr>
+<tr><td>8</td><td>Spectrum drawing, bandwidth of a composite signal</td><td><span class="tag">4 of 5</span></td><td>Past Qs ch 3</td></tr>
+<tr><td>9</td><td><b>Ch 7</b> one-liners (guided vs unguided, fiber, cladding, STP/UTP, VHF)</td><td><span class="tag">4 of 5</span></td><td>Ch 7</td></tr>
+<tr><td>10</td><td>Router interfaces, ARP, unicast/multicast (Ch 9)</td><td><span class="tag">4 of 5</span></td><td>Ch 12, last box</td></tr>
+<tr><td>11</td><td><b>Ch 8 three-stage switch, always N = 100, n = 10, k = 4</b></td><td><span class="tag">3 of 5</span></td><td>Ch 8</td></tr>
+<tr><td>12</td><td>Stop-and-Wait flow diagram (a 5 to 10 mark question)</td><td><span class="tag">2 of 5</span></td><td>Draw</td></tr>
+<tr><td>13</td><td><b>Ch 12</b> CDMA with Walsh codes, CSMA/CD, CSMA/CD vs CSMA/CA</td><td><span class="tag">2 of 5</span></td><td>Ch 12</td></tr>
+</table></div>
+<p class="small">The teacher copies Forouzan's worked Examples and end-of-chapter problems almost word for word, and reuses them across years. The past finals are the syllabus. The same 3-stage switch (P8-12) came three times; the same scrambling sequence (P4-14) came four times.</p>
+
+<h2>Tonight's plan</h2>
+<p>You said Ch 7, 8 and 12 are blank. They are the three "from zero" tabs. Each is short sessions: a picture, the idea, the exact answer to write, a 3-question check, a break.</p>
+<div class="tw"><table>
+<tr><th>Block</th><th>Time</th><th>What</th></tr>
+<tr><td>1</td><td>40 min</td><td><b>Ch 7</b>, all four sessions. It is all short answers. Cheapest marks in the paper.</td></tr>
+<tr><td>2</td><td>50 min</td><td><b>Ch 8</b>. Session 3 (the switch) first if you are short: one calculation, asked three times.</td></tr>
+<tr><td>3</td><td>60 min</td><td><b>Ch 12</b>. CSMA/CD, CD vs CA, then CDMA.</td></tr>
+<tr><td>-</td><td>15 min</td><td>Break. Water, walk, no scrolling.</td></tr>
+<tr><td>4</td><td>40 min</td><td><b>Draw</b> tab: scrambling (B8ZS, HDB3), then draw two line codes on paper and check them with the drawer.</td></tr>
+<tr><td>5</td><td>60 min</td><td><b>Past Qs</b> tab, chapters you already did (1-6, 10, 11). Read the question, answer out loud, then open. Only re-learn what you miss.</td></tr>
+<tr><td>-</td><td>4 h+</td><td><b>Sleep.</b> It moves tonight into long-term memory. Skipping it costs more marks than any block above.</td></tr>
+<tr><td>6</td><td>30 min</td><td>Morning: <b>Doomsday</b> tab, top to bottom.</td></tr>
+</table></div>
+<details><summary>Only 3 hours?</summary><div>
+<ol>
+<li>Ch 8 session 3: the 3-stage switch numbers (20 min).</li>
+<li>Ch 7 doomsday box (15 min).</li>
+<li>Ch 12: CSMA/CD steps and the CD vs CA table (25 min).</li>
+<li>Draw tab: B8ZS and HDB3 on P4-14 (30 min).</li>
+<li>Past Qs: ch 4 PCM table, ch 3 Shannon pair, ch 10 one CRC (60 min).</li>
+<li>Doomsday tab (30 min).</li>
+</ol></div></details>
+<details><summary>Only 1 hour?</summary><div>
+<ol>
+<li>Doomsday tab, slowly (25 min).</li>
+<li>Switch: <code>2kN + k(N/n)&sup2; = 800 + 400 = 1200</code>. Connections 40, single crossbar 100, blocking 0.4 (10 min).</li>
+<li>B8ZS rule <code>000VB0VB</code>, HDB3 rule <code>000V / B00V</code> (10 min).</li>
+<li>CSMA/CD vs CSMA/CA table in Ch 12 (15 min).</li>
+</ol></div></details>
+
+<h2>Exam hall rules</h2>
+<ol>
+<li><b>First 5 minutes: read the whole paper.</b> Tick every question you can do. In each "any N" block, pick the ones you know cold.</li>
+<li>Order: numericals you know, then drawings, then theory.</li>
+<li><b>Formula first, then numbers, then the unit.</b> The formula alone earns part marks.</li>
+<li>Drawings: dashed bit boundaries first, bits written on top, and <b>write your assumption</b> ("last level positive", "0 = +V"). An unstated convention can lose the whole question; a stated one almost never does.</li>
+<li>Answer exactly N in an "any N" block. Extra answers may not be marked, and they eat time.</li>
+<li>Stuck? Write the definition, the formula and a labelled sketch. Never leave a chosen question blank.</li>
+</ol>
+</section>
+
+<!-- ===================================================== CH 7 -->
+<section class="tab" id="ch7">
+<p class="eyebrow">Forouzan ch 7 &middot; 4 sessions &middot; about 40 min</p><h1>Ch 7 Transmission media, from zero</h1>
+<p class="sub">Four sessions, about 40 minutes. No maths. Past finals ask 1 or 2 marks per question here, and they ask it almost every year, so these are the cheapest marks in the paper.</p>
+
+<h2><span class="sn">Session 1 of 4</span>The big picture</h2>
+<div class="pic"><svg viewBox="0 0 360 196" role="img" aria-label="Transmission media split into guided and unguided">
+<rect class="fh" x="90" y="6" width="180" height="30" rx="8"/><text x="180" y="26" text-anchor="middle" font-weight="600" font-size="15">Transmission media</text>
+<path class="s" d="M180 36 V48 H92 V60 M180 48 H268 V60"/>
+<rect class="fc" x="8" y="60" width="168" height="30" rx="8"/><text x="92" y="80" text-anchor="middle" font-weight="600" font-size="14">Guided (wired)</text>
+<rect class="fc" x="184" y="60" width="168" height="30" rx="8"/><text x="268" y="80" text-anchor="middle" font-weight="600" font-size="14">Unguided (wireless)</text>
+<path class="s" d="M26 90 V178 M26 112 H40 M26 145 H40 M26 178 H40 M202 90 V178 M202 112 H216 M202 145 H216 M202 178 H216"/>
+<g font-size="14"><text x="46" y="117">Twisted-pair</text><text x="46" y="150">Coaxial</text><text x="46" y="183">Fiber-optic</text>
+<text x="222" y="117">Radio waves</text><text x="222" y="150">Microwaves</text><text x="222" y="183">Infrared</text></g>
+</svg></div>
+<div class="idea">
+<ul>
+<li>A <b>transmission medium</b> is whatever carries the signal from sender to receiver: a copper wire, a glass fiber, or open air. Forouzan calls it "layer 0", under the physical layer.</li>
+<li><b>Guided</b>: the signal is held inside a physical path. Copper carries electric current; fiber carries light.</li>
+<li><b>Unguided</b>: electromagnetic waves through air or vacuum, with no wire. Anyone with a receiver in range can pick them up.</li>
+</ul>
+</div>
+<div class="exam"><b>Write this</b>
+<p><b>Guided vs unguided</b> <span class="mk">(2016-17 Q1e, 2 marks)</span>: Guided media give the signal a physical conduit from one device to another, and the signal stays inside it (twisted-pair, coaxial and fiber-optic cable). Unguided media carry electromagnetic waves without a physical conductor, through air or vacuum; the signal is broadcast and any device with a receiver can get it (radio waves, microwaves, infrared).</p>
+<p><b>Major classes of guided media</b> <span class="mk">(TT1)</span>: twisted-pair cable, coaxial cable, fiber-optic cable.</p>
+</div>
+<details class="q"><summary>Check 1. Name the three classes of guided media.</summary><div>Twisted-pair, coaxial, fiber-optic.</div></details>
+<details class="q"><summary>Check 2. Your phone's Wi-Fi: guided or unguided?</summary><div>Unguided. It is a radio signal through the air, no cable.</div></details>
+<details class="q"><summary>Check 3. Which of the three guided media carries light instead of current?</summary><div>Fiber-optic.</div></details>
+<div class="brk">break: 2 minutes</div>
+
+<h2><span class="sn">Session 2 of 4</span>Copper: twisted pair and coax</h2>
+<div class="pic"><svg viewBox="0 0 360 100" role="img" aria-label="Twisted pair with noise hitting both wires">
+<g transform="translate(-8 4) scale(0.92 1)">
+<path class="a" d="M20 60 C45 35 70 35 95 60 S145 85 170 60 S220 35 245 60 S295 85 320 60 S370 35 395 60"/>
+<path class="b" d="M20 60 C45 85 70 85 95 60 S145 35 170 60 S220 85 245 60 S295 35 320 60 S370 85 395 60"/>
+</g>
+<text x="8" y="18" font-size="13">noise</text>
+<path class="s" d="M70 10 l12 14 l-8 0 l12 14 M220 10 l12 14 l-8 0 l12 14"/>
+</svg><div class="cap">Twisting swaps which wire is closer to the noise, so both get the same noise and the difference cancels it.</div></div>
+<div class="pic"><svg viewBox="0 0 360 130" role="img" aria-label="Coaxial cable cross-section">
+<circle cx="62" cy="65" r="52" class="fh"/>
+<circle cx="62" cy="65" r="42" fill="none" stroke="var(--fg)" stroke-width="5" stroke-dasharray="3 3"/>
+<circle cx="62" cy="65" r="30" class="fc"/>
+<circle cx="62" cy="65" r="9" class="fb"/>
+<path class="t" d="M99 28 L126 20 M103 54 L126 52 M91 73 L126 84 M68 71 L126 114" style="stroke-dasharray:none"/>
+<g font-size="13"><text x="130" y="24">Plastic cover</text>
+<text x="130" y="56">Metal braid: shield + 2nd wire</text>
+<text x="130" y="88">Insulator</text>
+<text x="130" y="118">Copper core: the signal</text></g>
+</svg></div>
+<div class="idea">
+<ul>
+<li><b>Twisted pair</b>: two insulated copper wires twisted together. One carries the signal, the other is the reference, and the receiver reads the <i>difference</i>. Twisting makes noise land equally on both, so it cancels.</li>
+<li><b>UTP</b> (unshielded) has no shield: cheap, thin, the most common cable (phones, LANs). <b>STP</b> (shielded) wraps each pair in metal foil or braided mesh: less noise and crosstalk, but bulkier and dearer.</li>
+<li><b>Coax</b>: copper core, insulator, an outer metal braid, plastic cover. It carries higher frequencies than twisted pair, but the signal weakens faster, so it needs repeaters more often.</li>
+</ul>
+</div>
+<div class="exam"><b>Write this</b>
+<p><b>STP vs UTP</b> <span class="mk">(2019-20 Q4a, 1 mark)</span>: STP has a metal foil or braided-mesh shield around each pair, which blocks electromagnetic noise and crosstalk; UTP has no shield, so it is cheaper and lighter but picks up more noise.</p>
+<p><b>Examples of each cable</b> <span class="mk">(2014-15 Q1b(i))</span>:</p>
+<ul>
+<li>Twisted pair: telephone lines, DSL, Ethernet LAN cable (10Base-T, 100Base-T, Cat 5 with an RJ-45 plug).</li>
+<li>Coaxial: cable TV, traditional Ethernet (10Base2, 10Base5).</li>
+<li>Fiber-optic: Internet backbone (SONET), cable-TV backbone, Fast Ethernet 100Base-FX.</li>
+</ul>
+</div>
+<details class="q"><summary>Check 1. Why are the wires twisted?</summary><div>So noise hits both wires equally. The receiver uses the difference between them, so equal noise cancels.</div></details>
+<details class="q"><summary>Check 2. Two jobs of coax's outer conductor?</summary><div>Shield against noise, and second conductor that completes the circuit.</div></details>
+<details class="q"><summary>Check 3. Which is used for cable TV?</summary><div>Coaxial cable (backbone may be fiber).</div></details>
+<div class="brk">break: 2 minutes</div>
+
+<h2><span class="sn">Session 3 of 4</span>Fiber optics</h2>
+<p>First the physics, which is the whole trick.</p>
+<div class="pic"><svg viewBox="0 0 360 166" role="img" aria-label="Refraction, critical angle, reflection">
+<g>
+<rect x="0" y="60" width="116" height="60" fill="var(--hl)"/>
+<text x="2" y="40" font-size="10.5" class="m">less dense</text><text x="68" y="114" font-size="11" class="m">denser</text>
+<path class="s" d="M0 60 H116"/><path class="t" d="M58 8 V118"/>
+<path class="a" d="M32 118 L58 60 L98 12"/><circle cx="58" cy="60" r="3" class="fa"/>
+<text x="58" y="140" text-anchor="middle" font-size="12">angle &lt; critical</text><text x="58" y="157" text-anchor="middle" font-size="12" font-weight="600">refracts OUT</text>
+</g>
+<g transform="translate(122 0)">
+<rect x="0" y="60" width="116" height="60" fill="var(--hl)"/>
+<path class="s" d="M0 60 H116"/><path class="t" d="M58 8 V118"/>
+<path class="a" d="M22 118 L58 60 L112 60"/><circle cx="58" cy="60" r="3" class="fa"/>
+<text x="58" y="140" text-anchor="middle" font-size="12">angle = critical</text><text x="58" y="157" text-anchor="middle" font-size="12" font-weight="600">along the edge</text>
+</g>
+<g transform="translate(244 0)">
+<rect x="0" y="60" width="116" height="60" fill="var(--hl)"/>
+<path class="s" d="M0 60 H116"/><path class="t" d="M58 8 V118"/>
+<path class="a" d="M12 112 L58 60 L104 112"/><circle cx="58" cy="60" r="3" class="fa"/>
+<text x="58" y="140" text-anchor="middle" font-size="12">angle &gt; critical</text><text x="58" y="157" text-anchor="middle" font-size="12" font-weight="600">REFLECTS back</text>
+</g>
+</svg><div class="cap">Light starts in the denser glass (shaded). The dashed line is the normal; the angle is measured from it.</div></div>
+<div class="pic"><svg viewBox="0 0 360 120" role="img" aria-label="Light bouncing inside a fiber core">
+<rect x="0" y="14" width="360" height="20" fill="var(--hl)"/><rect x="0" y="86" width="360" height="20" fill="var(--hl)"/>
+<path class="s" d="M0 14 H360 M0 34 H360 M0 86 H360 M0 106 H360"/>
+<text x="210" y="28" font-size="12">cladding (less dense)</text>
+<text x="8" y="100" font-size="12">cladding (less dense)</text>
+<text x="112" y="52" font-size="12" class="m">core</text>
+<path class="w" d="M2 62 L60 34 L130 86 L200 34 L270 86 L340 34 L358 46"/>
+</svg><div class="cap">Every time the light hits the boundary at more than the critical angle, it reflects back. It stays in the core for kilometres.</div></div>
+<div class="idea">
+<ul>
+<li>Light changes direction (bends) when it crosses into a material of different density. That is <b>refraction</b>.</li>
+<li>If it hits the boundary at more than the <b>critical angle</b>, it does not cross at all. It bounces back: <b>reflection</b>.</li>
+<li>A fiber is a glass <b>core</b> inside a less dense <b>cladding</b>. Light keeps reflecting off the boundary, so it stays in the core.</li>
+</ul>
+</div>
+<div class="exam"><b>Write this</b>
+<p><b>Refraction</b> <span class="mk">(TT1)</span>: the bending of light when it passes from one medium into another of different density. <b>Reflection</b>: when the angle of incidence is greater than the critical angle, the light does not pass into the second medium; it is turned back into the first.</p>
+<p><b>Purpose of cladding</b> <span class="mk">(2016-17 Q4g, 2 marks)</span>: the cladding is glass or plastic of lower density than the core. Because of this difference, light that hits the core-cladding boundary (beyond the critical angle) is reflected back into the core, so the signal stays in the core and travels along the fiber instead of leaking out.</p>
+<p><b>Advantages of fiber over twisted pair and coax</b> <span class="mk">(2016-17 Q4d)</span>:</p>
+<ol>
+<li>Higher bandwidth, so higher data rates.</li>
+<li>Less attenuation: a signal runs about 50 km without regeneration (copper needs repeaters every about 5 km).</li>
+<li>Immune to electromagnetic interference.</li>
+<li>Resists corrosive materials.</li>
+<li>Light weight.</li>
+<li>Hard to tap, so more secure.</li>
+</ol>
+<p><b>Disadvantages of fiber</b> <span class="mk">(2015-16 Q4f, "write two")</span>: (1) installation and maintenance need expertise; (2) light travels one way only, so two-way communication needs two fibers; (3) the cable and interfaces cost more.</p>
+<p><b>Why do optical signals have a very short wavelength?</b> <span class="mk">(2016-17 Q1f)</span>: wavelength = propagation speed / frequency. Light has a very high frequency (around 10<sup>14</sup> Hz), so its wavelength is tiny, under a micrometre (fibers use about 850, 1300 and 1550 nm). That very high frequency is what gives fiber its huge bandwidth, and glass has very low loss at these wavelengths.</p>
+</div>
+<details class="q"><summary>Check 1. Which is denser, core or cladding?</summary><div>The core. The less dense cladding is what makes light reflect back in.</div></details>
+<details class="q"><summary>Check 2. Light hits the boundary at less than the critical angle. What happens?</summary><div>It refracts out into the cladding; the signal leaks away.</div></details>
+<details class="q"><summary>Check 3. Two disadvantages of fiber?</summary><div>Needs expert installation and maintenance; one-way light so two fibers for duplex; expensive. Any two.</div></details>
+<div class="bonus"><b>Bonus, only if done.</b> Propagation modes: <i>multimode step-index</i> (many rays, sharp core edge, rays arrive at different times: distortion), <i>multimode graded-index</i> (density falls gradually from the centre, rays curve, less distortion), <i>single-mode</i> (very thin core, almost one straight ray, best for long distance).</div>
+<div class="brk">break: 3 minutes</div>
+
+<h2><span class="sn">Session 4 of 4</span>Wireless: how waves travel</h2>
+<div class="pic"><svg viewBox="0 0 360 166" role="img" aria-label="Ground, sky and line-of-sight propagation">
+<g>
+<path class="s" d="M2 122 Q60 104 118 122"/>
+<path class="s" d="M16 116 V86 M104 116 V90"/>
+<path class="a" d="M18 98 Q60 80 102 98" stroke-dasharray="6 4"/><path class="a" d="M18 107 Q60 90 102 107" stroke-dasharray="6 4"/>
+<text x="60" y="142" text-anchor="middle" font-size="13" font-weight="600">Ground</text><text x="60" y="159" text-anchor="middle" font-size="12">below 2 MHz</text>
+</g>
+<g transform="translate(120 0)">
+<rect x="2" y="8" width="116" height="16" fill="var(--hl)"/><text x="60" y="20" text-anchor="middle" font-size="11">ionosphere</text>
+<path class="s" d="M2 122 Q60 104 118 122"/>
+<path class="s" d="M16 116 V84 M104 116 V84"/>
+<path class="a" d="M16 84 L60 25 L104 84"/>
+<text x="60" y="142" text-anchor="middle" font-size="13" font-weight="600">Sky</text><text x="60" y="159" text-anchor="middle" font-size="12">2 to 30 MHz</text>
+</g>
+<g transform="translate(240 0)">
+<path class="s" d="M2 122 Q60 104 118 122"/>
+<path class="s" d="M16 116 V50 M104 116 V50"/>
+<path class="a" d="M18 54 H96"/><path class="fa" d="M102 54 l-9 -5 v10z"/>
+<text x="60" y="142" text-anchor="middle" font-size="13" font-weight="600">Line-of-sight</text><text x="60" y="159" text-anchor="middle" font-size="12">above 30 MHz</text>
+</g>
+</svg><div class="cap">Ground waves hug the earth; sky waves bounce off the ionosphere; line-of-sight goes straight, so the towers must see each other.</div></div>
+<div class="idea">
+<ul>
+<li>The frequency decides how a wave travels. Low frequencies hug the ground. Middle ones (2 to 30 MHz) go up and bounce off the <b>ionosphere</b>, so they reach far. High ones go in a straight line, so the antennas must see each other.</li>
+<li><b>Radio waves</b> (3 kHz to 1 GHz) spread in all directions (<b>omnidirectional</b>) and pass through walls: good for broadcasting.</li>
+<li><b>Microwaves</b> (1 to 300 GHz) go in a narrow beam (<b>unidirectional</b>): good for point-to-point links, satellite, cellular.</li>
+<li><b>Infrared</b> (300 GHz to 400 THz): short range, cannot pass walls, sunlight interferes. TV remotes.</li>
+</ul>
+</div>
+<div class="tw"><table>
+<tr><th>Band</th><th>Range</th><th>Propagation</th><th>Example</th></tr>
+<tr><td>VLF</td><td>3-30 kHz</td><td>Ground</td><td>Long-range navigation</td></tr>
+<tr><td>LF</td><td>30-300 kHz</td><td>Ground</td><td>Radio beacons</td></tr>
+<tr><td>MF</td><td>300 kHz-3 MHz</td><td>Sky</td><td>AM radio</td></tr>
+<tr><td>HF</td><td>3-30 MHz</td><td>Sky</td><td>Ship and aircraft radio</td></tr>
+<tr><td><b>VHF</b></td><td><b>30-300 MHz</b></td><td>Sky and line-of-sight</td><td>FM radio, VHF TV</td></tr>
+<tr><td>UHF</td><td>300 MHz-3 GHz</td><td>Line-of-sight</td><td>UHF TV, cell phones</td></tr>
+<tr><td>SHF</td><td>3-30 GHz</td><td>Line-of-sight</td><td>Satellite</td></tr>
+<tr><td>EHF</td><td>30-300 GHz</td><td>Line-of-sight</td><td>Radar, satellite</td></tr>
+</table></div>
+<p class="small">Memory trick: start at 3 kHz and multiply by 10 each row. V-L-M-H, then VHF, UHF, SHF, EHF.</p>
+<div class="exam"><b>Write this</b>
+<p><b>Frequency range of VHF</b> <span class="mk">(2015-16 Q4d)</span>: 30 MHz to 300 MHz (sky and line-of-sight propagation; used for FM radio and VHF TV).</p>
+<p><b>Propagation method for radio waves</b> <span class="mk">(2019-20 Q1g)</span>: radio waves are omnidirectional. At low frequencies they use ground propagation (they follow the curve of the earth); at 2 to 30 MHz they use sky propagation (reflected back down by the ionosphere), which lets them travel long distances, as in AM radio. Above 30 MHz they travel by line of sight.</p>
+<p><b>Omnidirectional vs unidirectional</b>: an omnidirectional antenna sends in all directions, so sender and receiver need not be aligned (radio waves). A unidirectional antenna sends a narrow beam, so the two antennas must be aligned (microwaves).</p>
+</div>
+<details class="q"><summary>Check 1. FM radio is in which band?</summary><div>VHF, 30 to 300 MHz.</div></details>
+<details class="q"><summary>Check 2. Why must microwave towers see each other?</summary><div>Microwaves are line-of-sight and unidirectional; they travel in a straight narrow beam.</div></details>
+<details class="q"><summary>Check 3. What reflects sky waves back to earth?</summary><div>The ionosphere.</div></details>
+
+<div class="card">
+<h3 style="margin-top:2px">Ch 7 doomsday box (read this if nothing else)</h3>
+<ul>
+<li>Guided = twisted-pair, coax, fiber (signal confined). Unguided = radio, microwave, infrared (through air).</li>
+<li>Twisting cancels noise. STP = shielded, UTP = not.</li>
+<li>Fiber: core denser than cladding. Beyond the critical angle light reflects, so it stays in the core.</li>
+<li>Fiber good: bandwidth, low attenuation, no EM noise, light, secure. Bad: expertise, one-way, cost.</li>
+<li>Ground below 2 MHz, sky 2-30 MHz (ionosphere), line-of-sight above 30 MHz. VHF = 30-300 MHz.</li>
+<li>Radio = omnidirectional broadcast. Microwave = unidirectional beam.</li>
+</ul>
+</div>
+</section>
+
+<!-- ===================================================== CH 8 -->
+<section class="tab" id="ch8">
+<p class="eyebrow">Forouzan ch 8 &middot; 4 sessions &middot; about 50 min</p><h1>Ch 8 Switching, from zero</h1>
+<p class="sub">Four sessions, about 50 minutes. Short on time? Do <a href="#ch8-s3">Session 3</a> first: the three-stage switch is one calculation and it came in three different finals with the same numbers.</p>
+
+<h2><span class="sn">Session 1 of 4</span>Why switches, and the three kinds</h2>
+<div class="pic"><svg viewBox="0 0 360 336" role="img" aria-label="Circuit, datagram and virtual-circuit switching compared">
+
+<g transform="translate(0 2)">
+<text x="2" y="12" font-size="13"><tspan font-weight="700">Circuit</tspan>: path reserved first, then used</text>
+
+<path class="s" d="M27 56 H52 M92 56 L152 29 M92 56 L152 83 M192 29 L252 56 M192 83 L252 56 M292 56 H333" stroke-width="1.3"/>
+<circle cx="16" cy="56" r="11" class="fc"/><text x="16" y="61" text-anchor="middle" font-size="13" font-weight="600">A</text>
+<circle cx="344" cy="56" r="11" class="fc"/><text x="344" y="61" text-anchor="middle" font-size="13" font-weight="600">B</text>
+<rect x="52" y="43" width="40" height="26" rx="6" class="fh"/><text x="72" y="61" text-anchor="middle" font-size="12">S1</text>
+<rect x="152" y="16" width="40" height="26" rx="6" class="fh"/><text x="172" y="34" text-anchor="middle" font-size="12">S2</text>
+<rect x="152" y="70" width="40" height="26" rx="6" class="fh"/><text x="172" y="88" text-anchor="middle" font-size="12">S3</text>
+<rect x="252" y="43" width="40" height="26" rx="6" class="fh"/><text x="272" y="61" text-anchor="middle" font-size="12">S4</text>
+
+<path d="M27 56 H52 M92 54 L152 27 M192 27 L252 54 M292 56 H333" stroke="var(--acc)" stroke-width="5" opacity=".45" fill="none"/>
+</g>
+<g transform="translate(0 114)">
+<text x="2" y="12" font-size="13"><tspan font-weight="700">Datagram</tspan>: each packet routed on its own</text>
+
+<path class="s" d="M27 56 H52 M92 56 L152 29 M92 56 L152 83 M192 29 L252 56 M192 83 L252 56 M292 56 H333" stroke-width="1.3"/>
+<circle cx="16" cy="56" r="11" class="fc"/><text x="16" y="61" text-anchor="middle" font-size="13" font-weight="600">A</text>
+<circle cx="344" cy="56" r="11" class="fc"/><text x="344" y="61" text-anchor="middle" font-size="13" font-weight="600">B</text>
+<rect x="52" y="43" width="40" height="26" rx="6" class="fh"/><text x="72" y="61" text-anchor="middle" font-size="12">S1</text>
+<rect x="152" y="16" width="40" height="26" rx="6" class="fh"/><text x="172" y="34" text-anchor="middle" font-size="12">S2</text>
+<rect x="152" y="70" width="40" height="26" rx="6" class="fh"/><text x="172" y="88" text-anchor="middle" font-size="12">S3</text>
+<rect x="252" y="43" width="40" height="26" rx="6" class="fh"/><text x="272" y="61" text-anchor="middle" font-size="12">S4</text>
+
+<rect x="110" y="32" width="16" height="15" rx="3" class="fb"/><text x="118" y="44" text-anchor="middle" font-size="11" style="fill:#fff">1</text>
+<rect x="110" y="64" width="16" height="15" rx="3" class="fb"/><text x="118" y="76" text-anchor="middle" font-size="11" style="fill:#fff">2</text>
+<rect x="212" y="30" width="16" height="15" rx="3" class="fb"/><text x="220" y="42" text-anchor="middle" font-size="11" style="fill:#fff">3</text>
+<text x="358" y="90" text-anchor="end" font-size="12">arrive 3, 1, 2</text>
+</g>
+<g transform="translate(0 226)">
+<text x="2" y="12" font-size="13"><tspan font-weight="700">Virtual circuit</tspan>: setup, then one path for all</text>
+
+<path class="s" d="M27 56 H52 M92 56 L152 29 M92 56 L152 83 M192 29 L252 56 M192 83 L252 56 M292 56 H333" stroke-width="1.3"/>
+<circle cx="16" cy="56" r="11" class="fc"/><text x="16" y="61" text-anchor="middle" font-size="13" font-weight="600">A</text>
+<circle cx="344" cy="56" r="11" class="fc"/><text x="344" y="61" text-anchor="middle" font-size="13" font-weight="600">B</text>
+<rect x="52" y="43" width="40" height="26" rx="6" class="fh"/><text x="72" y="61" text-anchor="middle" font-size="12">S1</text>
+<rect x="152" y="16" width="40" height="26" rx="6" class="fh"/><text x="172" y="34" text-anchor="middle" font-size="12">S2</text>
+<rect x="152" y="70" width="40" height="26" rx="6" class="fh"/><text x="172" y="88" text-anchor="middle" font-size="12">S3</text>
+<rect x="252" y="43" width="40" height="26" rx="6" class="fh"/><text x="272" y="61" text-anchor="middle" font-size="12">S4</text>
+
+<path d="M27 56 H52 M92 54 L152 27 M192 27 L252 54 M292 56 H333" stroke="var(--acc)" stroke-width="2" stroke-dasharray="6 5" fill="none"/>
+<rect x="100" y="36" width="16" height="15" rx="3" class="fb"/><text x="108" y="48" text-anchor="middle" font-size="11" style="fill:#fff">3</text>
+<rect x="124" y="25" width="16" height="15" rx="3" class="fb"/><text x="132" y="37" text-anchor="middle" font-size="11" style="fill:#fff">2</text>
+<rect x="206" y="25" width="16" height="15" rx="3" class="fb"/><text x="214" y="37" text-anchor="middle" font-size="11" style="fill:#fff">1</text>
+<text x="358" y="90" text-anchor="end" font-size="12">arrive 1, 2, 3</text>
+</g>
+</svg></div>
+<div class="idea">
+<ul>
+<li>Wiring every device to every other is far too many cables. So devices connect to <b>switches</b>, and switches pick the path.</li>
+<li><b>Circuit switching</b> is a phone call: a dedicated path is set up and <i>reserved</i> for the whole conversation, even during silence. Physical layer.</li>
+<li><b>Datagram</b> (packet switching) is posting letters: the message is cut into packets, each carries the full destination address and finds its own way. No setup. Packets can arrive out of order. Network layer (the Internet).</li>
+<li><b>Virtual circuit</b> (packet switching) is a train on a booked route: a setup phase chooses one path, then every packet follows it in order, but bandwidth is used only when there is data. Each packet carries a small local label, the VCI. Data-link layer.</li>
+</ul>
+</div>
+<div class="exam"><b>Write this: the comparison table</b>
+<div class="tw"><table>
+<tr><th></th><th>Circuit</th><th>Datagram</th><th>Virtual circuit</th></tr>
+<tr><td>Setup / teardown</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+<tr><td>Resources</td><td>Reserved for the whole call</td><td>On demand</td><td>On demand</td></tr>
+<tr><td>Path</td><td>One fixed path</td><td>Each packet on its own</td><td>One path for all packets</td></tr>
+<tr><td>Address carried</td><td>None during data transfer</td><td>Full destination address</td><td>Local label (VCI)</td></tr>
+<tr><td>Order</td><td>In order</td><td>Can arrive out of order</td><td>In order</td></tr>
+<tr><td>Layer</td><td>Physical</td><td>Network</td><td>Data-link</td></tr>
+<tr><td>Example</td><td>Telephone network</td><td>Internet (IP)</td><td>Frame Relay, ATM</td></tr>
+</table></div>
+</div>
+<details class="q"><summary>Check 1. Which kind has no setup phase?</summary><div>Datagram.</div></details>
+<details class="q"><summary>Check 2. Which kind keeps the path reserved even when nobody is talking?</summary><div>Circuit switching. That is why it wastes capacity, but its delay is low.</div></details>
+<details class="q"><summary>Check 3. Which kind can deliver packets out of order?</summary><div>Datagram, because each packet may take a different route.</div></details>
+<div class="brk">break: 2 minutes</div>
+
+<h2><span class="sn">Session 2 of 4</span>Virtual circuits in detail, and datagram delay</h2>
+<div class="pic"><svg viewBox="0 0 360 150" role="img" aria-label="A switch changes the VCI using its table">
+<path class="s" d="M4 42 H136 M224 42 H346"/>
+<rect x="136" y="18" width="88" height="48" rx="10" class="fh"/><text x="180" y="47" text-anchor="middle" font-weight="600" font-size="14">Switch</text>
+<text x="132" y="80" text-anchor="end" font-size="11" class="m">port 1</text><text x="228" y="80" font-size="11" class="m">port 3</text>
+<rect x="14" y="30" width="96" height="24" rx="5" class="fc"/><text x="62" y="47" text-anchor="middle" font-size="12">VCI 14 | data</text>
+<rect x="244" y="30" width="96" height="24" rx="5" class="fc"/><text x="292" y="47" text-anchor="middle" font-size="12">VCI 22 | data</text>
+<path class="fa" d="M356 42 l-10 -5 v10z"/>
+<rect x="40" y="92" width="280" height="50" rx="6" class="fc"/>
+<path class="s" d="M180 92 V142 M40 114 H320" stroke-width="1"/>
+<text x="110" y="108" text-anchor="middle" font-size="12">In: port, VCI</text><text x="250" y="108" text-anchor="middle" font-size="12">Out: port, VCI</text>
+<text x="110" y="134" text-anchor="middle" font-size="14" font-weight="600">1, 14</text><text x="250" y="134" text-anchor="middle" font-size="14" font-weight="600">3, 22</text>
+</svg><div class="cap">The switch looks up (port 1, VCI 14), sends the frame out of port 3 and rewrites the label to 22.</div></div>
+<div class="idea">
+<ul>
+<li>A <b>VCI</b> (virtual-circuit identifier) is a small number in each frame. It only means something on one link, between two switches. Each switch swaps it using its table.</li>
+<li>The table entries are created during <b>setup</b> and deleted at <b>teardown</b>.</li>
+</ul>
+</div>
+<div class="exam"><b>Write this</b>
+<p><b>What is a virtual-circuit network? Explain its phases.</b> <span class="mk">(2015-16 Q6c, 6 marks)</span></p>
+<p>A virtual-circuit network is a cross between a circuit-switched network and a datagram network. Like circuit switching, it has setup and teardown phases and all packets of a message follow the same path. Like a datagram network, data is sent in packets, each packet carries an address in its header (a local VCI), and resources are allocated on demand. It is normally implemented in the data-link layer.</p>
+<ol>
+<li><b>Setup phase.</b> The source sends a <i>setup request</i> frame. Each switch on the way makes an entry in its switching table (incoming port and VCI, outgoing port and VCI). The destination returns an <i>acknowledgment</i> frame, which completes the entries.</li>
+<li><b>Data-transfer phase.</b> Every frame follows the same path. At each switch the table gives the outgoing port and the new VCI.</li>
+<li><b>Teardown phase.</b> After the last frame the source sends a <i>teardown request</i>; the destination answers with a <i>teardown confirmation</i>; all switches delete the entries.</li>
+</ol>
+<p><b>What is VCI?</b> <span class="mk">(2015-16 Q4g)</span>: a virtual-circuit identifier, a small number in a frame between two switches that identifies the virtual circuit. It has local scope only and changes from link to link.</p>
+<p><b>Total delay in a datagram network</b> <span class="mk">(2015-16 Q4a)</span>, for a packet through two switches (three links):</p>
+<pre>Total delay = 3T + 3&tau; + w1 + w2
+T = transmission time
+&tau; = propagation time per link
+w = waiting time in each switch</pre>
+<p>Three links, so the packet is transmitted three times and propagates three times, and it waits in two switches. A virtual circuit has <code>3T + 3&tau; + setup delay + teardown delay</code>, and a circuit-switched network has no waiting time at the switches.</p>
+</div>
+<details class="q"><summary>Check 1. The three phases of a virtual-circuit network?</summary><div>Setup, data transfer, teardown.</div></details>
+<details class="q"><summary>Check 2. Is a VCI unique across the whole network?</summary><div>No. It is local to one link and the switch rewrites it at every hop.</div></details>
+<details class="q"><summary>Check 3. A datagram crosses 3 switches (4 links). Total delay?</summary><div><code>4T + 4&tau; + w1 + w2 + w3</code>.</div></details>
+<div class="brk">break: 3 minutes</div>
+
+<h2 id="ch8-s3"><span class="sn">Session 3 of 4</span>Inside a circuit switch: crossbar and three-stage switch</h2>
+<div class="two">
+<div class="pic"><svg viewBox="0 0 280 210" role="img" aria-label="4 by 5 crossbar">
+<g class="s" stroke-width="1.4">
+<path d="M30 40 H250 M30 80 H250 M30 120 H250 M30 160 H250"/>
+<path d="M70 20 V190 M110 20 V190 M150 20 V190 M190 20 V190 M230 20 V190"/>
+</g>
+<g fill="none" stroke="var(--mut)" stroke-width="1.3">
+<circle cx="70" cy="40" r="5"/><circle cx="110" cy="40" r="5"/><circle cx="190" cy="40" r="5"/><circle cx="230" cy="40" r="5"/>
+<circle cx="70" cy="80" r="5"/><circle cx="110" cy="80" r="5"/><circle cx="150" cy="80" r="5"/><circle cx="190" cy="80" r="5"/>
+<circle cx="70" cy="120" r="5"/><circle cx="150" cy="120" r="5"/><circle cx="190" cy="120" r="5"/><circle cx="230" cy="120" r="5"/>
+<circle cx="70" cy="160" r="5"/><circle cx="110" cy="160" r="5"/><circle cx="150" cy="160" r="5"/><circle cx="190" cy="160" r="5"/><circle cx="230" cy="160" r="5"/>
+</g>
+<circle cx="150" cy="40" r="6" class="fb"/><circle cx="230" cy="80" r="6" class="fb"/><circle cx="110" cy="120" r="6" class="fb"/>
+<text x="14" y="44" font-size="12">1</text><text x="14" y="84" font-size="12">2</text><text x="14" y="124" font-size="12">3</text><text x="14" y="164" font-size="12">4</text>
+<text x="140" y="206" text-anchor="middle" class="m">inputs left, outputs down; filled = closed</text>
+</svg><div class="cap">A 4 &times; 5 crossbar has 4 &times; 5 = 20 crosspoints.</div></div>
+<div class="idea" style="margin-top:0">
+<ul>
+<li>A <b>crossbar</b> joins n inputs to m outputs with a grid of tiny switches, the <b>crosspoints</b>. An N &times; N crossbar needs N&sup2; crosspoints. For N = 100 that is 10,000, and most of them sit idle.</li>
+<li>A <b>three-stage switch</b> uses several small crossbars in three columns to cut that number down.</li>
+</ul>
+</div>
+</div>
+<div class="pic"><svg viewBox="0 0 360 330" role="img" aria-label="Three-stage switch, N = 100, n = 10, k = 4"><path d="M98 28.0 L145 26 M215 26 L262 28.0 M98 40.5 L145 92 M215 92 L262 40.5 M98 53.0 L145 158 M215 158 L262 53.0 M98 65.5 L145 224 M215 224 L262 65.5 M98 108.0 L145 42 M215 42 L262 108.0 M98 120.5 L145 108 M215 108 L262 120.5 M98 133.0 L145 174 M215 174 L262 133.0 M98 145.5 L145 240 M215 240 L262 145.5 M98 238.0 L145 58 M215 58 L262 238.0 M98 250.5 L145 124 M215 124 L262 250.5 M98 263.0 L145 190 M215 190 L262 263.0 M98 275.5 L145 256 M215 256 L262 275.5" stroke="var(--acc)" stroke-width="1" fill="none" opacity=".8"/><rect class="fh" x="28" y="16" width="70" height="62" rx="6"/><text x="63.0" y="54" text-anchor="middle" font-size="14" font-weight="600">10 × 4</text><text x="33" y="29" font-size="10.5" class="m">#1</text><rect class="fh" x="262" y="16" width="70" height="62" rx="6"/><text x="297.0" y="54" text-anchor="middle" font-size="14" font-weight="600">4 × 10</text><text x="267" y="29" font-size="10.5" class="m">#1</text><path d="M8 24.0 H28 M8 33.2 H28 M8 42.4 H28 M8 51.599999999999994 H28 M8 60.8 H28 M8 70.0 H28 M332 24.0 H352 M332 33.2 H352 M332 42.4 H352 M332 51.599999999999994 H352 M332 60.8 H352 M332 70.0 H352" stroke="var(--fg)" stroke-width="1" fill="none"/><rect class="fh" x="28" y="96" width="70" height="62" rx="6"/><text x="63.0" y="134" text-anchor="middle" font-size="14" font-weight="600">10 × 4</text><text x="33" y="109" font-size="10.5" class="m">#2</text><rect class="fh" x="262" y="96" width="70" height="62" rx="6"/><text x="297.0" y="134" text-anchor="middle" font-size="14" font-weight="600">4 × 10</text><text x="267" y="109" font-size="10.5" class="m">#2</text><path d="M8 104.0 H28 M8 113.2 H28 M8 122.4 H28 M8 131.6 H28 M8 140.8 H28 M8 150.0 H28 M332 104.0 H352 M332 113.2 H352 M332 122.4 H352 M332 131.6 H352 M332 140.8 H352 M332 150.0 H352" stroke="var(--fg)" stroke-width="1" fill="none"/><rect class="fh" x="28" y="226" width="70" height="62" rx="6"/><text x="63.0" y="264" text-anchor="middle" font-size="14" font-weight="600">10 × 4</text><text x="33" y="239" font-size="10.5" class="m">#10</text><rect class="fh" x="262" y="226" width="70" height="62" rx="6"/><text x="297.0" y="264" text-anchor="middle" font-size="14" font-weight="600">4 × 10</text><text x="267" y="239" font-size="10.5" class="m">#10</text><path d="M8 234.0 H28 M8 243.2 H28 M8 252.4 H28 M8 261.6 H28 M8 270.8 H28 M8 280.0 H28 M332 234.0 H352 M332 243.2 H352 M332 252.4 H352 M332 261.6 H352 M332 270.8 H352 M332 280.0 H352" stroke="var(--fg)" stroke-width="1" fill="none"/><rect class="fc" x="145" y="16" width="70" height="54" rx="6"/><text x="180.0" y="49" text-anchor="middle" font-size="14" font-weight="600">10 × 10</text><rect class="fc" x="145" y="82" width="70" height="54" rx="6"/><text x="180.0" y="115" text-anchor="middle" font-size="14" font-weight="600">10 × 10</text><rect class="fc" x="145" y="148" width="70" height="54" rx="6"/><text x="180.0" y="181" text-anchor="middle" font-size="14" font-weight="600">10 × 10</text><rect class="fc" x="145" y="214" width="70" height="54" rx="6"/><text x="180.0" y="247" text-anchor="middle" font-size="14" font-weight="600">10 × 10</text><text x="63.0" y="212" text-anchor="middle" font-size="22" font-weight="700">⋮</text><text x="297.0" y="212" text-anchor="middle" font-size="22" font-weight="700">⋮</text><text x="63.0" y="310" text-anchor="middle" font-size="13" font-weight="600">Stage 1</text><text x="63.0" y="326" text-anchor="middle" font-size="12">10 of 10×4</text><text x="180.0" y="310" text-anchor="middle" font-size="13" font-weight="600">Stage 2</text><text x="180.0" y="326" text-anchor="middle" font-size="12">4 of 10×10</text><text x="297.0" y="310" text-anchor="middle" font-size="13" font-weight="600">Stage 3</text><text x="297.0" y="326" text-anchor="middle" font-size="12">10 of 4×10</text></svg><div class="cap">The P8-12 switch: N = 100, n = 10, k = 4. Three of the ten outer crossbars are drawn.</div></div>
+<div class="idea">
+<p>Read the picture left to right:</p>
+<ul>
+<li><b>Stage 1</b>: N/n = 100/10 = <b>10</b> crossbars, each <b>n &times; k = 10 &times; 4</b>. Each takes 10 inputs but has only k = 4 ways out.</li>
+<li><b>Stage 2</b>: <b>k = 4</b> crossbars, each <b>(N/n) &times; (N/n) = 10 &times; 10</b>. Each middle crossbar has one line from every first-stage crossbar.</li>
+<li><b>Stage 3</b>: 10 crossbars, each <b>k &times; n = 4 &times; 10</b>, the mirror of stage 1.</li>
+</ul>
+</div>
+<pre>Crosspoints = 2kN + k(N/n)&sup2;
+           = 2(4)(100) + 4(100/10)&sup2;
+           = 800 + 400 = 1200</pre>
+<div class="exam"><b>Write this</b>
+<p><b>2016-17 Q3b (10 marks), 2019-20 Q2f, 2015-16 Q5c.</b> "Three-stage space-division switch with N = 100. 10 crossbars at the first and third stages and 4 crossbars at the middle stage."</p>
+<ol>
+<li><b>Configuration diagram</b>: draw the picture above. Label every box with its size (10&times;4, 10&times;10, 4&times;10) and write n = 10, k = 4, N/n = 10.</li>
+<li><b>Total crosspoints</b>: stage 1: 10 &times; (10 &times; 4) = 400. Stage 2: 4 &times; (10 &times; 10) = 400. Stage 3: 10 &times; (4 &times; 10) = 400. Total = <b>1200</b>.</li>
+<li><b>Simultaneous connections</b>: each first-stage crossbar has only k = 4 outputs, so only 4 of its 10 inputs can be connected at once. 10 &times; 4 = <b>40</b>.</li>
+<li><b>Single 100 &times; 100 crossbar</b>: all <b>100</b> inputs can be connected at once (at the cost of 10,000 crosspoints).</li>
+<li><b>Blocking factor</b> = 40 / 100 = <b>0.4</b>. Only 40% of the inputs can be served at the same time.</li>
+</ol>
+<p>For "Design a three-stage 100 &times; 100 switch with k = 4 and n = 10": give the three stage sizes above, the 1200 crosspoints, and note that this is 12% of the 10,000 a single crossbar needs; the price is blocking.</p>
+</div>
+<div class="idea">
+<p><b>Blocking</b> means a new connection is refused even though its output is free, because every path through the middle stage is busy. Fewer crosspoints buys you blocking.</p>
+<p><b>Clos criterion</b> (no blocking): <code>n = &radic;(N/2)</code>, <code>k = 2n &minus; 1</code>, crosspoints &ge; <code>4N(&radic;(2N) &minus; 1)</code>.</p>
+</div>
+<div class="trap"><b>Textbook typo.</b> Forouzan Example 8.4 (Clos, N = 200) prints 9,500 crosspoints. The right answer is 15,200: n = 10, k = 19, 2(19)(200) + 19(20)&sup2; = 7600 + 7600.</div>
+<details class="q"><summary>Check 1. N = 200, n = 10, k = 4. Crosspoints?</summary><div><code>2(4)(200) + 4(20)&sup2; = 1600 + 1600 = 3200</code>.</div></details>
+<details class="q"><summary>Check 2. Same switch: how many simultaneous connections?</summary><div>N/n = 20 first-stage crossbars, each passes k = 4: <b>80</b>.</div></details>
+<details class="q"><summary>Check 3. Single crossbar for N = 200?</summary><div>200&sup2; = 40,000 crosspoints, 200 connections.</div></details>
+<div class="brk">break: 3 minutes</div>
+
+<h2><span class="sn">Session 4 of 4</span>Banyan, TSI and packet switches (short)</h2>
+<div class="exam"><b>Write this</b>
+<p><b>Banyan switch</b> <span class="mk">(2015-16 Q4h fill-in)</span>: "For n inputs and n outputs, a Banyan switch has <b>log<sub>2</sub> n</b> stages with <b>n/2</b> microswitches at each stage." Example: 8 &times; 8 has 3 stages of 4 microswitches. Each stage routes by one bit of the output port number, highest bit first.</p>
+<p><b>Time-division switch, TSI</b> (time-slot interchange): the slots arriving in a TDM frame are written into RAM in order and read out in the order the connections need, so the data of input 1 can leave in the slot of output 3.</p>
+<p><b>Packet switch, four components</b>: input ports, output ports, routing processor, switching fabric.</p>
+</div>
+<details class="q"><summary>Check. 16 &times; 16 Banyan switch: stages and microswitches per stage?</summary><div>log<sub>2</sub> 16 = 4 stages, 16/2 = 8 microswitches each.</div></details>
+
+<div class="card">
+<h3 style="margin-top:2px">Ch 8 doomsday box</h3>
+<ul>
+<li>Circuit = reserve a path (physical layer). Datagram = each packet alone, no setup (network layer). Virtual circuit = setup, same path, VCI labels (data-link layer).</li>
+<li>VC phases: setup, data transfer, teardown. VCI = local label, rewritten at each switch.</li>
+<li>Datagram delay with 2 switches: <code>3T + 3&tau; + w1 + w2</code>.</li>
+<li>Three-stage: <code>2kN + k(N/n)&sup2;</code>. N = 100, n = 10, k = 4 gives 1200 crosspoints, 40 connections, 100 for a single crossbar, blocking 0.4.</li>
+<li>Banyan: log<sub>2</sub> n stages, n/2 microswitches each.</li>
+</ul>
+</div>
+</section>
+
+<!-- ===================================================== CH 12 -->
+<section class="tab" id="ch12">
+<p class="eyebrow">Forouzan ch 12 &middot; 5 sessions &middot; about 60 min</p><h1>Ch 12 Media access control, from zero</h1>
+<p class="sub">Five sessions, about an hour. The finals asked CDMA with Walsh codes, "define CSMA/CD", and "CSMA/CD vs CSMA/CA". ALOHA numbers are the textbook's favourite examples, so they are here too.</p>
+
+<h2><span class="sn">Session 1 of 5</span>The problem, and the map</h2>
+<div class="idea">
+<ul>
+<li>Many stations share <b>one</b> link: one cable (a bus) or the same air. If two talk at once, the signals mix and both are lost. That is a <b>collision</b>.</li>
+<li>The <b>media access control</b> (MAC) sublayer of the data-link layer decides who may send when.</li>
+<li>Three families: <b>free-for-all</b> and deal with collisions (random access), <b>take turns</b> by permission (controlled access), or <b>split the channel</b> by frequency, time or code (channelization).</li>
+</ul>
+</div>
+<div class="pic"><svg viewBox="0 0 360 206" role="img" aria-label="Taxonomy of multiple-access protocols">
+<rect class="fh" x="75" y="6" width="210" height="30" rx="8"/><text x="180" y="26" text-anchor="middle" font-weight="600" font-size="14">Multiple-access protocols</text>
+<path class="s" d="M180 36 V48 H60 V60 M180 48 V60 M180 48 H300 V60"/>
+<rect class="fc" x="4" y="60" width="112" height="44" rx="8"/><text x="60" y="78" text-anchor="middle" font-weight="600" font-size="13">Random</text><text x="60" y="95" text-anchor="middle" font-weight="600" font-size="13">access</text>
+<rect class="fc" x="124" y="60" width="112" height="44" rx="8"/><text x="180" y="78" text-anchor="middle" font-weight="600" font-size="13">Controlled</text><text x="180" y="95" text-anchor="middle" font-weight="600" font-size="13">access</text>
+<rect class="fc" x="244" y="60" width="112" height="44" rx="8"/><text x="300" y="78" text-anchor="middle" font-weight="600" font-size="13">Channel-</text><text x="300" y="95" text-anchor="middle" font-weight="600" font-size="13">ization</text>
+<g font-size="13"><text x="14" y="128">ALOHA</text><text x="14" y="150">CSMA</text><text x="14" y="172">CSMA/CD</text><text x="14" y="194">CSMA/CA</text>
+<text x="134" y="128">Reservation</text><text x="134" y="150">Polling</text><text x="134" y="172">Token passing</text>
+<text x="254" y="128">FDMA</text><text x="254" y="150">TDMA</text><text x="254" y="172">CDMA</text></g>
+</svg><div class="cap">Random access can have collisions; controlled access and channelization cannot.</div></div>
+<details class="q"><summary>Check 1. Is polling random access, controlled access or channelization?</summary><div>Controlled access.</div></details>
+<details class="q"><summary>Check 2. Which family is CDMA in?</summary><div>Channelization.</div></details>
+<details class="q"><summary>Check 3. Why can collisions happen in random access but not in controlled access?</summary><div>In random access nobody asks permission, so two stations can send at once. In controlled access a station sends only when it has the right (its reservation, the poll, or the token).</div></details>
+<div class="brk">break: 1 minute</div>
+
+<h2><span class="sn">Session 2 of 5</span>ALOHA: just send</h2>
+<div class="pic"><svg viewBox="0 0 360 172" role="img" aria-label="Pure ALOHA vulnerable time">
+<path class="s" d="M8 112 H346"/><path d="M354 112 l-9 -5 v10z" style="fill:var(--fg)"/>
+<path class="t" d="M70 8 V118 M170 8 V118 M270 8 V118"/>
+<rect x="86" y="12" width="100" height="22" rx="3" fill="var(--acc2)" opacity=".8"/><text x="136" y="28" text-anchor="middle" font-size="13" style="fill:#fff">A</text>
+<rect x="170" y="44" width="100" height="22" rx="3" fill="var(--acc)" opacity=".85"/><text x="220" y="60" text-anchor="middle" font-size="13" style="fill:#fff">B</text>
+<rect x="250" y="76" width="100" height="22" rx="3" fill="var(--acc2)" opacity=".8"/><text x="300" y="92" text-anchor="middle" font-size="13" style="fill:#fff">C</text>
+<text x="70" y="132" text-anchor="middle" font-size="12">t &minus; Tfr</text><text x="170" y="132" text-anchor="middle" font-size="12">t</text><text x="270" y="132" text-anchor="middle" font-size="12">t + Tfr</text>
+<path class="a" d="M70 146 H270 M70 140 V152 M270 140 V152" stroke-width="1.5"/>
+<text x="170" y="166" text-anchor="middle" font-size="13" font-weight="600">vulnerable time = 2 &times; Tfr</text>
+</svg><div class="cap">B sends at time t. A's end hits B's start; C's start hits B's end. Any frame starting between t &minus; Tfr and t + Tfr collides with B.</div></div>
+<div class="idea">
+<ul>
+<li><b>Pure ALOHA</b>: send whenever you have a frame. Wait for an acknowledgment. No ACK after a timeout (2 &times; Tp) means a collision: wait a random <b>backoff</b> and resend. Give up after Kmax = 15 tries.</li>
+<li><b>Slotted ALOHA</b>: time is cut into slots of one frame time, and you may start only at the beginning of a slot. That halves the danger window.</li>
+<li><b>Vulnerable time</b> = the window in which another frame would collide with yours.</li>
+</ul>
+</div>
+<pre>Tfr = frame size / bit rate
+G   = frames generated per Tfr
+
+Pure ALOHA
+  vulnerable time = 2 x Tfr
+  S = G e^(-2G), max 0.184 at G = 1/2
+Slotted ALOHA
+  vulnerable time = Tfr
+  S = G e^(-G),  max 0.368 at G = 1
+
+Backoff TB = R x Tp (or R x Tfr),
+  R random in 0 .. 2^K - 1</pre>
+<div class="exam"><b>Book examples (12.2 to 12.4)</b>
+<p>200-bit frames on a 200-kbps channel. <b>Tfr</b> = 200 / 200,000 = <b>1 ms</b>. Pure ALOHA vulnerable time = 2 ms; slotted = 1 ms.</p>
+<div class="tw"><table>
+<tr><th>System makes</th><th>G</th><th>Pure S</th><th>Pure: frames survive</th><th>Slotted S</th><th>Slotted: survive</th></tr>
+<tr><td>1000 frames/s</td><td>1</td><td>0.135</td><td>135</td><td>0.368</td><td>368</td></tr>
+<tr><td>500 frames/s</td><td>1/2</td><td>0.184</td><td>92</td><td>0.303</td><td>151</td></tr>
+<tr><td>250 frames/s</td><td>1/4</td><td>0.152</td><td>38</td><td>0.195</td><td>49</td></tr>
+</table></div>
+<p class="small">G = frames per second &times; Tfr (500 &times; 1 ms = 1/2). "Survive" is the book's method: frames per second &times; S. That is what the examiner's key uses, so write it that way. (Strictly, successful frames per second is S / Tfr, which gives 184 instead of 92 and 152 instead of 38; the two agree only at G = 1.)</p>
+</div>
+<details class="q"><summary>Check 1. Pure ALOHA, 1000-bit frames at 1 Mbps. Vulnerable time? (Q12-4)</summary><div>Tfr = 1000 / 10<sup>6</sup> = 1 ms, so vulnerable time = 2 ms.</div></details>
+<details class="q"><summary>Check 2. Same, slotted? (Q12-5)</summary><div>1 ms.</div></details>
+<details class="q"><summary>Check 3. Best possible throughput of each?</summary><div>Pure 18.4% at G = 1/2; slotted 36.8% at G = 1.</div></details>
+<div class="brk">break: 3 minutes</div>
+
+<h2><span class="sn">Session 3 of 5</span>CSMA and CSMA/CD: listen first</h2>
+<div class="idea">
+<ul>
+<li><b>CSMA</b> (carrier sense multiple access): <b>listen before you talk</b>. Sense the line; send only if it is idle.</li>
+<li>Collisions still happen, because a signal takes time to travel. A far station may sense "idle" while your first bits are still on their way. Vulnerable time = <b>propagation time Tp</b>.</li>
+<li><b>What to do when the line is busy</b> (persistence):
+<ul>
+<li><b>1-persistent</b>: keep sensing, send the moment it goes idle. Most collisions. Ethernet uses it.</li>
+<li><b>Nonpersistent</b>: if busy, wait a random time, then sense again. Fewer collisions, but the line sits idle more.</li>
+<li><b>p-persistent</b>: slotted line; when idle, send with probability p, otherwise wait one slot and repeat. A balance of the two.</li>
+</ul></li>
+<li><b>CSMA/CD</b> (collision detection): also <b>listen while you talk</b>. If what you hear differs from what you send, there is a collision: stop, send a short <b>jam signal</b> so everyone knows, back off a random time, try again.</li>
+</ul>
+</div>
+<div class="pic"><svg viewBox="0 0 360 256" role="img" aria-label="CSMA/CD flow">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" style="fill:var(--fg)"/></marker></defs>
+<g font-size="12.5" text-anchor="middle">
+<rect class="fc" x="6" y="6" width="168" height="30" rx="7"/><text x="90" y="26">Frame to send; K = 0</text>
+<rect class="fc" x="6" y="54" width="168" height="30" rx="7"/><text x="90" y="74">Sense: wait until idle</text>
+<rect class="fc" x="6" y="102" width="168" height="30" rx="7"/><text x="90" y="122">Transmit AND listen</text>
+<path class="fh" d="M90 148 L156 172 L90 196 L24 172z"/><text x="90" y="177">Collision?</text>
+<rect class="fc" x="6" y="220" width="168" height="30" rx="7"/><text x="90" y="240">No: success</text>
+<rect class="fc" x="190" y="157" width="164" height="30" rx="7"/><text x="272" y="177">Yes: stop, send JAM</text>
+<rect class="fc" x="190" y="102" width="164" height="30" rx="7"/><text x="272" y="122">K = K + 1; K &gt; 15: abort</text>
+<rect class="fc" x="190" y="54" width="164" height="30" rx="7"/><text x="272" y="74">Wait random backoff</text>
+</g>
+<g class="s" stroke-width="1.4" marker-end="url(#ar)">
+<path d="M90 36 V53"/><path d="M90 84 V101"/><path d="M90 132 V147"/><path d="M90 196 V219"/>
+<path d="M156 172 H189"/><path d="M272 157 V133"/><path d="M272 102 V85"/><path d="M190 69 H175"/>
+</g>
+<text x="98" y="212" font-size="12">no</text><text x="160" y="166" font-size="12">yes</text>
+</svg></div>
+<pre>Rule: Tfr &ge; 2 x Tp
+(still sending when news of the
+ collision comes back)
+
+Example 12.5: 10 Mbps, Tp = 25.6 &micro;s
+Tfr = 2 x 25.6 = 51.2 &micro;s
+min frame = 10 Mbps x 51.2 &micro;s
+          = 512 bits = 64 bytes
+(Ethernet's minimum frame)</pre>
+<div class="exam"><b>Write this: "Define the CSMA/CD process"</b> <span class="mk">(2014-15 Q6c)</span>
+<p>CSMA/CD (carrier sense multiple access with collision detection) is a random-access method in which a station senses the medium before sending and keeps monitoring it while sending, so that it can detect a collision.</p>
+<ol>
+<li>The station senses the channel using a persistence method (1-persistent, nonpersistent or p-persistent) and starts sending when it is idle.</li>
+<li>While transmitting, it keeps listening. Transmission and collision detection run together.</li>
+<li>If no collision is detected until the whole frame is sent, the transmission is successful.</li>
+<li>If a collision is detected, it stops at once and sends a short jamming signal so all stations learn of it.</li>
+<li>It increments the attempt count K. If K exceeds the limit (15) it aborts; otherwise it waits a random backoff time (R &times; slot time, R from 0 to 2<sup>K</sup> &minus; 1) and goes back to step 1.</li>
+</ol>
+<p>The frame must be long enough that Tfr &ge; 2 &times; Tp, or the sender could finish before it hears of the collision. The channel's energy level shows its state: zero (idle), normal (one sender), abnormal, about double (collision). Draw the flow chart above.</p>
+</div>
+<details class="q"><summary>Check 1. Why can CSMA not remove collisions?</summary><div>Propagation delay: a station far away senses idle because the first bits have not reached it yet.</div></details>
+<details class="q"><summary>Check 2. 10 Mbps CSMA/CD, max propagation 25.6 &micro;s. Minimum frame?</summary><div>2 &times; 25.6 = 51.2 &micro;s, times 10 Mbps = 512 bits = 64 bytes.</div></details>
+<details class="q"><summary>Check 3. Which persistence method has the most collisions?</summary><div>1-persistent.</div></details>
+<div class="brk">break: 3 minutes</div>
+
+<h2><span class="sn">Session 4 of 5</span>CSMA/CA: wireless avoids collisions</h2>
+<div class="idea">
+<p>In wireless, a station <b>cannot detect</b> collisions:</p>
+<ol>
+<li>Its own transmission drowns out everything else, so it cannot listen while sending (doing so needs costly hardware).</li>
+<li><b>Hidden station problem</b>: A and C both reach B but not each other, so they cannot hear each other's collision.</li>
+<li>Over distance the signal fades, so a collision at the far end may not be heard.</li>
+</ol>
+<p>So it tries to <b>avoid</b> them, with three tools:</p>
+<ul>
+<li><b>IFS</b> (interframe space): even when the channel is idle, wait a short gap first, in case a far station has already started. A shorter IFS means higher priority.</li>
+<li><b>Contention window</b>: then wait a random number of time slots (the window doubles after each failure). If the channel turns busy, pause the timer, don't restart it.</li>
+<li><b>Acknowledgment</b>: the receiver sends an ACK. No ACK before the timeout means resend.</li>
+</ul>
+<p>Plus the <b>RTS / CTS</b> handshake: the sender asks "request to send", the receiver answers "clear to send". Everyone else who hears either sets its <b>NAV</b> (network allocation vector), a timer that says "the channel is booked for this long, don't sense, don't send".</p>
+</div>
+<div class="exam"><b>Write this: CSMA/CD vs CSMA/CA</b> <span class="mk">(2016-17 Q2f, 2 marks)</span>
+<div class="tw"><table>
+<tr><th></th><th>CSMA/CD</th><th>CSMA/CA</th></tr>
+<tr><td>Idea</td><td>Detects a collision after it happens and recovers</td><td>Avoids collisions before they happen</td></tr>
+<tr><td>Used in</td><td>Wired LANs (traditional Ethernet)</td><td>Wireless LANs (IEEE 802.11)</td></tr>
+<tr><td>How</td><td>Listen while sending; on collision, jam signal and backoff</td><td>IFS, contention window, RTS/CTS with NAV</td></tr>
+<tr><td>Acknowledgment</td><td>Not needed (collision is detected directly)</td><td>Needed (collision cannot be detected)</td></tr>
+<tr><td>When it acts</td><td>After a collision</td><td>Before sending</td></tr>
+</table></div>
+</div>
+<details class="q"><summary>Check 1. Station A has IFS = 5 ms, B has IFS = 7 ms. Who has higher priority? (Q12-22)</summary><div>A. A shorter IFS lets it grab the idle channel first.</div></details>
+<details class="q"><summary>Check 2. Why does CSMA/CA need ACKs but CSMA/CD does not? (Q12-23)</summary><div>CSMA/CD detects a collision itself while sending. A wireless station cannot, so only the ACK tells it the frame arrived.</div></details>
+<details class="q"><summary>Check 3. What is the NAV for? (Q12-24)</summary><div>A timer set by stations that hear RTS or CTS; it keeps them from sending while the channel is reserved.</div></details>
+<div class="brk">break: 3 minutes</div>
+
+<h2><span class="sn">Session 5 of 5</span>Taking turns, splitting the channel, and CDMA</h2>
+<div class="idea">
+<p><b>Controlled access</b> (no collisions):</p>
+<ul>
+<li><b>Reservation</b>: before each round of data frames there is a reservation frame with one mini-slot per station. A station that wants to send marks its slot.</li>
+<li><b>Polling</b>: one <b>primary</b> station controls the others (secondaries). <i>Poll</i>: the primary asks each secondary "anything to send?". <i>Select</i>: the primary tells a secondary "get ready, I am sending to you".</li>
+<li><b>Token passing</b>: stations form a logical ring and pass a special frame, the <b>token</b>. Only the holder may send.</li>
+</ul>
+<p><b>Channelization</b> (no collisions):</p>
+<ul>
+<li><b>FDMA</b>: each station gets its own frequency band. <b>TDMA</b>: each gets its own time slot. <b>CDMA</b>: everybody sends <i>at the same time on the whole band</i>, and codes keep them apart.</li>
+</ul>
+</div>
+<h3>CDMA: everyone talks at once</h3>
+<div class="idea">
+<p>The book's picture: a big room where pairs talk at the same time, each pair in a different language. You only understand your own language; the rest is background. In CDMA the "language" is a <b>chip code</b>.</p>
+<ul>
+<li>Each station gets a code of N chips, each chip +1 or &minus;1. The codes are <b>orthogonal</b>: a code times itself (chip by chip, then add) gives N; times any other code gives 0.</li>
+<li>Data rule: bit <b>1 &rarr; +1</b>, bit <b>0 &rarr; &minus;1</b>, silent &rarr; 0.</li>
+<li>Each station sends (data) &times; (its code). The channel carries the <b>sum</b>.</li>
+<li>To hear station i: multiply the channel by station i's code, add, divide by N. +1 means 1, &minus;1 means 0, 0 means silent.</li>
+</ul>
+</div>
+<p><b>Making the codes: the Walsh table.</b> Start with W<sub>1</sub> = [+1]. Each bigger table is four copies, the bottom-right one negated:</p>
+<pre class="al">W2N = | WN   WN |
+      | WN  -WN |
+
+W2 = | +1 +1 |
+     | +1 -1 |
+
+W4 = | +1 +1 +1 +1 |
+     | +1 -1 +1 -1 |
+     | +1 +1 -1 -1 |
+     | +1 -1 -1 +1 |</pre>
+<div class="exam"><b>Write this</b>
+<p><b>Define CDMA. Find the chips for four stations using a Walsh table</b> <span class="mk">(2016-17 Q2f, 1+2)</span>: CDMA (code-division multiple access) is a channelization method in which one channel occupies the whole bandwidth of the link and all stations send at the same time; each station's data is multiplied by its own orthogonal chip sequence, and a receiver recovers one station's data by multiplying the channel signal by that station's code. Chips from W<sub>4</sub>: station 1 [+1 +1 +1 +1], station 2 [+1 &minus;1 +1 &minus;1], station 3 [+1 +1 &minus;1 &minus;1], station 4 [+1 &minus;1 &minus;1 +1]. (Show W<sub>1</sub> &rarr; W<sub>2</sub> &rarr; W<sub>4</sub>.)</p>
+<p>The number of codes must be a power of 2. 90 stations need N = 2<sup>7</sup> = 128.</p>
+</div>
+<div class="card">
+<p><b>Book example.</b> Stations 1 and 2 send 0, station 3 is silent, station 4 sends 1. Data: &minus;1, &minus;1, 0, +1.</p>
+<pre class="al">st1: -1 x [+1 +1 +1 +1] = [-1 -1 -1 -1]
+st2: -1 x [+1 -1 +1 -1] = [-1 +1 -1 +1]
+st3:  0 x [+1 +1 -1 -1] = [ 0  0  0  0]
+st4: +1 x [+1 -1 -1 +1] = [+1 -1 -1 +1]
+channel (sum)           = [-1 -1 -3 +1]
+
+Station 3 listens to station 2:
+[-1 -1 -3 +1] . [+1 -1 +1 -1]
+  = -1 +1 -3 -1 = -4
+-4 / 4 = -1  =>  bit 0  (correct)</pre>
+</div>
+<div class="exam"><b>2014-15 Q2b: "Define the CDMA process for the user data 011, 100 and spreading codes 0000 and 1010"</b>
+<p>State your mapping first: chip and data 1 &rarr; +1, 0 &rarr; &minus;1. Station A: data 011, code 0000 = [&minus;1 &minus;1 &minus;1 &minus;1]. Station B: data 100, code 1010 = [+1 &minus;1 +1 &minus;1]. Check: A&middot;B = 1 &minus; 1 + 1 &minus; 1 = 0, so they are orthogonal.</p>
+<pre class="al">bit 1: A 0 -> -1: [+1 +1 +1 +1]
+       B 1 -> +1: [+1 -1 +1 -1]
+       channel  = [+2  0 +2  0]
+bit 2: A 1 -> +1: [-1 -1 -1 -1]
+       B 0 -> -1: [-1 +1 -1 +1]
+       channel  = [-2  0 -2  0]
+bit 3: same as bit 2: [-2 0 -2 0]
+
+Decode A (times A's code, / 4):
+ bit 1: -2 -0 -2 -0 = -4 -> -1 -> 0
+ bit 2: +2 +0 +2 +0 = +4 -> +1 -> 1
+ bit 3: +4 -> 1       A = 011 (correct)
+Decode B (times B's code, / 4):
+ bit 1: +2 -0 +2 -0 = +4 -> 1
+ bit 2: -2 -0 -2 -0 = -4 -> 0
+ bit 3: -4 -> 0       B = 100 (correct)</pre>
+<p class="small">If your teacher maps 0 &rarr; +1 instead, both codes flip sign and the decoded data come out the same. Just say which mapping you used. The <a href="#calc">Check</a> tab has a CDMA calculator for both.</p>
+</div>
+<details class="q"><summary>Check 1. Codes for a 2-station network?</summary><div>[+1 +1] and [+1 &minus;1] (rows of W<sub>2</sub>).</div></details>
+<details class="q"><summary>Check 2. In the book example, station 1 listens to silent station 3. What does it get?</summary><div>[&minus;1 &minus;1 &minus;3 +1] &middot; [+1 +1 &minus;1 &minus;1] = &minus;1 &minus; 1 + 3 &minus; 1 = 0. Divided by 4 is 0: silent.</div></details>
+<details class="q"><summary>Check 3. Difference between FDMA and FDM?</summary><div>FDM is a physical-layer technique that combines signals onto one link. FDMA is a data-link access method: each station is given its own band to use on a shared medium.</div></details>
+
+<div class="card">
+<h3 style="margin-top:2px">Ch 12 doomsday box</h3>
+<ul>
+<li>Three families: random (ALOHA, CSMA, CSMA/CD, CSMA/CA), controlled (reservation, polling, token passing), channelization (FDMA, TDMA, CDMA).</li>
+<li>Pure ALOHA: vulnerable 2Tfr, S = Ge<sup>&minus;2G</sup>, max 18.4%. Slotted: Tfr, S = Ge<sup>&minus;G</sup>, max 36.8%.</li>
+<li>CSMA = listen before talk. CD = also listen while talking; jam; backoff. Tfr &ge; 2Tp.</li>
+<li>CA (wireless) = IFS, contention window, ACK, RTS/CTS + NAV. CD wired detects after; CA wireless avoids before.</li>
+<li>CDMA: 1 &rarr; +1, 0 &rarr; &minus;1. Send data &times; code, channel = sum, decode = channel &middot; code / N. Walsh: W<sub>2N</sub> = [W W; W &minus;W].</li>
+</ul>
+</div>
+
+<h2>Insurance: Ch 9 bits the finals asked</h2>
+<p class="small">Your mid-term 2 skipped Ch 9, so it may not be in the final. But 4 of the 5 past finals asked these, and they take 10 minutes.</p>
+<div class="exam"><b>Write this</b>
+<p><b>Why does a router have more than one interface? How many IP and link-layer addresses with three links?</b> <span class="mk">(2015-16 Q5d, 2016-17 Q1c, 2019-20 Q5e)</span>: a router connects two or more links (networks). Each connection to a link is an interface, and an address names a point of attachment, so each interface needs its own addresses. A router connected to three links has <b>3 IP addresses and 3 link-layer addresses</b>.</p>
+<p><b>ARP</b> <span class="mk">(2016-17 Q5e, 5 marks)</span>: the Address Resolution Protocol maps a known IP address to the unknown link-layer (MAC) address on the same link. Host A knows B's IP address but not B's MAC. A <b>broadcasts</b> an ARP request ("who has IP<sub>B</sub>? I am IP<sub>A</sub>, L<sub>A</sub>"). Every node on the link receives it, but only B recognises its IP; B sends an ARP reply <b>unicast</b> to A with L<sub>B</sub>. A stores it and sends its frames to L<sub>B</sub>.</p>
+</div>
+<div class="tw"><table>
+<tr><th>ARP packet field</th><th>Request (A to B)</th><th>Reply (B to A)</th></tr>
+<tr><td>Hardware type</td><td>1 (Ethernet)</td><td>1</td></tr>
+<tr><td>Protocol type</td><td>0x0800 (IPv4)</td><td>0x0800</td></tr>
+<tr><td>Hardware length / protocol length</td><td>6 / 4</td><td>6 / 4</td></tr>
+<tr><td>Operation</td><td>1 (request)</td><td>2 (reply)</td></tr>
+<tr><td>Source hardware address</td><td>L<sub>A</sub></td><td>L<sub>B</sub></td></tr>
+<tr><td>Source protocol address</td><td>IP<sub>A</sub></td><td>IP<sub>B</sub></td></tr>
+<tr><td>Destination hardware address</td><td>all 0s (unknown)</td><td>L<sub>A</sub></td></tr>
+<tr><td>Destination protocol address</td><td>IP<sub>B</sub></td><td>IP<sub>A</sub></td></tr>
+<tr><td>Carried in a frame sent to</td><td>broadcast FF:FF:FF:FF:FF:FF</td><td>unicast L<sub>A</sub></td></tr>
+</table></div>
+<p class="small">That table is the answer to 2015-16 Q6f ("draw the ARP request and response packet").</p>
+<div class="exam"><b>Write this</b>
+<p><b>Unicast and multicast addresses</b> <span class="mk">(2016-17 Q4f, 2019-20 Q4b)</span>: a unicast address identifies one device (one-to-one), e.g. Ethernet <code>4A:30:10:21:10:1A</code>. A multicast address identifies a group (one-to-many), e.g. Ethernet <code>47:20:1B:2E:08:EE</code>. In Ethernet the last bit of the first byte decides: 0 unicast, 1 multicast. Broadcast is all 1s, <code>FF:FF:FF:FF:FF:FF</code>. (IP multicast example: <code>224.0.0.1</code>.)</p>
+<p><b>Physical address is 48 bits. Minimum data-link header size?</b> <span class="mk">(2016-17 Q4b)</span>: the header must carry both the destination and the source link-layer address: 6 + 6 = <b>12 bytes</b>.</p>
+<p><b>Flow of packets at router R1</b> <span class="mk">(2019-20 Q6b)</span>: a router works in only three layers, with a separate data-link and physical layer for each link:</p>
+</div>
+<div class="pic"><svg viewBox="0 0 360 180" role="img" aria-label="Packet flow through a router's layers">
+<rect class="fh" x="64" y="6" width="232" height="50" rx="7"/><text x="180" y="23" text-anchor="middle" font-size="13" font-weight="600">Network</text><text x="180" y="50" text-anchor="middle" font-size="11.5">read dest. IP, pick next hop</text>
+<rect class="fc" x="64" y="64" width="112" height="32" rx="6"/><text x="128" y="85" text-anchor="middle" font-size="12">Link (LAN)</text>
+<rect class="fc" x="64" y="104" width="112" height="32" rx="6"/><text x="128" y="125" text-anchor="middle" font-size="12">Physical</text>
+<rect class="fc" x="184" y="64" width="112" height="32" rx="6"/><text x="232" y="85" text-anchor="middle" font-size="12">Link (P2P)</text>
+<rect class="fc" x="184" y="104" width="112" height="32" rx="6"/><text x="232" y="125" text-anchor="middle" font-size="12">Physical</text>
+<path class="w" d="M6 152 H76 V34 H284 V152 H344"/><path d="M356 152 l-11 -6 v12z" style="fill:var(--wave)"/>
+<text x="6" y="174" font-size="12">from Alice's LAN</text><text x="356" y="174" text-anchor="end" font-size="12">to R2</text>
+</svg><div class="cap">Up through physical and data link (old frame removed), network decides, down through the other link's data link (new frame) and physical.</div></div>
+</section>
+
+<!-- ===================================================== DRAW -->
+<section class="tab" id="draw">
+<p class="eyebrow">Ch 3, 4, 5, 11 &middot; the drawing questions</p><h1>Draw: the questions that are pictures</h1>
+<p class="sub">Line codes came in all five finals, often twice per paper. Scrambling (B8ZS, HDB3) came in four. Your mid-term notes never covered scrambling, so it starts here, gently.</p>
+<p class="toc"><a href="#d-scr">Scrambling</a> <a href="#d-lc">Line-code drawer</a> <a href="#d-dec">Read a waveform</a> <a href="#d-con">Constellations</a> <a href="#d-sw">Stop-and-Wait</a> <a href="#d-spec">Spectrum</a></p>
+
+<h2 id="d-scr">Scrambling: B8ZS and HDB3 (20 minutes)</h2>
+<div class="idea">
+<ul>
+<li>Start from <b>AMI</b>: a 0 is zero volts, and each 1 is a pulse whose polarity <b>alternates</b> (+, &minus;, +, ...). No DC, good. But a long run of 0s is a flat line and the receiver's clock drifts.</li>
+<li><b>Scrambling</b> swaps a long run of zeros for a special pattern of pulses. The pattern contains a deliberate <b>violation</b>: a pulse with the <i>same</i> polarity as the one before, which normal AMI never does. The receiver spots the violation and turns the pattern back into zeros. No extra bits are added.</li>
+<li><b>V</b> (violation) = same polarity as the previous nonzero pulse. <b>B</b> (bipolar) = opposite polarity, the normal AMI rule. Both are relative to the pulse just before them.</li>
+</ul>
+</div>
+<div class="exam"><b>The two rules</b>
+<pre class="al">B8ZS: 8 zeros -> 0 0 0 V B 0 V B
+
+HDB3: 4 zeros -> 0 0 0 V  if ODD
+                 B 0 0 V  if EVEN</pre>
+<p>"Odd" and "even" are the number of nonzero pulses since the last substitution. After each substitution the count restarts at 0 (even).</p>
+<p>HDB3's choice keeps the number of pulses between violations even, so the positives and negatives balance and there is no DC.</p>
+</div>
+<div class="card">
+<p><b>P4-14, asked in four finals</b> (2015-16, 2016-17, 2018-19, 2019-20): scramble <code>11100000000000</code>. The last nonzero level was <b>positive</b>; for HDB3, the number of nonzero pulses is <b>odd</b> after the last substitution.</p>
+<p><b>Step 1, the three 1s (plain AMI).</b> The last pulse was +, so they go <code>&minus; + &minus;</code>.</p>
+<p><b>B8ZS.</b> Then come 8 zeros. The last pulse is &minus;, so V = &minus; and B = +. After that B the next V copies it (+), and the last B is opposite (&minus;). The 3 leftover zeros stay zero.</p>
+<pre>bits : 1 1 1 0 0 0 0 0 0 0 0 0 0 0
+B8ZS : - + - 0 0 0 - + 0 + - 0 0 0
+                   V B   V B</pre>
+<p><b>HDB3.</b> The count was odd before the stream; the three 1s make it odd + 3 = <b>even</b>, so the first 4 zeros become <b>B00V</b>: B opposite the last pulse (&minus;) is +, and V copies it, +. The count restarts at 0 (even), so the next 4 zeros are also B00V: B = &minus;, V = &minus;. Three zeros remain and stay zero.</p>
+<pre>bits : 1 1 1 0 0 0 0 0 0 0 0 0 0 0
+HDB3 : - + - + 0 0 + - 0 0 - 0 0 0
+             B     V B     V</pre>
+<p class="small">Write the count on the paper ("odd + 3 ones = even, so B00V"). Some keys read "odd" as the count right before the zeros; then the first group is <code>0 0 0 &minus;</code> and the next is <code>+ 0 0 +</code>. Showing the count earns the method marks either way.</p>
+<p><b>2016-17 Q3a</b> is the same with a shorter stream, <code>111000000000</code>: B8ZS <code>&minus; + &minus; 0 0 0 &minus; + 0 + &minus; 0</code>, HDB3 <code>&minus; + &minus; + 0 0 + &minus; 0 0 &minus; 0</code>.</p>
+</div>
+<details class="q"><summary>Check 1. In B8ZS, the previous pulse is +. Write the 8-zero pattern.</summary><div><code>0 0 0 + &minus; 0 &minus; +</code> (Forouzan Fig 4.19a).</div></details>
+<details class="q"><summary>Check 2. HDB3: 2 pulses since the last substitution, last pulse &minus;. Four zeros arrive.</summary><div>Even, so B00V: <code>+ 0 0 +</code>.</div></details>
+<details class="q"><summary>Check 3. Which one is used in North America and which outside it?</summary><div>B8ZS in North America, HDB3 outside it (Europe, Asia).</div></details>
+<div class="brk">now draw them</div>
+
+<h2 id="d-lc">Line-code drawer</h2>
+<p>Do it on paper first, then check here. Tap a past question to load it.</p>
+<div class="tool">
+<div class="chips" id="lcPresets"></div>
+<div class="row"><label for="lcBits">Bits</label></div>
+<input type="text" id="lcBits" class="mono" value="11100000000000" inputmode="numeric" autocomplete="off">
+<div class="row">
+<select id="lcScheme" aria-label="Scheme">
+<option value="nrzl">NRZ-L</option><option value="nrzi">NRZ-I</option><option value="rz">RZ (polar)</option>
+<option value="man">Manchester</option><option value="dman">Differential Manchester</option>
+<option value="ami">AMI (bipolar)</option><option value="pseudo">Pseudoternary</option>
+<option value="mlt3">MLT-3</option><option value="b8zs" selected>B8ZS</option><option value="hdb3">HDB3</option>
+<option value="unipolar">Unipolar NRZ</option>
+</select>
+<select id="lcPrev" aria-label="Level before the first bit">
+<option value="1">last level +</option><option value="0">last level 0 (MLT-3: first 1 goes up)</option><option value="-1">last level &minus;</option>
+</select>
+<select id="lcPar" aria-label="HDB3 count before the stream">
+<option value="odd">HDB3: odd before</option><option value="even">HDB3: even before</option>
+</select>
+<button id="lcGo">Draw</button>
+</div>
+<div class="out" id="lcOut"></div>
+<p class="small" id="lcRule"></p>
+</div>
+<div class="bonus">Conventions used (Forouzan 5e): NRZ-L 0 = +, 1 = &minus;. NRZ-I flips at the start of a 1. RZ: 1 = + pulse, 0 = &minus; pulse, back to 0 at mid-bit. Manchester: 0 = high-to-low, 1 = low-to-high. Differential Manchester: always a mid-bit flip; a 0 also flips at the start, a 1 does not. AMI: 0 = 0, 1s alternate. Pseudoternary: 1 = 0, 0s alternate. MLT-3: 0 stays; 1 moves along +, 0, &minus;, 0, + ... For AMI-family schemes "last level +" means the last nonzero pulse was +, so the first pulse is &minus;.</div>
+
+<h2 id="d-dec">Read a waveform (2015-16 Q2b, 2019-20 Q2c)</h2>
+<div class="exam"><b>The two past figures</b>
+<p><b>Pseudoternary</b> (2015-16): read each bit slot. A flat zero slot is a <b>1</b>; any pulse, up or down, is a <b>0</b>. The figure reads zero, up, down, zero, up, down, zero, zero: <b><code>10010011</code></b>.</p>
+<p><b>Return-to-zero</b> (both papers, same figure): a pulse <i>up</i> then back to zero is a <b>1</b>; <i>down</i> then back is a <b>0</b>. The figure has 7 slots: up, down, down, up, up, down, down: <b><code>1001100</code></b>. The paper says "8-bit" but only 7 slots are drawn; write 7 bits and say so in one line.</p>
+</div>
+
+<h2 id="d-con">Constellation diagrams</h2>
+<p>Rules: the distance from the centre is the <b>peak amplitude</b>, the angle from the +I axis is the <b>phase</b>. Points only on the I axis at different distances: ASK. Same distance, different angles: PSK. Both differ: QAM.</p>
+<div class="two" id="conGrid"></div>
+<div class="exam"><b>P5-5 (TT2 2025): read the dots</b>
+<div class="tw"><table>
+<tr><th>Points (I, Q)</th><th>Peak amplitude</th><th>Type</th></tr>
+<tr><td>(2, 0), (3, 0)</td><td>2 and 3</td><td>ASK (two amplitudes, one phase)</td></tr>
+<tr><td>(3, 0), (&minus;3, 0)</td><td>3</td><td>BPSK (one amplitude, 0&deg; and 180&deg;)</td></tr>
+<tr><td>(&plusmn;2, &plusmn;2), four points</td><td>&radic;(2&sup2; + 2&sup2;) = 2.83</td><td>QPSK (45&deg;, 135&deg;, 225&deg;, 315&deg;)</td></tr>
+<tr><td>(0, 2), (0, &minus;2)</td><td>2</td><td>BPSK on the Q carrier (90&deg; and 270&deg;)</td></tr>
+</table></div>
+<p class="small">2015-16 printed "16-QAM, two amplitudes 2 and 5, and four phases". Two times four is only 8 points. Write that, then draw 2 amplitudes &times; 8 phases (as shown above).</p>
+</div>
+
+<h2 id="d-sw">Stop-and-Wait flow diagrams</h2>
+<div class="idea">
+<ul>
+<li>Frames are numbered 0, 1, 0, 1 ... (modulo 2). The <b>ACK number is the number of the next frame expected</b>: after Frame 0 the receiver sends ACK 1.</li>
+<li>The sender keeps a copy and starts a <b>timer</b>. No ACK before the time-out: resend the same frame.</li>
+<li>If the receiver gets a frame it already has (because its ACK was lost), it <b>discards</b> the duplicate and sends the ACK again.</li>
+</ul>
+</div>
+<p><b>2016-17 Q3c</b> (6 marks): Frame 0 lost; Frame 0 resent and acknowledged; Frame 1 sent and acknowledged but the ACK lost; Frame 1 resent and acknowledged.</p>
+<div class="pic" id="sw1"></div>
+<p><b>2019-20 Q6c</b> (5 marks): same start, then "Frame 1 is resent, but it is timed-out", then "Frame 1 is resent and acknowledged".</p>
+<div class="pic" id="sw2"></div>
+<p class="small">"Resent but timed-out" is drawn here as the resent frame being lost, so the timer expires again. If you read it as "the ACK came back too late", draw the ACK arriving after the time-out; either way the sender resends Frame 1.</p>
+<div class="exam"><b>Write this: "Explain Stop-and-Wait protocol"</b> <span class="mk">(2016-17 Q3c(i), 4 marks)</span>
+<p>Stop-and-Wait is a connection-oriented data-link protocol with flow and error control. The sender sends one frame and waits for an acknowledgment before sending the next. Each frame carries a CRC; a corrupted frame is silently discarded. The sender keeps a copy of the frame and starts a timer; if the timer expires before an ACK arrives, it resends the frame. Frames are numbered with a 1-bit sequence number (0, 1), and the ACK carries the number of the next frame expected, so duplicates caused by lost ACKs can be detected and discarded.</p>
+<p><b>ACK-3 and NAK-3</b> <span class="mk">(2014-15 Q1b(v))</span>: ACK-3 means frames up to 2 arrived safely and the receiver expects frame 3. NAK-3 means frame 3 was damaged or lost, so send frame 3 again.</p>
+</div>
+
+<h2 id="d-spec">Spectrum drawings</h2>
+<div class="idea">
+<ul>
+<li>Frequency domain = horizontal axis is frequency, vertical is peak amplitude. A periodic signal is a set of <b>spikes</b>, one per sine wave, with the spike's height equal to that sine's amplitude.</li>
+<li><b>Bandwidth = highest frequency &minus; lowest frequency.</b></li>
+<li>A non-periodic signal has a <b>continuous</b> spectrum: draw a smooth curve, not spikes.</li>
+</ul>
+</div>
+<div class="pic" id="spec1"></div>
+<p class="small">2014-15 Q1a(iv): sines at 500, 200, 600, 800, 1100 Hz, all 10 V. Bandwidth = 1100 &minus; 200 = <b>900 Hz</b>.</p>
+<div class="pic" id="spec2"></div>
+<p class="small">2018-19 Q2d: 200, 400, 550, 700, 900 Hz with 5, 5, 10, 5, 5 V. Bandwidth = 900 &minus; 200 = <b>700 Hz</b>.</p>
+<div class="pic" id="spec3"></div>
+<p class="small">2016-17 Q5c, 2019-20 Q2b: non-periodic, 10 to 30 kHz, 10 V at the ends, 40 V at 20 kHz. A continuous hump; bandwidth = <b>20 kHz</b>.</p>
+<p class="small">2016-17 Q2a (three sine waves in a figure, 1 s window): count the cycles of each wave in the 1 s window to get its frequency in Hz, read its peak for the amplitude, then draw one spike for each.</p>
+</section>
+
+<!-- ===================================================== BANK -->
+<section class="tab" id="bank">
+<p class="eyebrow">5 past finals &middot; 2014-15 to 2019-20</p><h1>Past questions, every one, with the answer</h1>
+<p class="sub">From the 2014-15, 2015-16, 2016-17, 2018-19 and 2019-20 finals (tags F15 to F20). Read the question, say your answer out loud, then tap. Re-learn only the ones you miss. Ch 7, 8, 12 and 9 answers live in their own tabs.</p>
+<p class="toc"><a href="#b1">Ch 1-2</a> <a href="#b3">Ch 3</a> <a href="#b4">Ch 4</a> <a href="#b5">Ch 5</a> <a href="#b6">Ch 6</a> <a href="#b10">Ch 10</a> <a href="#b11">Ch 11</a></p>
+
+<h2 id="b1">Ch 1-2 Introduction and network models</h2>
+<details class="q"><summary>Five components of a data communication system. <span class="tag">F15</span><span class="tag">F16</span></summary><div>Message, sender, receiver, transmission medium, protocol.</div></details>
+<details class="q"><summary>Seven devices in a mesh. How many cables? <span class="tag">F16</span> / n devices: links for mesh and ring? <span class="tag">F17</span></summary><div>Mesh: n(n &minus; 1)/2 = 7 &times; 6 / 2 = <b>21</b>. Ring: n links.</div></details>
+<details class="q"><summary>Four computers, only four lengths of cable. Which topology? <span class="tag">F20</span></summary><div><b>Ring</b>: each device links to its two neighbours, 4 links for 4 devices. (A mesh would need 6; a star also uses 4 cables but needs a hub.)</div></details>
+<details class="q"><summary>Five devices: what happens if one connection fails, in mesh, star, bus, ring? <span class="tag">F19</span></summary><div>Mesh (10 links): only that one link is lost; the others still work and traffic can go round. Star: only the device on that link is cut off. Bus: if the backbone cable breaks, the whole network stops (a drop line only loses its device). Ring: one break stops the whole ring, because signals go one way round (unless it is a dual ring).</div></details>
+<details class="q"><summary>Three criteria for an effective network. <span class="tag">F17</span></summary><div>Performance (transit and response time, throughput, delay), reliability (how often it fails, recovery time, robustness), security (protection from unauthorised access and damage, recovery from loss).</div></details>
+<details class="q"><summary>Two instances of networks in daily life. <span class="tag">F20</span></summary><div>Any two: mobile banking and bKash payments, video calls and messaging, online classes, ATM withdrawals, ride booking.</div></details>
+<details class="q"><summary>internet vs Internet. <span class="tag">F19</span></summary><div>An internet (small i) is any two or more networks connected so they can communicate. The Internet (capital I) is the particular worldwide internet of millions of networks using TCP/IP.</div></details>
+<details class="q"><summary>Why is a DNS server necessary? <span class="tag">F15</span></summary><div>People use names (www.sust.edu); the network delivers by IP address. DNS maps host names to IP addresses, so users never need to remember the numbers.</div></details>
+<details class="q"><summary>Layers of the OSI model. <span class="tag">F15</span></summary><div>Bottom to top: Physical, Data link, Network, Transport, Session, Presentation, Application. ("Please Do Not Throw Sausage Pizza Away".)</div></details>
+<details class="q"><summary>Which layer does process-to-process delivery? Another function of it. <span class="tag">F15</span> / Host-to-host delivery? <span class="tag">F19</span></summary><div>Process-to-process: <b>transport</b> layer. Other functions: port addressing, segmentation and reassembly, connection control, flow control, error control. Host-to-host: <b>network</b> layer.</div></details>
+<details class="q"><summary>Logical vs physical address, one example each. <span class="tag">F15</span> / Bits in a LAN physical address, example. <span class="tag">F16</span></summary><div>A <b>physical</b> (link-layer, MAC) address identifies a node on its own link and is used by the data-link layer: 48 bits in Ethernet, e.g. <code>07:01:02:01:2C:4B</code>. A <b>logical</b> (IP) address identifies a host across the whole Internet and is used by the network layer: 32 bits in IPv4, e.g. <code>192.168.1.10</code>.</div></details>
+<details class="q"><summary>You change the LAN technology. Which TCP/IP layers change? <span class="tag">F16</span></summary><div>Only the <b>physical and data-link</b> layers. They are link-specific; the network layer and above are unchanged.</div></details>
+<details class="q"><summary>Explain the TCP/IP protocol architecture. <span class="tag">F15</span><span class="tag">F16</span> (6 to 7 marks)</summary><div>
+<p>A hierarchical suite of five layers; each layer uses the services of the one below. Draw the stack:</p>
+<div class="tw"><table>
+<tr><th>Layer</th><th>Unit</th><th>Job</th><th>Examples</th></tr>
+<tr><td>Application</td><td>message</td><td>services to the user</td><td>HTTP, SMTP, FTP, DNS</td></tr>
+<tr><td>Transport</td><td>segment / user datagram</td><td>process-to-process delivery, port numbers, flow and error control</td><td>TCP, UDP, SCTP</td></tr>
+<tr><td>Network</td><td>datagram</td><td>host-to-host delivery, logical (IP) addressing, routing</td><td>IP, ICMP, IGMP</td></tr>
+<tr><td>Data link</td><td>frame</td><td>hop-to-hop delivery, framing, link-layer addressing, error and flow control, media access</td><td>Ethernet, PPP</td></tr>
+<tr><td>Physical</td><td>bits</td><td>turn bits into signals on the medium</td><td>line coding, cables</td></tr>
+</table></div>
+<p>The top three layers are end-to-end (only in hosts); the bottom two are hop-to-hop (also in routers and switches).</p></div></details>
+<details class="q"><summary>Contrast OSI with TCP/IP, show the correspondence, why TCP/IP won. <span class="tag">F16</span> (3+2+1)</summary><div>
+<p>OSI has 7 layers, TCP/IP has 5. OSI's session, presentation and application layers together correspond to the TCP/IP application layer; transport, network, data link and physical match one to one. OSI is a model; TCP/IP is a working protocol suite.</p>
+<p>Why TCP/IP: (1) OSI was finished after TCP/IP was already in place, and changing would have cost a lot; (2) some OSI layers (presentation, session) were never fully defined; (3) implementations of OSI did not perform well enough to replace TCP/IP.</p></div></details>
+<details class="q"><summary>Two responsibilities of the network layer. <span class="tag">F17</span></summary><div>Logical (IP) addressing and routing. (Also packetizing and forwarding.)</div></details>
+<details class="q"><summary>Responsibilities of the data-link and transport layers of OSI. <span class="tag">F19</span></summary><div>Data link: framing, physical addressing, flow control, error control, access control (who uses a shared link). Transport: port (service-point) addressing, segmentation and reassembly, connection control, end-to-end flow control and error control.</div></details>
+<details class="q"><summary>Four levels of addressing with their TCP/IP layers. <span class="tag">F19</span></summary><div>Physical (link-layer) address at the data-link layer, e.g. 48-bit MAC. Logical (IP) address at the network layer, 32-bit IPv4. Port address at the transport layer, 16 bits, e.g. 80. Specific (application) address at the application layer, e.g. an e-mail address or URL.</div></details>
+<details class="q"><summary>What is a peer-to-peer process? <span class="tag">F19</span></summary><div>Processes on two machines that talk at the same layer are peers. Each layer communicates logically with its peer using that layer's protocol; physically the data goes down the layers at the sender and up at the receiver.</div></details>
+<details class="q"><summary>Two reasons to use UDP rather than TCP. <span class="tag">F17</span></summary><div>No connection setup, so less delay; tiny 8-byte header and no flow or error control overhead. Good for real-time voice and video, simple request-reply like DNS, and multicasting.</div></details>
+<details class="q"><summary>Two application-layer protocols. <span class="tag">F20</span></summary><div>HTTP, FTP, SMTP, DNS, TELNET (any two).</div></details>
+
+<h2 id="b3">Ch 3 Data and signals</h2>
+<pre>dB    = 10 log10(P2/P1)
+SNR   = Psignal / Pnoise
+SNRdB = 10 log10 SNR
+Nyquist (noiseless): N = 2 x B x log2 L
+Shannon (noisy):     C = B x log2(1 + SNR)
+                     (SNR as a ratio, not dB)
+Propagation  = distance / speed
+Transmission = message bits / bandwidth
+Bandwidth-delay product = bandwidth x delay</pre>
+<details class="q"><summary>Shannon: telephone line 300 to 3300 Hz, signal 40 mW, noise 12.65 &micro;W. Capacity, highest bit rate, how to go faster? <span class="tag hot">F15</span><span class="tag hot">F16</span></summary><div>
+<p><b>Shannon capacity</b> is the highest data rate a noisy channel can carry: C = B log<sub>2</sub>(1 + SNR).</p>
+<pre>B   = 3300 - 300 = 3000 Hz
+SNR = 40 mW / 12.65 uW = 3162
+C   = 3000 x log2(1 + 3162)
+    = 3000 x 11.62 = 34,860 bps (34.9 kbps)</pre>
+<p>The highest bit rate is this capacity. To send faster, increase the bandwidth of the line or improve the SNR (stronger signal, less noise). Adding signal levels cannot beat Shannon.</p></div></details>
+<details class="q"><summary>Sampling rate of a low-pass signal is 50,000; SNR 63. Bit rate and signal levels? <span class="tag">F15</span> / 10 MHz channel, SNR 63? <span class="tag">F19</span></summary><div>
+<p>The two-step dance (book Example 3.41): Shannon first for the ceiling, then pick a rate below it, then Nyquist for the levels.</p>
+<pre>fs = 2 fmax  ->  fmax = 25 kHz
+low-pass, so B = 25 kHz
+C = 25,000 x log2(64) = 150 kbps (limit)
+pick 100 kbps:
+  100,000 = 2 x 25,000 x log2 L
+  log2 L = 2  ->  L = 4
+(the full 150 kbps gives log2 L = 3, L = 8)
+
+10 MHz, SNR 63:
+  C = 10 MHz x 6 = 60 Mbps; pick 40 Mbps
+  40 M = 2 x 10 M x log2 L  ->  L = 4</pre></div></details>
+<details class="q"><summary>265 kbps over a noiseless 20 kHz channel. Levels? <span class="tag">F17</span> / Nyquist bit rate formula? <span class="tag">F17</span><span class="tag">F20</span></summary><div><pre>BitRate = 2 x B x log2 L
+265,000 = 2 x 20,000 x log2 L
+log2 L = 6.625  ->  L = 98.7</pre>Not a power of 2: use 128 levels (rate becomes 280 kbps) or cut to 64 levels (240 kbps).</div></details>
+<details class="q"><summary>What does the Nyquist theorem have to do with communications? <span class="tag">F19</span></summary><div>It gives the maximum bit rate of a noiseless channel (2B log<sub>2</sub> L), and its sampling form (fs &ge; 2 f<sub>max</sub>) says how fast to sample an analog signal so it can be rebuilt, which is the basis of PCM.</div></details>
+<details class="q"><summary>Signal 10 mW, noise 1 &micro;W: SNR and SNRdB? <span class="tag hot">F15</span><span class="tag hot">F19</span> / 1 mW and 1 &micro;W? <span class="tag">F17</span> / A noiseless channel? <span class="tag">F20</span></summary><div>10 mW / 1 &micro;W: SNR = 10,000, SNRdB = 10 log 10,000 = <b>40 dB</b>. 1 mW / 1 &micro;W: 1000, <b>30 dB</b>. Noiseless: noise = 0, so SNR = &infin; and SNRdB = &infin;.</div></details>
+<details class="q"><summary>Power reduced to one-fourth: attenuation? <span class="tag">F15</span> / &minus;10 dB from 20 W? <span class="tag">F16</span> / 100 W to 90 W? <span class="tag">F17</span> / &minus;0.3 dB/km, 2 mW, 10 km? <span class="tag">F19</span></summary><div><pre>1/4:     10 log(0.25) = -6 dB
+-10 dB:  -10 = 10 log(P2/20)
+         P2 = 2 W
+100->90: 10 log(90/100) = -0.46 dB
+cable:   -0.3 x 10 = -3 dB
+         P = 2 x 10^(-0.3) = 1 mW (half)</pre></div></details>
+<details class="q"><summary>What is attenuation, how do we overcome it? <span class="tag">F15</span> / Define attenuation and distortion <span class="tag">F17</span><span class="tag">F19</span> / Three transmission impairments <span class="tag">F19</span></summary><div><b>Attenuation</b>: loss of signal energy as it travels; part of it becomes heat in the medium. Overcome it with amplifiers (analog) or repeaters that regenerate the signal (digital). <b>Distortion</b>: the signal changes shape, because each frequency component travels at its own speed and arrives with a different delay. The three impairments: <b>attenuation, distortion, noise</b>.</div></details>
+<details class="q"><summary>What is dBm? <span class="tag">F15</span></summary><div>Power in decibels relative to 1 milliwatt: dBm = 10 log<sub>10</sub>(P in mW). 1 mW = 0 dBm; &minus;30 dBm = 0.001 mW.</div></details>
+<details class="q"><summary>Periodic signal of five sines (500, 200, 600, 800, 1100 Hz): bandwidth, spectrum <span class="tag">F15</span> / 200, 400, 550, 700, 900 Hz <span class="tag">F19</span></summary><div>Bandwidth = highest &minus; lowest: 1100 &minus; 200 = <b>900 Hz</b>; 900 &minus; 200 = <b>700 Hz</b>. Spectrum = one spike per sine, height = its amplitude. Drawn in the <a href="#d-spec">Draw</a> tab.</div></details>
+<details class="q"><summary>Non-periodic 10-30 kHz, 10 V at the ends, 40 V at 20 kHz: draw the spectrum. <span class="tag">F17</span><span class="tag">F20</span></summary><div>A continuous hump from 10 kHz (10 V) up to 40 V at 20 kHz and down to 10 V at 30 kHz. Bandwidth 20 kHz. See <a href="#d-spec">Draw</a>.</div></details>
+<details class="q"><summary>Relationship between spectrum and bandwidth. <span class="tag">F16</span> / Periodic vs aperiodic <span class="tag">F17</span></summary><div>The spectrum is the set of all frequency components of a signal; the bandwidth is the width of that set, f<sub>high</sub> &minus; f<sub>low</sub>. A periodic signal repeats every period and has a discrete spectrum (spikes); an aperiodic one never repeats and has a continuous spectrum.</div></details>
+<details class="q"><summary>Low-pass vs band-pass channel. <span class="tag">F16</span><span class="tag">F19</span> / Baseband vs broadband <span class="tag">F17</span></summary><div>A low-pass channel passes frequencies from 0 up to f; a band-pass channel passes f<sub>1</sub> to f<sub>2</sub>, not starting at 0. Baseband sends the digital signal as it is over a low-pass channel; broadband (modulation) turns it into an analog signal on a carrier so it fits a band-pass channel.</div></details>
+<details class="q"><summary>10 Mbps digital signal: bandwidth with one, three, five harmonics? <span class="tag">F16</span> / 6 MHz TV channel: data rates with 1, 3, 5 harmonics? <span class="tag">F20</span></summary><div><pre>1 harmonic: B = N/2
+3 harmonics: B = 3N/2
+5 harmonics: B = 5N/2
+10 Mbps: 5 MHz, 15 MHz, 25 MHz
+6 MHz:   N = 2B = 12 Mbps,
+         2B/3 = 4 Mbps, 2B/5 = 2.4 Mbps</pre></div></details>
+<details class="q"><summary>Page of 24 lines &times; 80 characters, 8 bits each, 100 pages per minute. Bit rate? <span class="tag">F15</span></summary><div><pre>24 x 80 x 8 = 15,360 bits per page
+15,360 x 100 / 60 s = 25,600 bps</pre></div></details>
+<details class="q"><summary>Bits on a link with 2 ms delay at 10 Mbps? <span class="tag">F16</span></summary><div>Bandwidth-delay product: 10 &times; 10<sup>6</sup> &times; 2 &times; 10<sup>&minus;3</sup> = <b>20,000 bits</b>.</div></details>
+<details class="q"><summary>10 Mbps (or 20 Mbps) network passes 12,000 frames/min of 10,000 bits. Throughput? <span class="tag hot">F17</span><span class="tag hot">F19</span><span class="tag hot">F20</span></summary><div>12,000 &times; 10,000 / 60 = <b>2 Mbps</b> (whatever the link's bandwidth).</div></details>
+<details class="q"><summary>2.5 KB message, 1 Gbps, 12,000 km, 2.4 &times; 10<sup>8</sup> m/s: propagation and transmission time <span class="tag">F17</span> / 10,000 km at 2.5 &times; 10<sup>8</sup> <span class="tag">F19</span></summary><div><pre>Propagation  = 12,000,000 / 2.4x10^8
+             = 50 ms
+Transmission = 2500 x 8 / 10^9 = 20 us
+(propagation dominates)
+10,000 km: 10^7 / 2.5x10^8 = 40 ms</pre></div></details>
+<details class="q"><summary>Bandwidth in hertz vs bandwidth in bps; throughput and latency. <span class="tag">F19</span></summary><div>Bandwidth in Hz is the range of frequencies a channel passes; bandwidth in bps is how many bits per second a link can carry. Throughput is how fast data actually gets through (&le; the bandwidth in bps). Latency is how long a whole message takes to arrive: propagation + transmission + queuing + processing.</div></details>
+<details class="q"><summary>Sine offset by 1/3 cycle: phase? <span class="tag">F16</span> / Phase for a sine with the maximum amplitude after 1/4 cycle; draw it <span class="tag">F17</span></summary><div>1/3 &times; 360&deg; = <b>120&deg;</b>. 1/4 &times; 360&deg; = <b>90&deg;</b>: a quarter-cycle shift, so the wave starts at its peak. (If the paper means "a normal sine that reaches its peak at T/4", that is phase 0&deg;; write one line saying which reading you used.)</div></details>
+<details class="q"><summary>At which rate is an analog signal sampled? <span class="tag">F15</span></summary><div>At least twice its highest frequency: fs &ge; 2 f<sub>max</sub> (Nyquist).</div></details>
+
+<h2 id="b4">Ch 4 Digital transmission</h2>
+<details class="q"><summary><b>PCM quantization table</b> (values, range, 8 levels): normalized PAM, quantized, error, code, word. <span class="tag hot">F16</span><span class="tag hot">F17</span><span class="tag hot">F19</span><span class="tag hot">F20</span> (6 to 10 marks)</summary><div>
+<pre>Delta = (Vmax - Vmin) / L   (40/8 = 5 V)
+PAM       = value / Delta
+quantized = middle of its zone
+            (+-0.5, 1.5, 2.5, 3.5 for L = 8)
+error     = quantized - PAM  (at most 0.5)
+code      = zone number from the bottom,
+            0 .. L-1
+word      = code in log2 L bits</pre>
+<p><b>2016-17 Q6a</b> (&minus;20 to +20 V, L = 8, &Delta; = 5):</p>
+<div class="tw"><table class="mono">
+<tr><th>Value</th><th>PAM</th><th>Quantized</th><th>Error</th><th>Code</th><th>Word</th></tr>
+<tr><td>&minus;6.0</td><td>&minus;1.20</td><td>&minus;1.50</td><td>&minus;0.30</td><td>2</td><td>010</td></tr>
+<tr><td>7.5</td><td>1.50</td><td>1.50</td><td>0.00</td><td>5</td><td>101</td></tr>
+<tr><td>16.5</td><td>3.30</td><td>3.50</td><td>+0.20</td><td>7</td><td>111</td></tr>
+<tr><td>19.7</td><td>3.94</td><td>3.50</td><td>&minus;0.44</td><td>7</td><td>111</td></tr>
+<tr><td>11.0</td><td>2.20</td><td>2.50</td><td>+0.30</td><td>6</td><td>110</td></tr>
+<tr><td>&minus;5.5</td><td>&minus;1.10</td><td>&minus;1.50</td><td>&minus;0.40</td><td>2</td><td>010</td></tr>
+<tr><td>&minus;11.4</td><td>&minus;2.28</td><td>&minus;2.50</td><td>&minus;0.22</td><td>1</td><td>001</td></tr>
+<tr><td>&minus;9.4</td><td>&minus;1.88</td><td>&minus;1.50</td><td>+0.38</td><td>2</td><td>010</td></tr>
+<tr><td>&minus;6.2</td><td>&minus;1.24</td><td>&minus;1.50</td><td>&minus;0.26</td><td>2</td><td>010</td></tr>
+</table></div>
+<p><b>2015-16 Q3d</b> (&minus;10 to +10 V; levels not printed, so say "assume L = 8", &Delta; = 2.5): PAM 1.36, 2.08, 2.92, 1.32, &minus;0.60, &minus;2.44, &minus;3.80, &minus;3.36, &minus;0.84; quantized 1.5, 2.5, 2.5, 1.5, &minus;0.5, &minus;2.5, &minus;3.5, &minus;3.5, &minus;0.5; codes 5, 6, 6, 5, 3, 1, 0, 0, 3; words 101, 110, 110, 101, 011, 001, 000, 000, 011.</p>
+<p><b>2018-19 Q6b</b> (2.4, 7.5, 15.2, 19.8, 13.5, 6.5, &minus;1.2, &minus;5.6, &minus;11.3; &plusmn;20 V, 8 levels): PAM 0.48, 1.50, 3.04, 3.96, 2.70, 1.30, &minus;0.24, &minus;1.12, &minus;2.26; quantized 0.5, 1.5, 3.5, 3.5, 2.5, 1.5, &minus;0.5, &minus;1.5, &minus;2.5.</p>
+<p><b>2019-20 Q6a</b> (&minus;6.1, 7.5, 17.5, 19.7, 11.0, &minus;5.5, &minus;11.3, &minus;9.4, &minus;6.0): PAM &minus;1.22, 1.50, 3.50, 3.94, 2.20, &minus;1.10, &minus;2.26, &minus;1.88, &minus;1.20; quantized &minus;1.5, 1.5, 3.5, 3.5, 2.5, &minus;1.5, &minus;2.5, &minus;1.5, &minus;1.5.</p>
+<p class="small">The <a href="#calc">Check</a> tab builds the full table for any numbers. Also draw the graph if asked: the 8 zones as horizontal bands, each sample as a dot, its quantized value as the zone's middle line.</p></div></details>
+<details class="q"><summary>Briefly state the steps in quantization, with an example. <span class="tag">F15</span></summary><div>(1) Take the range V<sub>min</sub> to V<sub>max</sub>. (2) Divide it into L zones of height &Delta; = (V<sub>max</sub> &minus; V<sub>min</sub>)/L. (3) Give each zone a quantized value, its midpoint. (4) Replace each sample by the midpoint of its zone (the difference is the quantization error, at most &Delta;/2). (5) Number the zones 0 to L &minus; 1 and encode each in log<sub>2</sub> L bits. Example: the table above.</div></details>
+<details class="q"><summary>Digitize human voice (0-4000 Hz) at 8 bits per sample. Bit rate? <span class="tag">F16</span></summary><div>fs = 2 &times; 4000 = 8000 samples/s; 8000 &times; 8 = <b>64 kbps</b>.</div></details>
+<details class="q"><summary>Line coding drawings and scrambling (every paper)</summary><div>All in the <a href="#d-lc">Draw</a> tab, each one preloaded in the drawer.</div></details>
+<details class="q"><summary>Unipolar vs polar encoding. <span class="tag">F15</span></summary><div>Unipolar: all signal levels on one side of the time axis (0 and +V). Polar: levels on both sides (+V and &minus;V).</div></details>
+<details class="q"><summary>Which encodings resolve the polarity problem? <span class="tag">F15</span></summary><div><b>NRZ-I</b> and <b>differential Manchester</b>: the bit is in whether the level <i>changes</i>, not in the level itself, so swapping the wires does not flip the data.</div></details>
+<details class="q"><summary>What is baseline wandering? <span class="tag">F20</span></summary><div>The receiver judges each bit against a running average of the received power, the baseline. A long run of 0s or 1s drags the average ("the baseline wanders"), and bits start being misread.</div></details>
+<details class="q"><summary>Advantage of DM over PCM. <span class="tag">F19</span></summary><div>Delta modulation is much simpler: it sends one bit per sample (step up or step down from the previous value), so the hardware is simpler and each sample needs only 1 bit.</div></details>
+<details class="q"><summary>Synchronous vs asynchronous transmission. <span class="tag hot">F15</span><span class="tag hot">F16</span><span class="tag hot">F17</span></summary><div>Asynchronous: each byte is sent on its own, with a start bit (0) and one or more stop bits (1), and gaps of any length between bytes. Cheap and simple, but slower because of the extra bits. Synchronous: bits go as one continuous stream with no start or stop bits and no gaps; the receiver counts bits to find the bytes. Faster, but needs precise timing.</div></details>
+<details class="q"><summary>Advantage of serial over parallel transmission. <span class="tag">F16</span></summary><div>Serial needs one channel instead of n, so it cuts the cost by about a factor of n (and has no skew between wires over long distances).</div></details>
+<details class="q"><summary>Data rate vs signal rate <span class="tag">F19</span> / define bit rate, baud rate <span class="tag">F15</span></summary><div>Data (bit) rate N = data elements (bits) sent per second, in bps. Signal (baud) rate S = signal elements sent per second, in baud. With r bits per signal element, S = N / r.</div></details>
+<details class="q"><summary>r = 2, bit rate 100 kbps, c = 0.5. Average baud rate? <span class="tag">F19</span></summary><div>S = c &times; N &times; (1/r) = 0.5 &times; 100,000 &times; 1/2 = <b>25 kbaud</b>.</div></details>
+
+<h2 id="b5">Ch 5 Analog transmission</h2>
+<pre>r = log2 L          S = N / r
+ASK, PSK, QAM:  B = (1 + d) x S
+BFSK:  B = (1 + d) x S + 2 delta-f
+MFSK (d = 0):   B = L x S
+carrier fc = middle of the band
+peak of (I, Q) = sqrt(I^2 + Q^2)</pre>
+<details class="q"><summary>8000 bps and 1000 baud: data elements per signal element? Signal elements needed? <span class="tag hot">F15</span><span class="tag hot">F20</span><span class="tag hot">TT2</span> / Three mechanisms for digital-to-analog <span class="tag">F15</span></summary><div>r = N / S = 8000 / 1000 = <b>8 bits</b> per signal element; L = 2<sup>8</sup> = <b>256</b> signal elements. Mechanisms: ASK, FSK, PSK (QAM combines ASK and PSK).</div></details>
+<details class="q"><summary>4 bits per signal element, 1000 elements/s. Bit rate? <span class="tag">F19</span></summary><div>N = 4 &times; 1000 = <b>4000 bps</b>.</div></details>
+<details class="q"><summary>Bits per baud: ASK 4 amplitudes, FSK 8 frequencies, PSK 4 phases, QAM 128 points. <span class="tag">F16</span><span class="tag">F17</span></summary><div>log<sub>2</sub> L: <b>2, 3, 2, 7</b>.</div></details>
+<details class="q"><summary>2 bits at a time, 4 Mbps, carrier 10 MHz: levels (frequencies), baud rate, bandwidth. <span class="tag">F16</span></summary><div>L = 2<sup>2</sup> = <b>4</b> frequencies; S = 4 M / 2 = <b>2 Mbaud</b>; MFSK with carriers S apart: B = L &times; S = <b>8 MHz</b> (carriers 7, 9, 11, 13 MHz around 10 MHz).</div></details>
+<details class="q"><summary>Bandwidth equation for ASK <span class="tag">F16</span> / for BFSK <span class="tag">F19</span></summary><div>ASK: B = (1 + d) S. BFSK: B = (1 + d) S + 2&Delta;f (d between 0 and 1, &Delta;f = distance of each carrier from the middle).</div></details>
+<details class="q"><summary>100 kHz available from 200 to 300 kHz, ASK with d = 1: carrier and bit rate? <span class="tag">F20</span></summary><div>f<sub>c</sub> = middle = <b>250 kHz</b>. 100 k = (1 + 1) S, so S = 50 kbaud; ASK carries 1 bit per element, so N = <b>50 kbps</b>.</div></details>
+<details class="q"><summary>12 Mbps with QPSK, d = 0. Bandwidth? <span class="tag">F19</span></summary><div>r = 2, S = 6 Mbaud, B = (1 + 0) &times; 6 M = <b>6 MHz</b>.</div></details>
+<details class="q"><summary>Cable TV channel 6 MHz, 64-QAM. Data rate per resident? <span class="tag">F17</span></summary><div>Take d = 0: S = B = 6 Mbaud; r = log<sub>2</sub> 64 = 6; N = 6 &times; 6 = <b>36 Mbps</b>.</div></details>
+<details class="q"><summary>1 MHz low-pass medium, 10 channels of at least 10 Mbps, QAM, d = 0: bits per baud and constellation points? <span class="tag">F17</span> (5 marks)</summary><div>Each channel gets 1 MHz / 10 = 100 kHz, so S = 100 kbaud. r = N / S = 10 M / 100 k = <b>100 bits per baud</b>. Points = 2<sup>100</sup>. Impossible in practice: the medium needs far more bandwidth.</div></details>
+<details class="q"><summary>Constellations: BPSK, 8-QAM, 16-QAM, 8-PSK, QPSK phases <span class="tag hot">F15</span><span class="tag hot">F16</span><span class="tag hot">F17</span><span class="tag hot">F20</span></summary><div>Drawn in the <a href="#d-con">Draw</a> tab. QPSK has 4 phases: <b>45&deg;, 135&deg;, 225&deg;, 315&deg;</b>.</div></details>
+<details class="q"><summary>Advantages of QAM over ASK; explain QPSK with figures. <span class="tag">F15</span></summary><div>QAM changes both amplitude and phase, so each signal element carries more bits: a higher data rate in the same bandwidth, and it is less hurt by noise than ASK, which puts everything in the amplitude. QPSK: the bits are split two at a time by a serial-to-parallel converter; each stream drives a BPSK modulator; one carrier is in phase (I), the other 90&deg; shifted (Q); their sum has one of four phases, 45&deg;, 135&deg;, 225&deg;, 315&deg;. Two bits per element, so half the baud rate of BPSK. Draw the four-dot constellation.</div></details>
+<details class="q"><summary>What is a carrier frequency? Explain PSK with a figure. <span class="tag">F16</span> / ASK vs FSK <span class="tag">F17</span> / Discuss ASK, FSK, PSK with an example <span class="tag">F19</span></summary><div>
+<p>The <b>carrier</b> is the high-frequency sine wave made by the sender; the data changes one of its properties, and the receiver is tuned to it.</p>
+<p><b>ASK</b> changes the amplitude (bit 1: carrier on, bit 0: off or small). <b>FSK</b> changes the frequency (bit 1: higher f, bit 0: lower f). <b>PSK</b> changes the phase (BPSK: bit 1 = 0&deg;, bit 0 = 180&deg;, the wave flips). Draw all three for the bits 0 1 0 1 1, one under the other.</p>
+<p>ASK vs FSK: ASK varies amplitude and is very sensitive to noise; FSK varies frequency, resists noise better, but needs more bandwidth (B = (1 + d)S + 2&Delta;f).</p></div></details>
+<details class="q"><summary>Which of ASK, FSK, PSK, QAM is most susceptible to noise? <span class="tag">F20</span></summary><div><b>ASK</b>. Noise mostly changes amplitude, and ASK stores the data in the amplitude.</div></details>
+
+<h2 id="b6">Ch 6 Bandwidth utilization</h2>
+<pre>FDM: B = n x B_channel + (n - 1) x guard
+Sync TDM, n inputs, 1 bit per slot:
+  output rate = n x input rate
+  output bit  = input bit duration / n
+  frame rate  = input rate (in units)</pre>
+<details class="q"><summary>What is multiplexing and why is it needed? <span class="tag hot">F15</span><span class="tag hot">F16</span><span class="tag hot">F19</span></summary><div>Multiplexing is the set of techniques that lets several signals travel at the same time over one link. A link usually has much more bandwidth than one device needs, so sharing it saves cost and uses the bandwidth efficiently.</div></details>
+<details class="q"><summary>Five channels of 100 kHz, guard band 10 kHz. Minimum link bandwidth? <span class="tag">F19</span> / 3 voice channels of 4 kHz, guard 500 Hz, start 1 kHz <span class="tag">TT2</span></summary><div><pre>5 x 100 + 4 x 10 = 540 kHz
+
+3 x 4 + 2 x 0.5 = 13 kHz:
+  ch1 1-5, guard 5-5.5,
+  ch2 5.5-9.5, guard 9.5-10,
+  ch3 10-14 kHz
+no guard, 12 kHz: 1-5, 5-9, 9-13 kHz</pre></div></details>
+<details class="q"><summary>Four 1-Mbps lines, synchronous TDM, 1-bit units: input bit duration, output bit duration, output bit rate, frame rate. <span class="tag">F20</span> / four 10-Mbps lines <span class="tag">TT1</span></summary><div><pre>1 Mbps lines:
+  input bit duration  = 1 us
+  output bit duration = 1/4 us = 250 ns
+  output bit rate     = 4 Mbps
+  frame rate = 1,000,000 frames/s
+10 Mbps lines:
+  input bit 0.1 us, output bit 25 ns,
+  40 Mbps, 10,000,000 frames/s</pre></div></details>
+<details class="q"><summary>Synchronous TDM output stream: 10-bit slot, 3 bits from each input plus 1 framing bit. <span class="tag">F17</span> (5 marks)</summary><div>
+<p>Inputs: 101110111101, 11111110000, 1010000001111. The rightmost bit arrives first, so cut each input into groups of 3 <b>from the right</b>. Frame = framing bit + group from input 1, 2, 3. Framing bits alternate 1, 0, 1 ...</p>
+<pre>frame 1:  1 | 101 | 000 | 111
+frame 2:  0 | 111 | 110 | 001
+frame 3:  1 | 110 | 111 | 000
+(input 2 has only 2 bits left for
+ frame 4, so 3 complete frames)
+Output (frame 1 leaves first, on the
+right, like the inputs):
+0001111101 0011101110 1110001011 --></pre>
+<p>State your convention in one line; any consistent convention gets the marks.</p></div></details>
+<details class="q"><summary>What is pulse stuffing? 190 kbps and 180 kbps lines: frame size, frame rate, frame duration, data rate. <span class="tag">F16</span><span class="tag">F20</span></summary><div>When input rates are not integer multiples of each other, the highest rate is made the dominant rate and dummy bits are added to the slower inputs to bring them up to it (also called bit padding). The 180 kbps line is stuffed up to 190 kbps:<pre>frame size     = 2 bits (one from each line)
+frame rate     = 190,000 frames/s
+frame duration = 1/190,000 = 5.26 us
+data rate      = 2 x 190,000 = 380 kbps</pre></div></details>
+<details class="q"><summary>What is TDM? Why is statistical TDM better than synchronous? <span class="tag hot">F16</span><span class="tag hot">F19</span></summary><div>TDM is digital multiplexing where several connections share a link by taking turns in time; each gets slots in every frame. Synchronous TDM gives every input a fixed slot even when it has nothing to send, so empty slots waste capacity. Statistical TDM gives slots only to inputs that have data, so there are no empty slots and the link is used better (each slot carries an address).</div></details>
+<details class="q"><summary>Multilevel vs multiple-slot TDM. <span class="tag">F16</span><span class="tag">F17</span></summary><div>Both handle inputs with different rates. <b>Multilevel</b>: when rates are integer multiples, combine slow inputs first (two 20 kbps become one 40 kbps), then multiplex as equal rates. <b>Multiple-slot</b>: give a faster input more than one slot per frame (a 50 kbps input gets 2 slots in a 25 kbps-per-slot frame, split by a small demultiplexer at the input). Draw the input lines feeding the slots.</div></details>
+<details class="q"><summary>One application of WDM. <span class="tag">F16</span></summary><div>Fiber-optic backbones such as SONET: many light wavelengths (colours) share one fiber (dense WDM for long-haul links).</div></details>
+<details class="q"><summary>FDM vs FHSS, describe FHSS <span class="tag">F15</span> / Define FHSS and how it spreads bandwidth <span class="tag">F16</span> / FHSS vs DSSS <span class="tag">F20</span> / DSSS name <span class="tag">F15</span></summary><div>
+<p><b>FHSS</b> (frequency-hopping spread spectrum): a pseudorandom code generator makes a k-bit pattern every hopping period; a frequency table turns it into a carrier frequency; a synthesizer makes that carrier, and the data modulates it. The signal hops among M frequencies, so it occupies about <b>M &times; B</b>: that is the spreading. It is hard to intercept or jam.</p>
+<p><b>FDM vs FHSS</b>: both spread signals over many frequency bands. In FDM each user keeps its own band all the time (many sources share a link). In FHSS one source jumps from band to band over time.</p>
+<p><b>DSSS</b> = direct sequence spread spectrum: each data bit is <i>directly</i> replaced by a sequence of n chips (a spreading code such as an 11-chip Barker sequence), which widens the bandwidth n times. FHSS changes the carrier frequency; DSSS keeps one carrier and replaces bits with chip codes.</p></div></details>
+
+<h2 id="b10">Ch 10 Error detection and correction</h2>
+<pre>d(x, y) = number of 1s in x XOR y
+d_min   = smallest d over all pairs
+detect s errors:  d_min = s + 1
+correct t errors: d_min = 2t + 1
+CRC: append (divisor bits - 1) zeros,
+     XOR-divide, remainder = CRC</pre>
+<details class="q"><summary><b>CRC</b> codewords: 1101 / 1011011 <span class="tag">F15</span>, 10111 / 1010011110 <span class="tag">F16</span>, 10111 / 10100111 <span class="tag">F17</span>, 11001 / 1010100110 <span class="tag">F19</span></summary><div><div class="tw"><table class="mono">
+<tr><th>Divisor</th><th>Dataword</th><th>Remainder</th><th>Codeword</th></tr>
+<tr><td>1101</td><td>1011011</td><td>001</td><td>1011011001</td></tr>
+<tr><td>10111</td><td>1010011110</td><td>1010</td><td>10100111101010</td></tr>
+<tr><td>10111</td><td>10100111</td><td>0001</td><td>101001110001</td></tr>
+<tr><td>11001</td><td>1010100110</td><td>1010</td><td>10101001101010</td></tr>
+</table></div>
+<p>Receiver: divide the whole codeword by the same divisor. Remainder all zeros means accept; anything else means an error, so discard. Every row above gives a zero remainder at the receiver. CRC is a <b>cyclic code</b>, used for error <i>detection</i>. The long division, laid out like the exam, is in the <a href="#calc">Check</a> tab.</p></div></details>
+<details class="q"><summary>d(10000, 00100) <span class="tag">F16</span>, d(1001, 0001) <span class="tag">F19</span>, d(10000, 11010) and d(11111, 10000) <span class="tag">F20</span></summary><div>XOR, count the 1s: <b>2, 1, 2, 4</b>.</div></details>
+<details class="q"><summary>What is the minimum Hamming distance? To detect two-bit errors, what should it be? <span class="tag hot">F17</span><span class="tag hot">F20</span></summary><div>The smallest Hamming distance between any two codewords of a code. To detect s errors d<sub>min</sub> = s + 1, so <b>3</b>.</div></details>
+<details class="q"><summary>d<sub>min</sub> of the codebook 00000, 00010, 00111, 10011, 11011. <span class="tag">F16</span></summary><div><b>1</b>: d(00000, 00010) = 1 and d(10011, 11011) = 1.</div></details>
+<details class="q"><summary>Even parity bit for 11001100. <span class="tag">F20</span> / Table of datawords and codewords for C(4,3) <span class="tag">TT</span></summary><div>Four 1s already, so parity bit <b>0</b> (codeword 110011000). C(4,3): 000&rarr;0000, 001&rarr;0011, 010&rarr;0101, 011&rarr;0110, 100&rarr;1001, 101&rarr;1010, 110&rarr;1100, 111&rarr;1111.</div></details>
+<details class="q"><summary>Explain simple parity and checksum with examples; parity bits for 0011101 1100111 1111111 0000, simple and two-dimensional, even. <span class="tag">F15</span><span class="tag">F16</span></summary><div>
+<p><b>Simple parity</b>: add one bit so the number of 1s is even. It detects any odd number of errors (d<sub>min</sub> = 2). <b>Checksum</b>: split the data into m-bit words, add them in one's complement (wrap the carries back in), and send the complement of the sum. The receiver adds everything including the checksum; the complement of that is 0 if there is no error.</p>
+<pre class="al">simple parity:
+0011101 -> 0     1100111 -> 1
+1111111 -> 1     0000000 -> 0
+
+two-dimensional (a parity bit on each
+row, and a parity row under the columns):
+  0011101 0
+  1100111 1
+  1111111 1
+  0000000 0
+  ------- -
+  0000101 0</pre>
+<p class="small">The last group is printed "0000"; treat it as 0000000.</p></div></details>
+<details class="q"><summary>Five 8-bit numbers 16, 19, 25, 0, 9: wrapped sum and checksum; show the receiver finds no error. <span class="tag">F20</span> (5 marks)</summary><div><pre>sum = 16 + 19 + 25 + 0 + 9 = 69
+    = 01000101
+no carry past 8 bits: wrapped sum = 69
+checksum = 255 - 69 = 186 = 10111010
+(the complement of the wrapped sum)
+send: 16, 19, 25, 0, 9, 186
+receiver: 16+19+25+0+9+186 = 255
+        = 11111111
+complement = 00000000 -> no error</pre></div></details>
+<details class="q"><summary>Polynomial of 10101011 <span class="tag">F17</span> and 10110011 <span class="tag">F20</span>; binary of x<sup>8</sup> + x<sup>3</sup>; shift 111110 four bits right <span class="tag">F20</span></summary><div>Rightmost bit is x<sup>0</sup>. 10101011 = x<sup>7</sup> + x<sup>5</sup> + x<sup>3</sup> + x + 1. 10110011 = x<sup>7</sup> + x<sup>5</sup> + x<sup>4</sup> + x + 1. x<sup>8</sup> + x<sup>3</sup> = <code>100001000</code>. Shifting right 4 drops the last 4 bits: 111110 &rarr; <code>11</code> (x + 1).</div></details>
+<details class="q"><summary>Types of errors <span class="tag">F19</span> / What is a burst error? <span class="tag">F16</span></summary><div><b>Single-bit error</b>: only one bit of the data unit changes. <b>Burst error</b>: two or more bits change; the burst length runs from the first corrupted bit to the last.</div></details>
+<details class="q"><summary>Define forward error correction and retransmission. <span class="tag">F15</span><span class="tag">F19</span></summary><div>FEC: the receiver uses the redundant bits to guess and correct the message itself, without asking again (works when errors are few). Retransmission: the receiver only detects the error and asks the sender to send again.</div></details>
+<details class="q"><summary>Describe chunk interleaving. <span class="tag">F17</span> (3 marks)</summary><div>A burst error wipes out many neighbouring bits, too many for a code that corrects single errors. So n codewords are written as the rows of a table and sent <b>column by column</b>, one chunk of each codeword at a time. A burst then damages only one chunk in each codeword, which each codeword can correct. The receiver puts the rows back together.</div></details>
+<details class="q"><summary>"Hamming code is a more acceptable process": true or false? Hamming code for 1001101. <span class="tag">F15</span> (older topic)</summary><div>True: it can detect <i>and correct</i> a single-bit error, while parity only detects. For 7 data bits, 2<sup>r</sup> &ge; 7 + r + 1 gives r = 4, an 11-bit code with parity bits at positions 1, 2, 4, 8 (even parity). Data 1001101 goes in positions 11, 10, 9, 7, 6, 5, 3: r1 = 1, r2 = 0, r4 = 0, r8 = 1, giving <code>10011100101</code>.</div></details>
+
+<h2 id="b11">Ch 11 Data link control</h2>
+<details class="q"><summary>Stop-and-Wait diagrams, ACK-3 / NAK-3 <span class="tag hot">F15</span><span class="tag hot">F17</span><span class="tag hot">F20</span></summary><div>In the <a href="#d-sw">Draw</a> tab.</div></details>
+<details class="q"><summary>Advantage of bit-oriented over byte-oriented protocols; define a bit-oriented protocol. <span class="tag">F15</span> / Byte vs bit-oriented <span class="tag">TT</span></summary><div>
+<p><b>Byte-oriented</b>: the data are 8-bit characters, the flag is a byte, and any data byte that looks like the flag or the escape byte gets an extra ESC byte in front (byte stuffing). <b>Bit-oriented</b>: the data are a plain sequence of bits, the frame is marked by the flag <code>01111110</code>, and after five consecutive 1s in the data the sender inserts a 0 (bit stuffing); the receiver removes it.</p>
+<p>Advantage: bit stuffing adds a single bit instead of a whole byte, works for any kind of data (text, image, audio), and the flag can never appear inside the data, so after an error the receiver resynchronises at the next flag. Example: data 0111111101 is sent as 01111101101. A bit-oriented protocol (HDLC) treats the data section as a bit sequence delimited by flags.</p></div></details>
+<details class="q"><summary>Why are flags needed for variable-size frames? <span class="tag">TT</span></summary><div>With variable sizes there is no fixed length to count, so the receiver needs a special pattern to know where one frame ends and the next begins.</div></details>
+<details class="q"><summary>How many protocols does a noisy channel have? <span class="tag">F16</span></summary><div>Three: Stop-and-Wait ARQ, Go-Back-N ARQ, Selective Repeat ARQ.</div></details>
+<details class="q"><summary>Key responsibilities of the data-link layer. <span class="tag">TT</span></summary><div>Framing, flow control, error control, and congestion control (5e), plus link-layer addressing and media access control on shared links.</div></details>
+</section>
+
+<!-- ===================================================== CALC -->
+<section class="tab" id="calc">
+<p class="eyebrow">10 checkers &middot; past questions preloaded</p><h1>Check your working</h1>
+<p class="sub">Solve on paper first. Then type the numbers here to check. Each tool opens with a past-paper question already filled in.</p>
+<p class="toc"><a href="#t-crc">CRC</a> <a href="#t-pcm">PCM table</a> <a href="#t-sum">Checksum</a> <a href="#t-ham">Hamming</a> <a href="#t-sh">Shannon/Nyquist</a> <a href="#t-db">dB</a> <a href="#t-sw">Switch</a> <a href="#t-al">ALOHA</a> <a href="#t-cd">CSMA/CD</a> <a href="#t-cdma">CDMA</a></p>
+
+<div class="tool" id="t-crc"><h3>CRC long division (exam layout)</h3>
+<div class="row"><label for="crcD">Dataword</label><input class="mono" id="crcD" value="10100111" size="14"><label for="crcG">Divisor</label><input class="mono" id="crcG" value="10111" size="7"></div>
+<div class="row"><label for="crcR">Receiver codeword (optional)</label><input class="mono" id="crcR" value="" size="18"><button id="crcGo">Divide</button></div>
+<div class="chips" id="crcPre"></div>
+<div class="out" id="crcOut"></div></div>
+
+<div class="tool" id="t-pcm"><h3>PCM quantization table</h3>
+<div class="row"><label for="pcmV">Samples</label></div>
+<input type="text" class="mono" id="pcmV" value="-6.0, 7.5, 16.5, 19.7, 11.0, -5.5, -11.4, -9.4, -6.2">
+<div class="row"><label for="pcmLo">Vmin</label><input class="n" id="pcmLo" value="-20"><label for="pcmHi">Vmax</label><input class="n" id="pcmHi" value="20"><label for="pcmL">L</label><input class="n" id="pcmL" value="8"><button id="pcmGo">Table</button></div>
+<div class="out" id="pcmOut"></div></div>
+
+<div class="tool" id="t-sum"><h3>Checksum (one's complement)</h3>
+<div class="row"><label for="ckV">Numbers</label><input class="mono" id="ckV" value="16, 19, 25, 0, 9" size="18"><label for="ckM">bits</label><input class="n" id="ckM" value="8"><button id="ckGo">Compute</button></div>
+<div class="out" id="ckOut"></div></div>
+
+<div class="tool" id="t-ham"><h3>Hamming distance and d<sub>min</sub></h3>
+<div class="row"><label for="hmV">Codewords</label></div>
+<input type="text" class="mono" id="hmV" value="00000, 00010, 00111, 10011, 11011">
+<div class="row"><button id="hmGo">Compute</button></div>
+<div class="out" id="hmOut"></div></div>
+
+<div class="tool" id="t-sh"><h3>Shannon then Nyquist</h3>
+<div class="row"><label for="shB">B (Hz)</label><input class="n" id="shB" value="1000000"><label for="shS">SNR</label><input class="n" id="shS" value="63"><select id="shU" aria-label="SNR unit"><option value="r">ratio</option><option value="db">dB</option></select></div>
+<div class="row"><label for="shN">Chosen bit rate (bps, optional)</label><input class="n" id="shN" value="4000000"><button id="shGo">Compute</button></div>
+<div class="out" id="shOut"></div></div>
+
+<div class="tool" id="t-db"><h3>Decibels</h3>
+<div class="row"><label for="dbP1">P1</label><input class="n" id="dbP1" value="100"><label for="dbP2">P2</label><input class="n" id="dbP2" value="90"><button id="dbGo">dB</button></div>
+<div class="row"><label for="dbX">or: P1 and a dB value</label><input class="n" id="dbX" value="-10"><button id="dbGo2">P2</button></div>
+<div class="out" id="dbOut"></div></div>
+
+<div class="tool" id="t-sw"><h3>Three-stage switch</h3>
+<div class="row"><label for="swN">N</label><input class="n" id="swN" value="100"><label for="swn">n</label><input class="n" id="swn" value="10"><label for="swk">k</label><input class="n" id="swk" value="4"><button id="swGo">Compute</button></div>
+<div class="out" id="swOut"></div></div>
+
+<div class="tool" id="t-al"><h3>ALOHA throughput</h3>
+<div class="row"><label for="alF">Frame bits</label><input class="n" id="alF" value="200"><label for="alR">Rate (bps)</label><input class="n" id="alR" value="200000"><label for="alG">Frames/s</label><input class="n" id="alG" value="500"><button id="alGo">Compute</button></div>
+<div class="out" id="alOut"></div></div>
+
+<div class="tool" id="t-cd"><h3>CSMA/CD minimum frame</h3>
+<div class="row"><label for="cdR">Rate (bps)</label><input class="n" id="cdR" value="10000000"><label for="cdT">Max Tp (&micro;s)</label><input class="n" id="cdT" value="25.6"><button id="cdGo">Compute</button></div>
+<div class="out" id="cdOut"></div></div>
+
+<div class="tool" id="t-cdma"><h3>CDMA encode and decode</h3>
+<p class="small">One line per station: <code>code data</code>. Codes as &plusmn;1 lists (<code>+1 -1 +1 -1</code>) or as bits (<code>1010</code>). Data as bits; use <code>s</code> for a silent bit time.</p>
+<textarea id="cdmaIn" class="mono" rows="4" style="width:100%">0000 011
+1010 100</textarea>
+<div class="row"><select id="cdmaMap" aria-label="Bit mapping for codes"><option value="1p">code bit 1 = +1, 0 = -1</option><option value="0p">code bit 0 = +1, 1 = -1</option></select><button id="cdmaGo">Run</button><button class="ghost" id="cdmaBook">Book example</button></div>
+<div class="out" id="cdmaOut"></div></div>
+</section>
+
+<!-- ===================================================== DOOMSDAY -->
+<section class="tab" id="doom">
+<p class="eyebrow">Last read &middot; morning of 4 Nov</p><h1>Doomsday sheet</h1>
+<p class="sub">The morning read. If a line looks unfamiliar, tap through to its tab. Everything here has come up in a past final.</p>
+<div class="card"><h3 style="margin-top:2px">Ch 1-2</h3>
+<ul>
+<li>Five components: message, sender, receiver, medium, protocol. Mesh links n(n &minus; 1)/2; ring n.</li>
+<li>OSI: physical, data link, network, transport, session, presentation, application. TCP/IP: 5 layers; OSI's top three = TCP/IP application.</li>
+<li>Transport = process-to-process (ports). Network = host-to-host (IP, routing). Data link = hop-to-hop (MAC, framing).</li>
+<li>Addresses: link-layer (48-bit MAC), IP (32-bit), port (16-bit), application-specific.</li>
+</ul></div>
+<div class="card"><h3 style="margin-top:2px">Ch 3</h3>
+<pre>dB = 10 log(P2/P1)
+  -3 dB = half, -10 dB = a tenth
+SNRdB = 10 log SNR
+Nyquist N = 2B log2 L
+Shannon C = B log2(1 + SNR)
+  ceiling -> pick lower -> Nyquist for L
+B = fhigh - flow
+harmonics: B = N/2, 3N/2, 5N/2
+prop = d / v     trans = bits / rate
+BDP = rate x delay</pre>
+<ul><li>Impairments: attenuation (energy loss), distortion (shape change), noise.</li></ul></div>
+<div class="card"><h3 style="margin-top:2px">Ch 4</h3>
+<pre>NRZ-L: 0 = +, 1 = -
+NRZ-I: flip at the start of a 1
+RZ: 1 = up pulse, 0 = down pulse
+Manchester: 0 = high-low, 1 = low-high
+Diff. Man.: always flip mid-bit;
+            a 0 also flips at the start
+AMI: 1s alternate
+Pseudoternary: 0s alternate
+MLT-3: each 1 moves +, 0, -, 0, + ...
+B8ZS: 8 zeros -> 000VB0VB
+HDB3: 4 zeros -> 000V odd / B00V even
+PCM: Delta = range / L, PAM = v / Delta
+     quantized = zone middle
+     code 0 .. L-1 from the bottom
+voice 4 kHz -> 8000 x 8 = 64 kbps
+S = c N / r</pre></div>
+<div class="card"><h3 style="margin-top:2px">Ch 5-6</h3>
+<pre>r = log2 L       S = N / r
+B = (1 + d) S    BFSK: + 2 delta-f
+MFSK: B = L S
+8000 bps / 1000 baud: 8 bits, 256 levels
+QPSK: 45, 135, 225, 315 deg
+FDM: n B + (n - 1) g
+sync TDM: n x rate, duration / n
+pulse stuffing: dummy bits raise slow
+  lines to the fastest rate</pre>
+<ul><li>ASK is the most noise-prone. Statistical TDM has no empty slots. FHSS hops frequency; DSSS replaces bits with chips.</li></ul></div>
+<div class="card"><h3 style="margin-top:2px">Ch 7</h3>
+<ul>
+<li>Guided (twisted pair, coax, fiber) vs unguided (radio, microwave, infrared).</li>
+<li>Cladding less dense than core, so light reflects back in. Fiber: bandwidth, low loss, no EM noise; but expertise, one-way, cost.</li>
+<li>Ground &lt; 2 MHz, sky 2-30 MHz, line-of-sight &gt; 30 MHz. VHF 30-300 MHz. STP shielded, UTP not.</li>
+</ul></div>
+<div class="card"><h3 style="margin-top:2px">Ch 8</h3>
+<pre>crosspoints = 2kN + k(N/n)^2
+  N = 100, n = 10, k = 4 -> 1200
+connections = k x N/n = 40
+single crossbar: 100
+blocking = 40/100 = 0.4
+Banyan: log2 n stages, n/2 each
+datagram delay: 3T + 3tau + w1 + w2</pre>
+<ul><li>VC phases: setup, data transfer, teardown. VCI = local label, rewritten at each switch.</li></ul></div>
+<div class="card"><h3 style="margin-top:2px">Ch 10-11</h3>
+<pre>d = number of 1s in the XOR
+detect s: d_min = s + 1
+correct t: d_min = 2t + 1
+CRC: append (divisor length - 1) zeros,
+     XOR divide, remainder = CRC
+checksum: add, wrap carries, complement
+          receiver gets 0
+polynomial: rightmost bit is x^0</pre>
+<ul><li>Stop-and-Wait: frames 0, 1, 0, 1; ACK = next frame expected; timeout means resend; duplicate means discard and re-ACK.</li><li>Bit stuffing: 0 after five 1s; flag 01111110.</li></ul></div>
+<div class="card"><h3 style="margin-top:2px">Ch 12</h3>
+<pre>pure ALOHA: vulnerable 2 Tfr
+  S = G e^-2G, max 0.184 at G = 1/2
+slotted: vulnerable Tfr
+  S = G e^-G,  max 0.368 at G = 1
+CSMA/CD: Tfr >= 2 Tp
+  10 Mbps, 25.6 us -> 512 bits = 64 B
+CDMA: 1 -> +1, 0 -> -1
+  channel = sum of (data x code)
+  decode  = channel . code / N</pre>
+<ul><li>CD: wired, detects after, jam and backoff, no ACK. CA: wireless, avoids before: IFS, contention window, ACK, RTS/CTS + NAV.</li></ul></div>
+<div class="exam"><b>In the hall</b>
+<p>Read everything first. Pick what you know in each "any N" block. Formula, numbers, unit. State every assumption on drawings. Never leave a chosen question blank. You have done two mid-terms on this material; you are not starting from zero.</p></div>
+</section>
+</main>
+
+<script>
+(function () {
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
+function sp(n) { return n > 0 ? new Array(n + 1).join(' ') : ''; }
+function fmt(x, d) { if (!isFinite(x)) return String(x); var p = Math.pow(10, d === undefined ? 4 : d); return String(Math.round(x * p) / p); }
+function sgn(v) { return v > 0 ? '+' : (v < 0 ? '−' : '0'); }
+
+/* ---------------- tabs ---------------- */
+var tabs = [].slice.call(document.querySelectorAll('section.tab'));
+var links = [].slice.call(document.querySelectorAll('#nav a'));
+function show(id) {
+  tabs.forEach(function (t) { t.classList.toggle('on', t.id === id); });
+  links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + id); });
+}
+function route() {
+  var h = decodeURIComponent(location.hash.slice(1)) || 'start';
+  var el = document.getElementById(h);
+  var sec = el && el.closest ? el.closest('section.tab') : null;
+  if (!sec) { show('start'); window.scrollTo(0, 0); return; }
+  show(sec.id);
+  if (el !== sec) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView(); } else { window.scrollTo(0, 0); }
+  var on = document.querySelector('#nav a.on');
+  if (on && on.scrollIntoView) { try { on.scrollIntoView({inline: 'center', block: 'nearest'}); } catch (e) {} }
+}
+window.addEventListener('hashchange', route);
+document.documentElement.classList.add('js');
+route();
+
+/* ---------------- line codes ---------------- */
+function lineCode(bitStr, scheme, prev, par) {
+  var b = bitStr.split('').map(Number), n = b.length, h = [], lab = [], i, j;
+  var lastNZ = prev === 0 ? -1 : prev, cur, end;
+  for (i = 0; i < n; i++) lab.push('');
+  function full(v) { h.push(v, v); }
+  if (scheme === 'nrzl') b.forEach(function (x) { full(x ? -1 : 1); });
+  else if (scheme === 'unipolar') b.forEach(function (x) { full(x ? 1 : 0); });
+  else if (scheme === 'nrzi') { cur = prev === 0 ? 1 : prev; b.forEach(function (x) { if (x) cur = -cur; full(cur); }); }
+  else if (scheme === 'rz') b.forEach(function (x) { h.push(x ? 1 : -1, 0); });
+  else if (scheme === 'man') b.forEach(function (x) { if (x) h.push(-1, 1); else h.push(1, -1); });
+  else if (scheme === 'dman') { end = prev === 0 ? 1 : prev; b.forEach(function (x) { var s = x ? end : -end; h.push(s, -s); end = -s; }); }
+  else if (scheme === 'ami') b.forEach(function (x) { if (x) { lastNZ = -lastNZ; full(lastNZ); } else full(0); });
+  else if (scheme === 'pseudo') b.forEach(function (x) { if (!x) { lastNZ = -lastNZ; full(lastNZ); } else full(0); });
+  else if (scheme === 'mlt3') {
+    cur = prev;
+    b.forEach(function (x) { if (x) { if (cur !== 0) cur = 0; else { cur = -lastNZ; lastNZ = cur; } } full(cur); });
+  } else if (scheme === 'b8zs') {
+    i = 0;
+    while (i < n) {
+      var z8 = i + 8 <= n; for (j = i; z8 && j < i + 8; j++) if (b[j]) z8 = false;
+      if (z8) {
+        var V = lastNZ, B = -lastNZ;
+        [0, 0, 0, V, B, 0, B, V].forEach(full);
+        lab[i + 3] = 'V'; lab[i + 4] = 'B'; lab[i + 6] = 'V'; lab[i + 7] = 'B';
+        lastNZ = V; i += 8;
+      } else { if (b[i]) { lastNZ = -lastNZ; full(lastNZ); } else full(0); i++; }
+    }
+  } else if (scheme === 'hdb3') {
+    var cnt = par === 'odd' ? 1 : 0; i = 0;
+    while (i < n) {
+      var z4 = i + 4 <= n; for (j = i; z4 && j < i + 4; j++) if (b[j]) z4 = false;
+      if (z4) {
+        if (cnt % 2 === 1) { [0, 0, 0, lastNZ].forEach(full); lab[i + 3] = 'V'; }
+        else { var Bv = -lastNZ; [Bv, 0, 0, Bv].forEach(full); lab[i] = 'B'; lab[i + 3] = 'V'; lastNZ = Bv; }
+        cnt = 0; i += 4;
+      } else { if (b[i]) { lastNZ = -lastNZ; full(lastNZ); cnt++; } else full(0); i++; }
+    }
+  }
+  return {h: h, lab: lab, bits: b};
+}
+function levelText(r) {
+  var out = [];
+  for (var i = 0; i < r.bits.length; i++) {
+    var a = r.h[2 * i], c = r.h[2 * i + 1];
+    out.push(a === c ? sgn(a) : sgn(a) + '/' + sgn(c));
+  }
+  return out;
+}
+function waveSVG(r, scheme, prev) {
+  var n = r.bits.length, w = 40, x0 = 44, W = x0 + n * w + 14, Y = function (v) { return 82 - v * 34; };
+  var half = scheme === 'rz' || scheme === 'man' || scheme === 'dman';
+  var px = Math.max(300, Math.round(W * 0.7));
+  var s = '<svg viewBox="0 0 ' + W + ' 140" style="width:' + px + 'px;max-width:none;margin:0" role="img" aria-label="waveform">';
+  s += '<text x="10" y="' + (Y(1) + 4) + '" font-size="13">+</text><text x="10" y="' + (Y(0) + 4) + '" font-size="13">0</text><text x="10" y="' + (Y(-1) + 4) + '" font-size="13">−</text>';
+  s += '<path class="t" d="M' + x0 + ' ' + Y(0) + ' H' + (x0 + n * w) + '" stroke-dasharray="2 3"/>';
+  for (var i = 0; i <= n; i++) s += '<path class="t" d="M' + (x0 + i * w) + ' 24 V128"/>';
+  if (half) for (i = 0; i < n; i++) s += '<path d="M' + (x0 + i * w + w / 2) + ' 40 V124" stroke="var(--mut)" stroke-width=".7" stroke-dasharray="1 3" fill="none"/>';
+  for (i = 0; i < n; i++) {
+    s += '<text x="' + (x0 + i * w + w / 2) + '" y="16" text-anchor="middle" font-size="14" font-weight="600">' + r.bits[i] + '</text>';
+    if (r.lab[i]) s += '<text x="' + (x0 + i * w + w / 2) + '" y="138" text-anchor="middle" font-size="12" style="fill:var(--acc2)">' + r.lab[i] + '</text>';
+  }
+  var pv = (prev === 0 && scheme !== 'mlt3') ? null : prev;
+  if (pv !== null && scheme !== 'nrzl' && scheme !== 'rz' && scheme !== 'man' && scheme !== 'unipolar')
+    s += '<path d="M' + (x0 - 14) + ' ' + Y(pv) + ' H' + x0 + '" stroke="var(--mut)" stroke-width="2" stroke-dasharray="3 2" fill="none"/>';
+  var d = 'M' + x0 + ' ' + Y(r.h[0]);
+  for (var j = 0; j < r.h.length; j++) {
+    d += ' H' + (x0 + (j + 1) * w / 2);
+    if (j + 1 < r.h.length && r.h[j + 1] !== r.h[j]) d += ' V' + Y(r.h[j + 1]);
+  }
+  s += '<path class="w" d="' + d + '"/></svg>';
+  return s;
+}
+var RULES = {
+  nrzl: 'NRZ-L: 0 = positive, 1 = negative, for the whole bit.',
+  nrzi: 'NRZ-I: a 1 flips the level at the start of the bit; a 0 keeps it. Dashed stub = level before the first bit.',
+  rz: 'RZ: 1 = positive for the first half, 0 = negative for the first half; back to zero at mid-bit.',
+  man: 'Manchester: always a mid-bit transition; 0 = high to low, 1 = low to high.',
+  dman: 'Differential Manchester: always a mid-bit flip; a 0 also flips at the start of the bit, a 1 does not.',
+  ami: 'AMI: 0 = zero; each 1 is a pulse of the opposite polarity to the last pulse.',
+  pseudo: 'Pseudoternary: 1 = zero; each 0 is a pulse of the opposite polarity to the last pulse.',
+  mlt3: 'MLT-3: 0 = stay. 1 = if at +/− go to 0; if at 0 go to the opposite of the last nonzero level.',
+  b8zs: 'B8ZS: AMI, but 8 zeros become 000VB0VB (V = same polarity as the previous pulse, B = opposite).',
+  hdb3: 'HDB3: AMI, but 4 zeros become 000V if the pulse count since the last substitution is odd, B00V if even.',
+  unipolar: 'Unipolar NRZ: 1 = +V, 0 = 0.'
+};
+var PRESETS = [
+  ['P4-14 B8ZS', '11100000000000', 'b8zs', 1, 'odd'],
+  ['P4-14 HDB3', '11100000000000', 'hdb3', 1, 'odd'],
+  ['F17 B8ZS', '111000000000', 'b8zs', 1, 'odd'],
+  ['F17 HDB3', '111000000000', 'hdb3', 1, 'odd'],
+  ['F15 AMI', '10110000000011', 'ami', 0, 'even'],
+  ['F15 pseudoternary', '10110000000011', 'pseudo', 0, 'even'],
+  ['F15 B8ZS', '10110000000011', 'b8zs', 0, 'even'],
+  ['F15 NRZ', '0100111010110', 'nrzl', 1, 'odd'],
+  ['F15 RZ', '0100111010110', 'rz', 1, 'odd'],
+  ['F16 NRZ-I', '01100101', 'nrzi', 1, 'odd'],
+  ['F16 Diff Man', '01100101', 'dman', 1, 'odd'],
+  ['F16 MLT-3', '01100101', 'mlt3', 1, 'odd'],
+  ['F17 AMI', '0011001110111101', 'ami', 0, 'odd'],
+  ['F17 Diff Man', '0011001110111101', 'dman', 1, 'odd'],
+  ['F17 MLT-3', '1111010101101101', 'mlt3', 0, 'odd'],
+  ['F17 NRZ-L', '1111010101101101', 'nrzl', 1, 'odd'],
+  ['F19 pseudoternary', '010010', 'pseudo', 1, 'odd'],
+  ['F20 MLT-3', '00011000', 'mlt3', -1, 'odd'],
+  ['F20 Diff Man', '00110001', 'dman', 1, 'odd']
+];
+function drawLC() {
+  var bits = ($('lcBits').value || '').replace(/[^01]/g, '');
+  var out = $('lcOut');
+  if (!bits) { out.innerHTML = '<p class="bad">Type some 0s and 1s.</p>'; return; }
+  var sch = $('lcScheme').value, prev = +$('lcPrev').value, par = $('lcPar').value;
+  var r = lineCode(bits, sch, prev, par), lv = levelText(r);
+  var cw = lv.map(function (t) { return Math.max(t.length, 1); });
+  var row1 = '', row2 = '';
+  for (var i = 0; i < r.bits.length; i++) { var wdt = cw[i] + 1; row1 += r.bits[i] + sp(wdt - 1); row2 += lv[i] + sp(wdt - lv[i].length); }
+  out.innerHTML = '<div class="pic">' + waveSVG(r, sch, prev) + '</div><pre class="al">bits  : ' + esc(row1) + '\nlevels: ' + esc(row2) + '</pre>';
+  var note = RULES[sch];
+  if ((sch === 'nrzi' || sch === 'dman') && prev === 0) note += ' (Level 0 makes no sense here; + was used.)';
+  if (sch === 'ami' || sch === 'pseudo' || sch === 'b8zs' || sch === 'hdb3') note += prev === 0 ? ' Start: first pulse +.' : ' Start: last pulse was ' + (prev > 0 ? '+' : '−') + '.';
+  $('lcRule').textContent = note;
+}
+(function () {
+  var box = $('lcPresets'); if (!box) return;
+  PRESETS.forEach(function (p) {
+    var bt = document.createElement('button'); bt.type = 'button'; bt.textContent = p[0];
+    bt.addEventListener('click', function () { $('lcBits').value = p[1]; $('lcScheme').value = p[2]; $('lcPrev').value = String(p[3]); $('lcPar').value = p[4]; drawLC(); });
+    box.appendChild(bt);
+  });
+  $('lcGo').addEventListener('click', drawLC);
+  ['lcScheme', 'lcPrev', 'lcPar'].forEach(function (id) { $(id).addEventListener('change', drawLC); });
+  $('lcBits').addEventListener('keydown', function (e) { if (e.key === 'Enter') drawLC(); });
+  drawLC();
+})();
+
+/* ---------------- constellations ---------------- */
+function cons(title, pts, rings, R, cap) {
+  var c = 130, k = 100 / R, s = '<svg viewBox="0 0 260 270" role="img" aria-label="' + esc(title) + '">';
+  s += '<defs><marker id="ca" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" style="fill:var(--fg)"/></marker></defs>';
+  s += '<path class="s" d="M14 ' + c + ' H248" marker-end="url(#ca)" stroke-width="1.2"/><path class="s" d="M' + c + ' 246 V14" marker-end="url(#ca)" stroke-width="1.2"/>';
+  s += '<text x="246" y="' + (c - 8) + '" text-anchor="end" font-size="13" font-style="italic">I</text><text x="' + (c + 8) + '" y="22" font-size="13" font-style="italic">Q</text>';
+  rings.forEach(function (r) { s += '<circle cx="' + c + '" cy="' + c + '" r="' + (r * k) + '" fill="none" stroke="var(--mut)" stroke-dasharray="3 3"/>'; });
+  pts.forEach(function (p) {
+    var x = c + p[0] * k, y = c - p[1] * k, L = Math.sqrt(p[0] * p[0] + p[1] * p[1]) || 1;
+    s += '<circle cx="' + fmt(x, 1) + '" cy="' + fmt(y, 1) + '" r="5.5" class="fa"/>';
+    if (p[2]) {
+      var lx = x + 15 * p[0] / L, ly = y - 15 * p[1] / L + 4;
+      if (Math.abs(p[1]) < 1e-6) { lx = x; ly = y - 11; }
+      else if (Math.abs(p[0]) < 1e-6) { lx = x + 19; ly = y + 4; }
+      s += '<text x="' + fmt(lx, 1) + '" y="' + fmt(ly, 1) + '" text-anchor="middle" font-size="11.5">' + p[2] + '</text>';
+    }
+  });
+  s += '<text x="6" y="262" font-size="13" font-weight="600">' + esc(title) + '</text></svg>';
+  return '<div class="pic">' + s + '<div class="cap">' + cap + '</div></div>';
+}
+(function () {
+  var g = $('conGrid'); if (!g) return;
+  var r2 = Math.SQRT1_2, psk = [], q16 = [], i;
+  for (i = 0; i < 8; i++) { var a = i * Math.PI / 4; psk.push([Math.cos(a), Math.sin(a), ('00' + i.toString(2)).slice(-3)]); q16.push([2 * Math.cos(a), 2 * Math.sin(a)], [5 * Math.cos(a), 5 * Math.sin(a)]); }
+  g.innerHTML =
+    cons('BPSK, peak 2', [[2, 0, '1'], [-2, 0, '0']], [], 2.6, 'Two dots at (2, 0) and (&minus;2, 0): phases 0&deg; (bit 1) and 180&deg; (bit 0). Peak 3: same at &plusmn;3.') +
+    cons('QPSK', [[r2, r2, '11'], [-r2, r2, '01'], [-r2, -r2, '00'], [r2, -r2, '10']], [1], 1.4, 'One amplitude, phases 45&deg;, 135&deg;, 225&deg;, 315&deg;. 2 bits per dot.') +
+    cons('8-PSK with bits', psk, [1], 1.45, 'One amplitude, 8 phases 45&deg; apart: 000 at 0&deg;, 001 at 45&deg; ... 111 at 315&deg;. 3 bits per dot.') +
+    cons('8-QAM, amplitudes 1 and 3', [[3, 0, '000'], [1, 0, '001'], [0, 3, '010'], [0, 1, '011'], [0, -3, '100'], [0, -1, '101'], [-3, 0, '110'], [-1, 0, '111']], [1, 3], 3.9, '2 amplitudes &times; 4 phases (0&deg;, 90&deg;, 180&deg;, 270&deg;) = 8 dots, 3 bits each. Any 8 different labels are fine.') +
+    cons('16-QAM, 2 amplitudes, 8 phases', q16, [2, 5], 6, 'Rings of radius 2 and 5, a dot every 45&deg; on each: 16 dots, 4 bits each.');
+})();
+
+/* ---------------- stop-and-wait ---------------- */
+function stopWait(steps) {
+  var S = 72, R = 248, M = 160, y = 52, dy = 46, s = '';
+  s += '<defs><marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" style="fill:var(--fg)"/></marker></defs>';
+  function x(px, py) { return '<path d="M' + (px - 7) + ' ' + (py - 7) + ' l14 14 M' + (px + 7) + ' ' + (py - 7) + ' l-14 14" stroke="var(--acc2)" stroke-width="3"/>'; }
+  steps.forEach(function (st) {
+    var t = y, lost = st.frame === 'lost' || st.ack === 'lost';
+    if (st.frame === 'lost') {
+      s += '<path class="a" d="M' + S + ' ' + t + ' L' + M + ' ' + (t + dy / 2) + '"/>' + x(M, t + dy / 2);
+      s += '<text x="' + (S + 30) + '" y="' + (t + 2) + '" font-size="13">Frame ' + st.f + '</text><text x="' + (M + 14) + '" y="' + (t + dy / 2 + 5) + '" font-size="12" style="fill:var(--acc2)">lost</text>';
+    } else {
+      s += '<path class="a" d="M' + S + ' ' + t + ' L' + R + ' ' + (t + dy) + '" marker-end="url(#sa)"/>';
+      s += '<text x="' + (S + 30) + '" y="' + (t + 2) + '" font-size="13">Frame ' + st.f + '</text>';
+      st.rx.split('|').forEach(function (ln, k) { s += '<text x="' + (R + 8) + '" y="' + (t + dy + 4 + k * 14) + '" font-size="12">' + ln + '</text>'; });
+      var a0 = t + dy + 6;
+      if (st.ack === 'lost') {
+        s += '<path class="b" d="M' + R + ' ' + a0 + ' L' + M + ' ' + (a0 + dy / 2) + '"/>' + x(M, a0 + dy / 2);
+        s += '<text x="' + (R - 30) + '" y="' + a0 + '" font-size="13" text-anchor="end">ACK ' + st.ackN + '</text><text x="' + (M - 14) + '" y="' + (a0 + dy / 2 + 5) + '" font-size="12" text-anchor="end" style="fill:var(--acc2)">lost</text>';
+      } else {
+        s += '<path class="b" d="M' + R + ' ' + a0 + ' L' + S + ' ' + (a0 + dy) + '" marker-end="url(#sa)"/>';
+        s += '<text x="' + (R - 30) + '" y="' + a0 + '" font-size="13" text-anchor="end">ACK ' + st.ackN + '</text>';
+      }
+    }
+    if (lost) {
+      var tb = t + 2 * dy + 14;
+      s += '<path d="M' + (S - 10) + ' ' + t + ' H' + (S - 18) + ' V' + tb + ' H' + (S - 10) + '" stroke="var(--mut)" fill="none" stroke-width="1.5"/>';
+      s += '<text x="' + (S - 22) + '" y="' + ((t + tb) / 2) + '" font-size="12" text-anchor="end">timer</text><text x="' + (S - 22) + '" y="' + ((t + tb) / 2 + 15) + '" font-size="12" text-anchor="end">expires</text>';
+      y = tb + 18;
+    } else y = t + 2 * dy + 26;
+  });
+  var top = '<text x="' + S + '" y="20" text-anchor="middle" font-weight="600" font-size="14">Sender</text><text x="' + R + '" y="20" text-anchor="middle" font-weight="600" font-size="14">Receiver</text>';
+  var lines = '<path class="s" d="M' + S + ' 30 V' + y + ' M' + R + ' 30 V' + y + '"/>';
+  return '<svg viewBox="0 0 360 ' + (y + 10) + '" role="img" aria-label="Stop-and-Wait flow diagram">' + top + lines + s + '</svg>';
+}
+(function () {
+  var A = {f: 0, frame: 'lost'}, B = {f: 0, rx: 'accept, deliver', ackN: 1, ack: 'ok'}, C = {f: 1, rx: 'accept, deliver', ackN: 0, ack: 'lost'};
+  var D = {f: 1, rx: 'duplicate:|discard', ackN: 0, ack: 'ok'}, E = {f: 1, frame: 'lost'};
+  if ($('sw1')) $('sw1').innerHTML = stopWait([A, B, C, D]);
+  if ($('sw2')) $('sw2').innerHTML = stopWait([A, B, C, E, D]);
+})();
+
+/* ---------------- spectra ---------------- */
+function spectrum(fs, amps, fmax, unit, bw) {
+  var x0 = 30, x1 = 330, base = 150, top = 36, amax = Math.max.apply(null, amps);
+  var X = function (f) { return x0 + (x1 - x0) * f / fmax; }, H = function (a) { return (base - top) * a / amax; };
+  var s = '<svg viewBox="0 0 360 206" role="img" aria-label="spectrum"><path class="s" d="M' + x0 + ' ' + base + ' H' + (x1 + 22) + ' M' + x0 + ' ' + base + ' V' + (top - 22) + '"/>';
+  s += '<text x="356" y="' + (base + 30) + '" text-anchor="end" font-size="12">f (' + unit + ')</text><text x="' + (x0 + 6) + '" y="' + (top - 18) + '" font-size="12">amplitude (V)</text>';
+  fs.forEach(function (f, i) {
+    s += '<path class="w" d="M' + X(f) + ' ' + base + ' V' + (base - H(amps[i])) + '"/><circle cx="' + X(f) + '" cy="' + (base - H(amps[i])) + '" r="3.5" style="fill:var(--wave)"/>';
+    s += '<text x="' + X(f) + '" y="' + (base + 16) + '" text-anchor="middle" font-size="12">' + f + '</text><text x="' + X(f) + '" y="' + (base - H(amps[i]) - 8) + '" text-anchor="middle" font-size="12">' + amps[i] + '</text>';
+  });
+  var a = X(Math.min.apply(null, fs)), b = X(Math.max.apply(null, fs));
+  s += '<path class="a" d="M' + a + ' 180 H' + b + '" stroke-width="1.5"/><path class="a" d="M' + a + ' 174 V186 M' + b + ' 174 V186" stroke-width="1.5"/>';
+  s += '<text x="' + ((a + b) / 2) + '" y="200" text-anchor="middle" font-size="13" font-weight="600">' + bw + '</text></svg>';
+  return s;
+}
+(function () {
+  if ($('spec1')) $('spec1').innerHTML = spectrum([200, 500, 600, 800, 1100], [10, 10, 10, 10, 10], 1200, 'Hz', 'B = 1100 − 200 = 900 Hz');
+  if ($('spec2')) $('spec2').innerHTML = spectrum([200, 400, 550, 700, 900], [5, 5, 10, 5, 5], 1000, 'Hz', 'B = 900 − 200 = 700 Hz');
+  if ($('spec3')) {
+    var x0 = 30, X = function (f) { return x0 + 300 * f / 36; }, Y = function (a) { return 160 - 130 * a / 40; };
+    var s = '<svg viewBox="0 0 360 214" role="img" aria-label="continuous spectrum"><path class="s" d="M' + x0 + ' 160 H352 M' + x0 + ' 160 V16"/>';
+    s += '<path d="M' + X(10) + ' 160 V' + Y(10) + ' Q' + X(20) + ' ' + Y(70) + ' ' + X(30) + ' ' + Y(10) + ' V160 Z" style="fill:var(--hl)" stroke="none"/>';
+    s += '<path class="w" d="M' + X(10) + ' 160 V' + Y(10) + ' Q' + X(20) + ' ' + Y(70) + ' ' + X(30) + ' ' + Y(10) + ' V160"/>';
+    [[10, 10], [20, 40], [30, 10]].forEach(function (p) { s += '<text x="' + X(p[0]) + '" y="176" text-anchor="middle" font-size="12">' + p[0] + '</text><text x="' + X(p[0]) + '" y="' + (Y(p[1]) - 8) + '" text-anchor="middle" font-size="12">' + p[1] + ' V</text>'; });
+    s += '<text x="356" y="190" text-anchor="end" font-size="12">f (kHz)</text>';
+    s += '<path class="a" d="M' + X(10) + ' 192 H' + X(30) + ' M' + X(10) + ' 186 V198 M' + X(30) + ' 186 V198" stroke-width="1.5"/><text x="' + X(20) + '" y="210" text-anchor="middle" font-size="13" font-weight="600">B = 30 − 10 = 20 kHz</text></svg>';
+    $('spec3').innerHTML = s;
+  }
+})();
+
+if (typeof module !== 'undefined') module.exports = {lineCode: lineCode, levelText: levelText};
+})();
+</script>
+
+<script>
+(function () {
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
+function sp(n) { return n > 0 ? new Array(n + 1).join(' ') : ''; }
+function fmt(x, d) { if (!isFinite(x)) return String(x); var p = Math.pow(10, d === undefined ? 4 : d); return String(Math.round(x * p) / p); }
+function nums(s) { return (s.match(/-?\d+(\.\d+)?/g) || []).map(Number); }
+function bin(v, m) { var s = v.toString(2); while (s.length < m) s = '0' + s; return s; }
+function on(id, f) { var e = $(id); if (e) e.addEventListener('click', f); }
+function pre(t, c) { return '<pre' + (c ? ' class="' + c + '"' : '') + '>' + esc(t) + '</pre>'; }
+
+/* ---------- CRC ---------- */
+function crcDivide(dividend, g) {
+  var L = g.length, n = dividend.length, P = L + 3, q = '', lines = [], cur = dividend.slice(0, L), r = '';
+  var zero = sp(L).replace(/ /g, '0');
+  for (var i = 0; i + L <= n; i++) {
+    var sub = cur[0] === '1' ? g : zero; q += cur[0];
+    var x = ''; for (var j = 1; j < L; j++) x += (cur[j] === sub[j] ? '0' : '1');
+    lines.push(sp(P + i) + sub, sp(P + i) + sp(L).replace(/ /g, '-'));
+    if (i + L < n) { cur = x + dividend[i + L]; lines.push(sp(P + i + 1) + cur); } else { r = x; lines.push(sp(P + i + 1) + r + '   <- remainder'); }
+  }
+  var head = [sp(P + L - 1) + q + '   <- quotient', sp(P) + sp(n).replace(/ /g, '_'), g + ' ) ' + dividend];
+  return {rem: r, text: head.concat(lines).join('\n')};
+}
+function crcRun() {
+  var d = $('crcD').value.replace(/[^01]/g, ''), g = $('crcG').value.replace(/[^01]/g, ''), rc = $('crcR').value.replace(/[^01]/g, '');
+  var out = $('crcOut');
+  if (!d || g.length < 2 || g[0] !== '1') { out.innerHTML = '<p class="bad">Need a dataword and a divisor that starts with 1.</p>'; return; }
+  var z = sp(g.length - 1).replace(/ /g, '0'), a = crcDivide(d + z, g);
+  var h = '<p><b>Sender.</b> Append ' + (g.length - 1) + ' zeros: ' + esc(d) + '<b>' + z + '</b>. Divide (XOR, no borrows):</p>' + pre(a.text, 'al');
+  h += '<p class="big">CRC = <code>' + a.rem + '</code>, codeword = <code>' + esc(d) + '<b>' + a.rem + '</b></code></p>';
+  var cw = rc || (d + a.rem), b = crcDivide(cw, g), ok = /^0+$/.test(b.rem);
+  h += '<p><b>Receiver</b> divides ' + (rc ? 'the codeword you typed' : 'the codeword') + ' by ' + esc(g) + ':</p>' + pre(b.text, 'al');
+  h += '<p class="' + (ok ? 'ok' : 'bad') + '">Remainder ' + b.rem + (ok ? ': all zeros, accept.' : ': not zero, error detected, discard.') + '</p>';
+  out.innerHTML = h;
+}
+(function () {
+  var box = $('crcPre'); if (!box) return;
+  [['F15', '1011011', '1101'], ['F16', '1010011110', '10111'], ['F17', '10100111', '10111'], ['F19', '1010100110', '11001']].forEach(function (p) {
+    var bt = document.createElement('button'); bt.type = 'button'; bt.textContent = p[0] + ': ' + p[1] + ' / ' + p[2];
+    bt.addEventListener('click', function () { $('crcD').value = p[1]; $('crcG').value = p[2]; $('crcR').value = ''; crcRun(); });
+    box.appendChild(bt);
+  });
+  on('crcGo', crcRun); crcRun();
+})();
+
+/* ---------- PCM ---------- */
+function pcmRun() {
+  var v = nums($('pcmV').value), lo = +$('pcmLo').value, hi = +$('pcmHi').value, L = Math.round(+$('pcmL').value);
+  var out = $('pcmOut');
+  if (!v.length || !(hi > lo) || !(L >= 2)) { out.innerHTML = '<p class="bad">Check the inputs.</p>'; return; }
+  var D = (hi - lo) / L, nb = Math.ceil(Math.log(L) / Math.LN2 - 1e-9);
+  var h = '<p>&Delta; = (' + hi + ' &minus; (' + lo + ')) / ' + L + ' = <b>' + fmt(D) + '</b> V, ' + nb + ' bits per sample.</p><div class="tw"><table class="mono"><tr><th>Value</th><th>PAM</th><th>Quantized</th><th>Error</th><th>Code</th><th>Word</th></tr>';
+  v.forEach(function (x) {
+    var p = x / D, z = Math.floor((x - lo) / D + 1e-9); if (z > L - 1) z = L - 1; if (z < 0) z = 0;
+    var q = lo / D + z + 0.5, e = q - p;
+    h += '<tr><td>' + x + '</td><td>' + p.toFixed(2) + '</td><td>' + q.toFixed(2) + '</td><td>' + (e > 0.0049 ? '+' : '') + e.toFixed(2) + '</td><td>' + z + '</td><td>' + bin(z, nb) + '</td></tr>';
+  });
+  out.innerHTML = h + '</table></div><p class="small">Quantized = middle of the zone. Error = quantized &minus; PAM. Code = zone number counted from the bottom (0 = lowest).</p>';
+}
+on('pcmGo', pcmRun); if ($('pcmGo')) pcmRun();
+
+/* ---------- checksum ---------- */
+function wrap(s, m) { var mod = Math.pow(2, m), steps = []; while (s >= mod) { var nx = (s % mod) + Math.floor(s / mod); steps.push(s + ' -> ' + (s % mod) + ' + ' + Math.floor(s / mod) + ' = ' + nx); s = nx; } return {v: s, steps: steps}; }
+function ckRun() {
+  var a = nums($('ckV').value).map(Math.round), m = Math.round(+$('ckM').value), out = $('ckOut');
+  if (!a.length || !(m >= 2 && m <= 32)) { out.innerHTML = '<p class="bad">Check the inputs.</p>'; return; }
+  var mod = Math.pow(2, m), full = mod - 1, sum = a.reduce(function (p, c) { return p + c; }, 0), w = wrap(sum, m), ck = full - w.v;
+  var t = 'numbers: ' + a.join(' + ') + ' = ' + sum + '\n';
+  t += w.steps.length ? 'wrap carries: ' + w.steps.join(';  ') + '\n' : 'no carry beyond ' + m + ' bits\n';
+  t += 'wrapped sum = ' + w.v + ' = ' + bin(w.v, m) + '\nchecksum    = ' + full + ' - ' + w.v + ' = ' + ck + ' = ' + bin(ck, m) + '  (complement)\n\n';
+  var s2 = sum + ck, w2 = wrap(s2, m);
+  t += 'receiver: ' + a.join(' + ') + ' + ' + ck + ' = ' + s2 + (w2.steps.length ? ' -> wrapped ' + w2.v : '') + ' = ' + bin(w2.v, m) + '\ncomplement = ' + bin(full - w2.v, m) + (full - w2.v === 0 ? '  -> 0, no error' : '  -> not 0, error');
+  out.innerHTML = pre(t);
+}
+on('ckGo', ckRun); if ($('ckGo')) ckRun();
+
+/* ---------- Hamming ---------- */
+function hmRun() {
+  var w = ($('hmV').value.match(/[01]+/g) || []), out = $('hmOut');
+  if (w.length < 2) { out.innerHTML = '<p class="bad">Type at least two codewords.</p>'; return; }
+  var dmin = Infinity, rows = [];
+  for (var i = 0; i < w.length; i++) for (var j = i + 1; j < w.length; j++) {
+    if (w[i].length !== w[j].length) { out.innerHTML = '<p class="bad">' + esc(w[i]) + ' and ' + esc(w[j]) + ' have different lengths.</p>'; return; }
+    var x = '', d = 0; for (var k = 0; k < w[i].length; k++) { var b = w[i][k] === w[j][k] ? '0' : '1'; x += b; if (b === '1') d++; }
+    rows.push('d(' + w[i] + ', ' + w[j] + ')  XOR ' + x + '  -> ' + d); if (d < dmin) dmin = d;
+  }
+  out.innerHTML = pre(rows.join('\n')) + '<p class="big">d<sub>min</sub> = <b>' + dmin + '</b>. Detects up to ' + Math.max(dmin - 1, 0) + ' errors, corrects up to ' + Math.max(Math.floor((dmin - 1) / 2), 0) + '.</p>';
+}
+on('hmGo', hmRun); if ($('hmGo')) hmRun();
+
+/* ---------- Shannon / Nyquist ---------- */
+function shRun() {
+  var B = +$('shB').value, sv = +$('shS').value, unit = $('shU').value, N = +$('shN').value, out = $('shOut');
+  if (!(B > 0) || !(sv >= 0 || unit === 'db')) { out.innerHTML = '<p class="bad">Check the inputs.</p>'; return; }
+  var snr = unit === 'db' ? Math.pow(10, sv / 10) : sv, C = B * Math.log(1 + snr) / Math.LN2;
+  var t = (unit === 'db' ? 'SNR = 10^(' + sv + '/10) = ' + fmt(snr, 2) + '\n' : 'SNRdB = 10 log10(' + sv + ') = ' + fmt(10 * Math.log(snr) / Math.LN10, 2) + ' dB\n');
+  t += 'Shannon: C = ' + B + ' x log2(1 + ' + fmt(snr, 2) + ') = ' + fmt(C, 1) + ' bps   (upper limit)';
+  if (N > 0) {
+    var lg = N / (2 * B), L = Math.pow(2, lg);
+    t += '\nNyquist: ' + N + ' = 2 x ' + B + ' x log2 L  ->  log2 L = ' + fmt(lg, 3) + '  ->  L = ' + fmt(L, 2);
+    if (N > C + 1e-6) t += '\n(careful: this rate is above the Shannon capacity)';
+  }
+  out.innerHTML = pre(t);
+}
+on('shGo', shRun); if ($('shGo')) shRun();
+
+/* ---------- dB ---------- */
+on('dbGo', function () { var p1 = +$('dbP1').value, p2 = +$('dbP2').value; $('dbOut').innerHTML = pre('10 log10(' + p2 + ' / ' + p1 + ') = ' + fmt(10 * Math.log(p2 / p1) / Math.LN10, 3) + ' dB'); });
+on('dbGo2', function () { var p1 = +$('dbP1').value, x = +$('dbX').value; $('dbOut').innerHTML = pre('P2 = ' + p1 + ' x 10^(' + x + '/10) = ' + fmt(p1 * Math.pow(10, x / 10), 4)); });
+
+/* ---------- switch ---------- */
+function swRun() {
+  var N = +$('swN').value, n = +$('swn').value, k = +$('swk').value, out = $('swOut');
+  if (!(N > 0 && n > 0 && k > 0) || N % n) { out.innerHTML = '<p class="bad">N must be a multiple of n.</p>'; return; }
+  var g = N / n, x1 = g * n * k, x2 = k * g * g, tot = 2 * x1 + x2, conn = Math.min(k * g, N);
+  var cn = Math.sqrt(N / 2), cnr = Math.round(cn), ck = 2 * cnr - 1;
+  var t = 'stage 1: ' + g + ' crossbars of ' + n + 'x' + k + '  = ' + x1 + '\nstage 2: ' + k + ' crossbars of ' + g + 'x' + g + '  = ' + x2 + '\nstage 3: ' + g + ' crossbars of ' + k + 'x' + n + '  = ' + x1 + '\ntotal = 2kN + k(N/n)^2 = ' + tot + ' crosspoints\n';
+  t += 'simultaneous connections = k x N/n = ' + conn + '\nsingle ' + N + 'x' + N + ' crossbar: ' + (N * N) + ' crosspoints, ' + N + ' connections\nblocking factor = ' + conn + '/' + N + ' = ' + fmt(conn / N, 3);
+  t += '\n\nClos (non-blocking): n = sqrt(N/2) = ' + fmt(cn, 2) + (Math.abs(cn - cnr) > 1e-9 ? ' (round to ' + cnr + ')' : '') + ', k = 2n - 1 = ' + ck + ', crosspoints = ' + (2 * ck * N + ck * Math.pow(N / cnr, 2)) + (N % cnr ? ' (N/n not whole, rough)' : '');
+  out.innerHTML = pre(t);
+}
+on('swGo', swRun); if ($('swGo')) swRun();
+
+/* ---------- ALOHA ---------- */
+function alRun() {
+  var F = +$('alF').value, R = +$('alR').value, fps = +$('alG').value, out = $('alOut');
+  if (!(F > 0 && R > 0 && fps >= 0)) { out.innerHTML = '<p class="bad">Check the inputs.</p>'; return; }
+  var T = F / R, G = fps * T, Sp = G * Math.exp(-2 * G), Ss = G * Math.exp(-G);
+  var t = 'Tfr = ' + F + ' / ' + R + ' = ' + fmt(T * 1000, 4) + ' ms;   G = ' + fps + ' x Tfr = ' + fmt(G, 4) + '\n';
+  t += 'pure:    vulnerable = 2 Tfr = ' + fmt(2 * T * 1000, 4) + ' ms;  S = G e^-2G = ' + fmt(Sp, 3) + ';  book: ' + fps + ' x S = ' + fmt(fps * Sp, 0) + ' frames/s\n';
+  t += 'slotted: vulnerable = Tfr = ' + fmt(T * 1000, 4) + ' ms;    S = G e^-G  = ' + fmt(Ss, 3) + ';  book: ' + fps + ' x S = ' + fmt(fps * Ss, 0) + ' frames/s\n';
+  t += '(strict successful frames/s = S / Tfr: pure ' + fmt(Sp / T, 0) + ', slotted ' + fmt(Ss / T, 0) + ')';
+  out.innerHTML = pre(t);
+}
+on('alGo', alRun); if ($('alGo')) alRun();
+
+/* ---------- CSMA/CD ---------- */
+function cdRun() {
+  var R = +$('cdR').value, Tp = +$('cdT').value, T = 2 * Tp, b = R * T * 1e-6;
+  $('cdOut').innerHTML = pre('Tfr = 2 x Tp = ' + fmt(T, 4) + ' us\nmin frame = ' + R + ' x ' + fmt(T, 4) + ' us = ' + fmt(b, 2) + ' bits = ' + fmt(b / 8, 2) + ' bytes');
+}
+on('cdGo', cdRun); if ($('cdGo')) cdRun();
+
+/* ---------- CDMA ---------- */
+function cdmaRun() {
+  var lines = $('cdmaIn').value.split(/\n/).map(function (s) { return s.trim(); }).filter(Boolean), map1 = $('cdmaMap').value === '1p', st = [], out = $('cdmaOut');
+  for (var i = 0; i < lines.length; i++) {
+    var parts = lines[i].split(/\s+/), data = parts.pop().replace(/[^01sS]/g, '').toLowerCase(), cs = parts.join(' '), code;
+    if (/[+\-]/.test(cs)) code = (cs.match(/[+\-]?1/g) || []).map(function (x) { return x.indexOf('-') >= 0 ? -1 : 1; });
+    else code = cs.replace(/[^01]/g, '').split('').map(function (c) { return (c === '1') === map1 ? 1 : -1; });
+    if (!code.length || !data) { out.innerHTML = '<p class="bad">Line ' + (i + 1) + ': need "code data".</p>'; return; }
+    st.push({c: code, d: data});
+  }
+  if (!st.length) { out.innerHTML = '<p class="bad">Add at least one station.</p>'; return; }
+  var N = st[0].c.length;
+  for (i = 0; i < st.length; i++) if (st[i].c.length !== N) { out.innerHTML = '<p class="bad">All codes must have the same length.</p>'; return; }
+  var dot = function (a, b) { var s = 0; for (var k = 0; k < a.length; k++) s += a[k] * b[k]; return s; };
+  var vec = function (a) { return '[' + a.map(function (x) { return (x > 0 ? '+' : '') + x; }).join(' ') + ']'; };
+  var t = '', warn = [];
+  st.forEach(function (s, k) { t += 'station ' + (k + 1) + ': code ' + vec(s.c) + ', data ' + s.d + '\n'; });
+  for (i = 0; i < st.length; i++) for (var j = i + 1; j < st.length; j++) if (dot(st[i].c, st[j].c) !== 0) warn.push((i + 1) + '.' + (j + 1) + ' = ' + dot(st[i].c, st[j].c));
+  if (warn.length) t += 'WARNING, codes not orthogonal: ' + warn.join(', ') + '\n';
+  var T = Math.max.apply(null, st.map(function (s) { return s.d.length; }));
+  for (var b = 0; b < T; b++) {
+    var sum = []; for (var k = 0; k < N; k++) sum.push(0);
+    t += '\nbit ' + (b + 1) + ':\n';
+    st.forEach(function (s, idx) {
+      var ch = s.d[b] || 's', v = ch === '1' ? 1 : (ch === '0' ? -1 : 0), prod = s.c.map(function (x) { return x * v; });
+      prod.forEach(function (x, q) { sum[q] += x; });
+      t += '  st' + (idx + 1) + ': ' + (ch === 's' ? 'silent' : ch + ' -> ' + (v > 0 ? '+1' : '-1')) + '  x code = ' + vec(prod) + '\n';
+    });
+    t += '  channel = ' + vec(sum) + '\n';
+    st.forEach(function (s, idx) {
+      var ip = dot(sum, s.c), r = ip / N;
+      t += '  decode st' + (idx + 1) + ': ' + ip + ' / ' + N + ' = ' + fmt(r, 3) + ' -> ' + (r > 0.5 ? '1' : (r < -0.5 ? '0' : 'silent')) + '\n';
+    });
+  }
+  out.innerHTML = pre(t, 'al');
+}
+on('cdmaGo', cdmaRun);
+on('cdmaBook', function () { $('cdmaIn').value = '+1 +1 +1 +1  0\n+1 -1 +1 -1  0\n+1 +1 -1 -1  s\n+1 -1 -1 +1  1'; cdmaRun(); });
+if ($('cdmaGo')) cdmaRun();
+if (typeof module !== 'undefined') module.exports = {crcDivide: crcDivide, wrap: wrap};
+})();
+</script>
+</body>
+</html>
