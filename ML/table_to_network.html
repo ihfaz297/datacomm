@@ -1,0 +1,805 @@
+<title>Table to Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column like a field notebook; every exam step is a numbered specimen card with a hidden answer. */
+:root {
+  --bg: #f3f5f1;
+  --surface: #ffffff;
+  --ink: #17201b;
+  --muted: #56625b;
+  --line: #d5dcd6;
+  --accent: #1c6a56;
+  --accent-ink: #ffffff;
+  --accent-soft: #e0eee8;
+  --warn: #94470f;
+  --warn-soft: #f7eadf;
+  --code-bg: #eef1ed;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.9rem, 6vw, 2.6rem);
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101512; --surface: #18201c; --ink: #e3eae5; --muted: #9ba8a0; --line: #2b3530;
+    --accent: #5cc3a4; --accent-ink: #0d1a15; --accent-soft: #1b3a30; --warn: #e6a370; --warn-soft: #3a2a1c;
+    --code-bg: #1f2823; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101512; --surface: #18201c; --ink: #e3eae5; --muted: #9ba8a0; --line: #2b3530;
+  --accent: #5cc3a4; --accent-ink: #0d1a15; --accent-soft: #1b3a30; --warn: #e6a370; --warn-soft: #3a2a1c;
+  --code-bg: #1f2823; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6; }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; display: grid; gap: 44px; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: var(--step-3); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: var(--step-2); font-weight: 700; }
+h3 { font-size: var(--step-1); font-weight: 700; }
+p { margin: 0; }
+a { color: var(--accent); }
+code, .mono { font-family: var(--f-mono); font-size: 0.88em; }
+code { background: var(--code-bg); padding: 0.05em 0.35em; border-radius: 4px; }
+.eyebrow { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { color: var(--muted); font-size: 1.05rem; max-width: 62ch; }
+section { display: grid; gap: 16px; min-width: 0; }
+.stack { display: grid; gap: 12px; min-width: 0; }
+header.top { display: grid; gap: 12px; }
+nav.jump { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+nav.jump a { flex: none; text-decoration: none; color: var(--ink); border: 1px solid var(--line); background: var(--surface); padding: 6px 12px; border-radius: 999px; font-size: 0.9rem; }
+nav.jump a:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--f-display); font-weight: 700; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: center; font-variant-numeric: tabular-nums; font-family: var(--f-mono); }
+.yes { color: var(--accent); font-weight: 700; }
+ul, ol { margin: 0; padding-left: 1.25em; display: grid; gap: 6px; }
+.callout { border-radius: var(--r); padding: 14px 16px; background: var(--accent-soft); display: grid; gap: 8px; }
+.trap { border-radius: var(--r); padding: 12px 14px; background: var(--warn-soft); color: var(--ink); display: grid; gap: 6px; }
+.trap b.tag, .rule b.tag { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.trap b.tag { color: var(--warn); }
+.rule { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; display: grid; gap: 6px; }
+.rule b.tag { color: var(--accent); }
+.src { font-family: var(--f-mono); font-size: 0.72rem; color: var(--muted); }
+
+/* pipeline */
+ol.pipe { list-style: none; padding: 0; gap: 0; counter-reset: p; }
+ol.pipe li { counter-increment: p; display: grid; grid-template-columns: 40px 1fr; gap: 0 12px; position: relative; padding-bottom: 18px; }
+ol.pipe li::before { content: counter(p); grid-row: 1 / span 3; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-family: var(--f-mono); font-weight: 600; display: grid; place-items: center; font-size: 0.9rem; position: relative; z-index: 1; }
+ol.pipe li:not(:last-child)::after { content: ""; position: absolute; left: 15px; top: 34px; bottom: 0; width: 2px; background: var(--line); }
+ol.pipe li > * { min-width: 0; }
+ol.pipe .q { font-family: var(--f-display); font-weight: 700; font-size: 1.08rem; }
+ol.pipe .ex { color: var(--muted); }
+ol.pipe .words { font-family: var(--f-mono); font-size: 0.75rem; color: var(--accent); }
+
+/* step cards */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: grid; gap: 14px; min-width: 0; }
+.card .head { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+.card .n { font-family: var(--f-mono); font-weight: 600; font-size: 0.85rem; background: var(--ink); color: var(--bg); border-radius: 6px; padding: 3px 8px; margin-top: 3px; }
+.think { font-style: italic; color: var(--muted); }
+details { border-top: 1px dashed var(--line); padding-top: 12px; }
+summary { cursor: pointer; font-family: var(--f-display); font-weight: 700; color: var(--accent); list-style: none; display: flex; align-items: center; gap: 8px; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "+"; font-family: var(--f-mono); width: 22px; height: 22px; display: grid; place-items: center; border: 1.5px solid var(--accent); border-radius: 6px; font-size: 0.9rem; }
+details[open] summary::before { content: "−"; }
+details > .stack { margin-top: 12px; }
+
+/* builder */
+.builder { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: grid; gap: 16px; }
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.controls label { display: grid; gap: 4px; font-size: 0.85rem; color: var(--muted); }
+.controls input, .controls select { font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
+.figure { overflow-x: auto; }
+svg.net { display: block; width: 100%; max-width: 560px; height: auto; margin: 0 auto; }
+svg.net .edge { stroke: var(--muted); stroke-opacity: 0.45; stroke-width: 1; }
+svg.net .edge.bias { stroke-dasharray: 3 3; stroke-opacity: 0.6; }
+svg.net .node-in { fill: var(--surface); stroke: var(--ink); stroke-width: 1.6; }
+svg.net .node-h { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.8; }
+svg.net .node-out { fill: var(--accent); stroke: var(--accent); stroke-width: 1.8; }
+svg.net .node-b { fill: var(--bg); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 2 2; }
+svg.net text { fill: var(--ink); font-family: var(--f-body); font-size: 13px; }
+svg.net text.cap { fill: var(--muted); font-family: var(--f-mono); font-size: 11px; }
+svg.net text.inner { font-family: var(--f-mono); font-size: 10.5px; fill: var(--muted); }
+svg.net text.inner-out { font-family: var(--f-mono); font-size: 11px; fill: var(--accent-ink); font-weight: 600; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { border: 1px solid var(--line); border-radius: var(--r); padding: 10px 12px; display: grid; gap: 2px; background: var(--bg); }
+.stat .k { font-size: 0.8rem; color: var(--muted); }
+.stat .v { font-family: var(--f-mono); font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 0.8rem; color: var(--muted); }
+.warnline { color: var(--warn); font-weight: 700; }
+.doom { border: 2px solid var(--ink); border-radius: 14px; padding: 18px 16px; display: grid; gap: 12px; background: var(--surface); }
+dl.words { display: grid; gap: 0; margin: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+dl.words > div { display: grid; grid-template-columns: minmax(110px, 30%) 1fr; gap: 4px 14px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+dl.words > div:last-child { border-bottom: 0; }
+dl.words dt { font-family: var(--f-display); font-weight: 700; }
+dl.words dd { margin: 0; min-width: 0; }
+dl.words dd .here { color: var(--muted); font-size: 0.92rem; display: block; }
+@media (max-width: 480px) { dl.words > div { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: no-preference) { details[open] > .stack { animation: drop 0.18s ease-out; } }
+@keyframes drop { from { opacity: 0.4; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">CSE 475 · Neural network design from a table</span>
+  <h1>From five animals to a neural network</h1>
+  <p class="lede">Every step the exam asks for, worked on the mammal table. Each step has a question to think about first, then the answer, the rule of thumb behind it, and the trap. The first section is the map of where all the ML words you've heard actually fit.</p>
+  <nav class="jump" aria-label="Sections">
+    <a href="#papers">Past papers</a>
+    <a href="#map">The map</a>
+    <a href="#data">The table</a>
+    <a href="#steps">8 exam steps</a>
+    <a href="#practice">Practice</a>
+    <a href="#builder">Network builder</a>
+    <a href="#overkill">Why not a tree?</a>
+    <a href="#words">Word decoder</a>
+    <a href="#doom">Doomsday</a>
+  </nav>
+</header>
+
+<section id="papers">
+  <span class="eyebrow">Your past papers</span>
+  <h2>Where each question is answered</h2>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Paper</th><th>Dataset</th><th>Go to</th></tr></thead>
+      <tbody>
+        <tr><td>TT1 2022 Q3, Bengali TT Q2</td><td>Animals, "suitable" network</td><td>draw <a href="#s2">2</a> · feed <a href="#s1">1</a> · init <a href="#s5">5</a> · data <a href="#s6">6</a> · overfitting <a href="#s8">8</a> · activations <a href="#s3">3</a></td></tr>
+        <tr><td>F2021 Q3b</td><td>Animals, "simplest possible"</td><td>parameters <a href="#s2b">2b</a> · feed <a href="#s1">1</a> + <a href="#s2b">2b</a> · init <a href="#s5">5</a> · data <a href="#s6">6</a> · duration <a href="#s7">7</a></td></tr>
+        <tr><td>F2013 Q4</td><td>Animals, simplest, bias −1, threshold 0</td><td>draw <a href="#s2b">2b</a> · init <a href="#s5">5</a> · data <a href="#s6">6</a> · activations <a href="#s3">3</a></td></tr>
+        <tr><td>TT2 (two years)</td><td>Packets: Small / Medium / Large</td><td><a href="#p-packet">P1</a></td></tr>
+        <tr><td>F2016 Q5</td><td>Weather → Going out / Staying home</td><td><a href="#p-weather">P2</a></td></tr>
+        <tr><td>F2021 Q3a</td><td>WeTube: Liked / Disliked / No-Reaction</td><td><a href="#p-wetube">P3</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="map">
+  <span class="eyebrow">Start here</span>
+  <h2>The map: every ML project is the same loop</h2>
+  <p>The terms you've heard for three years are names for steps in one process. Here it is in order, with what each step means for the animal table.</p>
+  <ol class="pipe">
+    <li><span class="q">Frame the problem</span><span>What am I predicting, and from what?</span><span class="ex">Predict Mammal or Non-mammal from 4 yes/no facts. Labels are given, and there are 2 classes, so this is supervised binary classification.</span><span class="words">supervised · classification vs regression · feature · label</span></li>
+    <li><span class="q">Collect data</span><span>Rows of examples with the answer attached.</span><span class="ex">5 animals. That is far too few, and step 6 below shows by how much.</span><span class="words">sample · dataset · train / validation / test</span></li>
+    <li><span class="q">EDA (exploratory data analysis)</span><span>Look at the data before you build anything.</span><span class="ex">3 mammals vs 2 not. One odd value, "Sometimes". One column, Give Birth, already splits the classes perfectly.</span><span class="words">class balance · missing values · outliers · correlation</span></li>
+    <li><span class="q">Feature engineering</span><span>Turn columns into numbers a model can use, and make better columns.</span><span class="ex">Yes/No becomes 1/0, the Animal name is dropped, and maybe a "produces milk" column gets added.</span><span class="words">encoding · one-hot · scaling · feature extraction · feature selection</span></li>
+    <li><span class="q">Model selection</span><span>Pick the kind of model and its size.</span><span class="ex">Decision tree, logistic regression, or a 4 → 2 → 1 network?</span><span class="words">architecture · hyperparameters · capacity</span></li>
+    <li><span class="q">Training</span><span>Gradient descent nudges the weights to lower the loss.</span><span class="ex">13 weights and biases, binary cross-entropy loss, a few hundred updates.</span><span class="words">loss · optimizer · learning rate · epoch · batch · initialization</span></li>
+    <li><span class="q">Evaluation</span><span>Score the model on rows it has never seen.</span><span class="ex">With 5 rows there is nothing left to test on. That's the overfitting problem in step 8.</span><span class="words">accuracy · precision / recall · overfitting · cross-validation</span></li>
+    <li><span class="q">Loop back</span><span>Bad score? Fix the data and features first, the model second.</span><span class="ex">A platypus breaks the "gives birth" rule. A bigger network can't fix that, but a "produces milk" column can.</span><span class="words">iteration · error analysis</span></li>
+  </ol>
+
+  <h3>Which step matters most depends on the data</h3>
+  <p>This answers "who needs a better model and who needs better features".</p>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Your data</th><th>What wins</th><th>Typical model</th></tr></thead>
+      <tbody>
+        <tr><td>Small table, few rows (this one)</td><td>EDA and good features. The model barely matters.</td><td>Decision tree, logistic regression, Naive Bayes</td></tr>
+        <tr><td>Big table, thousands of rows</td><td>Good features, then a strong model</td><td>Random forest, gradient boosting, sometimes an MLP</td></tr>
+        <tr><td>Images, audio or text, lots of it</td><td>The model. Deep networks learn the features themselves.</td><td>CNN for images, RNN or transformer for text</td></tr>
+        <tr><td>Images, but only a few hundred</td><td>Borrow a network trained on someone else's big data</td><td>Transfer learning</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><p><b>The one idea to keep:</b> feature engineering is you helping a simple model. Deep learning is the model doing its own feature engineering, which only works when it has a lot of data.</p></div>
+</section>
+
+<section id="data">
+  <span class="eyebrow">The exam's dataset</span>
+  <h2>The table, and what 30 seconds of EDA tells you</h2>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Animal</th><th class="num">Give birth</th><th class="num">Can fly</th><th class="num">Live in water</th><th class="num">Have legs</th><th>Class</th></tr></thead>
+      <tbody>
+        <tr><td>Human</td><td class="num">Yes</td><td class="num">No</td><td class="num">No</td><td class="num">Yes</td><td>Mammal</td></tr>
+        <tr><td>Python</td><td class="num">No</td><td class="num">No</td><td class="num">No</td><td class="num">No</td><td>Non-mammal</td></tr>
+        <tr><td>Whale</td><td class="num">Yes</td><td class="num">No</td><td class="num">Yes</td><td class="num">No</td><td>Mammal</td></tr>
+        <tr><td>Frog</td><td class="num">No</td><td class="num">No</td><td class="num">Sometimes</td><td class="num">Yes</td><td>Non-mammal</td></tr>
+        <tr><td>Bat</td><td class="num">Yes</td><td class="num">Yes</td><td class="num">No</td><td class="num">Yes</td><td>Mammal</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li><b>Size:</b> 5 rows, 4 features, 1 target. It's tiny.</li>
+    <li><b>Balance:</b> 3 Mammal vs 2 Non-mammal. That's close enough to balanced that accuracy is a fair metric.</li>
+    <li><b>Odd value:</b> Live in Water has a third value, "Sometimes" (Frog). You'll need to decide how to encode it.</li>
+    <li><b>Not a feature:</b> Animal is a name, and every row has a different one. A model that uses it memorises rows instead of learning.</li>
+    <li><b>Already solved?</b> Give Birth alone splits the classes perfectly: Yes means Mammal (Human, Whale, Bat), No means Non-mammal (Python, Frog).</li>
+    <li><b>Weak feature:</b> Can Fly is Yes only for Bat, so it tells you very little with 5 rows.</li>
+  </ul>
+</section>
+
+<section id="steps">
+  <span class="eyebrow">The exam questions, in the order you'd do them</span>
+  <h2>8 steps from table to trained network</h2>
+  <p>Read the question in italics and answer it in your head (or on paper) before you open the answer. That's what makes it stick.</p>
+
+  <article class="card" id="s1">
+    <div class="head"><span class="n">1</span><h3>Encode the features</h3></div>
+    <p class="think">Models only take numbers. What do you do with Yes/No? With "Sometimes"? With the Animal column? With Class?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <ul>
+        <li><b>Yes/No columns</b> (Give Birth, Can Fly, Have Legs): Yes = 1, No = 0.</li>
+        <li><b>Live in Water</b>: No = 0, Sometimes = 0.5, Yes = 1. This is <b>ordinal encoding</b>, which is fine because the values have a natural order. The safe alternative is <b>one-hot</b>: three columns (water_no, water_sometimes, water_yes) with a single 1 in each row. That costs 2 extra inputs.</li>
+        <li><b>Animal</b>: drop it. It's an identifier, not a pattern.</li>
+        <li><b>Class (target)</b>: Mammal = 1, Non-mammal = 0.</li>
+        <li><b>Scaling</b>: every value here is already between 0 and 1, so there's nothing to do. Numeric columns (height in cm, weight in kg) get <b>standardised</b>, z = (x − mean) / std, so no column dominates just because its numbers are bigger. If a column is skewed, like view counts running from 50 to 50,000, take the log first.</li>
+      </ul>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th></th><th class="num">x₁ birth</th><th class="num">x₂ fly</th><th class="num">x₃ water</th><th class="num">x₄ legs</th><th class="num">y</th></tr></thead>
+          <tbody>
+            <tr><td>Human</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num yes">1</td></tr>
+            <tr><td>Python</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+            <tr><td>Whale</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num yes">1</td></tr>
+            <tr><td>Frog</td><td class="num">0</td><td class="num">0</td><td class="num">0.5</td><td class="num">1</td><td class="num">0</td></tr>
+            <tr><td>Bat</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num yes">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Each row becomes an input vector. Frog is <code>x = [0, 0, 0.5, 1]</code> with <code>y = 0</code>.</p>
+      <div class="trap"><b class="tag">Trap</b><p>Never encode an <i>unordered</i> category as 0, 1, 2. If colour is red = 0, green = 1, blue = 2, the model thinks blue is "more" than red. Use one-hot for anything without a real order.</p></div>
+      <div class="rule"><b class="tag">Feature-engineering bonus</b><p>Replace Live in Water with two flags, "lives on land" and "lives in water". Frog then gets 1 for both, which describes it better than "0.5".</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="s2">
+    <div class="head"><span class="n">2</span><h3>Draw the network</h3></div>
+    <p class="think">How many input nodes? How many output nodes? How many hidden layers, and how wide?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <div class="rule"><b class="tag">Rules of thumb</b>
+        <ul>
+          <li><b>Input layer:</b> one node per encoded feature, so 4 here (6 if you one-hot the water column).</li>
+          <li><b>Output layer:</b> binary means 1 node, k classes means k nodes, regression means 1 node. <span class="src">[Ranjan]</span></li>
+          <li><b>Hidden layers:</b> start with two. Use sizes from 4, 8, 16, 32…, with the first layer about half the number of inputs and each layer after that half the one before. <span class="src">[Ranjan]</span></li>
+          <li><b>Other common sizing rules:</b> between the output and input sizes, about √(inputs), or about the mean of the input and output sizes. <span class="src">[general]</span></li>
+        </ul>
+      </div>
+      <p><b>Apply them:</b> half of 4 is 2, √4 is 2, and (4 + 1) / 2 is 2.5. <b>Every rule says 2 hidden neurons.</b></p>
+      <div class="figure" data-net="4,2,1" data-task="binary" data-labels="birth,fly,water,legs" data-outlabels="mammal" role="img" aria-label="Network with 4 inputs, 2 hidden ReLU neurons and 1 sigmoid output"></div>
+      <p><b>Answer: 4 → 2 → 1.</b> One hidden layer of 2 ReLU neurons, then 1 sigmoid output that gives P(mammal). With only 5 rows, start simple. If the question wants Ranjan's two hidden layers, the halving rule runs out of room at 4 inputs (it would give 2, then 1), so draw <b>4 → 2 → 2 → 1</b>.</p>
+      <p><b>Label these on your drawing:</b> the feature name on each input, "+1" bias nodes, the activation under each layer, the weight matrices W⁽¹⁾ (2×4) and W⁽²⁾ (1×2), and "ŷ = P(mammal)" at the output.</p>
+      <p>If the question says <b>"simplest possible"</b>, this is the wrong drawing. Go to 2b.</p>
+    </div></details>
+  </article>
+
+  <article class="card" id="s2b">
+    <div class="head"><span class="n">2b</span><h3>"Simplest possible" network: one neuron</h3></div>
+    <p class="src">F2021 Q3b(i) · F2013 Q4</p>
+    <p class="think">Do you need a hidden layer at all? Look at the Give Birth column again.</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>No hidden layer.</b> One neuron is enough because the classes are <b>linearly separable</b>: Give Birth alone splits them, so a single straight boundary (a flat plane in 4-D) does the job. Hidden layers are only needed when no straight boundary exists, as with XOR.</p>
+      <div class="figure" data-net="4,1" data-task="binary" data-act="step" data-labels="birth,fly,water,legs" data-outlabels="mammal" role="img" aria-label="Single neuron with 4 inputs, a bias input and a step output"></div>
+      <p class="mono">z = w₁x₁ + w₂x₂ + w₃x₃ + w₄x₄ + b<br>ŷ = 1 (mammal) if z ≥ 0, else 0   (step, threshold 0)</p>
+      <ul>
+        <li><b>Learnable parameters:</b> 4 weights + 1 bias = <b>5</b>.</li>
+        <li><b>Bias ≈ −1:</b> draw the bias as an extra input fixed at +1 with weight b = −1. Some books draw an input fixed at −1 with weight θ = 1 instead, which is the same thing. Either way, the weighted inputs must add up to at least 1 before the neuron fires.</li>
+        <li><b>How a set of feature values is fed in:</b> one animal per forward pass. Its 4 encoded values go to the 4 input nodes together as the vector x = [x₁, x₂, x₃, x₄], along with the constant bias input. In training, rows are fed one after another (perceptron rule) or in batches (gradient descent).</li>
+        <li><b>Activation:</b> a step at threshold 0, as the question asks. Use sigmoid instead if you want a probability and gradient-descent training.</li>
+        <li><b>Data for this network:</b> 5 / 0.1 = <b>50</b> rows (see step 6).</li>
+      </ul>
+      <p><b>Weights that work</b> with b = −1: w = [2, 0, 0, 0], so z = 2·birth − 1.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Animal</th><th class="num">birth</th><th class="num">z</th><th class="num">ŷ</th><th>Truth</th></tr></thead>
+          <tbody>
+            <tr><td>Human</td><td class="num">1</td><td class="num">+1</td><td class="num yes">1</td><td>Mammal ✓</td></tr>
+            <tr><td>Python</td><td class="num">0</td><td class="num">−1</td><td class="num">0</td><td>Non-mammal ✓</td></tr>
+            <tr><td>Whale</td><td class="num">1</td><td class="num">+1</td><td class="num yes">1</td><td>Mammal ✓</td></tr>
+            <tr><td>Frog</td><td class="num">0</td><td class="num">−1</td><td class="num">0</td><td>Non-mammal ✓</td></tr>
+            <tr><td>Bat</td><td class="num">1</td><td class="num">+1</td><td class="num yes">1</td><td>Mammal ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><b>Training it:</b> start from small random weights and apply the perceptron rule, w := w + η(y − ŷ)x and b := b + η(y − ŷ). It only changes the weights on mistakes, and it's guaranteed to converge here because the data is linearly separable.</p>
+      <div class="callout"><p><b>"Suitable" vs "simplest possible":</b> for "suitable", draw 4 → 2 → 1 (step 2). For "simplest possible", draw this single neuron and give the reason it's enough: the data is linearly separable.</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="s3">
+    <div class="head"><span class="n">3</span><h3>Choose activation and loss functions</h3></div>
+    <p class="think">What goes in the hidden layer, what goes at the output, and which loss matches that output?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <ul>
+        <li><b>Hidden layer: ReLU</b>, max(0, z). It's cheap to compute and doesn't flatten out for z &gt; 0, so gradients don't vanish. <span class="src">[Ranjan]</span></li>
+        <li><b>Output: sigmoid</b>, 1/(1 + e⁻ᶻ). It gives P(mammal) between 0 and 1. Predict Mammal if it's 0.5 or more. <span class="src">[Ranjan]</span></li>
+        <li><b>Loss: binary cross-entropy</b> (log loss). It's the matched pair for sigmoid, and the gradient comes out as (ŷ − y)·x.</li>
+        <li><b>Optimizer:</b> Adam or RMSprop at the default learning rate, or plain gradient descent with η around 0.01 to 0.1.</li>
+        <li><b>Metric:</b> accuracy, since the classes are near balanced. For imbalanced data use precision, recall and F1.</li>
+      </ul>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>If the task were…</th><th>Output layer</th><th>Loss</th></tr></thead>
+          <tbody>
+            <tr><td>Mammal or not (this)</td><td>1 neuron, sigmoid</td><td>binary cross-entropy</td></tr>
+            <tr><td>Mammal / Bird / Reptile / Fish / Amphibian</td><td>5 neurons, softmax</td><td>categorical cross-entropy</td></tr>
+            <tr><td>Lifespan in years</td><td>1 neuron, linear</td><td>MSE</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="trap"><b class="tag">Trap</b><p>Softmax on 1 output neuron always outputs 1, so the model can't learn. Sigmoid with MSE learns very slowly when it's confidently wrong, because of the extra σ′ ≤ 0.25 factor in the gradient.</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="s4">
+    <div class="head"><span class="n">4</span><h3>Count the weights</h3></div>
+    <p class="think">For 4 → 2 → 1, how many weights? How many biases? Don't forget the biases.</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>Per layer:</b> (inputs × neurons) weights + (neurons) biases = <b>(inputs + 1) × neurons</b>.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Layer</th><th class="num">Weights</th><th class="num">Biases</th><th class="num">Total</th><th>Shape</th></tr></thead>
+          <tbody>
+            <tr><td>Input → hidden</td><td class="num">4 × 2 = 8</td><td class="num">2</td><td class="num">10</td><td class="mono">W⁽¹⁾ 2×4, b⁽¹⁾ 2×1</td></tr>
+            <tr><td>Hidden → output</td><td class="num">2 × 1 = 2</td><td class="num">1</td><td class="num">3</td><td class="mono">W⁽²⁾ 1×2, b⁽²⁾ 1×1</td></tr>
+            <tr><th>Total</th><td class="num">10</td><td class="num">3</td><td class="num"><b>13</b></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The two-hidden-layer version 4 → 2 → 2 → 1 has 10 + 6 + 3 = <b>19</b>. Plain logistic regression, 4 → 1, has <b>5</b>.</p>
+      <div class="trap"><b class="tag">Trap</b><p>Counting only the lines in your drawing gives 10. Each neuron also has a bias. If you say "parameters", include them.</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="s5">
+    <div class="head"><span class="n">5</span><h3>Initialise the weights</h3></div>
+    <p class="think">Why not just start every weight at 0? And why small numbers rather than big ones?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>Answer:</b> start the weights at <b>small random values</b> and the biases at 0.</p>
+      <ul>
+        <li><b>Why random:</b> if every weight starts equal, both hidden neurons compute the same number, get the same gradient, and stay identical forever. Your 2 neurons act like 1. Random starting values break this symmetry, so each neuron can learn a different pattern.</li>
+        <li><b>Why small:</b> big weights push the sigmoid into its flat ends, where the gradient is about 0, and learning stalls.</li>
+        <li><b>How small depends on the layer</b> (this is what Keras does):
+          <ul>
+            <li><b>He</b>, for ReLU layers: W ~ N(0, 2 / fan_in). For the hidden layer, fan_in = 4, so σ = √(2/4) ≈ <b>0.71</b>.</li>
+            <li><b>Glorot / Xavier</b>, for sigmoid or tanh (and Keras's default): W ~ U(−L, L) with L = √(6 / (fan_in + fan_out)). For the output layer, L = √(6/3) ≈ <b>1.41</b>.</li>
+          </ul>
+        </li>
+      </ul>
+      <p><b>An example random start</b> (one possible draw):</p>
+      <p class="mono">W⁽¹⁾ = [[0.42, −0.31, 0.85, −0.12], [−0.66, 0.27, −0.09, 0.53]], b⁽¹⁾ = [0, 0]<br>W⁽²⁾ = [[0.91, −0.48]], b⁽²⁾ = 0</p>
+      <p><b>What the untrained network says about Human</b>, x = [1, 0, 0, 1]:</p>
+      <ul>
+        <li>Hidden 1: z = 0.42 − 0.12 = 0.30, and ReLU gives 0.30.</li>
+        <li>Hidden 2: z = −0.66 + 0.53 = −0.13, and ReLU gives 0. This neuron is switched off for Human.</li>
+        <li>Output: z = 0.91 × 0.30 − 0.48 × 0 = 0.273, so ŷ = σ(0.273) ≈ <b>0.57</b>.</li>
+      </ul>
+      <p>A freshly initialised network is close to a coin flip. Training is what moves these weights until Human gets close to 1 and Python close to 0.</p>
+      <div class="trap"><b class="tag">Trap</b><p>"Initialise all weights to zero" loses the mark. Zero is only fine for the biases.</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="s6">
+    <div class="head"><span class="n">6</span><h3>Estimate the data you need</h3></div>
+    <p class="think">You have 5 rows and 13 parameters. Is that enough? What would be?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <div class="rule"><b class="tag">Rule · Baum–Haussler, quoted in Haykin</b><p class="mono">N ≈ W / ε</p><p>N is the number of training examples, W is the number of free parameters (weights and biases), and ε is the fraction of errors you'll accept on new data. For about 10% error, ε = 0.1, so <b>N ≈ 10 × W</b>. That's where "10 examples per parameter" comes from. <span class="src">[Haykin]</span></p></div>
+      <ul>
+        <li><b>Training rows:</b> 13 / 0.1 = <b>130</b> for 4 → 2 → 1. The one-neuron network in 2b needs 5 / 0.1 = 50.</li>
+        <li><b>Hold-out data:</b> you also need rows the model never trains on. With a 70 / 15 / 15 train / validation / test split, 130 training rows means about <b>190 rows in total</b>.</li>
+        <li><b>Coverage:</b> every class, and every value of every feature, should show up several times. Right now only Frog has "Sometimes", and only Bat can fly.</li>
+      </ul>
+      <p><b>Verdict:</b> 5 rows is about 26 times too few. With 13 knobs and only 5 rows to satisfy, the network can fit the data in endless different ways, and none of them is guaranteed to work on a new animal.</p>
+    </div></details>
+  </article>
+
+  <article class="card" id="s7">
+    <div class="head"><span class="n">7</span><h3>Estimate the training duration</h3></div>
+    <p class="think">If you have 130 rows, batch size 16 and 100 epochs, how many weight updates is that? Roughly how long would it take?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p class="mono">updates = epochs × ⌈N / batch size⌉<br>time ≈ updates × time per update</p>
+      <ul>
+        <li><b>Batch size:</b> pick a power of 2. Start with 16, or 128 if the classes are imbalanced. <span class="src">[Ranjan]</span></li>
+        <li><b>Epochs:</b> start with a few dozen and watch the validation loss. Stop when it stops improving (early stopping), and allow up to about 100. <span class="src">[general]</span></li>
+        <li><b>With 130 rows:</b> ⌈130 / 16⌉ = 9 updates per epoch, so 9 × 100 = <b>900 updates</b>. Each update on a 13-parameter network takes microseconds, so the whole run takes <b>well under a second</b> on a laptop.</li>
+        <li><b>With the real 5 rows:</b> the batch of 16 is bigger than the dataset, so there's 1 update per epoch (full-batch gradient descent), and 100 epochs is 100 updates.</li>
+      </ul>
+      <div class="trap"><b class="tag">Trap</b><p>Epochs are passes over the whole dataset, not batches. <code>epochs=4, batch_size=512</code> says nothing about the dataset size until you know N.</p></div>
+    </div></details>
+  </article>
+
+  <article class="card" id="s8">
+    <div class="head"><span class="n">8</span><h3>Guard against overfitting</h3></div>
+    <p class="think">13 knobs and 5 rows. What will the network do, and what are your defences?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>What happens:</b> the network can score 100% on the 5 rows by memorising them, and that score means nothing. You spot overfitting when the <b>training loss keeps falling while the validation loss rises</b>. If both stay high, that's underfitting: the model is too simple or hasn't trained enough.</p>
+      <p><b>Defences, strongest first:</b></p>
+      <ol>
+        <li><b>More data.</b> This is the real fix (step 6).</li>
+        <li><b>Hold out data.</b> Use a train / validation / test split. With tiny data, use k-fold cross-validation, or leave-one-out: with 5 rows, train on 4 and test on 1, five times.</li>
+        <li><b>Early stopping:</b> stop training when the validation loss starts to rise.</li>
+        <li><b>Smaller model:</b> fewer neurons leave less room to memorise. Try 4 → 2 → 1, or even logistic regression (5 parameters).</li>
+        <li><b>Regularisation:</b> an <b>L2 penalty</b> keeps the weights small. <b>Dropout</b> randomly switches off neurons during training. Ranjan's default is 0.5 after every hidden layer, never on the input, and above 0.5 hurts. <span class="src">[Ranjan]</span> With only 2 hidden neurons, dropout 0.5 kills half the layer, so L2 is the gentler choice here.</li>
+        <li><b>Drop the ID column.</b> A unique name per row is a memorisation shortcut.</li>
+      </ol>
+    </div></details>
+  </article>
+</section>
+
+<section id="practice">
+  <span class="eyebrow">Your turn · the other datasets in your papers</span>
+  <h2>Practice: packets, weather, WeTube</h2>
+  <p>The same recipe on new tables. Answer each part on paper before you open the answer, and check your counts in the builder below.</p>
+
+  <article class="card" id="p-packet">
+    <div class="head"><span class="n">P1</span><h3>Packet sizes</h3></div>
+    <p class="src">TT2, asked two years</p>
+    <p class="think">"Packets with Height, Width, Depth, Weight and Color go into Small, Medium and Large. (a) Draw the network. (b) How many weights, and how will you initialise them? (c) How much training data? (d) How will you decide the number of iterations? (e) Which activation function?"</p>
+    <p class="think">Think about: which columns are numbers and which are categories? How many classes? Does colour have anything to do with size?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>Encode first:</b></p>
+      <ul>
+        <li><b>Height, Width, Depth, Weight</b> are numbers on different scales (cm vs kg), so <b>standardise</b> each one: z = (x − mean) / std.</li>
+        <li><b>Color</b> is an unordered category, so <b>one-hot</b> it. The question doesn't list the colours, so assume 3 (red, green, blue) and say that you're assuming it.</li>
+        <li><b>Target:</b> 3 classes, one-hot as [1,0,0], [0,1,0] and [0,0,1].</li>
+        <li><b>Bonus mark:</b> colour almost certainly has nothing to do with size, so dropping it is fair (feature selection). Volume = H × W × D would be a strong extra input (feature engineering). Mention both, but answer with colour included unless the question says otherwise.</li>
+      </ul>
+      <p><b>(a) Network: 7 → 4 → 3.</b> 7 inputs (4 numbers + 3 colour flags), one hidden layer of 4 ReLU neurons (about half of 7, rounded to a power of 2), and 3 softmax outputs, one per size.</p>
+      <div class="figure" data-net="7,4,3" data-task="multiclass" data-labels="height,width,depth,weight,red,green,blue" data-outlabels="small,medium,large" role="img" aria-label="Network with 7 inputs, 4 hidden ReLU neurons and 3 softmax outputs"></div>
+      <p><b>(b) Weights:</b> (7 + 1) × 4 = 32, then (4 + 1) × 3 = 15, so <b>47 parameters</b> (40 weights + 7 biases). W⁽¹⁾ is 4×7 and W⁽²⁾ is 3×4. Start them at small random values: He for the ReLU layer (σ = √(2/7) ≈ 0.53), Glorot for the softmax layer (L = √(6/7) ≈ 0.93), and biases at 0.</p>
+      <p><b>(c) Data:</b> N ≈ W / ε = 47 / 0.1 ≈ <b>470 training packets</b> for about 10% error, so about 670 in total with validation and test rows. Keep the three sizes roughly balanced, about 160 of each.</p>
+      <p><b>(d) Number of iterations:</b> don't fix it in advance. Hold out a validation set, train one epoch at a time, and track both the training and the validation loss. Stop when the validation loss hasn't improved for about 10 epochs (early stopping) and keep the best weights. For a rough number: 470 rows at batch size 32 is ⌈470 / 32⌉ = 15 updates per epoch, so 100 epochs is 1,500 updates.</p>
+      <p><b>(e) Activations:</b> ReLU in the hidden layer. Softmax at the output, because there are 3 classes whose probabilities must add up to 1. Train with categorical cross-entropy.</p>
+    </div></details>
+  </article>
+
+  <article class="card" id="p-weather">
+    <div class="head"><span class="n">P2</span><h3>Weather to activity</h3></div>
+    <p class="src">F2016 Q5</p>
+    <p class="think">"Sky (Sunny, Cloudy, Rainy), Temperature (Hot, Mild, Cold), Humidity (Normal, High), Wind (Calm, Windy). Predict Going Out or Staying Home. (a) How will you handle the feature values? (b) How many nodes, and draw the network. (c) How many weights, and how will you initialise them? (d) How much training data? (e) How long will you train?"</p>
+    <p class="think">Think about: which features have a natural order? Which have only two values? How many different days are even possible?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>(a) Handle the feature values:</b></p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Feature</th><th>Values</th><th>Encoding</th><th class="num">Inputs</th></tr></thead>
+          <tbody>
+            <tr><td>Sky</td><td>Sunny, Cloudy, Rainy</td><td>one-hot (no order)</td><td class="num">3</td></tr>
+            <tr><td>Temperature</td><td>Hot, Mild, Cold</td><td>one-hot, or ordinal: Cold 0, Mild 0.5, Hot 1</td><td class="num">3 (or 1)</td></tr>
+            <tr><td>Humidity</td><td>Normal, High</td><td>one 0/1 input (High = 1)</td><td class="num">1</td></tr>
+            <tr><td>Wind</td><td>Calm, Windy</td><td>one 0/1 input (Windy = 1)</td><td class="num">1</td></tr>
+            <tr><th>Total</th><td></td><td></td><td class="num"><b>8</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Target: Going Out = 1, Staying Home = 0. A two-valued feature needs only one 0/1 input. Two one-hot columns for it would always be opposites of each other, which adds nothing.</p>
+      <p><b>(b) Nodes: 8 → 4 → 1.</b> 8 inputs, 4 ReLU hidden neurons (half of 8), and 1 sigmoid output giving P(go out). If the question says "simplest possible", draw 8 → 1, which is one neuron with 9 parameters.</p>
+      <div class="figure" data-net="8,4,1" data-task="binary" data-labels="sunny,cloudy,rainy,hot,mild,cold,humid,windy" data-outlabels="go out" role="img" aria-label="Network with 8 inputs, 4 hidden ReLU neurons and 1 sigmoid output"></div>
+      <p><b>(c) Weights:</b> (8 + 1) × 4 = 36, then (4 + 1) × 1 = 5, so <b>41 parameters</b> (36 weights + 5 biases). Start them small and random, never all zero (symmetry): He for the hidden layer (σ = √(2/8) = 0.50), Glorot for the output (L = √(6/5) ≈ 1.10), and biases at 0.</p>
+      <p><b>(d) Data:</b> N ≈ 41 / 0.1 ≈ <b>410 days</b> of records for about 10% error, or about 590 with validation and test days. As a sanity check, only 3 × 3 × 2 × 2 = <b>36</b> different days are possible, so 410 rows shows each one about 11 times. "The past few days" (14 in the classic version of this dataset) is far too few.</p>
+      <p><b>(e) How long:</b> until the validation loss stops improving (early stopping). For a rough number: 410 rows at batch size 16 is ⌈410 / 16⌉ = 26 updates per epoch, so 100 epochs is 2,600 updates, which takes seconds. Loss: binary cross-entropy.</p>
+    </div></details>
+  </article>
+
+  <article class="card" id="p-wetube">
+    <div class="head"><span class="n">P3</span><h3>WeTube recommendations</h3></div>
+    <p class="src">F2021 Q3a</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th class="num">Video</th><th>Type</th><th class="num">Length (min)</th><th class="num">#Views</th><th>Friend rec.</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>Drama</td><td class="num">40</td><td class="num">1000</td><td>No</td><td>Liked</td></tr>
+          <tr><td class="num">2</td><td>Vlog</td><td class="num">10</td><td class="num">500</td><td>No</td><td>Disliked</td></tr>
+          <tr><td class="num">3</td><td>Cat Video</td><td class="num">5</td><td class="num">50000</td><td>Yes</td><td>Liked</td></tr>
+          <tr><td class="num">4</td><td>Tech News</td><td class="num">15</td><td class="num">2000</td><td>Yes</td><td>Disliked</td></tr>
+          <tr><td class="num">5</td><td>Food Recipe</td><td class="num">10</td><td class="num">400</td><td>No</td><td>No-Reaction</td></tr>
+          <tr><td class="num">6</td><td>Drama</td><td class="num">75</td><td class="num">2000</td><td>No</td><td>Liked</td></tr>
+          <tr><td class="num">⋮</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="num">10000</td><td>Music</td><td class="num">5</td><td class="num">1200</td><td>Yes</td><td>?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="think">"Predict her action. (i) Draw the network with labels and biases. (ii) Show the weight matrices with proper initialisation. (iii) Which activation in each layer, and why? (iv) Which loss function? (v) How much training data? (vi) What techniques can optimise the training?"</p>
+    <p class="think">Think about: which column is useless? Which numbers are on wildly different scales? How many actions are there?</p>
+    <details><summary>Show the answer</summary><div class="stack">
+      <p><b>Encode first:</b></p>
+      <ul>
+        <li><b>Video number:</b> it's an ID, so drop it.</li>
+        <li><b>Type:</b> an unordered category with many values, so <b>one-hot</b> it, one input per type. With the 6 types shown (Drama, Vlog, Cat Video, Tech News, Food Recipe, Music), that's 6 inputs.</li>
+        <li><b>Length:</b> a number, so standardise it.</li>
+        <li><b>#Views:</b> runs from 50 to 50,000, so take <b>log₁₀ first</b> (400 → 2.6, 2,000 → 3.3, 50,000 → 4.7), then standardise. Without the log, one viral video swamps everything else.</li>
+        <li><b>Recommended by a friend:</b> Yes = 1, No = 0.</li>
+        <li><b>Action (target):</b> Liked / Disliked / No-Reaction is 3 classes, one-hot.</li>
+      </ul>
+      <p>Inputs: 6 + 1 + 1 + 1 = <b>9</b>.</p>
+      <p><b>(i) Network: 9 → 4 → 3</b>, with a "+1" bias node feeding each layer.</p>
+      <div class="figure" data-net="9,4,3" data-task="multiclass" data-labels="drama,vlog,cat,tech,food,music,length,log views,friend" data-outlabels="liked,disliked,no reaction" role="img" aria-label="Network with 9 inputs, 4 hidden ReLU neurons and 3 softmax outputs"></div>
+      <p><b>(ii) Weight matrices</b> (each row is one neuron, each column one input):</p>
+      <ul>
+        <li><b>W⁽¹⁾ is 4 × 9</b>, b⁽¹⁾ is 4 × 1 and starts at 0. He initialisation: each wᵢⱼ ~ N(0, 2/9), so σ ≈ 0.47.</li>
+        <li><b>W⁽²⁾ is 3 × 4</b>, b⁽²⁾ is 3 × 1 and starts at 0. Glorot initialisation: each wᵢⱼ ~ U(−0.93, 0.93), since √(6 / (4 + 3)) ≈ 0.93.</li>
+      </ul>
+      <p class="mono">W⁽²⁾ = [[ 0.31, −0.77,  0.12,  0.58],<br>        [−0.45,  0.09,  0.84, −0.22],<br>        [ 0.66, −0.38, −0.71,  0.15]]   (one possible draw)</p>
+      <p>Write W⁽¹⁾ the same way (4 rows of 9 values), or give its shape and the rule if time is short. Parameters: (9 + 1) × 4 + (4 + 1) × 3 = 40 + 15 = <b>55</b>.</p>
+      <p><b>(iii) Activations:</b> ReLU in the hidden layer, because it's cheap, its gradient doesn't vanish, and it pairs with He initialisation. Softmax at the output, because the three actions are mutually exclusive and softmax gives three probabilities that add up to 1. Predict the largest.</p>
+      <p><b>(iv) Loss:</b> categorical cross-entropy, J = −Σₖ yₖ ln ŷₖ. Use the sparse version if the labels are stored as 0, 1, 2. It's the matched pair for softmax, so the gradient comes out as ŷ − y.</p>
+      <p><b>(v) Data:</b> N ≈ 55 / 0.1 = <b>550 labelled videos</b>, or about 790 with validation and test. Each video type also needs enough examples, because a type seen only 3 times can't be learned. Her history has about 10,000 videos, which is plenty.</p>
+      <p><b>(vi) Techniques to optimise the training:</b></p>
+      <ul>
+        <li>Standardise the inputs and log the view counts. Gradient descent converges faster when the inputs share a scale.</li>
+        <li>Mini-batch gradient descent, batch size 32 to 128.</li>
+        <li>Adam or RMSprop, with a tuned learning rate (try 0.01 and 0.001).</li>
+        <li>He and Glorot initialisation.</li>
+        <li>Early stopping on the validation loss.</li>
+        <li>Dropout or L2 against overfitting.</li>
+        <li>Class weights if one action (likely No-Reaction) dominates.</li>
+        <li>Batch normalisation if the network gets deeper.</li>
+      </ul>
+    </div></details>
+  </article>
+</section>
+
+<section id="builder">
+  <span class="eyebrow">Tool · works for any exam variant</span>
+  <h2>Network builder</h2>
+  <p>Type the layer sizes (inputs first, output last). It draws the network and counts the weights, the starting weight scale, the data you need and the number of training updates. The example below is the animal table's 4 → 2 → 1 with 130 rows.</p>
+  <div class="builder">
+    <div class="controls">
+      <label for="b-sizes">Layer sizes<input id="b-sizes" value="4,2,1" inputmode="text" autocomplete="off"></label>
+      <label for="b-task">Task<select id="b-task">
+        <option value="binary">Binary classification</option>
+        <option value="multiclass">Multiclass (k classes)</option>
+        <option value="regression">Regression</option>
+      </select></label>
+      <label for="b-n">Rows of data (N)<input id="b-n" type="number" min="1" value="130"></label>
+      <label for="b-batch">Batch size<input id="b-batch" type="number" min="1" value="16"></label>
+      <label for="b-epochs">Epochs<input id="b-epochs" type="number" min="1" value="100"></label>
+      <label for="b-ratio">Rows per parameter<input id="b-ratio" type="number" min="1" value="10"></label>
+    </div>
+    <p id="b-note" class="warnline" hidden></p>
+    <div class="figure" id="b-fig" role="img" aria-label="Drawing of the network you typed"></div>
+    <div class="stats" id="b-stats"></div>
+    <div class="tablebox" id="b-table"></div>
+  </div>
+</section>
+
+<section id="overkill">
+  <span class="eyebrow">The deeper lesson</span>
+  <h2>Why not just use a decision tree?</h2>
+  <p>One question, "Gives birth?", classifies all 5 rows correctly. Logistic regression (a single neuron, 5 parameters) fits them too. The exam uses a neural network on this table because the table is small enough to draw by hand, not because a network is the right tool for it.</p>
+  <p>The real lesson comes from two animals the table doesn't include:</p>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Animal</th><th class="num">birth</th><th class="num">fly</th><th class="num">water</th><th class="num">legs</th><th>Truth</th><th>"Gives birth" rule says</th></tr></thead>
+      <tbody>
+        <tr><td>Platypus (lays eggs)</td><td class="num">0</td><td class="num">0</td><td class="num">0.5</td><td class="num">1</td><td>Mammal</td><td>Non-mammal. Wrong.</td></tr>
+        <tr><td>Frog</td><td class="num">0</td><td class="num">0</td><td class="num">0.5</td><td class="num">1</td><td>Non-mammal</td><td>Non-mammal</td></tr>
+        <tr><td>Boa constrictor (live young)</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td>Non-mammal</td><td>Mammal. Wrong.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><b>Platypus and Frog have exactly the same four numbers but different answers.</b> No model, however big, can separate two rows that look identical. Only a new feature can. Add "produces milk", which is literally what makes an animal a mammal, and the problem disappears.</p>
+  <div class="callout"><p><b>That's the whole of feature engineering vs model selection:</b> when the inputs can't tell two cases apart, a better model can't either. Fix the data first. Pick a bigger model only when the features are already good and you have the rows to feed it.</p></div>
+</section>
+
+<section id="words">
+  <span class="eyebrow">Three years of terms, decoded</span>
+  <h2>Word decoder</h2>
+  <p>Each term in plain words, then what it is in the animal table.</p>
+  <dl class="words">
+    <div><dt>Feature</dt><dd>An input column the model learns from.<span class="here">Give Birth, Can Fly, Live in Water, Have Legs.</span></dd></div>
+    <div><dt>Label / target</dt><dd>The answer you want predicted.<span class="here">Class: Mammal or Non-mammal.</span></dd></div>
+    <div><dt>Sample / instance</dt><dd>One row.<span class="here">Frog.</span></dd></div>
+    <div><dt>Supervised learning</dt><dd>Learning from rows that come with the answer.<span class="here">This table. Clustering animals with no Class column would be unsupervised.</span></dd></div>
+    <div><dt>Classification vs regression</dt><dd>Predicting a category vs predicting a number.<span class="here">Mammal or not vs lifespan in years.</span></dd></div>
+    <div><dt>EDA</dt><dd>Exploratory data analysis: looking at the data before modelling.<span class="here">Spotting "Sometimes", the 3 vs 2 balance, and that Give Birth splits perfectly.</span></dd></div>
+    <div><dt>Feature engineering</dt><dd>Making better inputs by hand.<span class="here">Yes/No to 1/0, adding "produces milk".</span></dd></div>
+    <div><dt>Feature extraction</dt><dd>Turning raw data into compact features, like edges from pixels or word counts from text. A CNN learns this by itself.<span class="here">Not needed here. The table already is features.</span></dd></div>
+    <div><dt>Feature selection</dt><dd>Dropping columns that don't help.<span class="here">Dropping Animal, maybe Can Fly.</span></dd></div>
+    <div><dt>Linearly separable</dt><dd>One straight line (a flat plane in more dimensions) can split the classes. Then one neuron is enough.<span class="here">Yes: Give Birth alone splits them. XOR is the classic case that isn't.</span></dd></div>
+    <div><dt>Model selection</dt><dd>Choosing the kind of model and its size.<span class="here">Tree vs logistic regression vs 4 → 2 → 1 network.</span></dd></div>
+    <div><dt>Parameter</dt><dd>A number the model learns.<span class="here">The 13 weights and biases.</span></dd></div>
+    <div><dt>Hyperparameter</dt><dd>A setting you choose before training.<span class="here">Hidden size 2, learning rate, epochs, batch size, dropout rate.</span></dd></div>
+    <div><dt>Epoch / batch</dt><dd>One pass over all the rows / the rows used for one weight update.<span class="here">5 rows with batch 16 means 1 update per epoch.</span></dd></div>
+    <div><dt>Overfitting / underfitting</dt><dd>Memorises the training rows and fails on new ones / too simple to fit even the training rows.<span class="here">13 knobs on 5 rows overfits. "Always say Mammal" underfits.</span></dd></div>
+    <div><dt>Validation vs test set</dt><dd>Rows held back to tune your choices / rows used once at the very end for the final score.<span class="here">The table has none to spare.</span></dd></div>
+    <div><dt>Cross-validation</dt><dd>Rotate which part is held back and average the scores.<span class="here">Leave-one-out: train on 4 animals, test on the 5th, five times.</span></dd></div>
+    <div><dt>Regularisation</dt><dd>Anything that discourages memorising.<span class="here">L2 penalty, dropout, early stopping.</span></dd></div>
+  </dl>
+</section>
+
+<section id="doom">
+  <div class="doom">
+    <span class="eyebrow">Doomsday · any table, 9 lines</span>
+    <h2>The answer template</h2>
+    <ol>
+      <li><b>Encode:</b> yes/no to 0/1. Ordered values to ranks (0, 0.5, 1). Unordered categories to one-hot. Numbers get standardised (log first if skewed). Drop ID columns. Target to 0/1 (or one-hot for k classes).</li>
+      <li><b>Draw:</b> inputs = number of encoded features. Hidden ReLU layer(s) of about half the inputs (a power of 2). Output is 1 sigmoid / k softmax / 1 linear. Label the biases. For <b>"simplest possible"</b> with linearly separable classes, use no hidden layer: one neuron per output.</li>
+      <li><b>Activation and loss:</b> sigmoid + binary cross-entropy, softmax + categorical cross-entropy, linear + MSE. Adam or RMSprop.</li>
+      <li><b>Count:</b> sum of (inputs + 1) × neurons over the layers.</li>
+      <li><b>Initialise:</b> small random values (He for ReLU, Glorot for sigmoid), biases 0. Never all zeros, because of symmetry.</li>
+      <li><b>Data:</b> N ≈ W / ε (Baum–Haussler), so about 10 × parameters for 10% error, plus validation and test rows.</li>
+      <li><b>Duration:</b> updates = epochs × ⌈N / batch⌉. Batch 16 to 128. Train until the validation loss stops improving.</li>
+      <li><b>Overfitting:</b> more data, a validation split with early stopping, a smaller network, L2, dropout 0.5, cross-validation.</li>
+      <li><b>Optimise training:</b> standardise inputs, mini-batches, Adam or RMSprop with a tuned learning rate, He / Glorot start, early stopping, class weights if imbalanced, batch normalisation if deep.</li>
+    </ol>
+    <p><b>For the animal table:</b> 4 → 2 → 1, ReLU then sigmoid, binary cross-entropy, 13 parameters, He / Glorot start, about 130 training rows (about 190 in total), 9 updates per epoch at batch 16, and leave-one-out with L2 because 5 rows can't support a held-out test set. <b>Simplest possible:</b> one neuron, 5 parameters, step at threshold 0.</p>
+  </div>
+  <p class="src">[Ranjan] = Chitta Ranjan, <a href="https://medium.com/data-science/17-rules-of-thumb-for-building-a-neural-network-93356f9930af">"Rules-of-thumb for building a Neural Network"</a>. [Haykin] = S. Haykin, <i>Neural Networks: A Comprehensive Foundation</i>, section on generalisation (the Baum–Haussler result). [general] = common practice from textbooks and courses, not from either source.</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var FEATURES = ["birth", "fly", "water", "legs"];
+  var TASKS = {
+    binary: { act: "sigmoid", loss: "binary cross-entropy" },
+    multiclass: { act: "softmax", loss: "categorical cross-entropy" },
+    regression: { act: "linear", loss: "MSE" }
+  };
+
+  function el(tag, attrs, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function fmt(n) { return Number(n).toLocaleString("en-US"); }
+  function dec(n) { return (Math.round(n * 100) / 100).toFixed(2); }
+
+  function longest(arr) { return arr.reduce(function (m, s) { return Math.max(m, s.length); }, 0); }
+
+  function drawNet(box, sizes, task, labels, opts) {
+    opts = opts || {};
+    var MAX = 10, r = 13, L = sizes.length;
+    var act = opts.act || TASKS[task].act, outLabels = opts.outLabels || null;
+    var hasLabels = !!labels && labels.length === sizes[0];
+    var outText = function (idx) {
+      if (act === "step") return "1 = " + (outLabels ? outLabels[0] : "class 1");
+      if (task === "binary") return "P(" + (outLabels ? outLabels[0] : "class 1") + ")";
+      if (task === "multiclass") return "P(" + (outLabels && outLabels[idx] ? outLabels[idx] : "class " + (idx + 1)) + ")";
+      return "ŷ";
+    };
+    var outCount = Math.min(sizes[L - 1], MAX), outTexts = [];
+    for (var o = 0; o < outCount; o++) outTexts.push(outText(o));
+    var left = hasLabels ? 34 + longest(labels) * 7.2 : 40;
+    var right = 34 + longest(outTexts) * 7.4;
+    var colGap = L <= 3 ? 130 : L <= 5 ? 105 : 85;
+    var W = Math.round(left + right + (L - 1) * colGap);
+    var slots = function (n) { return n > MAX ? MAX : n; };
+    var maxSlots = Math.max.apply(null, sizes.map(slots));
+    var dy = maxSlots > 6 ? 34 : 42;
+    var biasY = 20, nodeTop = biasY + 46, areaH = (maxSlots - 1) * dy;
+    var H = nodeTop + areaH + 62;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, class: "net" });
+    var gEdges = el("g", {}), gNodes = el("g", {});
+    svg.appendChild(gEdges); svg.appendChild(gNodes);
+
+    var cols = sizes.map(function (n, i) {
+      var x = left + i * colGap, k = slots(n);
+      var y0 = nodeTop + (areaH - (k - 1) * dy) / 2, nodes = [];
+      for (var j = 0; j < k; j++) {
+        var idx = j, ell = false;
+        if (n > MAX) { if (j === MAX - 2) ell = true; if (j === MAX - 1) idx = n - 1; }
+        nodes.push({ x: x, y: y0 + j * dy, idx: idx, ell: ell });
+      }
+      return { x: x, n: n, nodes: nodes };
+    });
+
+    for (var i = 0; i < L - 1; i++) {
+      var a = cols[i], b = cols[i + 1];
+      a.nodes.forEach(function (p) {
+        if (p.ell) return;
+        b.nodes.forEach(function (q) {
+          if (q.ell) return;
+          gEdges.appendChild(el("line", { x1: p.x, y1: p.y, x2: q.x, y2: q.y, class: "edge" }));
+        });
+      });
+      b.nodes.forEach(function (q) {
+        if (q.ell) return;
+        gEdges.appendChild(el("line", { x1: a.x, y1: biasY, x2: q.x, y2: q.y, class: "edge bias" }));
+      });
+      gNodes.appendChild(el("circle", { cx: a.x, cy: biasY, r: 11, class: "node-b" }));
+      gNodes.appendChild(el("text", { x: a.x, y: biasY + 4, "text-anchor": "middle", class: "inner" }, "+1"));
+    }
+
+    cols.forEach(function (c, i) {
+      var isIn = i === 0, isOut = i === L - 1;
+      c.nodes.forEach(function (p) {
+        if (p.ell) {
+          gNodes.appendChild(el("text", { x: p.x, y: p.y + 6, "text-anchor": "middle", class: "cap" }, "⋮"));
+          return;
+        }
+        gNodes.appendChild(el("circle", { cx: p.x, cy: p.y, r: r, class: isIn ? "node-in" : isOut ? "node-out" : "node-h" }));
+        if (isIn) {
+          gNodes.appendChild(el("text", { x: p.x, y: p.y + 4, "text-anchor": "middle", class: "inner" }, "x" + (p.idx + 1)));
+          if (hasLabels) gNodes.appendChild(el("text", { x: p.x - r - 8, y: p.y + 4, "text-anchor": "end" }, labels[p.idx]));
+        }
+        if (isOut) {
+          gNodes.appendChild(el("text", { x: p.x, y: p.y + 4, "text-anchor": "middle", class: "inner-out" }, "ŷ"));
+          if (c.n === 1 || task === "multiclass") gNodes.appendChild(el("text", { x: p.x + r + 8, y: p.y + 4 }, outText(p.idx)));
+        }
+      });
+      var name = isIn ? "Input" : isOut ? "Output" : (L > 3 ? "Hidden " + i : "Hidden");
+      var capY = nodeTop + areaH + 34;
+      gNodes.appendChild(el("text", { x: c.x, y: capY, "text-anchor": "middle", class: "cap" }, name + " · " + c.n));
+      if (!isIn) gNodes.appendChild(el("text", { x: c.x, y: capY + 16, "text-anchor": "middle", class: "cap" }, isOut ? act : "ReLU"));
+    });
+
+    box.innerHTML = "";
+    box.appendChild(svg);
+  }
+
+  document.querySelectorAll(".figure[data-net]").forEach(function (box) {
+    var sizes = box.getAttribute("data-net").split(",").map(Number);
+    var labels = box.getAttribute("data-labels"), outs = box.getAttribute("data-outlabels");
+    drawNet(box, sizes, box.getAttribute("data-task") || "binary", labels ? labels.split(",") : null,
+            { act: box.getAttribute("data-act"), outLabels: outs ? outs.split(",") : null });
+  });
+
+  var ids = ["b-sizes", "b-task", "b-n", "b-batch", "b-epochs", "b-ratio"];
+  var $ = function (id) { return document.getElementById(id); };
+  function intOf(id, dflt) { var v = parseInt($(id).value, 10); return v > 0 ? v : dflt; }
+
+  function stat(k, v, s) {
+    return '<div class="stat"><span class="k">' + k + '</span><span class="v">' + v + '</span><span class="s">' + s + "</span></div>";
+  }
+
+  function update() {
+    var sizes = ($("b-sizes").value.match(/\d+/g) || []).map(Number).filter(function (n) { return n > 0; });
+    var note = $("b-note");
+    if (sizes.length < 2) {
+      note.textContent = "Type at least two layer sizes, like 4,2,1.";
+      note.hidden = false;
+      return;
+    }
+    sizes = sizes.slice(0, 10).map(function (n) { return Math.min(n, 4096); });
+    var task = $("b-task").value, t = TASKS[task], out = sizes[sizes.length - 1];
+    var N = intOf("b-n", 130), batch = intOf("b-batch", 16), epochs = intOf("b-epochs", 100), ratio = intOf("b-ratio", 10);
+
+    var warn = "";
+    if (task === "binary" && out !== 1) warn = "Binary classification with a sigmoid output uses 1 output neuron.";
+    if (task === "multiclass" && out === 1) warn = "Softmax on 1 output neuron always outputs 1. Use one output neuron per class.";
+    if (task === "regression" && out !== 1) warn = "Predicting one number uses 1 linear output neuron.";
+    note.textContent = warn;
+    note.hidden = !warn;
+
+    var animal = sizes[0] === 4;
+    drawNet($("b-fig"), sizes, task, animal ? FEATURES : null, { outLabels: animal && task === "binary" ? ["mammal"] : null });
+    $("b-fig").setAttribute("aria-label", "Network " + sizes.join(" to "));
+
+    var rows = "", W = 0, B = 0;
+    for (var i = 1; i < sizes.length; i++) {
+      var fin = sizes[i - 1], n = sizes[i], w = fin * n, isOut = i === sizes.length - 1;
+      W += w; B += n;
+      var actName = isOut ? t.act : "ReLU";
+      var init = isOut ? "Glorot, L = " + dec(Math.sqrt(6 / (fin + n))) : "He, σ = " + dec(Math.sqrt(2 / fin));
+      var name = isOut ? "Output" : (sizes.length > 3 ? "Hidden " + i : "Hidden");
+      rows += "<tr><td>" + name + "</td><td class='num'>" + fmt(fin) + " × " + fmt(n) + " = " + fmt(w) + "</td><td class='num'>" + fmt(n) +
+              "</td><td class='num'><b>" + fmt(w + n) + "</b></td><td>" + actName + "</td><td class='mono'>" + init + "</td></tr>";
+    }
+    var P = W + B;
+    rows += "<tr><th>Total</th><td class='num'>" + fmt(W) + "</td><td class='num'>" + fmt(B) + "</td><td class='num'><b>" + fmt(P) + "</b></td><td></td><td></td></tr>";
+    $("b-table").innerHTML = "<table><thead><tr><th>Layer</th><th class='num'>Weights</th><th class='num'>Biases</th><th class='num'>Params</th><th>Activation</th><th>Start weights</th></tr></thead><tbody>" + rows + "</tbody></table>";
+
+    var need = ratio * P, total = Math.ceil(need / 0.7);
+    var upe = Math.ceil(N / batch);
+    var verdict = N >= need ? "enough by the " + ratio + "× rule" : (need / N).toFixed(1) + "× too few rows";
+    $("b-stats").innerHTML =
+      stat("Parameters", fmt(P), fmt(W) + " weights + " + fmt(B) + " biases") +
+      stat("Training rows needed", fmt(need), "about " + fmt(total) + " in total with a 70/15/15 split") +
+      stat("Your " + fmt(N) + " rows", N >= need ? "OK" : "short", verdict) +
+      stat("Updates per epoch", fmt(upe), batch >= N ? "full batch: whole dataset per update" : "⌈" + fmt(N) + " ÷ " + fmt(batch) + "⌉") +
+      stat("Total updates", fmt(upe * epochs), fmt(epochs) + " epochs") +
+      stat("Output and loss", t.act, t.loss);
+  }
+
+  ids.forEach(function (id) { $(id).addEventListener("input", update); });
+  update();
+})();
+</script>

@@ -1,0 +1,650 @@
+<title>DSP Mid-2 Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<style>
+/*KATEX_CSS*/
+</style>
+<style>
+/* Layout: one reading column (~68ch) under a sticky tab rail; tables and display maths scroll inside their own boxes. */
+:root {
+  --paper: #f5f7f9;
+  --sheet: #ffffff;
+  --ink: #18212e;
+  --ink-soft: #505b6b;
+  --rule: #dce2e9;
+  --trace: #17698a;
+  --trace-wash: #e7f1f5;
+  --note: #8a5800;
+  --note-wash: #fbf2df;
+  --veil: #c9d3dd;
+  --ok: #1d7a4a;
+  --bad: #b3261e;
+  --f-body: "Source Serif 4", "Sitka Text", Cambria, Georgia, serif;
+  --f-ui: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f141b; --sheet: #151b24; --ink: #e2e7ee; --ink-soft: #a2adbb; --rule: #29323e;
+    --trace: #6fc1da; --trace-wash: #142c36; --note: #e3b25e; --note-wash: #2c2415; --veil: #3a4554;
+    --ok: #6fd39a; --bad: #ff8a80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f141b; --sheet: #151b24; --ink: #e2e7ee; --ink-soft: #a2adbb; --rule: #29323e;
+  --trace: #6fc1da; --trace-wash: #142c36; --note: #e3b25e; --note-wash: #2c2415; --veil: #3a4554;
+  --ok: #6fd39a; --bad: #ff8a80;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.68;
+  margin: 0;
+  -webkit-text-size-adjust: 100%;
+}
+
+.masthead {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 22px 10px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.masthead svg { flex: none; width: 46px; height: 46px; }
+.masthead h1 {
+  font-family: var(--f-ui);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.2;
+}
+.masthead .meta {
+  font-family: var(--f-mono);
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+  margin: 3px 0 0;
+  letter-spacing: 0.01em;
+}
+
+.rail {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.tabs {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 8px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button {
+  flex: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--f-ui);
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.tabs button .tag {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.tabs button[aria-selected="true"] {
+  color: var(--sheet);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.tabs button:focus-visible, a:focus-visible, summary:focus-visible, .reveal:focus-visible {
+  outline: 2px solid var(--trace);
+  outline-offset: 2px;
+}
+
+main {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 8px 72px;
+}
+article { min-width: 0; }
+
+article h1 {
+  font-family: var(--f-ui);
+  font-weight: 700;
+  font-size: 1.85rem;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  margin: 1.1em 0 0.25em;
+}
+.lede {
+  font-family: var(--f-ui);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin: 0 0 1.2em;
+}
+article h2 {
+  font-family: var(--f-ui);
+  font-weight: 600;
+  font-size: 1.32rem;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin: 2.1em 0 0.6em;
+  scroll-margin-top: 64px;
+}
+article h3 {
+  font-family: var(--f-ui);
+  font-weight: 600;
+  font-size: 1.06rem;
+  line-height: 1.35;
+  text-wrap: balance;
+  margin: 1.9em 0 0.5em;
+  scroll-margin-top: 64px;
+}
+article p, article li { hyphens: auto; }
+article p { margin: 0.75em 0; }
+article ul, article ol { padding-left: 1.4em; }
+article li { margin: 0.3em 0; }
+article strong { font-weight: 650; }
+article em { font-style: italic; }
+article a { color: var(--trace); text-underline-offset: 2px; }
+article hr { border: 0; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+article code {
+  font-family: var(--f-mono);
+  font-size: 0.82em;
+  background: var(--trace-wash);
+  padding: 0.08em 0.35em;
+  border-radius: 3px;
+  overflow-wrap: anywhere;
+}
+a.xref {
+  font-family: var(--f-ui);
+  font-size: 0.86em;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+blockquote {
+  margin: 1.3em 0;
+  padding: 0.7em 1em;
+  background: var(--trace-wash);
+  border-radius: 4px;
+}
+blockquote p { margin: 0.35em 0; }
+blockquote.erratum { background: var(--note-wash); }
+blockquote.erratum strong:first-child { color: var(--note); }
+
+.md {
+  margin: 1em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.15em 0;
+}
+.md .katex-display { margin: 0; }
+.katex { font-size: 1.08em; }
+.mi:not(.done), .md:not(.done) {
+  font-family: var(--f-mono);
+  font-size: 0.8em;
+  color: var(--ink-soft);
+}
+.md:not(.done) { white-space: pre-wrap; }
+
+.tablewrap { overflow-x: auto; margin: 1.2em 0; }
+table {
+  border-collapse: collapse;
+  font-size: 0.92em;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  min-width: 100%;
+}
+th {
+  font-family: var(--f-ui);
+  font-size: 0.84em;
+  font-weight: 600;
+  text-align: left;
+  color: var(--ink-soft);
+  border-bottom: 1.5px solid var(--ink-soft);
+}
+th, td { padding: 0.5em 0.7em; vertical-align: top; }
+td { border-bottom: 1px solid var(--rule); }
+td:first-child, th:first-child { padding-left: 0; }
+
+.toc {
+  font-family: var(--f-ui);
+  font-size: 0.9rem;
+  margin: 0 0 1.4em;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.toc summary {
+  cursor: pointer;
+  padding: 0.55em 0;
+  font-weight: 600;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+.toc ol { margin: 0 0 0.8em; padding-left: 0; list-style: none; }
+.toc li { margin: 0.15em 0; }
+.toc a { color: var(--ink); text-decoration: none; display: block; padding: 0.2em 0; }
+.toc a:hover { color: var(--trace); }
+.toc .katex { font-size: 1em; }
+
+.quizbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1em 0 -0.6em;
+}
+.reveal {
+  font-family: var(--f-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--trace);
+  background: transparent;
+  border: 1px solid var(--trace);
+  border-radius: 999px;
+  padding: 3px 12px;
+  cursor: pointer;
+}
+td.veiled {
+  cursor: pointer;
+  position: relative;
+}
+td.veiled > * , td.veiled { color: transparent; }
+td.veiled::after {
+  content: "tap";
+  position: absolute;
+  inset: 0.45em 0.7em;
+  background: var(--veil);
+  border-radius: 3px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fig { margin: 1.4em 0 0.4em; }
+.fig svg { display: block; width: 100%; height: auto; max-width: var(--figw, 420px); margin: 0 auto; }
+.fig + p { font-size: 0.88em; color: var(--ink-soft); margin-top: 0.3em; }
+
+.pz-explorer {
+  margin: 1.4em 0;
+  padding: 14px;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-family: var(--f-ui);
+}
+.pz-title { font-weight: 600; font-size: 0.95rem; }
+.pz-hint { font-size: 0.82rem; color: var(--ink-soft); margin: 2px 0 10px; }
+.pz-grid { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 12px; align-items: center; }
+.pz-grid svg { display: block; width: 100%; height: auto; }
+.pz-plane { touch-action: none; cursor: crosshair; }
+.pz-frame { fill: none; stroke: var(--rule); }
+.pz-roc { fill: var(--trace); fill-opacity: 0.17; }
+.pz-axis { stroke: var(--ink-soft); stroke-width: 0.8; }
+.pz-tick { stroke: var(--rule); stroke-dasharray: 3 3; }
+.pz-edge { fill: none; stroke: var(--trace); stroke-width: 1.3; }
+.pz-unit { fill: none; stroke: var(--ink); stroke-width: 1.1; stroke-dasharray: 5 3.5; opacity: 0.75; }
+.pz-pole { stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+.pz-zero { fill: var(--sheet); stroke: var(--note); stroke-width: 2; }
+.pz-lbl { fill: var(--ink-soft); font-size: 11px; font-family: var(--f-ui); }
+.pz-st { stroke: var(--trace); stroke-width: 1.4; }
+.pz-dot { fill: var(--trace); }
+.pz-off { fill: var(--bad); }
+.pz-controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px 12px;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 0.85rem;
+}
+.pz-controls label { color: var(--ink-soft); white-space: nowrap; }
+.pz-controls output { font-family: var(--f-mono); color: var(--ink); margin-left: 4px; }
+.pz-controls input[type="range"] { width: 100%; accent-color: var(--trace); }
+.pz-seg { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.pz-seg button {
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.pz-seg button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--sheet); }
+.pz-seg button:focus-visible, .pz-controls input:focus-visible { outline: 2px solid var(--trace); outline-offset: 2px; }
+.pz-verdict { margin: 12px 0 0; font-family: var(--f-body); font-size: 0.95rem; line-height: 1.55; }
+.pz-verdict.ok strong { color: var(--ok); }
+.pz-verdict.bad strong { color: var(--bad); }
+@media (max-width: 560px) {
+  .pz-grid { grid-template-columns: minmax(0, 1fr); }
+  .pz-plane { max-width: 250px; margin: 0 auto; }
+}
+
+@media (max-width: 520px) {
+  body { font-size: 16.5px; }
+  article h1 { font-size: 1.55rem; }
+  article h2 { font-size: 1.2rem; }
+  .katex { font-size: 1.04em; }
+}
+</style>
+
+<header class="masthead">
+  <svg viewBox="0 0 46 46" aria-hidden="true">
+    <line x1="2" y1="23" x2="44" y2="23" stroke="var(--rule)" stroke-width="1"/>
+    <line x1="23" y1="2" x2="23" y2="44" stroke="var(--rule)" stroke-width="1"/>
+    <circle cx="23" cy="23" r="17" fill="none" stroke="var(--trace)" stroke-width="1.6"/>
+    <g stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round">
+      <path d="M25.2 8.2l3.6 3.6M28.8 8.2l-3.6 3.6"/>
+      <path d="M25.2 34.2l3.6 3.6M28.8 34.2l-3.6 3.6"/>
+      <path d="M12.7 21.2l3.6 3.6M16.3 21.2l-3.6 3.6"/>
+    </g>
+    <circle cx="31.5" cy="14.5" r="2" fill="none" stroke="var(--note)" stroke-width="1.5"/>
+    <circle cx="31.5" cy="31.5" r="2" fill="none" stroke="var(--note)" stroke-width="1.5"/>
+    <circle cx="23" cy="23" r="1.6" fill="none" stroke="var(--note)" stroke-width="1.4"/>
+  </svg>
+  <div>
+    <h1>DSP Mid-2 Notes</h1>
+    <p class="meta">CSE 0714 3276 · Sun 11 Oct, 10:00 · 40 min · 15 marks</p>
+  </div>
+</header>
+
+<div class="rail">
+  <nav class="tabs" role="tablist" aria-label="Notes">
+      <!--TABS-->
+  </nav>
+</div>
+
+<main>
+<!--ARTICLES-->
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/KATEX_VERSION/katex.min.js"></script>
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabs button'));
+  var ids = tabs.map(function (b) { return b.dataset.tab; });
+  var scrollPos = {};
+  var current = null;
+
+  function typeset(article) {
+    if (!article || article.dataset.typeset || typeof katex === 'undefined') return;
+    article.querySelectorAll('.mi, .md').forEach(function (el) {
+      var tex = el.textContent;
+      try {
+        katex.render(tex, el, { displayMode: el.classList.contains('md'), throwOnError: false });
+        el.classList.add('done');
+      } catch (e) { el.textContent = tex; }
+    });
+    article.dataset.typeset = '1';
+  }
+
+  function setupQuizzes(article) {
+    article.querySelectorAll('table').forEach(function (table) {
+      var h = table.closest('.tablewrap').previousElementSibling;
+      while (h && !/^H[23]$/.test(h.tagName)) h = h.previousElementSibling;
+      if (!h || !/self-test|drill/i.test(h.textContent)) return;
+      var cells = Array.prototype.slice.call(table.querySelectorAll('tbody tr td:last-child'));
+      var bar = document.createElement('div');
+      bar.className = 'quizbar';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'reveal';
+      bar.appendChild(btn);
+      table.closest('.tablewrap').before(bar);
+      function veil(on) {
+        cells.forEach(function (c) { c.classList.toggle('veiled', on); });
+        btn.textContent = on ? 'Show all answers' : 'Hide answers';
+        btn.dataset.on = on ? '1' : '';
+      }
+      cells.forEach(function (c) {
+        c.addEventListener('click', function () { c.classList.remove('veiled'); });
+      });
+      btn.addEventListener('click', function () { veil(!btn.dataset.on); });
+      veil(true);
+    });
+  }
+
+  function show(id, keepScroll) {
+    if (ids.indexOf(id) < 0) id = ids[0];
+    if (current) scrollPos[current] = window.scrollY;
+    tabs.forEach(function (b) {
+      var on = b.dataset.tab === id;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+      if (on) b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    });
+    document.querySelectorAll('main article').forEach(function (a) {
+      a.hidden = a.id !== 'doc-' + id;
+    });
+    var article = document.getElementById('doc-' + id);
+    typeset(article);
+    current = id;
+    try { localStorage.setItem('dsp-mid2-tab', id); } catch (e) {}
+    if (!keepScroll) window.scrollTo(0, scrollPos[id] || 0);
+  }
+
+  tabs.forEach(function (b, i) {
+    b.addEventListener('click', function () { show(b.dataset.tab); });
+    b.addEventListener('keydown', function (e) {
+      var j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
+      if (j === null) return;
+      var next = tabs[(j + tabs.length) % tabs.length];
+      next.focus();
+      show(next.dataset.tab);
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-goto]');
+    if (go) {
+      e.preventDefault();
+      scrollPos[go.dataset.goto] = 0;
+      show(go.dataset.goto);
+      return;
+    }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) {
+      e.preventDefault();
+      var target = document.getElementById(jump.dataset.jump);
+      if (target) target.scrollIntoView({ block: 'start' });
+    }
+  });
+
+  // Pole explorer (T2 §7c): a pole pair r·e^{±jθ} with X(z) = (1 − r cosθ z⁻¹)/(1 − 2r cosθ z⁻¹ + r²z⁻²),
+  // so h[n] = r^n cos(θn) u[n] when causal and −r^n cos(θn) u[−n−1] when anti-causal.
+  function initPoleExplorer(root) {
+    root.innerHTML =
+      '<div class="pz-title">Pole explorer</div>' +
+      '<p class="pz-hint">Drag the pole on the z-plane or use the sliders. Its mirror-image partner follows automatically.</p>' +
+      '<div class="pz-grid">' +
+      '<svg class="pz-plane" viewBox="0 0 220 220" role="img" aria-label="z-plane showing the pole, the ROC and the unit circle"></svg>' +
+      '<svg class="pz-stem" viewBox="0 0 320 180" role="img" aria-label="the impulse response h[n] from n = -20 to 20"></svg>' +
+      '</div>' +
+      '<div class="pz-controls">' +
+      '<label for="pz-r">Distance from origin <output id="pz-r-out"></output></label>' +
+      '<input type="range" id="pz-r" min="0.2" max="1.4" step="0.01" value="0.8">' +
+      '<label for="pz-t">Angle <output id="pz-t-out"></output></label>' +
+      '<input type="range" id="pz-t" min="0" max="180" step="5" value="0">' +
+      '<div class="pz-seg" role="group" aria-label="Choice of ROC">' +
+      '<button type="button" data-side="causal" aria-pressed="true">Causal: ROC outside</button>' +
+      '<button type="button" data-side="anti" aria-pressed="false">Anti-causal: ROC inside</button>' +
+      '</div></div>' +
+      '<p class="pz-verdict" aria-live="polite"></p>';
+    var plane = root.querySelector('.pz-plane'), stem = root.querySelector('.pz-stem');
+    var rIn = root.querySelector('#pz-r'), tIn = root.querySelector('#pz-t');
+    var rOut = root.querySelector('#pz-r-out'), tOut = root.querySelector('#pz-t-out');
+    var verdict = root.querySelector('.pz-verdict');
+    var side = 'causal', C = 110, S = 100 / 1.5;
+
+    function X(x) { return C + x * S; }
+    function Y(y) { return C - y * S; }
+    function circle(r) {
+      var R = r * S;
+      return 'M' + (C + R) + ' ' + C + 'A' + R + ' ' + R + ' 0 1 0 ' + (C - R) + ' ' + C +
+        'A' + R + ' ' + R + ' 0 1 0 ' + (C + R) + ' ' + C + 'Z';
+    }
+    function cross(x, y) {
+      var s = 6, a = X(x), b = Y(y);
+      return '<path class="pz-pole" d="M' + (a - s) + ' ' + (b - s) + 'L' + (a + s) + ' ' + (b + s) +
+        'M' + (a + s) + ' ' + (b - s) + 'L' + (a - s) + ' ' + (b + s) + '"/>';
+    }
+    function ring(x) { return '<circle class="pz-zero" cx="' + X(x) + '" cy="' + C + '" r="5"/>'; }
+
+    function draw() {
+      var r = parseFloat(rIn.value), deg = parseFloat(tIn.value), t = deg * Math.PI / 180;
+      var pair = deg > 0 && deg < 180;
+      rOut.textContent = r.toFixed(2);
+      tOut.textContent = deg + '°';
+
+      var box = 'M10 10h200v200h-200Z';
+      var g = '<clipPath id="pz-clip"><rect x="10" y="10" width="200" height="200"/></clipPath>' +
+        '<rect class="pz-frame" x="10" y="10" width="200" height="200" rx="4"/>' +
+        '<path class="pz-roc" fill-rule="evenodd" clip-path="url(#pz-clip)" d="' + (side === 'causal' ? box + circle(r) : circle(r)) + '"/>' +
+        '<line class="pz-axis" x1="10" y1="110" x2="210" y2="110"/>' +
+        '<line class="pz-axis" x1="110" y1="10" x2="110" y2="210"/>' +
+        '<path class="pz-edge" clip-path="url(#pz-clip)" d="' + circle(r) + '"/>' +
+        '<path class="pz-unit" clip-path="url(#pz-clip)" d="' + circle(1) + '"/>' +
+        '<text class="pz-lbl" x="' + (X(Math.cos(-0.85)) + 4) + '" y="' + (Y(Math.sin(-0.85)) + 14) + '">|z| = 1</text>' +
+        '<text class="pz-lbl" x="206" y="104" text-anchor="end">Re</text>' +
+        '<text class="pz-lbl" x="115" y="24">Im</text>' + ring(0);
+      if (pair) {
+        g += ring(r * Math.cos(t)) + cross(r * Math.cos(t), r * Math.sin(t)) + cross(r * Math.cos(t), -r * Math.sin(t));
+      } else {
+        g += cross(deg === 0 ? r : -r, 0);
+      }
+      plane.innerHTML = g;
+
+      var N = 20, x0 = 16, x1 = 304, top = 24, bot = 146, vmax = 2, vmin = -2;
+      var ymap = function (v) { return top + (vmax - v) / (vmax - vmin) * (bot - top); };
+      var yb = ymap(0), dx = (x1 - x0) / (2 * N), xz = x0 + N * dx;
+      var s = '<line class="pz-tick" x1="' + xz + '" y1="' + (top - 8) + '" x2="' + xz + '" y2="' + (bot + 6) + '"/>' +
+        '<line class="pz-axis" x1="' + (x0 - 6) + '" y1="' + yb + '" x2="' + (x1 + 6) + '" y2="' + yb + '"/>' +
+        '<text class="pz-lbl" x="' + xz + '" y="' + (bot + 22) + '" text-anchor="middle">n = 0</text>' +
+        '<text class="pz-lbl" x="' + x0 + '" y="' + (bot + 22) + '" text-anchor="middle">−20</text>' +
+        '<text class="pz-lbl" x="' + x1 + '" y="' + (bot + 22) + '" text-anchor="middle">20</text>' +
+        '<text class="pz-lbl" x="' + x0 + '" y="14">h[n]</text>';
+      for (var n = -N; n <= N; n++) {
+        var v = 0;
+        if (side === 'causal' && n >= 0) v = Math.pow(r, n) * Math.cos(t * n);
+        if (side === 'anti' && n < 0) v = -Math.pow(r, n) * Math.cos(t * n);
+        if (Math.abs(v) < 1e-9) continue;
+        var x = x0 + (n + N) * dx, y = ymap(Math.max(vmin, Math.min(vmax, v)));
+        s += '<line class="pz-st" x1="' + x + '" y1="' + yb + '" x2="' + x + '" y2="' + y + '"/>';
+        if (v > vmax || v < vmin) {
+          var k = v > 0 ? 1 : -1;
+          s += '<path class="pz-off" d="M' + (x - 3.5) + ' ' + (y + k * 5) + 'L' + (x + 3.5) + ' ' + (y + k * 5) + 'L' + x + ' ' + (y - k * 1.5) + 'Z"/>';
+        } else {
+          s += '<circle class="pz-dot" cx="' + x + '" cy="' + y + '" r="2.4"/>';
+        }
+      }
+      stem.innerHTML = s;
+
+      var onCircle = Math.abs(r - 1) < 0.005;
+      var roc = side === 'causal' ? '|z| &gt; ' + r.toFixed(2) : '|z| &lt; ' + r.toFixed(2);
+      var stable = !onCircle && (side === 'causal' ? r < 1 : r > 1);
+      var msg;
+      if (onCircle) {
+        msg = 'The pole is <em>on</em> the unit circle, so the ROC (' + roc + ') only touches it. <strong>Not stable</strong>: h[n] never dies out.';
+      } else if (side === 'causal') {
+        msg = stable
+          ? 'The ROC (' + roc + ') contains the unit circle, so the system is <strong>stable</strong>: h[n] dies out.'
+          : 'The ROC (' + roc + ') misses the unit circle, so the system is <strong>unstable</strong>: h[n] grows without limit.';
+      } else {
+        msg = stable
+          ? 'The ROC (' + roc + ') contains the unit circle, so this anti-causal system is <strong>stable</strong>: going back in time, h[n] dies out.'
+          : 'The ROC (' + roc + ') misses the unit circle, so it is <strong>unstable</strong>: going back in time, h[n] blows up.';
+      }
+      verdict.className = 'pz-verdict ' + (stable ? 'ok' : 'bad');
+      verdict.innerHTML = msg;
+    }
+
+    function fromPointer(e) {
+      var b = plane.getBoundingClientRect();
+      var x = ((e.clientX - b.left) * 220 / b.width - C) / S;
+      var y = (C - (e.clientY - b.top) * 220 / b.height) / S;
+      var r = Math.min(1.4, Math.max(0.2, Math.sqrt(x * x + y * y)));
+      if (Math.abs(r - 1) < 0.03) r = 1;
+      rIn.value = r.toFixed(2);
+      tIn.value = Math.round(Math.atan2(Math.abs(y), x) * 180 / Math.PI / 5) * 5;
+      draw();
+    }
+    var dragging = false;
+    plane.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      try { plane.setPointerCapture(e.pointerId); } catch (err) {}
+      fromPointer(e);
+    });
+    plane.addEventListener('pointermove', function (e) { if (dragging) fromPointer(e); });
+    plane.addEventListener('pointerup', function () { dragging = false; });
+    plane.addEventListener('pointercancel', function () { dragging = false; });
+    rIn.addEventListener('input', draw);
+    tIn.addEventListener('input', draw);
+    root.querySelectorAll('.pz-seg button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        side = b.dataset.side;
+        root.querySelectorAll('.pz-seg button').forEach(function (o) {
+          o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+        });
+        draw();
+      });
+    });
+    draw();
+  }
+  document.querySelectorAll('.pz-explorer').forEach(initPoleExplorer);
+
+  document.querySelectorAll('main article').forEach(setupQuizzes);
+
+  var start = (location.hash || '').slice(1);
+  if (ids.indexOf(start) < 0) {
+    try { start = localStorage.getItem('dsp-mid2-tab') || ''; } catch (e) { start = ''; }
+  }
+  show(start, true);
+
+  // Typeset the other tabs in the background so switching is instant.
+  var queue = ids.slice();
+  function idle() {
+    var id = queue.shift();
+    if (!id) return;
+    typeset(document.getElementById('doc-' + id));
+    (window.requestIdleCallback || function (f) { return setTimeout(f, 60); })(idle);
+  }
+  setTimeout(idle, 300);
+})();
+</script>
