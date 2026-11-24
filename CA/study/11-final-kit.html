@@ -189,6 +189,25 @@ svg .acc{fill:var(--accent)}
 .tier .label{color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){details.qa>summary{transition:background .15s}details.qa>summary:hover{background:var(--sunk)}}
 @media (max-width:520px){.ans{padding-left:14px}}
+
+/* core sheet: numbered formula cards and figures, each with a "setter's trick" sidenote */
+.jumps{display:flex;flex-wrap:wrap;gap:5px}
+.jumps button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 8px;font:600 .74rem var(--f-mono);cursor:pointer}
+.jumps button span{font:400 .78rem var(--f-body);color:var(--muted);margin-left:5px}
+.fno{font:700 .74rem var(--f-mono);color:var(--accent);margin-right:.55em}
+.grp{margin-top:10px;color:var(--accent)}
+.vars{padding-left:1.15rem;gap:3px;font-size:.94rem}
+.trick{border-left:3px solid var(--warn);background:var(--warn-soft);border-radius:0 6px 6px 0;padding:8px 11px;display:grid;gap:3px;font-size:.94rem}
+.trick .k{font:700 .66rem var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--warn)}
+.fhead{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;justify-content:space-between}
+.must{font-size:.94rem}
+.figs{display:grid;gap:14px}
+.fig svg.wide{min-width:500px;max-width:600px}
+svg .cell{fill:var(--surface);stroke:var(--ink);stroke-width:1}
+svg .cellt{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+svg .dot{fill:var(--accent)}
+svg .dash{stroke-dasharray:3 3}
+@media print{nav.bar,.controls,.got,.jumps{display:none!important}}
 </style>
 
 <header class="wrap top">
@@ -207,6 +226,7 @@ svg .acc{fill:var(--accent)}
 <nav class="bar" aria-label="Lectures">
   <div class="wrap" id="navbar">
     <a href="#plan" data-pane="plan">Plan</a>
+    <a href="#core" data-pane="core">★ Core sheet <small data-count="core"></small></a>
     <a href="#l1" data-pane="l1">L1 Performance <small data-count="l1"></small></a>
     <a href="#l2" data-pane="l2">L2 ISA <small data-count="l2"></small></a>
     <a href="#mips" data-pane="mips">MIPS <small data-count="mips"></small></a>
@@ -305,7 +325,7 @@ svg .acc{fill:var(--accent)}
       <tr><td><b>3 days</b></td><td>Day 1: L3–5 Memory and L6 Numbers, running every preset in the calculators. Day 2: L7–8 Pipeline, L1 and L2. Day 3: Chapter 7 from the markdown file, then L10 and Outside, then the whole page in self-test mode.</td></tr>
       <tr><td><b>1 day</b></td><td>Tier 1 in the morning, Tier 2 in the afternoon, and self-test mode on Tiers 1 and 2 in the evening.</td></tr>
       <tr><td><b>4 hours</b></td><td>The four big calculators with their presets (cache trace, IEEE 754, pipeline, VM), doing each by hand first. Then the Tier 2 tables.</td></tr>
-      <tr><td><b>1 hour</b></td><td>The black "Doomsday" box at the bottom of every tab.</td></tr>
+      <tr><td><b>1 hour</b></td><td>The <b>★ Core sheet</b> tab: the 32 formulas and 14 figures, each with its trap. Then the black "Doomsday" box at the bottom of every tab.</td></tr>
     </table></div>
   </div>
 
@@ -318,6 +338,815 @@ svg .acc{fill:var(--accent)}
       <li>Copy the figures by hand at least once. Several questions say "using a diagram".</li>
     </ul>
     <p class="note">Paper tags: <span class="tg">20-21</span> Final Jun 2024 (session 2020-21) · <span class="tg">21-22</span> Final 2024 (session 2021-22) · <span class="tg">TT1 '25</span> <span class="tg">TT2 '25</span> <span class="tg">TT1 '26</span> <span class="tg">TT2 '26</span> term tests · <span class="tg old">15-16</span> Final Dec 2018 · <span class="tg old">17-18</span> Final Nov 2019 · <span class="tg old">Jun '20</span> 30-mark finals, session 2017-18 · <span class="tg old">SWE 18-19</span> CSE 219W · <span class="tg old">TT 18-19</span> CSE 329W term tests.</p>
+  </div>
+</section>
+
+<!-- ===================== CORE SHEET ===================== -->
+<section class="pane" id="core" data-pane="core" hidden>
+  <div class="pane-head">
+    <span class="label">Every tab, boiled down</span>
+    <h2>Core sheet: 32 formulas and 14 figures</h2>
+    <div class="meta"><span>Every formula and figure the other tabs rely on, in one place, each with the trap a setter can build around it</span></div>
+  </div>
+  <div class="idea">
+    <p>Each formula card gives the master form first, then the variants the papers have actually used, then the <b>setter's trick</b>: the twist that turns a correct formula into a wrong answer. Each figure lists what you must label and the mistake that costs marks.</p>
+    <p class="note">In Self-test mode the formula cards fold to their names. Write each formula from memory, then open the card to check it.</p>
+  </div>
+
+  <div class="block">
+    <h3>Jump to</h3>
+    <div class="jumps">
+      <button type="button" data-jump="cf1">F1<span>CPU time</span></button><button type="button" data-jump="cf2">F2<span>Mix CPI</span></button><button type="button" data-jump="cf3">F3<span>Times faster</span></button><button type="button" data-jump="cf4">F4<span>Amdahl</span></button><button type="button" data-jump="cf5">F5<span>Power</span></button><button type="button" data-jump="cf6">F6<span>Yield</span></button><button type="button" data-jump="cf7">F7<span>MTTF</span></button><button type="button" data-jump="cf8">F8<span>Blocks, sets</span></button><button type="button" data-jump="cf9">F9<span>Address split</span></button><button type="button" data-jump="cf10">F10<span>Mapping</span></button><button type="button" data-jump="cf11">F11<span>Cache bits</span></button><button type="button" data-jump="cf12">F12<span>AMAT</span></button><button type="button" data-jump="cf13">F13<span>L1 + L2</span></button><button type="button" data-jump="cf14">F14<span>Stall CPI</span></button><button type="button" data-jump="cf15">F15<span>Memory bus</span></button><button type="button" data-jump="cf16">F16<span>VM bits</span></button><button type="button" data-jump="cf17">F17<span>EAT</span></button><button type="button" data-jump="cf18">F18<span>VIPT</span></button><button type="button" data-jump="cf19">F19<span>Two's comp.</span></button><button type="button" data-jump="cf20">F20<span>Overflow</span></button><button type="button" data-jump="cf21">F21<span>IEEE value</span></button><button type="button" data-jump="cf22">F22<span>IEEE encode</span></button><button type="button" data-jump="cf23">F23<span>Pipeline time</span></button><button type="button" data-jump="cf24">F24<span>Pipeline CPI</span></button><button type="button" data-jump="cf25">F25<span>NOPs</span></button><button type="button" data-jump="cf26">F26<span>Predictors</span></button><button type="button" data-jump="cf27">F27<span>Multi-issue</span></button><button type="button" data-jump="cf28">F28<span>Bus width</span></button><button type="button" data-jump="cf29">F29<span>MIPS addresses</span></button><button type="button" data-jump="cf30">F30<span>Formats</span></button><button type="button" data-jump="cf31">F31<span>FP add, multiply</span></button><button type="button" data-jump="cf32">F32<span>SPEC</span></button>
+    </div>
+    <div class="jumps">
+      <button type="button" data-jump="cd1">D1<span>Von Neumann</span></button><button type="button" data-jump="cd2">D2<span>Harvard</span></button><button type="button" data-jump="cd3">D3<span>Hierarchy</span></button><button type="button" data-jump="cd4">D4<span>Cache lookup</span></button><button type="button" data-jump="cd5">D5<span>8-block cache</span></button><button type="button" data-jump="cd6">D6<span>TLB</span></button><button type="button" data-jump="cd7">D7<span>Datapath</span></button><button type="button" data-jump="cd8">D8<span>Timing diagram</span></button><button type="button" data-jump="cd9">D9<span>2-bit FSM</span></button><button type="button" data-jump="cd10">D10<span>Flynn</span></button><button type="button" data-jump="cd11">D11<span>Buses</span></button><button type="button" data-jump="cd12">D12<span>Endianness</span></button><button type="button" data-jump="cd13">D13<span>Memory map</span></button><button type="button" data-jump="cd14">D14<span>RAID</span></button>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Units and powers <span class="label">used in every numerical</span></h3>
+    <div class="scroll"><table class="mono">
+      <tr><th>Power of 2</th><th>Value</th><th>Unit</th><th>Value</th></tr>
+      <tr><td>2<sup>10</sup></td><td>1 K = 1024</td><td>1 ms</td><td>10<sup>−3</sup> s</td></tr>
+      <tr><td>2<sup>16</sup></td><td>64 K</td><td>1 µs</td><td>10<sup>−6</sup> s</td></tr>
+      <tr><td>2<sup>20</sup></td><td>1 M</td><td>1 ns</td><td>10<sup>−9</sup> s, the period of 1 GHz</td></tr>
+      <tr><td>2<sup>30</sup></td><td>1 G</td><td>1 ps</td><td>10<sup>−12</sup> s</td></tr>
+      <tr><td>2<sup>32</sup></td><td>4 G</td><td>1 hex digit</td><td>4 bits</td></tr>
+    </table></div>
+    <p class="note">log<sub>2</sub> of a size is its power of 2: log<sub>2</sub>(64 KB) = log<sub>2</sub>(2<sup>6</sup> × 2<sup>10</sup>) = 16. Memory sizes are powers of 2 (1 KB = 1024 B); clock rates and times are powers of 10 (1 GHz = 10<sup>9</sup> Hz). Mixing the two is a free way to lose marks.</p>
+  </div>
+
+  <div class="block">
+    <h3>32 formulas <span class="label">master form · variants · setter's trick</span></h3>
+
+    <p class="label grp">Performance · L1</p>
+
+    <details class="qa" data-id="c-f1" id="cf1"><summary><span class="q"><span class="fno">F1</span>CPU time</span><span class="tags"><span class="tg">20-21 · 2e</span><span class="tg">21-22 · 5c</span><span class="tg old">Jun '20 · 2a, B2b</span></span></summary>
+      <div class="ans">
+        <div class="eq">CPU time = IC × CPI × T = IC × CPI / f
+Cycles   = IC × CPI          T = 1 / f</div>
+        <ul class="vars">
+          <li>IPC given: CPI = 1 / IPC (an IPC of 0.8 is a CPI of 1.25).</li>
+          <li>4 GHz: T = 1 / (4 × 10<sup>9</sup>) s = 0.25 ns = 250 ps. 1 GHz goes with 1 ns.</li>
+          <li>MIPS rating = IC / (time × 10<sup>6</sup>) = f / (CPI × 10<sup>6</sup>).</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Flipping IPC and CPI is the classic slip. 2500 instructions at IPC 0.8 and 4 GHz is 3125 cycles = <b>781.25 ns</b> (20-21 Q2e), not 500 ns. On the same ISA the instruction count is the same and cancels out; across ISAs or compilers it changes, and the machine with the higher MIPS rating can still be the slower one.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f2" id="cf2"><summary><span class="q"><span class="fno">F2</span>Average CPI from an instruction mix</span><span class="tags"><span class="tg">21-22 · 2f, 6b</span><span class="tg old">17-18 · 6a</span><span class="tg old">Jun '20 · 3</span></span></summary>
+      <div class="ans">
+        <div class="eq">CPI    = Σ (fractionᵢ × CPIᵢ)
+       = Σ (ICᵢ × CPIᵢ) / Σ ICᵢ
+Cycles = Σ (ICᵢ × CPIᵢ)</div>
+        <ul class="vars">
+          <li>Same IC and clock: speedup = CPI<sub>old</sub> / CPI<sub>new</sub>. In 21-22 Q6b, 2.0 / 1.6 = 1.25 beats 2.0 / 1.8 = 1.11.</li>
+          <li>A class's share of the time = fractionᵢ × CPIᵢ / CPI. Loads at 20% × 5 cycles are 1.0 / 2.0 = <b>50%</b> of the time.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The percentages are of <b>instructions</b>, not time. The class worth speeding up is the one with the biggest share of cycles, which is not always the most frequent class. When the paper gives counts instead of percentages (C-1 uses 2, 1, 2), divide total cycles by total instructions; the sequence with more instructions can still be faster (C-2: 6 instructions, 9 cycles). Check that the percentages add to 100. The 15-16 mix lists two separate 4-cycle rows (30% and 40%), and both count.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f3" id="cf3"><summary><span class="q"><span class="fno">F3</span>Performance and "n times faster"</span><span class="tags"><span class="tg old">Jun '20 · B1e, 2a, B2b</span><span class="tg old">17-18 · 5e</span></span></summary>
+      <div class="ans">
+        <div class="eq">Performance = 1 / Execution time
+n = Time_B / Time_A = Perf_A / Perf_B     "A is n times faster than B"</div>
+        <ul class="vars">
+          <li>"Percent faster" = (n − 1) × 100%.</li>
+          <li>Same IC: compare CPI × T per instruction. Jun '20: A = 2.0 × 250 = 500 ps, B = 1.2 × 500 = 600 ps, so A is 1.2 times faster.</li>
+          <li>Required clock: f = cycles / time. Jun '20: 1.2 × 20 × 10<sup>9</sup> / 6 s = 4 GHz.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Put the slower time on top so that n &gt; 1. If A takes 50% longer, B is 1.5 times faster, but A's performance is 1 / 1.5 = 0.67 of B's, which is 33% lower, not 50%. The faster clock does not decide the winner; the smaller CPI × T does.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f4" id="cf4"><summary><span class="q"><span class="fno">F4</span>Amdahl's law, every variant</span><span class="tags"><span class="tg">20-21 · 2d, 5c</span><span class="tg">21-22 · 2e</span><span class="tg old">TT 18-19 · 4, 5</span></span></summary>
+      <div class="ans">
+        <div class="eq">T_new   = T_affected / k + T_unaffected
+Speedup = 1 / ((1 − F) + F / k)
+Maximum = 1 / (1 − F)                 (k → ∞)
+Solve   N = F / (1/S − (1 − F))       then round up</div>
+        <ul class="vars">
+          <li>Parallel version: k = N processors and F = the parallel fraction. 80% parallel needs N = 16 for a speedup of 4, and the maximum is 5 (20-21 Q5c).</li>
+          <li>Web server, F = 0.4, k = 10: 1 / 0.64 = 1.5625 (20-21 Q2d). MMX on 50% of the time: maximum 2 (21-22 Q2e).</li>
+          <li>90% parallel: 9.17 on 100 processors, only 9.91 on 1000.</li>
+          <li>Book: a speedup of 90 on 100 processors needs F = 89 / 89.1 = 0.999, so only 0.1% of the work may be sequential.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>F is a fraction of the old execution <b>time</b>, never of the instruction count; convert through F2 first. If 1/S ≤ 1 − F the target cannot be reached. The book's version: a program runs 100 s, 80 s of it in multiplies; to make it 5 times faster (20 s) you need 80/n + 20 = 20, which no n satisfies. With one processor the speedup must come out as exactly 1, which is a useful check.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f5" id="cf5"><summary><span class="q"><span class="fno">F5</span>Dynamic power and energy</span><span class="tags"><span class="tg old">15-16 · 3a, 1c–1e</span><span class="tg new">slide</span></span></summary>
+      <div class="ans">
+        <div class="eq">Power  = Capacitive load × Voltage² × Frequency switched
+Energy ∝ Capacitive load × Voltage²          (per task)
+P_new / P_old = (C′/C) × (V′/V)² × (f′/f)</div>
+        <ul class="vars">
+          <li>Book: 85% of the load, voltage and frequency both 15% lower: 0.85 × 0.85² × 0.85 = 0.85<sup>4</sup> ≈ 0.52 of the power.</li>
+          <li>15-16 Q3a: voltage −30%, frequency −25%: energy 0.7² = 0.49 (51% less); power 0.49 × 0.75 = 0.3675 (about 63% less).</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Square only the voltage. A "25% reduction" is a factor of 0.75, not 0.25. Slowing the clock alone cuts power but not the energy of a task, because the task simply runs longer (a 15-16 true/false). Some books write ½CV²f; the ½ cancels in every ratio. This formula is dynamic power only; leakage (static power) is separate.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f6" id="cf6"><summary><span class="q"><span class="fno">F6</span>Die cost and yield</span><span class="tags"><span class="tg new">slide, never asked</span><span class="tg old">15-16 · B4i</span></span></summary>
+      <div class="ans">
+        <div class="eq">Cost per die   = Cost per wafer / (Dies per wafer × Yield)
+Dies per wafer ≈ Wafer area / Die area
+Yield          = 1 / (1 + Defects per area × Die area / 2)²</div>
+        <div class="trick"><span class="k">Setter's trick</span><p>Use one area unit throughout (defects per cm² with die area in cm²). Wafer area = π × (diameter / 2)², so a 300 mm wafer has r = 15 cm. A bigger die hurts twice: fewer dies fit on the wafer <i>and</i> the yield drops.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f7" id="cf7"><summary><span class="q"><span class="fno">F7</span>Dependability: MTTF, MTTR, availability, FIT</span><span class="tags"><span class="tg old">15-16 · 5b, 6b, 1f</span><span class="tg old">17-18 · 5f</span></span></summary>
+      <div class="ans">
+        <div class="eq">Availability = MTTF / (MTTF + MTTR)
+MTBF         = MTTF + MTTR
+MTTF         = 10⁹ / FIT hours        (FIT = failures per 10⁹ hours)</div>
+        <ul class="vars">
+          <li>10<sup>7</sup> FIT: MTTF = 10<sup>9</sup> / 10<sup>7</sup> = 100 hours.</li>
+          <li>N parts where any failure stops the system (constant failure rates): the rates add, so MTTF<sub>system</sub> = 1 / Σ(1 / MTTFᵢ), which is MTTF / N for identical parts.</li>
+          <li>17-18 Q5f: 20,000 computers at 20 days each fail at 1,000 per day; disaster needs 4,000 failures, so about 4 days.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Service interruption is measured by <b>MTTR</b>, not MTTF (15-16 true/false). Reliability is MTTF alone; availability needs both. FIT counts failures per billion hours, so convert to days or years only at the very end.</p></div>
+      </div></details>
+
+    <p class="label grp">Caches · L3–5</p>
+
+    <details class="qa" data-id="c-f8" id="cf8"><summary><span class="q"><span class="fno">F8</span>Cache geometry: blocks and sets</span><span class="tags"><span class="tg">21-22 · 4g</span><span class="tg">20-21 · 1h</span></span></summary>
+      <div class="ans">
+        <div class="eq">Blocks = Cache data size / Block size
+Sets   = Blocks / Ways</div>
+        <ul class="vars">
+          <li>Direct mapped: 1 way, sets = blocks. Fully associative: ways = blocks, 1 set (20-21 Q1h).</li>
+          <li>128 KB, 16 B blocks, 4-way: 8192 blocks, 2048 sets (21-22 Q4g).</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>A "block of 4 words" is 16 bytes, so multiply by 4 before taking logs. "Cache size" means the data only; tags and valid bits are extra (F11). KB here is 2<sup>10</sup> bytes, never 1000.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f9" id="cf9"><summary><span class="q"><span class="fno">F9</span>Address split: tag | index | offset</span><span class="tags"><span class="tg">20-21 · 6a</span><span class="tg">21-22 · 3b, 4g</span><span class="tg">TT2 '25 · 2</span></span></summary>
+      <div class="ans">
+        <div class="eq">Offset bits = log₂(block size in bytes)
+Index bits  = log₂(number of SETS)
+Tag bits    = address bits − index − offset</div>
+        <ul class="vars">
+          <li>Address bits = log<sub>2</sub>(memory size): 64 KB gives 16 bits (21-22 Q3b splits them 4 | 8 | 4).</li>
+          <li>Fully associative: index = 0 bits, tag = address bits − offset.</li>
+          <li>Offset = byte-within-word bits (2) + word-within-block bits.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The index comes from <b>sets</b>, not blocks: 128 KB, 4-way, 16 B blocks gives 11 index bits, not 13. Word-addressed memory drops the 2 byte-offset bits. When the paper gives bit ranges instead of sizes (20-21 Q6a: tag 63–10, index 9–5, offset 4–0), read the sizes straight off: 5 offset bits means 32-byte blocks, 5 index bits means 32 blocks.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f10" id="cf10"><summary><span class="q"><span class="fno">F10</span>Where an address goes in the cache</span><span class="tags"><span class="tg">21-22 · 3b, 4f</span><span class="tg">20-21 · 6a</span></span></summary>
+      <div class="ans">
+        <div class="eq">Block address = ⌊byte address / block size⌋
+Index (set)   = block address mod sets
+Tag           = ⌊block address / sets⌋
+Offset        = byte address mod block size</div>
+        <ul class="vars">
+          <li>Hex shortcut when every field is a multiple of 4 bits: in 21-22 Q3b (4 | 8 | 4), 0C00 is tag 0, index C0, offset 0.</li>
+          <li>Book: memory block 12 in an 8-block cache goes to block 12 mod 8 = 4 (direct mapped), set 12 mod 4 = 0 (2-way), anywhere (fully associative).</li>
+          <li>Book: 64 blocks of 16 B. Byte address 1200 is block address ⌊1200 / 16⌋ = 75, which goes to cache block 75 mod 64 = <b>11</b> (holding bytes 1200–1215).</li>
+          <li>Book: block addresses 0, 8, 0, 6, 8 in a 4-block cache give 5 misses direct mapped, 4 misses 2-way with LRU, 3 misses fully associative.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Never take the mod of the <b>byte</b> address; divide by the block size first. The hex shortcut breaks when a field is not a multiple of 4 bits (20-21 Q6a splits 5 | 5), so convert to binary. Shrinking the cache is the favourite twist: 0000, 0400, 0800 and 0C00 never collide in a 4 KB cache, but in a 1 KB cache they all fight over index 0 (1 hit instead of 4).</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f11" id="cf11"><summary><span class="q"><span class="fno">F11</span>Total cache storage, tag overhead</span><span class="tags"><span class="tg new">book §5.2</span></span></summary>
+      <div class="ans">
+        <div class="eq">Total bits = Blocks × (8 × block bytes + tag bits + 1 valid [+ 1 dirty])</div>
+        <ul class="vars">
+          <li>Book: 16 KB of data, 4-word blocks, 32-bit address: 2<sup>10</sup> × (128 + 18 + 1) = <b>147 Kbits</b>, against 128 Kbits of data.</li>
+          <li>Same 4096 blocks of 16 B: tag = 16 bits direct mapped, 17 for 2-way, 18 for 4-way, 28 fully associative.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The answer is in bits, so multiply the block bytes by 8. Each doubling of associativity halves the sets, so the index loses a bit and the tag gains one. A write-back cache adds a dirty bit per block; say whether you counted it.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f12" id="cf12"><summary><span class="q"><span class="fno">F12</span>Hit rate and AMAT</span><span class="tags"><span class="tg">20-21 · 1d, 3a-ii</span><span class="tg">21-22 · 1h</span></span></summary>
+      <div class="ans">
+        <div class="eq">Hit rate = hits / accesses        Miss rate = 1 − hit rate
+AMAT     = Hit time + Miss rate × Miss penalty</div>
+        <ul class="vars">
+          <li>Slide: 1 + 0.05 × 20 = 2 cycles.</li>
+          <li>Split caches: AMAT = %I × (HT + MR<sub>I</sub> × MP) + %D × (HT + MR<sub>D</sub> × MP).</li>
+          <li>Misses per 1000 instructions to a miss rate: divide by the accesses per instruction (I-cache 1, D-cache 0.36, unified 1.36). 20-21 Q3a-ii: split 4.24 cycles, unified 4.44.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The miss penalty is the <b>extra</b> time on a miss. If the paper gives the total time of a miss instead, use AMAT = hit rate × hit time + miss rate × miss time. Weight split caches by the fraction of <b>accesses</b> (74% / 26%), not of instructions. A unified cache can miss less and still have the higher AMAT, because its loads and stores wait an extra cycle for the single port. Count the first (compulsory) misses when you give the hit ratio.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f13" id="cf13"><summary><span class="q"><span class="fno">F13</span>Multilevel caches</span><span class="tags"><span class="tg new">book §5.3</span></span></summary>
+      <div class="ans">
+        <div class="eq">AMAT = HT_L1 + MR_L1 × (HT_L2 + MR_L2 × MP_L2)
+Global miss rate = MR_L1 × MR_L2 (local)</div>
+        <ul class="vars">
+          <li>Book, CPI form: 4 GHz, base CPI 1, memory 100 ns = 400 cycles, 2% misses per instruction: CPI = 1 + 0.02 × 400 = 9.</li>
+          <li>Add an L2 of 5 ns = 20 cycles that leaves 0.5% going to memory: CPI = 1 + 0.02 × 20 + 0.005 × 400 = 3.4, which is 2.6 times faster.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The MR<sub>L2</sub> inside the bracket is the <b>local</b> rate (L2 misses ÷ L2 accesses). The book's 0.5% is <b>global</b>, so it multiplies the memory penalty directly; do not multiply it by the 2% again. Convert ns to cycles at the processor clock: 100 ns × 4 GHz = 400 cycles.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f14" id="cf14"><summary><span class="q"><span class="fno">F14</span>CPI with memory stalls</span><span class="tags"><span class="tg new">book §5.3</span></span></summary>
+      <div class="ans">
+        <div class="eq">CPI_eff = CPI_base + memory-stall cycles per instruction
+Stalls  = Σ (accesses per instruction × miss rate × miss penalty)</div>
+        <ul class="vars">
+          <li>Book: base CPI 2, I-cache misses 2%, D-cache 4%, 36% loads and stores, penalty 100: 2 + 1 × 0.02 × 100 + 0.36 × 0.04 × 100 = 2 + 2 + 1.44 = <b>5.44</b>.</li>
+          <li>CPU time = IC × CPI<sub>eff</sub> × T. Per program: stall cycles = IC × misses per instruction × miss penalty.</li>
+          <li>Book: a perfect cache would be 5.44 / 2 = <b>2.72</b> times faster. Cut the base CPI from 2 to 1 and memory stalls grow from 3.44 / 5.44 = 63% to 3.44 / 4.44 = 77% of the time.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Every instruction is fetched (1 instruction access each), but only loads and stores make data accesses, so the D-cache term is scaled by their fraction. Double the clock and the same memory costs twice as many cycles: the penalty becomes 200, CPI 8.88, and the machine is only 5.44 / (8.88 / 2) = 1.23 times faster. That is the book's point.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f15" id="cf15"><summary><span class="q"><span class="fno">F15</span>Main-memory miss penalty (bus organisation)</span><span class="tags"><span class="tg old">15-16 · 2f-ii</span><span class="tg new">book §5.2</span></span></summary>
+      <div class="ans">
+        <div class="eq">4-word block · 1 cycle to send the address · 15 per DRAM access · 1 per word sent
+One-word-wide:  1 + 4 × 15 + 4 × 1 = 65 cycles
+Four-word-wide: 1 + 15 + 1         = 17 cycles
+Interleaved:    1 + 15 + 4 × 1     = 20 cycles</div>
+        <ul class="vars">
+          <li>Bandwidth = bytes / penalty: 16 / 65 = 0.25, 16 / 17 = 0.94, 16 / 20 = 0.80 bytes per cycle.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The slide's short version counts only the DRAM accesses (4 × 15 = 60 against one 15-cycle access), so say which cycles you include. Interleaving overlaps the <b>accesses</b> to the four banks, not the transfers: each word still crosses a one-word bus.</p></div>
+      </div></details>
+
+    <p class="label grp">Virtual memory · L5</p>
+
+    <details class="qa" data-id="c-f16" id="cf16"><summary><span class="q"><span class="fno">F16</span>Virtual memory: bits and page-table size</span><span class="tags"><span class="tg">20-21 · 6c-i, 6c-iii</span></span></summary>
+      <div class="ans">
+        <div class="eq">Page offset = log₂(page size)
+VPN = VA bits − offset        PPN = PA bits − offset
+PA bits = log₂(physical memory)
+Entries = 2^VPN               Table size = 2^VPN × PTE size</div>
+        <ul class="vars">
+          <li>20-21 Q6c: 48-bit VA, 4 GB, 64 KB pages: offset 16, PPN 16, VPN 32, so 2<sup>32</sup> entries (16 GB at 4 bytes each).</li>
+          <li>Book: 32-bit VA, 4 KB pages, 4-byte entries: 2<sup>20</sup> × 4 B = 4 MB per process.</li>
+          <li>Multi-level: index bits per level = log<sub>2</sub>(page size / PTE size), so 10 bits for 4 KB pages and 4-byte entries.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The number of entries depends on the <b>virtual</b> page number, never on how much RAM is installed; the physical memory size only fixes the PA width. If the PTE size is not given, build it (PPN + valid + dirty + reference + protection bits, rounded up to 4 bytes) and say so. There is one table per process.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f17" id="cf17"><summary><span class="q"><span class="fno">F17</span>Effective access time with page faults or a TLB</span><span class="tags"><span class="tg new">slide</span></span></summary>
+      <div class="ans">
+        <div class="eq">EAT = Hit time + Page-fault rate × Page-fault penalty</div>
+        <ul class="vars">
+          <li>Slide: 100 ns + 10<sup>−6</sup> × 10,000,000 ns = 110 ns. A fault rate of 0.0001% adds 10%.</li>
+          <li>With a TLB and no faults: EAT = t<sub>TLB</sub> + t<sub>mem</sub> + TLB miss rate × levels × t<sub>mem</sub>.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>0.0001% is 10<sup>−6</sup>, not 10<sup>−4</sup>. Disk times come in milliseconds: 10 ms = 10<sup>7</sup> ns, and a units slip moves the answer by a factor of a million. A TLB miss is not a page fault: it costs one memory access per page-table level, while a page fault costs a disk access.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f18" id="cf18"><summary><span class="q"><span class="fno">F18</span>VIPT cache size limit</span><span class="tags"><span class="tg">20-21 · 4h</span></span></summary>
+      <div class="ans">
+        <div class="eq">Max cache size = Ways × Page size     (index + block offset ≤ page-offset bits)</div>
+        <ul class="vars"><li>4 KB pages, 16-way: 16 × 4 KB = 64 KB.</li></ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The block size does not change the limit; only index + offset together must fit inside the page offset. To grow the cache without bigger pages, you must add ways.</p></div>
+      </div></details>
+
+    <p class="label grp">Numbers · L6</p>
+
+    <details class="qa" data-id="c-f19" id="cf19"><summary><span class="q"><span class="fno">F19</span>Two's complement</span><span class="tags"><span class="tg">20-21 · 2c</span><span class="tg old">Jun '20 · B1c</span><span class="tg old">17-18 · 4e</span></span></summary>
+      <div class="ans">
+        <div class="eq">Range (n bits): −2ⁿ⁻¹ … 2ⁿ⁻¹ − 1
+Negate: invert every bit, then add 1
+Value = −bₙ₋₁ × 2ⁿ⁻¹ + Σ bᵢ × 2ⁱ</div>
+        <ul class="vars">
+          <li>8 bits: −128 to 127. 16 bits: −32,768 to 32,767.</li>
+          <li>(+46) + (−42): 0010 1110 + 1101 0110 = 1 0000 0100; drop the carry, result +4 (20-21 Q2c).</li>
+          <li>Sign extension: copy the top bit to the left. −2 in 16 bits = 1111 1111 1111 1110.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>The most negative number has no positive partner: negating −128 in 8 bits gives −128 again (overflow). Quick negate: copy bits from the right up to and including the first 1, then invert the rest. If the paper gives no width, pick one that holds both operands and the result, and write it down.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f20" id="cf20"><summary><span class="q"><span class="fno">F20</span>Overflow detection</span><span class="tags"><span class="tg new">slide</span><span class="tg old">Jun '20 · 3</span></span></summary>
+      <div class="ans">
+        <div class="eq">Overflow ⇔ both operands have the same sign and the result's sign differs
+         ⇔ carry INTO the sign bit ≠ carry OUT of the sign bit</div>
+        <ul class="vars">
+          <li>A + B overflows on (+) + (+) → (−) or (−) + (−) → (+). A − B overflows on (+) − (−) → (−) or (−) − (+) → (+).</li>
+          <li>Unsigned overflow = a carry out of the top bit. MIPS <code>add</code>, <code>addi</code>, <code>sub</code> trap on overflow; <code>addu</code>, <code>addiu</code>, <code>subu</code> do not.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>A carry out of the top bit is <b>not</b> signed overflow: (+46) + (−42) produces one, and +4 is correct. Adding two numbers of opposite sign can never overflow.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f21" id="cf21"><summary><span class="q"><span class="fno">F21</span>IEEE 754: the value of a bit pattern</span><span class="tags"><span class="tg">20-21 · 1c, 3b</span><span class="tg">21-22 · 3a</span><span class="tg">TT1 '25 · 2</span></span></summary>
+      <div class="ans">
+        <div class="eq">Value = (−1)^S × (1 + Fraction) × 2^(Exponent − Bias)
+Single: 1 | 8 | 23   bias 127      Double: 1 | 11 | 52   bias 1023</div>
+        <ul class="vars">
+          <li>Exponent 0, fraction 0: ±0. Exponent 0, fraction ≠ 0: denormal, (−1)<sup>S</sup> × 0.F × 2<sup>−126</sup>.</li>
+          <li>Exponent all 1s: fraction 0 is ±∞, fraction ≠ 0 is NaN.</li>
+          <li>Normal exponent fields 1 to 254 give real exponents −126 to +127; single precision covers about ±1.2 × 10<sup>−38</sup> to ±3.4 × 10<sup>38</sup>, and double about ±2.2 × 10<sup>−308</sup> to ±1.8 × 10<sup>308</sup>. The book rounds both to "2.0 × 10<sup>±38</sup>" and "2.0 × 10<sup>±308</sup>".</li>
+          <li>Past papers: 0 10000110 110101… = 1.828125 × 2<sup>7</sup> = <b>234</b>. 1 10000010 0101… = −1.3125 × 2<sup>3</sup> = <b>−10.5</b>.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Subtract the bias when decoding, add it when encoding, never both. Put the hidden 1 back. Fraction bits weigh 2<sup>−1</sup>, 2<sup>−2</sup>, 2<sup>−3</sup> … from the left: 1101010 means 0.828125, not 106. A double-precision version changes the bias <b>and</b> the field widths (−0.75 has exponent field 1022 in 11 bits).</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f22" id="cf22"><summary><span class="q"><span class="fno">F22</span>IEEE 754: encoding a decimal</span><span class="tags"><span class="tg">TT2 '26 · 1</span><span class="tg old">17-18 · 2b</span><span class="tg old">Jun '20 · B3</span></span></summary>
+      <div class="ans">
+        <div class="eq">1. integer part: divide by 2, read remainders bottom-up
+   fraction part: multiply by 2, read the carried bits top-down
+2. normalize to 1.xxxx × 2^e
+3. exponent field = e + bias;  fraction field = bits after the leading 1
+4. hex: group the 32 bits in fours from the left</div>
+        <ul class="vars">
+          <li>6.625 = 110.101<sub>2</sub> = 1.10101 × 2<sup>2</sup> → 0 10000001 1010100… = <b>40D4 0000<sub>hex</sub></b> (TT2 '26).</li>
+          <li>−0.75 = −0.11<sub>2</sub> = −1.1 × 2<sup>−1</sup> → <b>BF40 0000<sub>hex</sub></b> single, <b>BFE8 0000 0000 0000<sub>hex</sub></b> double (17-18).</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Moving the point to the <b>right</b> gives a negative exponent (0.11 → 1.1 × 2<sup>−1</sup>, field 126). A negative number only sets the sign bit; never take the two's complement of the fraction. 0.1 never terminates in binary: stop at 23 bits and round, which gives 3DCC CCCD<sub>hex</sub> (the last digit rounds up).</p></div>
+      </div></details>
+
+    <p class="label grp">Pipelining · L7–8</p>
+
+    <details class="qa" data-id="c-f23" id="cf23"><summary><span class="q"><span class="fno">F23</span>Pipeline clock and total time</span><span class="tags"><span class="tg">20-21 · 1f</span><span class="tg old">15-16 · 1n</span></span></summary>
+      <div class="ans">
+        <div class="eq">T_clk       = slowest stage + register delay
+Time(n)     = (k + n − 1) × T_clk         k stages, n instructions
+Unpipelined = n × Σ stage delays</div>
+        <ul class="vars">
+          <li>20-21 Q1f: 160 + 5 = 165 ns; (4 + 99) × 165 = 16,995 ns against 100 × 570 = 57,000 ns, a speedup of about 3.35.</li>
+          <li>Ideal case (balanced stages, no hazards, large n): the speedup approaches k. Book: time between instructions<sub>pipelined</sub> = time between instructions<sub>nonpipelined</sub> / number of stages.</li>
+          <li>Book: stages of 200, 100, 200, 200, 100 ps (800 ps single-cycle) need a 200 ps clock, so the speedup is 800 / 200 = <b>4, not 5</b>, because the stages are unbalanced. For 1,000,003 instructions: 800,002,400 ps / 200,001,400 ps ≈ 4.00.</li>
+          <li>Latency of one instruction = k × T<sub>clk</sub> = 4 × 165 = 660 ns, longer than the unpipelined 570 ns.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>It is k + n − 1, not k × n. The clock is the <b>slowest</b> stage plus the latch, not the average stage. The unpipelined time has no register delay unless the paper adds one. Pipelining improves throughput and never the latency of a single instruction (15-16 true/false).</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f24" id="cf24"><summary><span class="q"><span class="fno">F24</span>Pipeline CPI with stalls</span><span class="tags"><span class="tg">21-22 · 3c</span><span class="tg old">SWE 18-19 · B2b</span></span></summary>
+      <div class="ans">
+        <div class="eq">CPI         = 1 + stall cycles per instruction = 1 + Σ (frequencyᵢ × penaltyᵢ)
+Branch term = branch frequency × misprediction rate × penalty
+Speedup     = pipeline depth / (1 + stalls per instruction)     (H&amp;P form)</div>
+        <ul class="vars">
+          <li>Branch penalty: 2 cycles when the branch is decided in EX, 1 when decided in ID.</li>
+          <li>Book, stalling on every branch (resolved in ID): branches are 17% of instructions, so CPI = 1 + 0.17 × 1 = <b>1.17</b>.</li>
+          <li>21-22 Q3c, the L.D / ADD.D chain of 2000 instructions: (4 + 2000 + 1000) / 2000 ≈ 1.5 with forwarding; (4 + 2000 + 2 × 1999) / 2000 ≈ 3.0 without.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>With predict-not-taken only <b>taken</b> branches pay, so the "misprediction rate" is the taken rate. Frequencies are per instruction: 30% loads × 6% misses × 50 cycles adds 0.30 × 0.06 × 50 = 0.9 to the CPI (SWE paper). The k − 1 fill cycles barely matter for large n; say whether you included them.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f25" id="cf25"><summary><span class="q"><span class="fno">F25</span>How many stalls or NOPs?</span><span class="tags"><span class="tg">20-21 · 6b</span><span class="tg">21-22 · 2c, 6a</span></span></summary>
+      <div class="ans">
+        <div class="eq">No forwarding:   NOPs = max(0, 3 − d)   register file writes in the 1st half, reads in the 2nd
+                 NOPs = max(0, 4 − d)   no split-cycle register access
+With forwarding: 0, except a load whose result the very next instruction uses: 1 stall
+d = distance between producer and consumer (1 = adjacent)</div>
+        <ul class="vars">
+          <li>20-21 Q6b: <code>addi x11</code> followed by three readers needs 2 NOPs after the first instruction (10 cycles); with forwarding, none (8 cycles).</li>
+          <li>Taken branch under predict-not-taken: flush 2 instructions if it is decided in EX, 1 if in ID.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>State your register-file assumption: it is the difference between 2 and 3 NOPs. Count d after inserting the earlier NOPs, because one fix often covers the next instructions too. A store's data register is a source as well. If branches are decided in ID, an ALU result immediately before the branch still costs 1 stall and a load costs 2, even with forwarding.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f26" id="cf26"><summary><span class="q"><span class="fno">F26</span>Branch predictor accuracy on loops</span><span class="tags"><span class="tg">21-22 · 1f</span><span class="tg new">book §4.8</span></span></summary>
+      <div class="ans">
+        <div class="eq">Accuracy = correct predictions / branches
+Loop branch, loop re-entered:  1-bit → 2 misses per run of the loop
+                               2-bit → 1 miss per run</div>
+        <ul class="vars">
+          <li>Book: taken 9 times, then not taken once. 1-bit: 8 / 10 = 80%, even though the branch is taken 90% of the time. 2-bit: 9 / 10 = 90%.</li>
+          <li>A loop of n iterations: 1-bit (n − 2) / n, 2-bit (n − 1) / n.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>These are steady-state counts, which assume the loop has run before. On the very first entry the starting state decides; if the paper gives one, trace it step by step. The 1-bit predictor misses twice because the exit flips its bit, so the first iteration of the next run is mispredicted too.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f27" id="cf27"><summary><span class="q"><span class="fno">F27</span>Multiple issue: peak IPC and CPI</span><span class="tags"><span class="tg">20-21 · 4f</span><span class="tg">21-22 · 4h</span></span></summary>
+      <div class="ans">
+        <div class="eq">Peak IPC  = issue width        Best CPI = 1 / issue width
+Peak rate = issue width × clock rate</div>
+        <ul class="vars"><li>Book: 4-way at 4 GHz gives 16 billion instructions per second, CPI 0.25, IPC 4.</li></ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>A CPI below 1 is only possible with multiple issue; the best a single-issue pipeline can do is 1. Superscalar means the hardware picks the instructions at run time (dynamic); VLIW means the compiler packs the issue packet (static). Either way a single processor is still SISD in Flynn's taxonomy.</p></div>
+      </div></details>
+
+    <p class="label grp">Buses and MIPS · L10, L2</p>
+
+    <details class="qa" data-id="c-f28" id="cf28"><summary><span class="q"><span class="fno">F28</span>Bus widths</span><span class="tags"><span class="tg">20-21 · 5a</span><span class="tg">TT1 '25 · 1a</span><span class="tg">TT1 '26 · j</span></span></summary>
+      <div class="ans">
+        <div class="eq">Addressable locations = 2^(address lines)
+Bytes per transfer    = data-bus width / 8
+Bandwidth             = bytes per transfer × transfers per second</div>
+        <ul class="vars">
+          <li>32 address lines, byte-addressed: 2<sup>32</sup> B = 4 GB. 20 lines: 1 MB. A 64-bit data bus moves 8 bytes per transfer.</li>
+          <li>DDR memory transfers on both clock edges, so 2 transfers per clock.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Byte- versus word-addressable: 32 lines that address 32-bit words reach 2<sup>32</sup> words = 16 GB. The address bus is one-way (processor to memory and devices); the data bus is two-way. The data-bus width sets the bits per transfer, not the memory size.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f29" id="cf29"><summary><span class="q"><span class="fno">F29</span>MIPS address arithmetic</span><span class="tags"><span class="tg old">17-18 · 5d, 6c</span><span class="tg old">Jun '20 · B2a</span></span></summary>
+      <div class="ans">
+        <div class="eq">A[i] (int array) = base + 4 × i
+Branch target    = (PC + 4) + sign-extended offset × 4
+Jump target      = top 4 bits of (PC + 4) joined to the 26-bit field × 4</div>
+        <ul class="vars">
+          <li>Fixed index: A[8] is <code>lw $t0, 32($s3)</code>. Variable index: <code>sll $t1, $s3, 2</code>, add the base, then <code>lw $t0, 0($t1)</code>.</li>
+          <li>Immediates run from −32,768 to 32,767. Larger constants need <code>lui</code> + <code>ori</code>: 4,000,000 = <code>lui 61</code>, <code>ori 2304</code>.</li>
+          <li>Reach: a branch spans ±2<sup>15</sup> instructions (about ±128 KB); a jump stays inside the current 256 MB block.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Offsets in <code>lw</code>/<code>sw</code> are in <b>bytes</b>; branch offsets are in <b>words</b>, counted from PC + 4, not from the branch itself (the <code>bne</code> in the if-else recipe has offset 2). <code>andi</code> and <code>ori</code> zero-extend their immediate, while <code>addi</code>, <code>slti</code>, <code>lw</code> and <code>sw</code> sign-extend. A <code>char</code> array uses base + i, with no × 4.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f30" id="cf30"><summary><span class="q"><span class="fno">F30</span>Instruction formats and field widths</span><span class="tags"><span class="tg old">17-18 · 4b, 2c, 1g</span><span class="tg old">Jun '20 · 1d</span></span></summary>
+      <div class="ans">
+        <div class="eq">R: op 6 | rs 5 | rt 5 | rd 5 | shamt 5 | funct 6
+I: op 6 | rs 5 | rt 5 | immediate 16
+J: op 6 | address 26</div>
+        <ul class="vars">
+          <li>Register field = log<sub>2</sub>(number of registers), so 5 bits for 32. Opcode = ⌈log<sub>2</sub>(number of operations)⌉. The immediate gets whatever is left of 32.</li>
+          <li>op 0 means R-type, so read funct: add 32, sub 34, and 36, or 37, slt 42, sll 0, jr 8. Other opcodes: lw 35, sw 43, beq 4, bne 5, addi 8, j 2, jal 3.</li>
+          <li>00af8020<sub>hex</sub> = <code>add $s0, $a1, $t7</code>. op 0, rs 8, rt 9, rd 10, funct 34 = <code>sub $t2, $t0, $t1</code>.</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Assembly order is not field order: in <code>add rd, rs, rt</code> the destination is written <b>first</b> but stored <b>third</b>, and in <code>lw rt, imm(rs)</code> the destination is rt. If the setter changes the register count (128 registers means 7-bit register fields), the immediate shrinks: recompute it as 32 − opcode bits − 2 × register bits.</p></div>
+      </div></details>
+
+    <p class="label grp">Also highlighted in your book · Ch 3, Ch 1</p>
+
+    <details class="qa" data-id="c-f31" id="cf31"><summary><span class="q"><span class="fno">F31</span>Floating-point addition and multiplication</span><span class="tags"><span class="tg old">SWE 18-19 · A3</span><span class="tg new">book §3.5</span></span></summary>
+      <div class="ans">
+        <div class="eq">Add:      1. align: shift the SMALLER number's significand right until the exponents match
+          2. add the significands
+          3. normalize; check for overflow or underflow
+          4. round; if rounding breaks normalization, normalize again
+Multiply: 1. add the exponents (biased: E1 + E2 − bias)
+          2. multiply the significands
+          3. normalize; check for overflow or underflow
+          4. round
+          5. sign: positive if the signs match, negative otherwise</div>
+        <ul class="vars">
+          <li>Book, decimal with 4 digits: 9.999 × 10<sup>1</sup> + 1.610 × 10<sup>−1</sup> → 0.016 × 10<sup>1</sup> → 10.015 × 10<sup>1</sup> = 1.0015 × 10<sup>2</sup> → <b>1.002 × 10<sup>2</sup></b>.</li>
+          <li>Book: 1.110 × 10<sup>10</sup> × 9.200 × 10<sup>−5</sup>. Exponent 10 + (−5) = 5; in biased form 137 + 122 − 127 = 132. Significand 1.110 × 9.200 = 10.212 → 1.0212 × 10<sup>6</sup> → <b>+1.021 × 10<sup>6</sup></b>.</li>
+          <li>Book, binary: 0.5 + (−0.4375) = 1.000 × 2<sup>−1</sup> − 0.111 × 2<sup>−1</sup> = 0.001 × 2<sup>−1</sup> = 1.000 × 2<sup>−4</sup> = <b>0.0625</b>. 0.5 × (−0.4375) = −1.110 × 2<sup>−3</sup> = <b>−0.21875</b> (biased exponent 126 + 125 − 127 = 124).</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>Adding two biased exponents counts the bias twice, so subtract it once: 137 + 122 = 259 is wrong, 132 is right. When aligning, shift the <b>smaller</b> number to the right, never the larger one to the left. Rounding can un-normalize the result (9.9999 → 10.000), so check again. Overflow and underflow are about the <b>exponent</b> field: overflow is a positive exponent too large for it, underflow a negative exponent too large in magnitude.</p></div>
+      </div></details>
+
+    <details class="qa" data-id="c-f32" id="cf32"><summary><span class="q"><span class="fno">F32</span>Benchmarks: SPECratio, geometric mean, SPECpower</span><span class="tags"><span class="tg old">15-16 · 3b</span><span class="tg new">book §1.7</span></span></summary>
+      <div class="ans">
+        <div class="eq">SPECratio = reference time / measured execution time
+Summary   = geometric mean = (ratio₁ × ratio₂ × … × ratioₙ)^(1/n)
+SPECpower = overall ssj_ops per watt = Σ ssj_opsᵢ / Σ powerᵢ</div>
+        <ul class="vars">
+          <li>GM(A) / GM(B) = GM(A₁/B₁, …, Aₙ/Bₙ), so the reference machine cancels out when two computers are compared (the 15-16 Q3b proof).</li>
+        </ul>
+        <div class="trick"><span class="k">Setter's trick</span><p>A bigger SPECratio is better, because it is the reference time divided by yours. Use the geometric mean, not the arithmetic mean, so the result does not depend on which machine is the reference. For SPECpower, divide the total ops by the total power; do not average the ops-per-watt figure of each load level.</p></div>
+      </div></details>
+  </div>
+
+  <div class="block">
+    <h3>14 figures to draw <span class="label">what to label · what costs marks</span></h3>
+    <div class="figs">
+
+    <figure class="fig" id="cd1">
+      <div class="fhead"><h4><span class="fno">D1</span>Von Neumann architecture</h4><span class="tags"><span class="tg">20-21 · 2a</span><span class="tg old">17-18 · 1d, 1e</span><span class="tg old">Jun '20 · 1a</span></span></div>
+      <svg viewBox="0 0 340 200" role="img" aria-label="Von Neumann architecture: CPU, memory, input and output on one system bus">
+        <rect class="box" x="100" y="6" width="140" height="92" rx="4"/><text x="170" y="22" text-anchor="middle" font-size="11" font-weight="600">CPU (processor)</text>
+        <rect class="boxa" x="112" y="30" width="116" height="26" rx="3"/><text x="170" y="47" text-anchor="middle" font-size="10">Control unit + PC</text>
+        <rect class="boxa" x="112" y="62" width="116" height="26" rx="3"/><text x="170" y="79" text-anchor="middle" font-size="10">Datapath: ALU, registers</text>
+        <line class="lnw" x1="14" y1="130" x2="326" y2="130"/><text x="170" y="124" text-anchor="middle" font-size="9.5" class="mut">one system bus: address · data · control</text>
+        <line class="ln" x1="170" y1="98" x2="170" y2="130"/>
+        <rect class="box" x="122" y="150" width="96" height="40" rx="4"/><text x="170" y="166" text-anchor="middle" font-size="10">Memory</text><text x="170" y="180" text-anchor="middle" font-size="9" class="mut">program + data</text>
+        <line class="ln" x1="170" y1="130" x2="170" y2="150"/>
+        <rect class="box" x="10" y="150" width="78" height="40" rx="4"/><text x="49" y="174" text-anchor="middle" font-size="10">Input</text><line class="ln" x1="49" y1="130" x2="49" y2="150"/>
+        <rect class="box" x="252" y="150" width="78" height="40" rx="4"/><text x="291" y="174" text-anchor="middle" font-size="10">Output</text><line class="ln" x1="291" y1="130" x2="291" y2="150"/>
+      </svg>
+      <p class="must"><b>Must label:</b> input, output, memory holding program <i>and</i> data, control unit with the PC, datapath (ALU and registers), and the single shared bus.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>There are five classic components: input, output, memory, datapath and control. The "CPU" is not a sixth one; it is datapath + control. Write "Von Neumann bottleneck" beside the single bus and "stored-program concept" beside the memory.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd2">
+      <div class="fhead"><h4><span class="fno">D2</span>Harvard architecture</h4><span class="tags"><span class="tg">21-22 · 5b</span><span class="tg">TT1 '26 · f</span><span class="tg old">17-18 · 4c</span></span></div>
+      <svg viewBox="0 0 340 200" role="img" aria-label="Harvard architecture: CPU with separate instruction memory and data memory buses">
+        <rect class="box" x="110" y="40" width="120" height="84" rx="4"/><text x="170" y="56" text-anchor="middle" font-size="11" font-weight="600">CPU</text>
+        <rect class="boxa" x="120" y="63" width="100" height="24" rx="3"/><text x="170" y="79" text-anchor="middle" font-size="10">Control + PC</text>
+        <rect class="boxa" x="120" y="93" width="100" height="24" rx="3"/><text x="170" y="109" text-anchor="middle" font-size="10">ALU, registers</text>
+        <rect class="box" x="6" y="58" width="80" height="48" rx="4"/><text x="46" y="78" text-anchor="middle" font-size="10">Instruction</text><text x="46" y="92" text-anchor="middle" font-size="10">memory</text>
+        <rect class="box" x="254" y="58" width="80" height="48" rx="4"/><text x="294" y="78" text-anchor="middle" font-size="10">Data</text><text x="294" y="92" text-anchor="middle" font-size="10">memory</text>
+        <line class="lna" x1="86" y1="82" x2="110" y2="82"/><text x="98" y="36" text-anchor="middle" font-size="9" class="mut">instruction</text><text x="98" y="47" text-anchor="middle" font-size="9" class="mut">bus</text>
+        <line class="lnw" x1="230" y1="82" x2="254" y2="82"/><text x="242" y="36" text-anchor="middle" font-size="9" class="mut">data</text><text x="242" y="47" text-anchor="middle" font-size="9" class="mut">bus</text>
+        <rect class="box" x="125" y="152" width="90" height="36" rx="4"/><text x="170" y="174" text-anchor="middle" font-size="10">Input / Output</text><line class="ln" x1="170" y1="124" x2="170" y2="152"/>
+      </svg>
+      <p class="must"><b>Must label:</b> a separate instruction memory and data memory, each with its own bus, so a fetch and a data access can happen in the same cycle.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>"Is a modern PC Von Neumann or Harvard?" Both: main memory is Von Neumann, but the split L1 instruction and data caches are Harvard (a "modified Harvard" design). The split is also what removes the structural hazard between IF and MEM in the five-stage pipeline.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd3">
+      <div class="fhead"><h4><span class="fno">D3</span>Memory hierarchy</h4><span class="tags"><span class="tg old">17-18 · 4g</span><span class="tg old">Jun '20 · B1d</span></span></div>
+      <svg viewBox="0 0 340 176" role="img" aria-label="Memory hierarchy pyramid: registers, cache SRAM, main memory DRAM, secondary storage">
+        <path class="boxa" d="M150 8 L190 8 L206 42 L134 42 Z"/><text x="170" y="31" text-anchor="middle" font-size="9.5">Registers</text>
+        <path class="box" d="M134 46 L206 46 L224 82 L116 82 Z"/><text x="170" y="68" text-anchor="middle" font-size="9.5">Cache (SRAM)</text>
+        <path class="box" d="M116 86 L224 86 L244 122 L96 122 Z"/><text x="170" y="108" text-anchor="middle" font-size="9.5">Main memory (DRAM)</text>
+        <path class="box" d="M96 126 L244 126 L264 166 L76 166 Z"/><text x="170" y="144" text-anchor="middle" font-size="9.5">Secondary storage</text><text x="170" y="157" text-anchor="middle" font-size="8.5" class="mut">disk / flash</text>
+        <line class="lna" x1="40" y1="160" x2="40" y2="14"/><path class="acc" d="M34 20 L40 8 L46 20 Z"/>
+        <text x="30" y="70" font-size="8.5" text-anchor="end" class="mut" transform="rotate(-90 30 70)">faster, costlier/bit</text>
+        <line class="lnw" x1="300" y1="14" x2="300" y2="160"/><path style="fill:var(--warn)" d="M294 154 L300 166 L306 154 Z"/>
+        <text x="316" y="90" font-size="8.5" text-anchor="middle" class="mut" transform="rotate(90 316 90)">bigger, cheaper/bit</text>
+      </svg>
+      <p class="must"><b>Must label:</b> registers, cache (SRAM), main memory (DRAM), disk or flash; one arrow for speed and cost per bit rising upward, one for capacity rising downward.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>Data moves only between <b>adjacent</b> levels. The pyramid works because of locality, so name both kinds (temporal and spatial). The cache boundary is SRAM ↔ DRAM; the virtual-memory boundary is DRAM ↔ disk.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd4">
+      <div class="fhead"><h4><span class="fno">D4</span>Direct-mapped cache lookup</h4><span class="tags"><span class="tg old">15-16 · 6a, B4m</span></span></div>
+      <svg viewBox="0 0 340 236" role="img" aria-label="Direct-mapped cache lookup: index selects a row, tag comparison and valid bit give hit, offset selects data">
+        <rect x="40" y="8" width="110" height="24" style="fill:var(--accent-soft);stroke:var(--tag)"/><text x="95" y="24" text-anchor="middle" font-size="10" style="fill:var(--tag)">Tag</text>
+        <rect x="150" y="8" width="80" height="24" style="fill:var(--warn-soft);stroke:var(--idx)"/><text x="190" y="24" text-anchor="middle" font-size="10" style="fill:var(--idx)">Index</text>
+        <rect x="230" y="8" width="70" height="24" style="fill:var(--ok-soft);stroke:var(--off)"/><text x="265" y="24" text-anchor="middle" font-size="10" style="fill:var(--off)">Offset</text>
+        <text x="64" y="56" text-anchor="middle" font-size="8.5" class="mut">V</text><text x="110" y="56" text-anchor="middle" font-size="8.5" class="mut">Tag</text><text x="210" y="56" text-anchor="middle" font-size="8.5" class="mut">Data (block)</text>
+        <rect class="box" x="52" y="60" width="24" height="100"/><rect class="box" x="76" y="60" width="68" height="100"/><rect class="box" x="144" y="60" width="132" height="100"/>
+        <rect class="boxa" x="52" y="100" width="224" height="20"/>
+        <text x="64" y="114" text-anchor="middle" font-size="9">1</text><text x="110" y="114" text-anchor="middle" font-size="9">tag</text><text x="210" y="114" text-anchor="middle" font-size="9">bytes 0 … B−1</text>
+        <path class="lnw" d="M190 32 V 44 H 30 V 110 H 52"/><text x="110" y="41" text-anchor="middle" font-size="8" class="mut">index selects the row</text>
+        <path class="lna" d="M45 20 H 14 V 196 H 92"/>
+        <line class="ln" x1="110" y1="120" x2="110" y2="184"/>
+        <circle class="box" cx="104" cy="196" r="12"/><text x="104" y="200" text-anchor="middle" font-size="11">=</text>
+        <rect class="box" x="140" y="186" width="34" height="20" rx="3"/><text x="157" y="200" text-anchor="middle" font-size="8.5">AND</text>
+        <line class="ln" x1="116" y1="196" x2="140" y2="196"/><path class="ln" d="M64 120 V 214 H 157 V 206"/>
+        <line class="ln" x1="174" y1="196" x2="196" y2="196"/><text x="200" y="200" font-size="10" font-weight="600">Hit</text>
+        <path class="boxw" d="M232 176 L 284 176 L 276 196 L 240 196 Z"/><text x="258" y="190" text-anchor="middle" font-size="8.5">select</text>
+        <line class="ln" x1="258" y1="120" x2="258" y2="176"/>
+        <path class="lnw" style="stroke:var(--off)" d="M300 20 H 316 V 186 H 280"/>
+        <line class="ln" x1="258" y1="196" x2="258" y2="216"/><text x="258" y="228" text-anchor="middle" font-size="10" font-weight="600">Data</text>
+      </svg>
+      <p class="must"><b>Must label:</b> the address split into tag | index | offset, the V bit, the stored tag, the comparator (=), the AND gate giving Hit, and the offset selecting the data.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>A hit needs <b>both</b> V = 1 and an equal tag; leaving the V input out of the AND gate loses marks. For an n-way cache, draw n of these rows side by side with n comparators working in parallel and a multiplexer that picks the hitting way.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd5">
+      <div class="fhead"><h4><span class="fno">D5</span>An eight-block cache, four ways to organise it</h4><span class="tags"><span class="tg old">17-18 · 6a</span><span class="tg">21-22 · 4e, 4f</span></span></div>
+      <div class="scroll"><svg class="wide" viewBox="0 0 520 192" role="img" aria-label="Eight-block cache as direct mapped (8 sets of 1), 2-way (4 sets of 2), 4-way (2 sets of 4) and fully associative (1 set of 8)">
+<text x="34" y="12" font-size="9.5" font-weight="600">Direct mapped</text><text x="34" y="24" font-size="8" class="mut">8 sets × 1 way</text>
+<text x="42" y="36" text-anchor="middle" font-size="7" class="mut">tag</text><text x="63" y="36" text-anchor="middle" font-size="7" class="mut">data</text>
+<text x="29" y="50" text-anchor="end" font-size="8" class="mut">0</text>
+<rect class="cellt" x="34" y="40" width="16" height="14"/><rect class="cell" x="50" y="40" width="26" height="14"/>
+<text x="29" y="64" text-anchor="end" font-size="8" class="mut">1</text>
+<rect class="cellt" x="34" y="54" width="16" height="14"/><rect class="cell" x="50" y="54" width="26" height="14"/>
+<text x="29" y="78" text-anchor="end" font-size="8" class="mut">2</text>
+<rect class="cellt" x="34" y="68" width="16" height="14"/><rect class="cell" x="50" y="68" width="26" height="14"/>
+<text x="29" y="92" text-anchor="end" font-size="8" class="mut">3</text>
+<rect class="cellt" x="34" y="82" width="16" height="14"/><rect class="cell" x="50" y="82" width="26" height="14"/>
+<text x="29" y="106" text-anchor="end" font-size="8" class="mut">4</text>
+<rect class="cellt" x="34" y="96" width="16" height="14"/><rect class="cell" x="50" y="96" width="26" height="14"/>
+<text x="29" y="120" text-anchor="end" font-size="8" class="mut">5</text>
+<rect class="cellt" x="34" y="110" width="16" height="14"/><rect class="cell" x="50" y="110" width="26" height="14"/>
+<text x="29" y="134" text-anchor="end" font-size="8" class="mut">6</text>
+<rect class="cellt" x="34" y="124" width="16" height="14"/><rect class="cell" x="50" y="124" width="26" height="14"/>
+<text x="29" y="148" text-anchor="end" font-size="8" class="mut">7</text>
+<rect class="cellt" x="34" y="138" width="16" height="14"/><rect class="cell" x="50" y="138" width="26" height="14"/>
+<text x="150" y="12" font-size="9.5" font-weight="600">2-way set associative</text><text x="150" y="24" font-size="8" class="mut">4 sets × 2 ways</text>
+<text x="158" y="36" text-anchor="middle" font-size="7" class="mut">tag</text><text x="179" y="36" text-anchor="middle" font-size="7" class="mut">data</text>
+<text x="145" y="50" text-anchor="end" font-size="8" class="mut">0</text>
+<rect class="cellt" x="150" y="40" width="16" height="14"/><rect class="cell" x="166" y="40" width="26" height="14"/><rect class="cellt" x="195" y="40" width="16" height="14"/><rect class="cell" x="211" y="40" width="26" height="14"/>
+<text x="145" y="64" text-anchor="end" font-size="8" class="mut">1</text>
+<rect class="cellt" x="150" y="54" width="16" height="14"/><rect class="cell" x="166" y="54" width="26" height="14"/><rect class="cellt" x="195" y="54" width="16" height="14"/><rect class="cell" x="211" y="54" width="26" height="14"/>
+<text x="145" y="78" text-anchor="end" font-size="8" class="mut">2</text>
+<rect class="cellt" x="150" y="68" width="16" height="14"/><rect class="cell" x="166" y="68" width="26" height="14"/><rect class="cellt" x="195" y="68" width="16" height="14"/><rect class="cell" x="211" y="68" width="26" height="14"/>
+<text x="145" y="92" text-anchor="end" font-size="8" class="mut">3</text>
+<rect class="cellt" x="150" y="82" width="16" height="14"/><rect class="cell" x="166" y="82" width="26" height="14"/><rect class="cellt" x="195" y="82" width="16" height="14"/><rect class="cell" x="211" y="82" width="26" height="14"/>
+<text x="300" y="12" font-size="9.5" font-weight="600">4-way set associative</text><text x="300" y="24" font-size="8" class="mut">2 sets × 4 ways</text>
+<text x="308" y="36" text-anchor="middle" font-size="7" class="mut">tag</text><text x="329" y="36" text-anchor="middle" font-size="7" class="mut">data</text>
+<text x="295" y="50" text-anchor="end" font-size="8" class="mut">0</text>
+<rect class="cellt" x="300" y="40" width="16" height="14"/><rect class="cell" x="316" y="40" width="26" height="14"/><rect class="cellt" x="345" y="40" width="16" height="14"/><rect class="cell" x="361" y="40" width="26" height="14"/><rect class="cellt" x="390" y="40" width="16" height="14"/><rect class="cell" x="406" y="40" width="26" height="14"/><rect class="cellt" x="435" y="40" width="16" height="14"/><rect class="cell" x="451" y="40" width="26" height="14"/>
+<text x="295" y="64" text-anchor="end" font-size="8" class="mut">1</text>
+<rect class="cellt" x="300" y="54" width="16" height="14"/><rect class="cell" x="316" y="54" width="26" height="14"/><rect class="cellt" x="345" y="54" width="16" height="14"/><rect class="cell" x="361" y="54" width="26" height="14"/><rect class="cellt" x="390" y="54" width="16" height="14"/><rect class="cell" x="406" y="54" width="26" height="14"/><rect class="cellt" x="435" y="54" width="16" height="14"/><rect class="cell" x="451" y="54" width="26" height="14"/>
+<text x="150" y="120" font-size="9.5" font-weight="600">Fully associative</text><text x="150" y="132" font-size="8" class="mut">1 set × 8 ways</text>
+<text x="158" y="144" text-anchor="middle" font-size="7" class="mut">tag</text><text x="179" y="144" text-anchor="middle" font-size="7" class="mut">data</text>
+<text x="145" y="158" text-anchor="end" font-size="8" class="mut">0</text>
+<rect class="cellt" x="150" y="148" width="16" height="14"/><rect class="cell" x="166" y="148" width="26" height="14"/><rect class="cellt" x="195" y="148" width="16" height="14"/><rect class="cell" x="211" y="148" width="26" height="14"/><rect class="cellt" x="240" y="148" width="16" height="14"/><rect class="cell" x="256" y="148" width="26" height="14"/><rect class="cellt" x="285" y="148" width="16" height="14"/><rect class="cell" x="301" y="148" width="26" height="14"/><rect class="cellt" x="330" y="148" width="16" height="14"/><rect class="cell" x="346" y="148" width="26" height="14"/><rect class="cellt" x="375" y="148" width="16" height="14"/><rect class="cell" x="391" y="148" width="26" height="14"/><rect class="cellt" x="420" y="148" width="16" height="14"/><rect class="cell" x="436" y="148" width="26" height="14"/><rect class="cellt" x="465" y="148" width="16" height="14"/><rect class="cell" x="481" y="148" width="26" height="14"/>
+<text x="150" y="186" font-size="8" class="mut">set number on the left · each cell = tag + data block · sets × ways = 8</text>
+      </svg></div>
+      <p class="must"><b>Must label:</b> the set numbers, the ways, and a tag beside every data block; state "sets × ways = 8" for each.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>It is the same eight blocks every time; only the grouping changes. More ways means fewer sets, so fewer index bits, more tag bits and more comparators. Direct mapped is "1-way set associative"; fully associative is "8-way with one set".</p></div>
+    </figure>
+
+    <figure class="fig" id="cd6">
+      <div class="fhead"><h4><span class="fno">D6</span>Address translation with a TLB</h4><span class="tags"><span class="tg">20-21 · 6c-ii</span></span></div>
+      <svg viewBox="0 0 340 236" role="img" aria-label="TLB translation: VPN looked up in TLB; hit gives PPN; miss goes to page table; invalid entry is a page fault">
+        <text x="16" y="12" font-size="8.5" class="mut">Virtual address</text>
+        <rect x="16" y="16" width="140" height="22" style="fill:var(--accent-soft);stroke:var(--tag)"/><text x="86" y="31" text-anchor="middle" font-size="10" style="fill:var(--tag)">Virtual page number</text>
+        <rect x="156" y="16" width="80" height="22" style="fill:var(--ok-soft);stroke:var(--off)"/><text x="196" y="31" text-anchor="middle" font-size="10" style="fill:var(--off)">Page offset</text>
+        <rect class="boxa" x="16" y="62" width="140" height="62" rx="4"/><text x="86" y="78" text-anchor="middle" font-size="10" font-weight="600">TLB</text>
+        <text x="86" y="94" text-anchor="middle" font-size="8.5">tag: VPN → PPN, V, D, R</text><text x="86" y="110" text-anchor="middle" font-size="8.5" class="mut">16–512 entries</text>
+        <line class="ln" x1="86" y1="38" x2="86" y2="62"/>
+        <rect class="box" x="236" y="62" width="96" height="62" rx="4"/><text x="284" y="80" text-anchor="middle" font-size="9.5" font-weight="600">Page table</text><text x="284" y="95" text-anchor="middle" font-size="8.5">in main memory</text><text x="284" y="110" text-anchor="middle" font-size="8.5" class="mut">indexed by VPN</text>
+        <path class="lnw" d="M156 80 H 236"/><text x="196" y="74" text-anchor="middle" font-size="8.5" style="fill:var(--warn)">TLB miss</text>
+        <path class="lna" d="M236 108 H 156"/><text x="196" y="120" text-anchor="middle" font-size="8.5" style="fill:var(--accent)">refill TLB</text>
+        <path class="lnw" d="M284 124 V 150"/><text x="284" y="162" text-anchor="middle" font-size="8.5" style="fill:var(--warn)">V = 0: page fault,</text><text x="284" y="174" text-anchor="middle" font-size="8.5" style="fill:var(--warn)">OS loads from disk</text>
+        <line class="lna" x1="86" y1="124" x2="86" y2="160"/><text x="92" y="146" font-size="8.5" style="fill:var(--accent)">hit: PPN</text>
+        <line class="ln" x1="196" y1="38" x2="196" y2="160"/>
+        <text x="16" y="156" font-size="8.5" class="mut">Physical address</text>
+        <rect x="16" y="160" width="140" height="22" style="fill:var(--accent-soft);stroke:var(--tag)"/><text x="86" y="175" text-anchor="middle" font-size="10" style="fill:var(--tag)">Physical page number</text>
+        <rect x="156" y="160" width="80" height="22" style="fill:var(--ok-soft);stroke:var(--off)"/><text x="196" y="175" text-anchor="middle" font-size="10" style="fill:var(--off)">Page offset</text>
+        <line class="ln" x1="126" y1="182" x2="126" y2="204"/>
+        <rect class="box" x="70" y="204" width="112" height="26" rx="4"/><text x="126" y="221" text-anchor="middle" font-size="9.5">Cache, then memory</text>
+      </svg>
+      <p class="must"><b>Must label:</b> VPN | offset, the TLB (tag = VPN, data = PPN with V, D, R bits), the page table in memory, the page-fault path to the OS and disk, and PPN | offset going to the cache.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>The offset is copied straight across; it is never translated. The order on a miss is TLB miss → page table in memory → page fault only if V = 0. A TLB miss is <b>not</b> automatically a page fault, and saying so is usually worth a mark.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd7">
+      <div class="fhead"><h4><span class="fno">D7</span>Five-stage pipeline with forwarding</h4><span class="tags"><span class="tg">20-21 · 4e, 5e</span><span class="tg old">15-16 · 6c</span></span></div>
+      <div class="scroll"><svg class="wide" viewBox="0 0 520 222" role="img" aria-label="Five-stage pipelined datapath: PC and instruction memory, register file, ALU with forwarding multiplexers, data memory, write-back multiplexer; pipeline registers between stages; forwarding paths from EX/MEM and MEM/WB back to the ALU inputs; forwarding unit and hazard detection unit">
+        <text x="47" y="12" text-anchor="middle" font-size="10" font-weight="600">IF</text>
+        <text x="156" y="12" text-anchor="middle" font-size="10" font-weight="600">ID</text>
+        <text x="275" y="12" text-anchor="middle" font-size="10" font-weight="600">EX</text>
+        <text x="392" y="12" text-anchor="middle" font-size="10" font-weight="600">MEM</text>
+        <text x="472" y="12" text-anchor="middle" font-size="10" font-weight="600">WB</text>
+        <rect class="boxw" x="92" y="30" width="10" height="140"/><text x="97" y="26" text-anchor="middle" font-size="7.5" class="mut">IF/ID</text>
+        <rect class="boxw" x="206" y="30" width="10" height="140"/><text x="211" y="26" text-anchor="middle" font-size="7.5" class="mut">ID/EX</text>
+        <rect class="boxw" x="338" y="30" width="10" height="140"/><text x="343" y="26" text-anchor="middle" font-size="7.5" class="mut">EX/MEM</text>
+        <rect class="boxw" x="432" y="30" width="10" height="140"/><text x="437" y="26" text-anchor="middle" font-size="7.5" class="mut">MEM/WB</text>
+        <rect class="box" x="8" y="86" width="24" height="28" rx="3"/><text x="20" y="104" text-anchor="middle" font-size="9.5">PC</text>
+        <rect class="box" x="42" y="70" width="44" height="60" rx="3"/><text x="64" y="97" text-anchor="middle" font-size="9">Instr.</text><text x="64" y="109" text-anchor="middle" font-size="9">memory</text>
+        <line class="ln" x1="32" y1="100" x2="42" y2="100"/><line class="ln" x1="86" y1="100" x2="92" y2="100"/>
+        <rect class="boxw" x="106" y="34" width="88" height="18" rx="3"/><text x="150" y="46" text-anchor="middle" font-size="8">Hazard detection</text>
+        <path class="lnw dash" d="M106 43 H 20 V 86"/><text x="56" y="39" text-anchor="middle" font-size="7.5" style="fill:var(--warn)">stall</text>
+        <rect class="box" x="118" y="58" width="64" height="82" rx="3"/><text x="150" y="96" text-anchor="middle" font-size="9.5">Registers</text><text x="150" y="134" text-anchor="middle" font-size="7" class="mut">write rd</text>
+        <line class="ln" x1="102" y1="100" x2="118" y2="100"/>
+        <line class="ln" x1="182" y1="66" x2="206" y2="66"/><text x="194" y="62" text-anchor="middle" font-size="7" class="mut">rs</text>
+        <line class="ln" x1="182" y1="118" x2="206" y2="118"/><text x="194" y="114" text-anchor="middle" font-size="7" class="mut">rt</text>
+        <line class="ln" x1="216" y1="66" x2="230" y2="66"/><line class="ln" x1="216" y1="118" x2="230" y2="118"/>
+        <rect class="box" x="230" y="58" width="12" height="32" rx="5"/><rect class="box" x="230" y="110" width="12" height="32" rx="5"/>
+        <line class="ln" x1="242" y1="74" x2="258" y2="74"/><line class="ln" x1="242" y1="126" x2="258" y2="126"/>
+        <path class="box" d="M258 60 L298 80 L298 120 L258 140 L258 108 L266 100 L258 92 Z"/><text x="282" y="104" text-anchor="middle" font-size="9.5">ALU</text>
+        <line class="ln" x1="298" y1="100" x2="338" y2="100"/>
+        <rect class="boxa" x="232" y="148" width="86" height="18" rx="3"/><text x="275" y="160" text-anchor="middle" font-size="8">Forwarding unit</text>
+        <path class="lna dash" d="M236 148 V 142"/><path class="lna dash" d="M250 148 V 100 H 236 V 90"/>
+        <line class="ln" x1="348" y1="100" x2="362" y2="100"/>
+        <rect class="box" x="362" y="70" width="60" height="60" rx="3"/><text x="392" y="97" text-anchor="middle" font-size="9">Data</text><text x="392" y="109" text-anchor="middle" font-size="9">memory</text>
+        <line class="ln" x1="422" y1="92" x2="432" y2="92"/><line class="ln" x1="442" y1="92" x2="452" y2="92"/>
+        <path class="ln" d="M356 150 H 432"/><path class="ln" d="M442 150 H 446 V 108 H 452"/>
+        <rect class="box" x="452" y="84" width="12" height="32" rx="5"/>
+        <path class="ln" d="M464 100 H 478 V 200 H 150 V 140"/>
+        <path class="lna" d="M356 100 V 176 H 220 V 76 H 230"/><path class="lna" d="M220 128 H 230"/>
+        <path class="lna" d="M478 186 H 225 V 84 H 230"/><path class="lna" d="M225 136 H 230"/>
+        <circle class="dot" cx="356" cy="100" r="2.4"/><circle class="dot" cx="356" cy="150" r="2.4"/><circle class="dot" cx="220" cy="128" r="2.4"/><circle class="dot" cx="225" cy="136" r="2.4"/><circle class="dot" cx="478" cy="186" r="2.4"/>
+        <text x="362" y="181" font-size="7.5" style="fill:var(--accent)">EX/MEM → EX</text>
+        <text x="362" y="195" font-size="7.5" style="fill:var(--accent)">MEM/WB → EX</text>
+        <text x="300" y="214" text-anchor="middle" font-size="7.5" class="mut">write back to rd</text>
+      </svg></div>
+      <p class="must"><b>Must label:</b> the five stages, the four pipeline registers (IF/ID, ID/EX, EX/MEM, MEM/WB), the two forwarding paths into the ALU-input multiplexers, the forwarding unit, and the hazard detection unit in ID. The register file has three 5-bit register-number inputs (two read, one write), one 32-bit write-data input and two 32-bit read outputs. This drawing is simplified: no PC + 4 adder, immediate multiplexer or branch logic.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>Forwarded values come <b>from the pipeline registers</b> (EX/MEM and MEM/WB) and go <b>into EX</b>, not into the register file. The forwarding unit compares the rs and rt of the instruction in EX with the rd held in EX/MEM and MEM/WB (and ignores register 0). Forwarding cannot send a value back in time, so the hazard detection unit in ID still inserts one bubble for a load-use.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd8">
+      <div class="fhead"><h4><span class="fno">D8</span>Cycle-by-cycle timing diagram</h4><span class="tags"><span class="tg">21-22 · 6a, 2c</span><span class="tg">20-21 · 6b</span></span></div>
+      <p class="note"><code>lw $t1, 0($t0)</code> · <code>add $t2, $t1, $t3</code> · <code>sub $t4, $t2, $t5</code>: a load-use, then an ALU-to-ALU dependence.</p>
+      <div class="pipefig" data-prog="lw $t1, 0($t0) / add $t2, $t1, $t3 / sub $t4, $t2, $t5" data-fwd="1"></div>
+      <div class="pipefig" data-prog="lw $t1, 0($t0) / add $t2, $t1, $t3 / sub $t4, $t2, $t5" data-fwd="0"></div>
+      <p class="must"><b>Must show:</b> cycle numbers across the top, one row per instruction, IF ID EX MEM WB in each row, stall bubbles, and which value is forwarded from where.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>When an instruction stalls in ID, the one behind it stays in IF, so draw IF again in that row. A forwarding arrow runs from the <b>end</b> of the producer's EX (or MEM, for a load) to the <b>start</b> of the consumer's EX; an arrow that would point backward in time means a stall. Without forwarding the same three instructions take 11 cycles instead of 8.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd9">
+      <div class="fhead"><h4><span class="fno">D9</span>2-bit branch predictor</h4><span class="tags"><span class="tg">21-22 · 1f</span></span></div>
+      <svg viewBox="0 0 340 168" role="img" aria-label="Two-bit branch predictor state machine">
+        <ellipse class="boxa" cx="70" cy="44" rx="58" ry="20"/><text x="70" y="41" text-anchor="middle" font-size="9.5">Predict taken</text><text x="70" y="53" text-anchor="middle" font-size="8" class="mut">strong · 11</text>
+        <ellipse class="boxa" cx="270" cy="44" rx="58" ry="20" style="fill:var(--surface)"/><text x="270" y="41" text-anchor="middle" font-size="9.5">Predict taken</text><text x="270" y="53" text-anchor="middle" font-size="8" class="mut">weak · 10</text>
+        <ellipse class="box" cx="270" cy="128" rx="58" ry="20"/><text x="270" y="125" text-anchor="middle" font-size="9.5">Predict not taken</text><text x="270" y="137" text-anchor="middle" font-size="8" class="mut">weak · 01</text>
+        <ellipse class="box" cx="70" cy="128" rx="58" ry="20" style="fill:var(--sunk)"/><text x="70" y="125" text-anchor="middle" font-size="9.5">Predict not taken</text><text x="70" y="137" text-anchor="middle" font-size="8" class="mut">strong · 00</text>
+        <path class="lnw" d="M128 38 H 212"/><path style="fill:var(--warn)" d="M206 34 L214 38 L206 42 Z"/><text x="170" y="32" text-anchor="middle" font-size="8.5">not taken</text>
+        <path class="lna" d="M212 52 H 128"/><path class="acc" d="M134 48 L126 52 L134 56 Z"/><text x="170" y="64" text-anchor="middle" font-size="8.5">taken</text>
+        <path class="lnw" d="M262 64 V 108"/><path style="fill:var(--warn)" d="M258 102 L262 110 L266 102 Z"/><text x="256" y="90" text-anchor="end" font-size="8.5">not taken</text>
+        <path class="lna" d="M280 108 V 64"/><path class="acc" d="M276 70 L280 62 L284 70 Z"/><text x="286" y="90" font-size="8.5">taken</text>
+        <path class="lnw" d="M212 122 H 128"/><path style="fill:var(--warn)" d="M134 118 L126 122 L134 126 Z"/><text x="170" y="116" text-anchor="middle" font-size="8.5">not taken</text>
+        <path class="lna" d="M128 134 H 212"/><path class="acc" d="M206 130 L214 134 L206 138 Z"/><text x="170" y="146" text-anchor="middle" font-size="8.5">taken</text>
+        <path class="lna" d="M46 25 C 40 2, 100 2, 94 25"/><text x="102" y="13" font-size="8.5">taken</text>
+        <path class="lnw" d="M46 147 C 40 168, 100 168, 94 147"/><text x="102" y="163" font-size="8.5">not taken</text>
+      </svg>
+      <p class="must"><b>Must label:</b> four states (two predict taken, two predict not taken), a taken and a not-taken arrow out of every state, and the self-loops on the two strong states.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>It takes two wrong guesses in a row to flip the prediction; from a weak state, one wrong guess crosses over. Some books draw a variant in which a miss in a weak state jumps straight to the opposite strong state; your book (P&amp;H Figure 4.63) uses the plain saturating counter shown here.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd10">
+      <div class="fhead"><h4><span class="fno">D10</span>Flynn's taxonomy</h4><span class="tags"><span class="tg">21-22 · 6c</span><span class="tg">20-21 · 2f</span><span class="tg">TT2 '26 · 2</span></span></div>
+      <svg viewBox="0 0 340 252" role="img" aria-label="Flynn taxonomy block diagrams: SISD, SIMD, MISD, MIMD">
+        <text x="85" y="14" text-anchor="middle" font-size="11" font-weight="600">SISD</text>
+        <rect class="boxa" x="12" y="48" width="38" height="24" rx="3"/><text x="31" y="64" text-anchor="middle" font-size="9.5">CU</text>
+        <rect class="box" x="68" y="48" width="38" height="24" rx="3"/><text x="87" y="64" text-anchor="middle" font-size="9.5">PU</text>
+        <rect class="box" x="124" y="48" width="38" height="24" rx="3"/><text x="143" y="64" text-anchor="middle" font-size="9.5">MM</text>
+        <line class="lna" x1="50" y1="60" x2="68" y2="60"/><text x="59" y="44" text-anchor="middle" font-size="8" style="fill:var(--accent)">IS</text>
+        <line class="lnw" x1="106" y1="60" x2="124" y2="60"/><text x="115" y="44" text-anchor="middle" font-size="8" style="fill:var(--warn)">DS</text>
+        <text x="255" y="14" text-anchor="middle" font-size="11" font-weight="600">SIMD</text>
+        <rect class="boxa" x="180" y="52" width="34" height="24" rx="3"/><text x="197" y="68" text-anchor="middle" font-size="9.5">CU</text>
+        <rect class="box" x="240" y="24" width="34" height="20" rx="3"/><text x="257" y="38" text-anchor="middle" font-size="9">PU1</text>
+        <rect class="box" x="240" y="54" width="34" height="20" rx="3"/><text x="257" y="68" text-anchor="middle" font-size="9">PU2</text>
+        <rect class="box" x="240" y="84" width="34" height="20" rx="3"/><text x="257" y="98" text-anchor="middle" font-size="9">PUn</text>
+        <rect class="box" x="292" y="24" width="38" height="20" rx="3"/><text x="311" y="38" text-anchor="middle" font-size="9">MM1</text>
+        <rect class="box" x="292" y="54" width="38" height="20" rx="3"/><text x="311" y="68" text-anchor="middle" font-size="9">MM2</text>
+        <rect class="box" x="292" y="84" width="38" height="20" rx="3"/><text x="311" y="98" text-anchor="middle" font-size="9">MMn</text>
+        <path class="lna" d="M214 64 L240 34 M214 64 L240 64 M214 64 L240 94"/><text x="222" y="50" font-size="8" style="fill:var(--accent)">IS</text>
+        <path class="lnw" d="M274 34 H292 M274 64 H292 M274 94 H292"/><text x="283" y="116" text-anchor="middle" font-size="8" style="fill:var(--warn)">DS1…DSn</text>
+        <text x="85" y="140" text-anchor="middle" font-size="11" font-weight="600">MISD</text>
+        <rect class="boxa" x="38" y="150" width="30" height="18" rx="3"/><text x="53" y="163" text-anchor="middle" font-size="8.5">CU1</text>
+        <rect class="boxa" x="84" y="150" width="30" height="18" rx="3"/><text x="99" y="163" text-anchor="middle" font-size="8.5">CU2</text>
+        <rect class="boxa" x="130" y="150" width="30" height="18" rx="3"/><text x="145" y="163" text-anchor="middle" font-size="8.5">CUn</text>
+        <rect class="box" x="38" y="194" width="30" height="20" rx="3"/><text x="53" y="208" text-anchor="middle" font-size="8.5">PU1</text>
+        <rect class="box" x="84" y="194" width="30" height="20" rx="3"/><text x="99" y="208" text-anchor="middle" font-size="8.5">PU2</text>
+        <rect class="box" x="130" y="194" width="30" height="20" rx="3"/><text x="145" y="208" text-anchor="middle" font-size="8.5">PUn</text>
+        <rect class="box" x="2" y="194" width="26" height="20" rx="3"/><text x="15" y="208" text-anchor="middle" font-size="8.5">MM</text>
+        <path class="lna" d="M53 168 V194 M99 168 V194 M145 168 V194"/>
+        <path class="lnw" d="M28 204 H38 M68 204 H84 M114 204 H130"/>
+        <text x="85" y="234" text-anchor="middle" font-size="8" style="fill:var(--warn)">one data stream passes through every PU</text>
+        <text x="255" y="140" text-anchor="middle" font-size="11" font-weight="600">MIMD</text>
+        <rect class="boxa" x="180" y="150" width="32" height="20" rx="3"/><text x="196" y="164" text-anchor="middle" font-size="8.5">CU1</text>
+        <rect class="boxa" x="180" y="178" width="32" height="20" rx="3"/><text x="196" y="192" text-anchor="middle" font-size="8.5">CU2</text>
+        <rect class="boxa" x="180" y="206" width="32" height="20" rx="3"/><text x="196" y="220" text-anchor="middle" font-size="8.5">CUn</text>
+        <rect class="box" x="230" y="150" width="32" height="20" rx="3"/><text x="246" y="164" text-anchor="middle" font-size="8.5">PU1</text>
+        <rect class="box" x="230" y="178" width="32" height="20" rx="3"/><text x="246" y="192" text-anchor="middle" font-size="8.5">PU2</text>
+        <rect class="box" x="230" y="206" width="32" height="20" rx="3"/><text x="246" y="220" text-anchor="middle" font-size="8.5">PUn</text>
+        <rect class="box" x="282" y="150" width="50" height="76" rx="3"/><text x="307" y="186" text-anchor="middle" font-size="8.5">Memory</text><text x="307" y="198" text-anchor="middle" font-size="7.5" class="mut">shared or</text><text x="307" y="208" text-anchor="middle" font-size="7.5" class="mut">private</text>
+        <path class="lna" d="M212 160 H230 M212 188 H230 M212 216 H230"/>
+        <path class="lnw" d="M262 160 H282 M262 188 H282 M262 216 H282"/>
+        <text x="255" y="242" text-anchor="middle" font-size="8" class="mut">each PU has its own CU and PC</text>
+      </svg>
+      <p class="must"><b>Must label:</b> CU (control unit, with a PC), PU (processing unit), MM (memory module), IS (instruction stream) and DS (data stream) in all four diagrams, plus one example under each.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>The whole classification is how many instruction streams (control units) against how many data streams. SIMD has <b>one</b> CU broadcasting to many PUs; MIMD has a CU per PU. MISD has no real commercial machine, so do not invent one. A pipelined or superscalar uniprocessor is still SISD. A GPU is SIMD inside each multiprocessor (NVIDIA calls it SIMT) and MIMD across the chip.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd11">
+      <div class="fhead"><h4><span class="fno">D11</span>System bus: address, data, control</h4><span class="tags"><span class="tg">20-21 · 5a</span><span class="tg">TT1 '25 · 1a</span><span class="tg">TT1 '26 · j</span></span></div>
+      <svg viewBox="0 0 340 150" role="img" aria-label="Processor, memory and I/O connected by address, data and control buses">
+        <rect class="boxa" x="10" y="10" width="80" height="40" rx="4"/><text x="50" y="34" text-anchor="middle" font-size="10">Processor</text>
+        <rect class="box" x="130" y="10" width="80" height="40" rx="4"/><text x="170" y="34" text-anchor="middle" font-size="10">Memory</text>
+        <rect class="box" x="250" y="10" width="80" height="40" rx="4"/><text x="290" y="28" text-anchor="middle" font-size="10">I/O</text><text x="290" y="41" text-anchor="middle" font-size="8.5" class="mut">controller</text>
+        <line class="lna" x1="10" y1="78" x2="330" y2="78"/><text x="14" y="74" font-size="8.5" style="fill:var(--accent)">address bus (one way)</text>
+        <line class="lnw" x1="10" y1="106" x2="330" y2="106"/><text x="14" y="102" font-size="8.5" style="fill:var(--warn)">data bus (two way)</text>
+        <line class="ln" x1="10" y1="134" x2="330" y2="134"/><text x="14" y="130" font-size="8.5">control bus (read/write, clock, interrupt)</text>
+        <path class="ln" d="M40 50 V134 M50 50 V106 M60 50 V78 M160 50 V134 M170 50 V106 M180 50 V78 M280 50 V134 M290 50 V106 M300 50 V78"/>
+      </svg>
+      <p class="must"><b>Must label:</b> the three buses with their directions (address one-way, data two-way, control lines either way), every unit tapping all three, and what each carries.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>The width of the address bus fixes the maximum memory (2<sup>n</sup> locations, see F28); the width of the data bus fixes the bits per transfer. The question usually ends with "give a modern example": PCI Express, USB, SATA or the DDR memory bus.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd12">
+      <div class="fhead"><h4><span class="fno">D12</span>Big-endian and little-endian</h4><span class="tags"><span class="tg">21-22 · 2b</span><span class="tg">TT1 '26 · h</span></span></div>
+      <svg viewBox="0 0 340 144" role="img" aria-label="The word 0x12345678 stored at address 100: big-endian puts 12 at address 100, little-endian puts 78 at address 100">
+        <text x="170" y="14" text-anchor="middle" font-size="10" font-weight="600">0x12345678 stored at address 100</text>
+        <text x="112" y="36" text-anchor="end" font-size="8" class="mut">address →</text>
+        <text x="145" y="36" text-anchor="middle" font-size="9" class="mut">100</text><text x="195" y="36" text-anchor="middle" font-size="9" class="mut">101</text><text x="245" y="36" text-anchor="middle" font-size="9" class="mut">102</text><text x="295" y="36" text-anchor="middle" font-size="9" class="mut">103</text>
+        <text x="112" y="60" text-anchor="end" font-size="9.5">Big-endian</text>
+        <rect class="boxa" x="120" y="42" width="50" height="26"/><rect class="box" x="170" y="42" width="50" height="26"/><rect class="box" x="220" y="42" width="50" height="26"/><rect class="box" x="270" y="42" width="50" height="26"/>
+        <text x="145" y="60" text-anchor="middle" font-size="11" font-weight="600">12</text><text x="195" y="60" text-anchor="middle" font-size="11" font-weight="600">34</text><text x="245" y="60" text-anchor="middle" font-size="11" font-weight="600">56</text><text x="295" y="60" text-anchor="middle" font-size="11" font-weight="600">78</text>
+        <text x="112" y="98" text-anchor="end" font-size="9.5">Little-endian</text>
+        <rect class="boxw" x="120" y="80" width="50" height="26"/><rect class="box" x="170" y="80" width="50" height="26"/><rect class="box" x="220" y="80" width="50" height="26"/><rect class="box" x="270" y="80" width="50" height="26"/>
+        <text x="145" y="98" text-anchor="middle" font-size="11" font-weight="600">78</text><text x="195" y="98" text-anchor="middle" font-size="11" font-weight="600">56</text><text x="245" y="98" text-anchor="middle" font-size="11" font-weight="600">34</text><text x="295" y="98" text-anchor="middle" font-size="11" font-weight="600">12</text>
+        <text x="120" y="124" font-size="8.5" class="mut">big: most significant byte first (MIPS)</text>
+        <text x="120" y="137" font-size="8.5" class="mut">little: least significant byte first (x86)</text>
+      </svg>
+      <p class="must"><b>Must label:</b> addresses increasing left to right, the same word stored both ways, and which byte sits at the lowest address.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>Only the order of the <b>bytes</b> inside a word changes; the bits inside each byte and the value of the word do not. MIPS and network byte order are big-endian; x86 is little-endian. A word written by one kind of machine and read byte by byte on the other comes out reversed.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd13">
+      <div class="fhead"><h4><span class="fno">D13</span>MIPS memory layout: stack and heap</h4><span class="tags"><span class="tg">21-22 · 5a</span><span class="tg">20-21 · 4c, 5b</span><span class="tg">TT1 '25 · 1c</span><span class="tg">TT1 '26 · i</span></span></div>
+      <svg viewBox="0 0 340 196" role="img" aria-label="MIPS memory allocation: stack at the top growing down, heap growing up, static data, text, reserved">
+        <rect class="boxa" x="110" y="8" width="120" height="30"/><text x="170" y="27" text-anchor="middle" font-size="10">Stack ↓</text>
+        <rect class="box" x="110" y="38" width="120" height="40" style="stroke-dasharray:3 3"/><text x="170" y="62" text-anchor="middle" font-size="9" class="mut">free space</text>
+        <rect class="boxw" x="110" y="78" width="120" height="30"/><text x="170" y="97" text-anchor="middle" font-size="10">Dynamic data (heap) ↑</text>
+        <rect class="box" x="110" y="108" width="120" height="28"/><text x="170" y="126" text-anchor="middle" font-size="10">Static data</text>
+        <rect class="box" x="110" y="136" width="120" height="28"/><text x="170" y="154" text-anchor="middle" font-size="10">Text (code)</text>
+        <rect class="box" x="110" y="164" width="120" height="24"/><text x="170" y="180" text-anchor="middle" font-size="10">Reserved</text>
+        <text x="104" y="14" text-anchor="end" font-size="9">$sp → 7fff fffc</text>
+        <text x="104" y="114" text-anchor="end" font-size="9">$gp → 1000 8000</text>
+        <text x="104" y="128" text-anchor="end" font-size="9">1000 0000</text>
+        <text x="104" y="142" text-anchor="end" font-size="9">pc → 0040 0000</text>
+        <text x="104" y="186" text-anchor="end" font-size="9">0</text>
+        <text x="238" y="60" font-size="8.5" class="mut">stack overflow:</text><text x="238" y="72" font-size="8.5" class="mut">stack grows into</text><text x="238" y="84" font-size="8.5" class="mut">the heap</text>
+      </svg>
+      <p class="must"><b>Must label:</b> reserved, text from 0040 0000, static data from 1000 0000 with $gp at 1000 8000, the heap growing up, and the stack growing down from 7fff fffc with $sp.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>The stack grows <b>down</b>, so a push subtracts from <code>$sp</code>; the heap grows <b>up</b>. Procedure frames (return address, saved registers, local arrays) go on the stack; <code>malloc</code>/<code>new</code> data goes on the heap. Stack overflow is the moment the two meet, usually through deep or infinite recursion.</p></div>
+    </figure>
+
+    <figure class="fig" id="cd14">
+      <div class="fhead"><h4><span class="fno">D14</span>RAID: check disks, and RAID 4 against RAID 5</h4><span class="tags"><span class="tg new">slide, never asked</span><span class="tg new">book §6.9</span></span></div>
+      <div class="scroll"><table>
+        <tr><th>RAID</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+        <tr><td>idea</td><td>stripe</td><td>mirror</td><td>ECC</td><td>bit parity</td><td>block parity</td><td>rotated parity</td><td>P + Q</td></tr>
+        <tr><td>check disks (4 data disks)</td><td>0</td><td>4</td><td>3</td><td>1</td><td>1</td><td>1</td><td>2</td></tr>
+      </table></div>
+      <svg viewBox="0 0 340 128" role="img" aria-label="RAID 4 keeps every parity block on disk 4; RAID 5 rotates the parity block across all five disks">
+        <text x="14" y="12" font-size="9.5" font-weight="600">RAID 4</text><text x="14" y="24" font-size="8" class="mut">parity always on disk 4</text>
+        <text x="186" y="12" font-size="9.5" font-weight="600">RAID 5</text><text x="186" y="24" font-size="8" class="mut">parity rotates across disks</text>
+        <g font-size="7.5" class="mut" text-anchor="middle"><text x="28" y="36">0</text><text x="56" y="36">1</text><text x="84" y="36">2</text><text x="112" y="36">3</text><text x="140" y="36">4</text><text x="200" y="36">0</text><text x="228" y="36">1</text><text x="256" y="36">2</text><text x="284" y="36">3</text><text x="312" y="36">4</text></g>
+        <g font-size="8.5" text-anchor="middle">
+          <rect class="box" x="14" y="40" width="28" height="18"/><rect class="box" x="42" y="40" width="28" height="18"/><rect class="box" x="70" y="40" width="28" height="18"/><rect class="box" x="98" y="40" width="28" height="18"/><rect class="boxw" x="126" y="40" width="28" height="18"/>
+          <text x="28" y="53">0</text><text x="56" y="53">1</text><text x="84" y="53">2</text><text x="112" y="53">3</text><text x="140" y="53">P0</text>
+          <rect class="box" x="14" y="58" width="28" height="18"/><rect class="box" x="42" y="58" width="28" height="18"/><rect class="box" x="70" y="58" width="28" height="18"/><rect class="box" x="98" y="58" width="28" height="18"/><rect class="boxw" x="126" y="58" width="28" height="18"/>
+          <text x="28" y="71">4</text><text x="56" y="71">5</text><text x="84" y="71">6</text><text x="112" y="71">7</text><text x="140" y="71">P1</text>
+          <rect class="box" x="14" y="76" width="28" height="18"/><rect class="box" x="42" y="76" width="28" height="18"/><rect class="box" x="70" y="76" width="28" height="18"/><rect class="box" x="98" y="76" width="28" height="18"/><rect class="boxw" x="126" y="76" width="28" height="18"/>
+          <text x="28" y="89">8</text><text x="56" y="89">9</text><text x="84" y="89">10</text><text x="112" y="89">11</text><text x="140" y="89">P2</text>
+          <rect class="box" x="14" y="94" width="28" height="18"/><rect class="box" x="42" y="94" width="28" height="18"/><rect class="box" x="70" y="94" width="28" height="18"/><rect class="box" x="98" y="94" width="28" height="18"/><rect class="boxw" x="126" y="94" width="28" height="18"/>
+          <text x="28" y="107">12</text><text x="56" y="107">13</text><text x="84" y="107">14</text><text x="112" y="107">15</text><text x="140" y="107">P3</text>
+          <rect class="box" x="186" y="40" width="28" height="18"/><rect class="box" x="214" y="40" width="28" height="18"/><rect class="box" x="242" y="40" width="28" height="18"/><rect class="box" x="270" y="40" width="28" height="18"/><rect class="boxw" x="298" y="40" width="28" height="18"/>
+          <text x="200" y="53">0</text><text x="228" y="53">1</text><text x="256" y="53">2</text><text x="284" y="53">3</text><text x="312" y="53">P0</text>
+          <rect class="box" x="186" y="58" width="28" height="18"/><rect class="box" x="214" y="58" width="28" height="18"/><rect class="box" x="242" y="58" width="28" height="18"/><rect class="boxw" x="270" y="58" width="28" height="18"/><rect class="box" x="298" y="58" width="28" height="18"/>
+          <text x="200" y="71">4</text><text x="228" y="71">5</text><text x="256" y="71">6</text><text x="284" y="71">P1</text><text x="312" y="71">7</text>
+          <rect class="box" x="186" y="76" width="28" height="18"/><rect class="box" x="214" y="76" width="28" height="18"/><rect class="boxw" x="242" y="76" width="28" height="18"/><rect class="box" x="270" y="76" width="28" height="18"/><rect class="box" x="298" y="76" width="28" height="18"/>
+          <text x="200" y="89">8</text><text x="228" y="89">9</text><text x="256" y="89">P2</text><text x="284" y="89">10</text><text x="312" y="89">11</text>
+          <rect class="box" x="186" y="94" width="28" height="18"/><rect class="boxw" x="214" y="94" width="28" height="18"/><rect class="box" x="242" y="94" width="28" height="18"/><rect class="box" x="270" y="94" width="28" height="18"/><rect class="box" x="298" y="94" width="28" height="18"/>
+          <text x="200" y="107">12</text><text x="228" y="107">P3</text><text x="256" y="107">13</text><text x="284" y="107">14</text><text x="312" y="107">15</text>
+        </g>
+        <text x="14" y="124" font-size="8" class="mut">columns = disks 0–4, rows = stripes, numbers = data blocks, P = parity</text>
+      </svg>
+      <div class="eq">Small write (RAID 4 and 5): P_new = P_old XOR D_old XOR D_new
+read D_old and P_old, write D_new and P_new: 4 accesses on 2 disks</div>
+      <p class="must"><b>Must label:</b> the disks as columns, the stripes as rows, the data blocks and where each stripe's parity block P sits.</p>
+      <div class="trick"><span class="k">Setter's trick</span><p>RAID 0 has <b>no</b> redundancy; it only stripes for speed. RAID 4 and RAID 5 use the same single check disk; the only difference is where the parity lives. In RAID 4 every small write must update the one parity disk, so writes queue there; RAID 5 spreads the parity, so small writes to different stripes can run in parallel. RAID 1 costs 100% extra disks, RAID 3–5 one disk per group, and RAID 6 (P + Q) survives two failures.</p></div>
+    </figure>
+
+    </div>
   </div>
 </section>
 
@@ -2710,6 +3539,13 @@ const K = (() => {
   });
   setMode(store.get('kit-mode') === 'test' ? 'test' : 'study');
   counts();
+
+  /* ---------- core sheet: jump buttons ---------- */
+  document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
+    const t = $(b.dataset.jump); if (!t) return;
+    if (t.tagName === 'DETAILS') t.open = true;
+    t.scrollIntoView({ block: 'start' });
+  }));
 
   /* ---------- figures built from data ---------- */
   (function orgFig() {
