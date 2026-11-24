@@ -1,6 +1,6 @@
 // Builds mid2-notes.html (the phone reader artifact) from the Mid-2 markdown files.
 // Maths stays as TeX in the page and is typeset in the browser by KaTeX 0.16.47
-// (script from cdnjs; its CSS and fonts are inlined because the artifact CSP blocks
+// (script inlined so the local file works offline; its CSS and fonts are inlined because the artifact CSP blocks
 // stylesheets and fonts from other hosts).
 //
 // Needs katex@0.16.47 and marked@12.0.2 installed somewhere, e.g.
@@ -104,6 +104,7 @@ const articles = DOCS.map(d =>
 
 const out = template
   .replace('/*KATEX_CSS*/', () => katexCss())
+  .replace('/*KATEX_JS*/', () => fs.readFileSync(path.join(KATEX_DIR, 'dist', 'katex.min.js'), 'utf8').replace(/<\/script/gi, '<\\/script'))
   .replace('<!--TABS-->', () => tabs)
   .replace('<!--ARTICLES-->', () => articles)
   .replace(/KATEX_VERSION/g, KATEX_VERSION);
